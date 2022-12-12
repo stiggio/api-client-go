@@ -1,0 +1,26 @@
+model:
+  filename: ./generated/stiggModels.go
+  package: stigg
+client:
+  filename: ./generated/stiggClient.go
+  package: stigg
+models:
+  Int:
+    model: github.com/99designs/gqlgen/graphql.Int64
+  Date:
+    model: github.com/99designs/gqlgen/graphql.Time
+  JSON:
+    model: github.com/99designs/gqlgen/graphql.Map
+
+endpoint:
+  url: http://localhost:4000/graphql # Where do you want to send your request?
+
+query:
+  - "../../api-client-schema/src/operations/fragments.graphql"
+  - "../../api-client-schema/src/operations/queries.graphql"
+  - "../../api-client-schema/src/operations/mutations.graphql"
+
+generate:
+  clientV2: true
+  clientInterfaceName: "StiggGraphQLClient"
+
