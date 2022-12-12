@@ -16,7 +16,7 @@ func NewClient(apiKey string, httpClient *http.Client, baseUrl *string) (*stiggO
 	}
 	if httpClient == nil {
 		httpClient = &http.Client{
-			Timeout: time.Second * 10,
+			Timeout: time.Second * 30,
 		}
 	}
 
