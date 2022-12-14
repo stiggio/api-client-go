@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/stiggio/api-client-go"
-	"github.com/stiggio/api-client-go/codegen/generated"
 	"net/http"
 	"strings"
 )
@@ -22,17 +21,14 @@ func extractApiKeyReq(req *http.Request) (apiKey string, err error) {
 	return apiKey, nil
 }
 
-func getClient(req *http.Request) (*stiggOperations.Client, error) {
+func getClient(req *http.Request) (stigg.StiggGraphQLClient, error) {
 	apiKey, err := extractApiKeyReq(req)
 	if err != nil {
 		return nil, errors.New("api key header was not provided")
 	}
 	stiggGraphUrl := req.URL.Query().Get("stigg-graph-url")
+	client := stigg.NewStiggClient(apiKey, nil, &stiggGraphUrl)
 
-	client, err := stigg.NewClient(apiKey, nil, &stiggGraphUrl)
-	if err != nil {
-		return nil, errors.New("couldn't init stigg client")
-	}
 	return client, nil
 }
 func getCustomerByRefId(w http.ResponseWriter, req *http.Request) {
@@ -43,7 +39,7 @@ func getCustomerByRefId(w http.ResponseWriter, req *http.Request) {
 		w.Write([]byte(err.Error()))
 		return
 	}
-	var input stiggOperations.GetCustomerByRefIDInput
+	var input stigg.GetCustomerByRefIDInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -91,7 +87,7 @@ func getPaywall(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.GetPaywallInput
+	var input stigg.GetPaywallInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -122,7 +118,7 @@ func getEntitlements(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.FetchEntitlementsQuery
+	var input stigg.FetchEntitlementsQuery
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -153,7 +149,7 @@ func getEntitlement(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.FetchEntitlementQuery
+	var input stigg.FetchEntitlementQuery
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -184,7 +180,7 @@ func createCustomer(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.CustomerInput
+	var input stigg.CustomerInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -215,7 +211,7 @@ func importCustomer(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.ImportCustomerInput
+	var input stigg.ImportCustomerInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -246,7 +242,7 @@ func createSubscription(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.SubscriptionInput
+	var input stigg.SubscriptionInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -277,7 +273,7 @@ func provisionCustomer(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.ProvisionCustomerInput
+	var input stigg.ProvisionCustomerInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -306,7 +302,7 @@ func provisionSubscription(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.ProvisionSubscriptionInput
+	var input stigg.ProvisionSubscriptionInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -337,7 +333,7 @@ func updateSubscription(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.UpdateSubscriptionInput
+	var input stigg.UpdateSubscriptionInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -368,7 +364,7 @@ func updateCustomer(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.UpdateCustomerInput
+	var input stigg.UpdateCustomerInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -399,7 +395,7 @@ func cancelSubscription(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.SubscriptionCancellationInput
+	var input stigg.SubscriptionCancellationInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -430,7 +426,7 @@ func initiateCheckout(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.InitiateCheckoutInput
+	var input stigg.InitiateCheckoutInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -461,7 +457,7 @@ func estimateSubscription(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.EstimateSubscriptionInput
+	var input stigg.EstimateSubscriptionInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -492,7 +488,7 @@ func estimateSubscriptionUpdate(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.EstimateSubscriptionUpdateInput
+	var input stigg.EstimateSubscriptionUpdateInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 
@@ -523,7 +519,7 @@ func reportUsage(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var input stiggOperations.UsageMeasurementCreateInput
+	var input stigg.UsageMeasurementCreateInput
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields() // Force error if unknown field is found
 

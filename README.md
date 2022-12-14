@@ -1,5 +1,21 @@
-# Go cauto generated client.
+![img_2.png](img_2.png)
 
-1. Generated from localhost:4000/graphql for now. Check `./codegen/.gqlgenc` for full config.
-2. Run testApp for REST micro server executing all commands in mutations.graphql and queries.graphql
-3. Join our teams postman collection to run all possible queries/mutations
+# Stigg Go client.
+
+## Getting started
+
+0. Install
+
+```go
+go get github.com/stiggio/api-client-go
+```
+
+1. Retrieve your server API key from [Stigg console](https://app.stigg.io/account/settings)
+2. Init your Go SDK
+
+```go
+apiKey := "XXXXXXXXX"
+client := stigg.NewStiggClient(apiKey, nil, ni; )
+```
+
+For full usage specification, see our [Go Sdk documentation](https://docs.stigg.io/docs/go-sdk)
