@@ -21,7 +21,7 @@ func extractApiKeyReq(req *http.Request) (apiKey string, err error) {
 	return apiKey, nil
 }
 
-func getClient(req *http.Request) (stigg.StiggGraphQLClient, error) {
+func getClient(req *http.Request) (stigg.StiggClient, error) {
 	apiKey, err := extractApiKeyReq(req)
 	if err != nil {
 		return nil, errors.New("api key header was not provided")

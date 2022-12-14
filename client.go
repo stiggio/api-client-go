@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func NewStiggClient(apiKey string, httpClient *http.Client, baseUrl *string) StiggGraphQLClient {
+func NewStiggClient(apiKey string, httpClient *http.Client, baseUrl *string) StiggClient {
 	if baseUrl == nil {
 		defaultStiggBaseUrl := "https://api.stigg.io/graphql"
 		baseUrl = &defaultStiggBaseUrl

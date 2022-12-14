@@ -9,7 +9,7 @@ import (
 	"github.com/Yamashou/gqlgenc/clientv2"
 )
 
-type StiggGraphQLClient interface {
+type StiggClient interface {
 	GetCustomerByID(ctx context.Context, input GetCustomerByRefIDInput, interceptors ...clientv2.RequestInterceptor) (*GetCustomerByID, error)
 	GetCoupons(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetCoupons, error)
 	GetPaywall(ctx context.Context, input GetPaywallInput, interceptors ...clientv2.RequestInterceptor) (*GetPaywall, error)
@@ -33,7 +33,7 @@ type Client struct {
 	Client *clientv2.Client
 }
 
-func NewClient(cli *http.Client, baseURL string, interceptors ...clientv2.RequestInterceptor) StiggGraphQLClient {
+func NewClient(cli *http.Client, baseURL string, interceptors ...clientv2.RequestInterceptor) StiggClient {
 	return &Client{Client: clientv2.NewClient(cli, baseURL, interceptors...)}
 }
 
@@ -1058,6 +1058,15 @@ const GetCustomerByIDDocument = `query getCustomerById ($input: GetCustomerByRef
 		... CustomerFragment
 	}
 }
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	featureId
+	resetPeriod
+	feature {
+		... FeatureFragment
+	}
+}
 fragment PromotionalEntitlementFragment on PromotionalEntitlement {
 	status
 	usageLimit
@@ -1070,6 +1079,19 @@ fragment PromotionalEntitlementFragment on PromotionalEntitlement {
 		... FeatureFragment
 	}
 }
+fragment CouponFragment on Coupon {
+	id: refId
+	name
+	description
+	type
+	discountValue
+	metadata: additionalMetaData
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+}
 fragment PriceFragment on Price {
 	billingModel
 	billingPeriod
@@ -1079,6 +1101,25 @@ fragment PriceFragment on Price {
 	}
 	feature {
 		... FeatureFragment
+	}
+}
+fragment FeatureFragment on Feature {
+	id: refId
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	displayName
+	description
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
 	}
 }
 fragment PlanFragment on Plan {
@@ -1113,34 +1154,6 @@ fragment PlanFragment on Plan {
 		units
 	}
 }
-fragment FeatureFragment on Feature {
-	id: refId
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	displayName
-	description
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	featureId
-	resetPeriod
-	feature {
-		... FeatureFragment
-	}
-}
 fragment AddonFragment on Addon {
 	id: refId
 	displayName
@@ -1150,19 +1163,6 @@ fragment AddonFragment on Addon {
 		... PackageEntitlementFragment
 	}
 	pricingType
-}
-fragment CouponFragment on Coupon {
-	id: refId
-	name
-	description
-	type
-	discountValue
-	metadata: additionalMetaData
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
 }
 fragment CustomerFragment on Customer {
 	id: refId
@@ -1271,6 +1271,38 @@ const GetPaywallDocument = `query getPaywall ($input: GetPaywallInput!) {
 		... PaywallPlanFragment
 	}
 }
+fragment PaywallPlanFragment on Plan {
+	id: refId
+	description
+	displayName
+	product {
+		id: refId
+		displayName
+		description
+	}
+	basePlan {
+		id: refId
+		displayName
+	}
+	entitlements {
+		... PaywallPackageEntitlementFragment
+	}
+	metadata: additionalMetaData
+	inheritedEntitlements {
+		... PaywallPackageEntitlementFragment
+	}
+	prices {
+		... PaywallPriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+	}
+	compatibleAddons {
+		... PaywallAddonFragment
+	}
+}
 fragment PaywallPackageEntitlementFragment on PackageEntitlement {
 	usageLimit
 	hasUnlimitedUsage
@@ -1312,38 +1344,6 @@ fragment PaywallAddonFragment on Addon {
 	}
 	metadata: additionalMetaData
 	pricingType
-}
-fragment PaywallPlanFragment on Plan {
-	id: refId
-	description
-	displayName
-	product {
-		id: refId
-		displayName
-		description
-	}
-	basePlan {
-		id: refId
-		displayName
-	}
-	entitlements {
-		... PaywallPackageEntitlementFragment
-	}
-	metadata: additionalMetaData
-	inheritedEntitlements {
-		... PaywallPackageEntitlementFragment
-	}
-	prices {
-		... PaywallPriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-	}
-	compatibleAddons {
-		... PaywallAddonFragment
-	}
 }
 `
 
@@ -1467,56 +1467,6 @@ const CreateCustomerDocument = `mutation createCustomer ($input: CustomerInput!)
 		... CustomerFragment
 	}
 }
-fragment FeatureFragment on Feature {
-	id: refId
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	displayName
-	description
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	featureId
-	resetPeriod
-	feature {
-		... FeatureFragment
-	}
-}
-fragment AddonFragment on Addon {
-	id: refId
-	displayName
-	description
-	metadata: additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	pricingType
-}
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		... FeatureFragment
-	}
-}
 fragment CouponFragment on Coupon {
 	id: refId
 	name
@@ -1529,6 +1479,25 @@ fragment CouponFragment on Coupon {
 	billingId
 	billingLinkUrl
 	status
+}
+fragment CustomerFragment on Customer {
+	id: refId
+	name
+	email
+	createdAt
+	updatedAt
+	subscriptions {
+		... SubscriptionFragment
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+	hasPaymentMethod
+	coupon {
+		... CouponFragment
+	}
+	billingId
+	metadata: additionalMetaData
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id: refId
@@ -1574,24 +1543,15 @@ fragment PriceFragment on Price {
 		... FeatureFragment
 	}
 }
-fragment CustomerFragment on Customer {
-	id: refId
-	name
-	email
-	createdAt
-	updatedAt
-	subscriptions {
-		... SubscriptionFragment
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
 	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
+	total {
+		amount
+		currency
 	}
-	hasPaymentMethod
-	coupon {
-		... CouponFragment
-	}
-	billingId
-	metadata: additionalMetaData
 }
 fragment PlanFragment on Plan {
 	id: refId
@@ -1624,6 +1584,46 @@ fragment PlanFragment on Plan {
 		duration
 		units
 	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	featureId
+	resetPeriod
+	feature {
+		... FeatureFragment
+	}
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		... FeatureFragment
+	}
+}
+fragment FeatureFragment on Feature {
+	id: refId
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	displayName
+	description
+}
+fragment AddonFragment on Addon {
+	id: refId
+	displayName
+	description
+	metadata: additionalMetaData
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	pricingType
 }
 `
 
@@ -1651,34 +1651,6 @@ const ProvisionCustomerDocument = `mutation provisionCustomer ($input: Provision
 		}
 	}
 }
-fragment CustomerFragment on Customer {
-	id: refId
-	name
-	email
-	createdAt
-	updatedAt
-	subscriptions {
-		... SubscriptionFragment
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
-	}
-	hasPaymentMethod
-	coupon {
-		... CouponFragment
-	}
-	billingId
-	metadata: additionalMetaData
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	featureId
-	resetPeriod
-	feature {
-		... FeatureFragment
-	}
-}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id: refId
 	status
@@ -1710,156 +1682,6 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		id: refId
 	}
 }
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		... FeatureFragment
-	}
-}
-fragment CouponFragment on Coupon {
-	id: refId
-	name
-	description
-	type
-	discountValue
-	metadata: additionalMetaData
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-}
-fragment SubscriptionFragment on CustomerSubscription {
-	id: refId
-	status
-	startDate
-	endDate
-	trialEndDate
-	cancellationDate
-	effectiveEndDate
-	currentBillingPeriodEnd
-	metadata: additionalMetaData
-	billingId
-	billingLinkUrl
-	prices {
-		usageLimit
-		price {
-			... PriceFragment
-		}
-	}
-	totalPrice {
-		... TotalPriceFragment
-	}
-	pricingType
-	plan {
-		... PlanFragment
-	}
-	addons {
-		id
-		quantity
-		addon {
-			... AddonFragment
-		}
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	price {
-		amount
-		currency
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment FeatureFragment on Feature {
-	id: refId
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	displayName
-	description
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment PlanFragment on Plan {
-	id: refId
-	displayName
-	description
-	metadata: additionalMetaData
-	product {
-		id: refId
-		displayName
-		description
-	}
-	basePlan {
-		id: refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-	}
-}
-fragment AddonFragment on Addon {
-	id: refId
-	displayName
-	description
-	metadata: additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	pricingType
-}
-`
-
-func (c *Client) ProvisionCustomer(ctx context.Context, input ProvisionCustomerInput, interceptors ...clientv2.RequestInterceptor) (*ProvisionCustomer, error) {
-	vars := map[string]interface{}{
-		"input": input,
-	}
-
-	var res ProvisionCustomer
-	if err := c.Client.Post(ctx, "provisionCustomer", ProvisionCustomerDocument, &res, vars, interceptors...); err != nil {
-		return nil, err
-	}
-
-	return &res, nil
-}
-
-const ImportCustomerDocument = `mutation importCustomer ($input: ImportCustomerInput!) {
-	importCustomer: importOneCustomer(input: $input) {
-		... CustomerFragment
-	}
-}
 fragment CustomerFragment on Customer {
 	id: refId
 	name
@@ -1878,6 +1700,16 @@ fragment CustomerFragment on Customer {
 	}
 	billingId
 	metadata: additionalMetaData
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
 }
 fragment PackageEntitlementFragment on PackageEntitlement {
 	usageLimit
@@ -1910,19 +1742,6 @@ fragment PromotionalEntitlementFragment on PromotionalEntitlement {
 		... FeatureFragment
 	}
 }
-fragment CouponFragment on Coupon {
-	id: refId
-	name
-	description
-	type
-	discountValue
-	metadata: additionalMetaData
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-}
 fragment SubscriptionFragment on CustomerSubscription {
 	id: refId
 	status
@@ -1976,14 +1795,69 @@ fragment FeatureFragment on Feature {
 	displayName
 	description
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
+fragment PlanFragment on Plan {
+	id: refId
+	displayName
+	description
+	metadata: additionalMetaData
+	product {
+		id: refId
+		displayName
+		description
 	}
-	total {
-		amount
-		currency
+	basePlan {
+		id: refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+	}
+}
+fragment CouponFragment on Coupon {
+	id: refId
+	name
+	description
+	type
+	discountValue
+	metadata: additionalMetaData
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+}
+`
+
+func (c *Client) ProvisionCustomer(ctx context.Context, input ProvisionCustomerInput, interceptors ...clientv2.RequestInterceptor) (*ProvisionCustomer, error) {
+	vars := map[string]interface{}{
+		"input": input,
+	}
+
+	var res ProvisionCustomer
+	if err := c.Client.Post(ctx, "provisionCustomer", ProvisionCustomerDocument, &res, vars, interceptors...); err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const ImportCustomerDocument = `mutation importCustomer ($input: ImportCustomerInput!) {
+	importCustomer: importOneCustomer(input: $input) {
+		... CustomerFragment
 	}
 }
 fragment PlanFragment on Plan {
@@ -2016,6 +1890,132 @@ fragment PlanFragment on Plan {
 	defaultTrialConfig {
 		duration
 		units
+	}
+}
+fragment AddonFragment on Addon {
+	id: refId
+	displayName
+	description
+	metadata: additionalMetaData
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	pricingType
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		... FeatureFragment
+	}
+}
+fragment CouponFragment on Coupon {
+	id: refId
+	name
+	description
+	type
+	discountValue
+	metadata: additionalMetaData
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+}
+fragment SubscriptionFragment on CustomerSubscription {
+	id: refId
+	status
+	startDate
+	endDate
+	trialEndDate
+	cancellationDate
+	effectiveEndDate
+	currentBillingPeriodEnd
+	metadata: additionalMetaData
+	billingId
+	billingLinkUrl
+	prices {
+		usageLimit
+		price {
+			... PriceFragment
+		}
+	}
+	totalPrice {
+		... TotalPriceFragment
+	}
+	pricingType
+	plan {
+		... PlanFragment
+	}
+	addons {
+		id
+		quantity
+		addon {
+			... AddonFragment
+		}
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment FeatureFragment on Feature {
+	id: refId
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	displayName
+	description
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	featureId
+	resetPeriod
+	feature {
+		... FeatureFragment
+	}
+}
+fragment CustomerFragment on Customer {
+	id: refId
+	name
+	email
+	createdAt
+	updatedAt
+	subscriptions {
+		... SubscriptionFragment
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+	hasPaymentMethod
+	coupon {
+		... CouponFragment
+	}
+	billingId
+	metadata: additionalMetaData
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	price {
+		amount
+		currency
+	}
+	feature {
+		... FeatureFragment
 	}
 }
 `
@@ -2038,25 +2038,6 @@ const UpdateCustomerDocument = `mutation updateCustomer ($input: UpdateCustomerI
 		... CustomerFragment
 	}
 }
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	featureId
-	resetPeriod
-	feature {
-		... FeatureFragment
-	}
-}
-fragment AddonFragment on Addon {
-	id: refId
-	displayName
-	description
-	metadata: additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	pricingType
-}
 fragment CustomerFragment on Customer {
 	id: refId
 	name
@@ -2076,17 +2057,6 @@ fragment CustomerFragment on Customer {
 	billingId
 	metadata: additionalMetaData
 }
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	price {
-		amount
-		currency
-	}
-	feature {
-		... FeatureFragment
-	}
-}
 fragment FeatureFragment on Feature {
 	id: refId
 	featureType
@@ -2096,47 +2066,24 @@ fragment FeatureFragment on Feature {
 	displayName
 	description
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	featureId
+	resetPeriod
+	feature {
+		... FeatureFragment
 	}
 }
-fragment PlanFragment on Plan {
+fragment AddonFragment on Addon {
 	id: refId
 	displayName
 	description
 	metadata: additionalMetaData
-	product {
-		id: refId
-		displayName
-		description
-	}
-	basePlan {
-		id: refId
-		displayName
-	}
 	entitlements {
 		... PackageEntitlementFragment
 	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	prices {
-		... PriceFragment
-	}
 	pricingType
-	defaultTrialConfig {
-		duration
-		units
-	}
 }
 fragment PromotionalEntitlementFragment on PromotionalEntitlement {
 	status
@@ -2196,6 +2143,59 @@ fragment SubscriptionFragment on CustomerSubscription {
 		}
 	}
 }
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	price {
+		amount
+		currency
+	}
+	feature {
+		... FeatureFragment
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment PlanFragment on Plan {
+	id: refId
+	displayName
+	description
+	metadata: additionalMetaData
+	product {
+		id: refId
+		displayName
+		description
+	}
+	basePlan {
+		id: refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+	}
+}
 `
 
 func (c *Client) UpdateCustomer(ctx context.Context, input UpdateCustomerInput, interceptors ...clientv2.RequestInterceptor) (*UpdateCustomer, error) {
@@ -2214,6 +2214,25 @@ func (c *Client) UpdateCustomer(ctx context.Context, input UpdateCustomerInput, 
 const CreateSubscriptionDocument = `mutation createSubscription ($input: SubscriptionInput!) {
 	createSubscription(subscription: $input) {
 		... SlimSubscriptionFragment
+	}
+}
+fragment FeatureFragment on Feature {
+	id: refId
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	displayName
+	description
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
 	}
 }
 fragment SlimSubscriptionFragment on CustomerSubscription {
@@ -2256,25 +2275,6 @@ fragment PriceFragment on Price {
 	}
 	feature {
 		... FeatureFragment
-	}
-}
-fragment FeatureFragment on Feature {
-	id: refId
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	displayName
-	description
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
 	}
 }
 `
@@ -2301,6 +2301,16 @@ const ProvisionSubscriptionDocument = `mutation provisionSubscription ($input: P
 		}
 	}
 }
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id: refId
 	status
@@ -2351,16 +2361,6 @@ fragment FeatureFragment on Feature {
 	featureUnitsPlural
 	displayName
 	description
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
 }
 `
 
