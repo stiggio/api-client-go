@@ -23,7 +23,6 @@ type StiggClient interface {
 	ProvisionSubscription(ctx context.Context, input ProvisionSubscriptionInput, interceptors ...clientv2.RequestInterceptor) (*ProvisionSubscription, error)
 	UpdateSubscription(ctx context.Context, input UpdateSubscriptionInput, interceptors ...clientv2.RequestInterceptor) (*UpdateSubscription, error)
 	CancelSubscription(ctx context.Context, input SubscriptionCancellationInput, interceptors ...clientv2.RequestInterceptor) (*CancelSubscription, error)
-	InitiateCheckout(ctx context.Context, input InitiateCheckoutInput, interceptors ...clientv2.RequestInterceptor) (*InitiateCheckout, error)
 	EstimateSubscription(ctx context.Context, input EstimateSubscriptionInput, interceptors ...clientv2.RequestInterceptor) (*EstimateSubscription, error)
 	EstimateSubscriptionUpdate(ctx context.Context, input EstimateSubscriptionUpdateInput, interceptors ...clientv2.RequestInterceptor) (*EstimateSubscriptionUpdate, error)
 	ReportUsage(ctx context.Context, input UsageMeasurementCreateInput, interceptors ...clientv2.RequestInterceptor) (*ReportUsage, error)
@@ -170,7 +169,6 @@ type Mutation struct {
 	CreateOneHook                            Hook                                 "json:\"createOneHook\" graphql:\"createOneHook\""
 	UpdateOneHook                            Hook                                 "json:\"updateOneHook\" graphql:\"updateOneHook\""
 	DeleteOneHook                            HookDeleteResponse                   "json:\"deleteOneHook\" graphql:\"deleteOneHook\""
-	InitiateCheckout                         Checkout                             "json:\"initiateCheckout\" graphql:\"initiateCheckout\""
 }
 type PlanFragment struct {
 	ID                    string                           "json:\"id\" graphql:\"id\""
@@ -2547,19 +2545,6 @@ const InitiateCheckoutDocument = `mutation initiateCheckout ($input: InitiateChe
 	}
 }
 `
-
-func (c *Client) InitiateCheckout(ctx context.Context, input InitiateCheckoutInput, interceptors ...clientv2.RequestInterceptor) (*InitiateCheckout, error) {
-	vars := map[string]interface{}{
-		"input": input,
-	}
-
-	var res InitiateCheckout
-	if err := c.Client.Post(ctx, "initiateCheckout", InitiateCheckoutDocument, &res, vars, interceptors...); err != nil {
-		return nil, err
-	}
-
-	return &res, nil
-}
 
 const EstimateSubscriptionDocument = `mutation estimateSubscription ($input: EstimateSubscriptionInput!) {
 	estimateSubscription(input: $input) {
