@@ -417,37 +417,7 @@ func cancelSubscription(w http.ResponseWriter, req *http.Request) {
 
 	return
 }
-func initiateCheckout(w http.ResponseWriter, req *http.Request) {
-	ctx := context.Background()
-	client, err := getClient(req)
-	if err != nil {
-		w.WriteHeader(500)
-		w.Write([]byte(err.Error()))
-		return
-	}
 
-	var input stigg.InitiateCheckoutInput
-	dec := json.NewDecoder(req.Body)
-	dec.DisallowUnknownFields() // Force error if unknown field is found
-
-	if err := dec.Decode(&input); err != nil {
-		w.WriteHeader(500)
-		w.Write([]byte(fmt.Sprintf("Couldn't marshal request\n%+v", err)))
-		return
-	}
-
-	resp, err := client.InitiateCheckout(ctx, input)
-
-	if err != nil {
-		w.WriteHeader(500)
-		w.Write([]byte(fmt.Sprintf("Couldn't get customer\n%+v", err)))
-		return
-	}
-	bytesResp, _ := json.Marshal(resp.InitiateCheckout)
-	w.Write(bytesResp)
-
-	return
-}
 func estimateSubscription(w http.ResponseWriter, req *http.Request) {
 	ctx := context.Background()
 	client, err := getClient(req)
@@ -557,7 +527,6 @@ func main() {
 	http.HandleFunc("/provisionSubscription", provisionSubscription)
 	http.HandleFunc("/updateSubscription", updateSubscription)
 	http.HandleFunc("/cancelSubscription", cancelSubscription)
-	http.HandleFunc("/initiateCheckout", initiateCheckout)
 	http.HandleFunc("/estimateSubscription", estimateSubscription)
 	http.HandleFunc("/estimateSubscriptionUpdate", estimateSubscriptionUpdate)
 	http.HandleFunc("/reportUsage", reportUsage)
