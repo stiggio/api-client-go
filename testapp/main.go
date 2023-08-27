@@ -170,38 +170,7 @@ func getEntitlement(w http.ResponseWriter, req *http.Request) {
 
 	return
 }
-func createCustomer(w http.ResponseWriter, req *http.Request) {
-	ctx := context.Background()
 
-	client, err := getClient(req)
-	if err != nil {
-		w.WriteHeader(500)
-		w.Write([]byte(err.Error()))
-		return
-	}
-
-	var input stigg.CustomerInput
-	dec := json.NewDecoder(req.Body)
-	dec.DisallowUnknownFields() // Force error if unknown field is found
-
-	if err := dec.Decode(&input); err != nil {
-		w.WriteHeader(500)
-		w.Write([]byte(fmt.Sprintf("Couldn't marshal request\n%+v", err)))
-		return
-	}
-
-	resp, err := client.CreateCustomer(ctx, input)
-
-	if err != nil {
-		w.WriteHeader(500)
-		w.Write([]byte(fmt.Sprintf("Couldn't get customer\n%+v", err)))
-		return
-	}
-	bytesResp, _ := json.Marshal(resp.CreateCustomer)
-	w.Write(bytesResp)
-
-	return
-}
 func importCustomer(w http.ResponseWriter, req *http.Request) {
 	ctx := context.Background()
 	client, err := getClient(req)
@@ -319,7 +288,7 @@ func provisionSubscription(w http.ResponseWriter, req *http.Request) {
 		w.Write([]byte(fmt.Sprintf("Couldn't get customer\n%+v", err)))
 		return
 	}
-	bytesResp, _ := json.Marshal(subscription.ProvisionSubscriptionV2)
+	bytesResp, _ := json.Marshal(subscription.ProvisionSubscription)
 	w.Write(bytesResp)
 
 	return
@@ -519,7 +488,6 @@ func main() {
 	http.HandleFunc("/getEntitlements", getEntitlements)
 	http.HandleFunc("/getEntitlement", getEntitlement)
 	// mutations
-	http.HandleFunc("/createCustomer", createCustomer)
 	http.HandleFunc("/provisionCustomer", provisionCustomer)
 	http.HandleFunc("/importCustomer", importCustomer)
 	http.HandleFunc("/updateCustomer", updateCustomer)
