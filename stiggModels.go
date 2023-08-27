@@ -21,14 +21,14 @@ type ScheduleVariables interface {
 }
 
 type Account struct {
-	ID                            string             `json:"id"`
+	AccountEmailDomain            *string            `json:"accountEmailDomain"`
+	AccountStatus                 *AccountStatus     `json:"accountStatus"`
 	DisplayName                   string             `json:"displayName"`
-	Timezone                      *string            `json:"timezone"`
+	ID                            string             `json:"id"`
+	SamlEnabled                   *bool              `json:"samlEnabled"`
 	SubscriptionBillingAnchor     *BillingAnchor     `json:"subscriptionBillingAnchor"`
 	SubscriptionProrationBehavior *ProrationBehavior `json:"subscriptionProrationBehavior"`
-	AccountStatus                 *AccountStatus     `json:"accountStatus"`
-	AccountEmailDomain            *string            `json:"accountEmailDomain"`
-	SamlEnabled                   *bool              `json:"samlEnabled"`
+	Timezone                      *string            `json:"timezone"`
 }
 
 type AccountNotFoundError struct {
@@ -44,51 +44,51 @@ type AddCompatibleAddonsToPlanInput struct {
 }
 
 type AdditionalMetaDataChange struct {
-	Before     map[string]interface{} `json:"before"`
 	After      map[string]interface{} `json:"after"`
+	Before     map[string]interface{} `json:"before"`
 	ChangeType *ChangeType            `json:"changeType"`
 }
 
 type Addon struct {
-	ID                 string                 `json:"id"`
-	CreatedAt          *string                `json:"createdAt"`
-	UpdatedAt          *string                `json:"updatedAt"`
-	RefID              string                 `json:"refId"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	BillingID          *string                `json:"billingId"`
 	BillingLinkURL     *string                `json:"billingLinkUrl"`
-	DisplayName        string                 `json:"displayName"`
-	Status             PackageStatus          `json:"status"`
-	PricingType        *PricingType           `json:"pricingType"`
+	CreatedAt          *string                `json:"createdAt"`
 	Description        *string                `json:"description"`
-	EnvironmentID      *string                `json:"environmentId"`
-	Type               string                 `json:"type"`
-	ProductID          *string                `json:"productId"`
-	IsLatest           *bool                  `json:"isLatest"`
-	Entitlements       []*PackageEntitlement  `json:"entitlements"`
-	DraftSummary       *PackageDraftSummary   `json:"draftSummary"`
+	DisplayName        string                 `json:"displayName"`
 	DraftDetails       *PackageDraftDetails   `json:"draftDetails"`
-	VersionNumber      int64                  `json:"versionNumber"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	SyncStates         []*SyncState           `json:"syncStates"`
+	DraftSummary       *PackageDraftSummary   `json:"draftSummary"`
+	Entitlements       []*PackageEntitlement  `json:"entitlements"`
+	Environment        Environment            `json:"environment"`
+	EnvironmentID      string                 `json:"environmentId"`
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
+	ID                 string                 `json:"id"`
+	IsLatest           *bool                  `json:"isLatest"`
 	Prices             []*Price               `json:"prices"`
+	PricingType        *PricingType           `json:"pricingType"`
 	Product            *Product               `json:"product"`
-	Environment        *Environment           `json:"environment"`
+	ProductID          *string                `json:"productId"`
+	RefID              string                 `json:"refId"`
+	Status             PackageStatus          `json:"status"`
+	SyncStates         []*SyncState           `json:"syncStates"`
+	Type               string                 `json:"type"`
+	UpdatedAt          *string                `json:"updatedAt"`
+	VersionNumber      int64                  `json:"versionNumber"`
 }
 
 type AddonAggregateGroupBy struct {
-	ID            *string        `json:"id"`
-	CreatedAt     *string        `json:"createdAt"`
-	UpdatedAt     *string        `json:"updatedAt"`
-	RefID         *string        `json:"refId"`
 	BillingID     *string        `json:"billingId"`
-	DisplayName   *string        `json:"displayName"`
-	Status        *PackageStatus `json:"status"`
-	PricingType   *PricingType   `json:"pricingType"`
+	CreatedAt     *string        `json:"createdAt"`
 	Description   *string        `json:"description"`
+	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
-	ProductID     *string        `json:"productId"`
+	ID            *string        `json:"id"`
 	IsLatest      *bool          `json:"isLatest"`
+	PricingType   *PricingType   `json:"pricingType"`
+	ProductID     *string        `json:"productId"`
+	RefID         *string        `json:"refId"`
+	Status        *PackageStatus `json:"status"`
+	UpdatedAt     *string        `json:"updatedAt"`
 	VersionNumber *int64         `json:"versionNumber"`
 }
 
@@ -96,126 +96,133 @@ type AddonAvgAggregate struct {
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
+type AddonChangeVariables struct {
+	AddonRefID  string  `json:"addonRefId"`
+	NewQuantity float64 `json:"newQuantity"`
+}
+
+func (AddonChangeVariables) IsScheduleVariables() {}
+
 type AddonConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*AddonEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type AddonCountAggregate struct {
-	ID            *int64 `json:"id"`
-	CreatedAt     *int64 `json:"createdAt"`
-	UpdatedAt     *int64 `json:"updatedAt"`
-	RefID         *int64 `json:"refId"`
 	BillingID     *int64 `json:"billingId"`
-	DisplayName   *int64 `json:"displayName"`
-	Status        *int64 `json:"status"`
-	PricingType   *int64 `json:"pricingType"`
+	CreatedAt     *int64 `json:"createdAt"`
 	Description   *int64 `json:"description"`
+	DisplayName   *int64 `json:"displayName"`
 	EnvironmentID *int64 `json:"environmentId"`
-	ProductID     *int64 `json:"productId"`
+	ID            *int64 `json:"id"`
 	IsLatest      *int64 `json:"isLatest"`
+	PricingType   *int64 `json:"pricingType"`
+	ProductID     *int64 `json:"productId"`
+	RefID         *int64 `json:"refId"`
+	Status        *int64 `json:"status"`
+	UpdatedAt     *int64 `json:"updatedAt"`
 	VersionNumber *int64 `json:"versionNumber"`
 }
 
 type AddonCreateInput struct {
-	DisplayName        string                 `json:"displayName"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	BillingID          *string                `json:"billingId,omitempty"`
 	Description        *string                `json:"description,omitempty"`
+	DisplayName        string                 `json:"displayName"`
+	EnvironmentID      *string                `json:"environmentId,omitempty"`
+	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets,omitempty"`
+	ProductID          string                 `json:"productId"`
 	RefID              *string                `json:"refId,omitempty"`
 	Status             *PackageStatus         `json:"status,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	ProductID          string                 `json:"productId"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets,omitempty"`
 }
 
 type AddonDeleteResponse struct {
-	ID                 *string                `json:"id"`
-	CreatedAt          *string                `json:"createdAt"`
-	UpdatedAt          *string                `json:"updatedAt"`
-	RefID              *string                `json:"refId"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	BillingID          *string                `json:"billingId"`
 	BillingLinkURL     *string                `json:"billingLinkUrl"`
-	DisplayName        *string                `json:"displayName"`
-	Status             *PackageStatus         `json:"status"`
-	PricingType        *PricingType           `json:"pricingType"`
+	CreatedAt          *string                `json:"createdAt"`
 	Description        *string                `json:"description"`
-	EnvironmentID      *string                `json:"environmentId"`
-	Type               *string                `json:"type"`
-	ProductID          *string                `json:"productId"`
-	IsLatest           *bool                  `json:"isLatest"`
-	Entitlements       []*PackageEntitlement  `json:"entitlements"`
-	DraftSummary       *PackageDraftSummary   `json:"draftSummary"`
+	DisplayName        *string                `json:"displayName"`
 	DraftDetails       *PackageDraftDetails   `json:"draftDetails"`
-	VersionNumber      *int64                 `json:"versionNumber"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	SyncStates         []*SyncState           `json:"syncStates"`
+	DraftSummary       *PackageDraftSummary   `json:"draftSummary"`
+	Entitlements       []*PackageEntitlement  `json:"entitlements"`
+	EnvironmentID      *string                `json:"environmentId"`
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
+	ID                 *string                `json:"id"`
+	IsLatest           *bool                  `json:"isLatest"`
 	Prices             []*Price               `json:"prices"`
+	PricingType        *PricingType           `json:"pricingType"`
+	ProductID          *string                `json:"productId"`
+	RefID              *string                `json:"refId"`
+	Status             *PackageStatus         `json:"status"`
+	SyncStates         []*SyncState           `json:"syncStates"`
+	Type               *string                `json:"type"`
+	UpdatedAt          *string                `json:"updatedAt"`
+	VersionNumber      *int64                 `json:"versionNumber"`
 }
 
 type AddonEdge struct {
-	// The node containing the Addon
-	Node Addon `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Addon
+	Node Addon `json:"node"`
 }
 
 type AddonFilter struct {
 	And           []*AddonFilter                 `json:"and,omitempty"`
-	Or            []*AddonFilter                 `json:"or,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
-	RefID         *StringFieldComparison         `json:"refId,omitempty"`
 	BillingID     *StringFieldComparison         `json:"billingId,omitempty"`
-	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
-	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
+	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
-	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
+	ID            *StringFieldComparison         `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	Or            []*AddonFilter                 `json:"or,omitempty"`
+	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
+	RefID         *StringFieldComparison         `json:"refId,omitempty"`
+	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison            `json:"versionNumber,omitempty"`
 }
 
 type AddonMaxAggregate struct {
-	ID            *string        `json:"id"`
-	CreatedAt     *string        `json:"createdAt"`
-	UpdatedAt     *string        `json:"updatedAt"`
-	RefID         *string        `json:"refId"`
 	BillingID     *string        `json:"billingId"`
-	DisplayName   *string        `json:"displayName"`
-	Status        *PackageStatus `json:"status"`
-	PricingType   *PricingType   `json:"pricingType"`
+	CreatedAt     *string        `json:"createdAt"`
 	Description   *string        `json:"description"`
+	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
+	ID            *string        `json:"id"`
+	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
+	RefID         *string        `json:"refId"`
+	Status        *PackageStatus `json:"status"`
+	UpdatedAt     *string        `json:"updatedAt"`
 	VersionNumber *int64         `json:"versionNumber"`
 }
 
 type AddonMinAggregate struct {
-	ID            *string        `json:"id"`
-	CreatedAt     *string        `json:"createdAt"`
-	UpdatedAt     *string        `json:"updatedAt"`
-	RefID         *string        `json:"refId"`
 	BillingID     *string        `json:"billingId"`
-	DisplayName   *string        `json:"displayName"`
-	Status        *PackageStatus `json:"status"`
-	PricingType   *PricingType   `json:"pricingType"`
+	CreatedAt     *string        `json:"createdAt"`
 	Description   *string        `json:"description"`
+	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
+	ID            *string        `json:"id"`
+	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
+	RefID         *string        `json:"refId"`
+	Status        *PackageStatus `json:"status"`
+	UpdatedAt     *string        `json:"updatedAt"`
 	VersionNumber *int64         `json:"versionNumber"`
 }
 
 type AddonSort struct {
-	Field     AddonSortFields `json:"field"`
 	Direction SortDirection   `json:"direction"`
+	Field     AddonSortFields `json:"field"`
 	Nulls     *SortNulls      `json:"nulls,omitempty"`
 }
 
@@ -224,28 +231,39 @@ type AddonSumAggregate struct {
 }
 
 type AddonUpdateInput struct {
-	ID                 string                 `json:"id"`
-	DisplayName        string                 `json:"displayName"`
-	Description        *string                `json:"description,omitempty"`
-	Status             *PackageStatus         `json:"status,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	BillingID          *string                `json:"billingId,omitempty"`
+	Description        *string                `json:"description,omitempty"`
+	DisplayName        string                 `json:"displayName"`
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets,omitempty"`
+	ID                 string                 `json:"id"`
+	Status             *PackageStatus         `json:"status,omitempty"`
 }
 
 type Address struct {
-	Country      *string `json:"country,omitempty"`
-	State        *string `json:"state,omitempty"`
 	AddressLine1 *string `json:"addressLine1,omitempty"`
 	AddressLine2 *string `json:"addressLine2,omitempty"`
 	City         *string `json:"city,omitempty"`
-	PostalCode   *string `json:"postalCode,omitempty"`
+	Country      *string `json:"country,omitempty"`
 	PhoneNumber  *string `json:"phoneNumber,omitempty"`
+	PostalCode   *string `json:"postalCode,omitempty"`
+	State        *string `json:"state,omitempty"`
+}
+
+type AggregatedEventsByCustomer struct {
+	AggregatedUsage []*CustomerAggregatedUsage `json:"aggregatedUsage"`
+}
+
+type AggregatedEventsByCustomerInput struct {
+	Aggregation   MeterAggregation              `json:"aggregation"`
+	CustomerID    *string                       `json:"customerId,omitempty"`
+	EnvironmentID string                        `json:"environmentId"`
+	Filters       []*MeterFilterDefinitionInput `json:"filters"`
 }
 
 type Aggregation struct {
-	Function AggregationFunction `json:"function"`
 	Field    *string             `json:"field"`
+	Function AggregationFunction `json:"function"`
 }
 
 type APIKey struct {
@@ -256,24 +274,51 @@ type APIKey struct {
 
 type APIKeyFilter struct {
 	And []*APIKeyFilter        `json:"and,omitempty"`
-	Or  []*APIKeyFilter        `json:"or,omitempty"`
 	ID  *StringFieldComparison `json:"id,omitempty"`
+	Or  []*APIKeyFilter        `json:"or,omitempty"`
 }
 
 type APIKeySort struct {
-	Field     APIKeySortFields `json:"field"`
 	Direction SortDirection    `json:"direction"`
+	Field     APIKeySortFields `json:"field"`
 	Nulls     *SortNulls       `json:"nulls,omitempty"`
 }
 
+type ApplySubscription struct {
+	Subscription *CustomerSubscription `json:"subscription"`
+}
+
+type ApplySubscriptionInput struct {
+	AdditionalMetaData map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	Addons             []*SubscriptionAddonInput `json:"addons,omitempty"`
+	BillableFeatures   []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingCountryCode *string                   `json:"billingCountryCode,omitempty"`
+	BillingID          *string                   `json:"billingId,omitempty"`
+	BillingInformation *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CustomerID         string                    `json:"customerId"`
+	PaymentMethodID    *string                   `json:"paymentMethodId,omitempty"`
+	PlanID             string                    `json:"planId"`
+	PromotionCode      *string                   `json:"promotionCode,omitempty"`
+	ResourceID         *string                   `json:"resourceId,omitempty"`
+	SkipTrial          *bool                     `json:"skipTrial,omitempty"`
+	StartDate          *string                   `json:"startDate,omitempty"`
+	UnitQuantity       *float64                  `json:"unitQuantity,omitempty"`
+}
+
 type ArchiveCouponInput struct {
+	EnvironmentID *string `json:"environmentId,omitempty"`
 	RefID         string  `json:"refId"`
+}
+
+type ArchiveCustomerInput struct {
+	CustomerID    string  `json:"customerId"`
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
 type ArchivePlanInput struct {
-	ID            string  `json:"id"`
 	EnvironmentID *string `json:"environmentId,omitempty"`
+	ID            string  `json:"id"`
 }
 
 type AsyncTaskResult struct {
@@ -281,11 +326,11 @@ type AsyncTaskResult struct {
 }
 
 type AttachCustomerPaymentMethodInput struct {
-	RefID            *string          `json:"refId,omitempty"`
 	CustomerID       *string          `json:"customerId,omitempty"`
 	EnvironmentID    *string          `json:"environmentId,omitempty"`
-	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 	PaymentMethodID  string           `json:"paymentMethodId"`
+	RefID            *string          `json:"refId,omitempty"`
+	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
 type BaseError struct {
@@ -293,8 +338,8 @@ type BaseError struct {
 }
 
 type BasePlanChange struct {
-	Before     *Addon      `json:"before"`
 	After      *Addon      `json:"after"`
+	Before     *Addon      `json:"before"`
 	ChangeType *ChangeType `json:"changeType"`
 }
 
@@ -309,20 +354,20 @@ type BillableFeatureInput struct {
 }
 
 type BillingModelFilterComparison struct {
-	Is       *bool          `json:"is,omitempty"`
-	IsNot    *bool          `json:"isNot,omitempty"`
 	Eq       *BillingModel  `json:"eq,omitempty"`
-	Neq      *BillingModel  `json:"neq,omitempty"`
 	Gt       *BillingModel  `json:"gt,omitempty"`
 	Gte      *BillingModel  `json:"gte,omitempty"`
+	ILike    *BillingModel  `json:"iLike,omitempty"`
+	In       []BillingModel `json:"in,omitempty"`
+	Is       *bool          `json:"is,omitempty"`
+	IsNot    *bool          `json:"isNot,omitempty"`
+	Like     *BillingModel  `json:"like,omitempty"`
 	Lt       *BillingModel  `json:"lt,omitempty"`
 	Lte      *BillingModel  `json:"lte,omitempty"`
-	Like     *BillingModel  `json:"like,omitempty"`
-	NotLike  *BillingModel  `json:"notLike,omitempty"`
-	ILike    *BillingModel  `json:"iLike,omitempty"`
+	Neq      *BillingModel  `json:"neq,omitempty"`
 	NotILike *BillingModel  `json:"notILike,omitempty"`
-	In       []BillingModel `json:"in,omitempty"`
 	NotIn    []BillingModel `json:"notIn,omitempty"`
+	NotLike  *BillingModel  `json:"notLike,omitempty"`
 }
 
 type BillingPeriodChangeVariables struct {
@@ -332,20 +377,20 @@ type BillingPeriodChangeVariables struct {
 func (BillingPeriodChangeVariables) IsScheduleVariables() {}
 
 type BillingPeriodFilterComparison struct {
-	Is       *bool           `json:"is,omitempty"`
-	IsNot    *bool           `json:"isNot,omitempty"`
 	Eq       *BillingPeriod  `json:"eq,omitempty"`
-	Neq      *BillingPeriod  `json:"neq,omitempty"`
 	Gt       *BillingPeriod  `json:"gt,omitempty"`
 	Gte      *BillingPeriod  `json:"gte,omitempty"`
+	ILike    *BillingPeriod  `json:"iLike,omitempty"`
+	In       []BillingPeriod `json:"in,omitempty"`
+	Is       *bool           `json:"is,omitempty"`
+	IsNot    *bool           `json:"isNot,omitempty"`
+	Like     *BillingPeriod  `json:"like,omitempty"`
 	Lt       *BillingPeriod  `json:"lt,omitempty"`
 	Lte      *BillingPeriod  `json:"lte,omitempty"`
-	Like     *BillingPeriod  `json:"like,omitempty"`
-	NotLike  *BillingPeriod  `json:"notLike,omitempty"`
-	ILike    *BillingPeriod  `json:"iLike,omitempty"`
+	Neq      *BillingPeriod  `json:"neq,omitempty"`
 	NotILike *BillingPeriod  `json:"notILike,omitempty"`
-	In       []BillingPeriod `json:"in,omitempty"`
 	NotIn    []BillingPeriod `json:"notIn,omitempty"`
+	NotLike  *BillingPeriod  `json:"notLike,omitempty"`
 }
 
 type BooleanFieldComparison struct {
@@ -365,52 +410,119 @@ type CannotDeleteFeatureError struct {
 	RefID             string `json:"refId"`
 }
 
+type CheckoutBillingIntegration struct {
+	BillingIdentifier BillingVendorIdentifier `json:"billingIdentifier"`
+	Credentials       CheckoutCredentials     `json:"credentials"`
+}
+
+type CheckoutColorPalette struct {
+	BackgroundColor        *string `json:"backgroundColor"`
+	BorderColor            *string `json:"borderColor"`
+	Primary                *string `json:"primary"`
+	SelectionColor         *string `json:"selectionColor"`
+	SummaryBackgroundColor *string `json:"summaryBackgroundColor"`
+	TextColor              *string `json:"textColor"`
+}
+
+type CheckoutConfiguration struct {
+	Content    *CheckoutContent         `json:"content"`
+	CustomCSS  *string                  `json:"customCss"`
+	Palette    *CheckoutColorPalette    `json:"palette"`
+	Typography *TypographyConfiguration `json:"typography"`
+}
+
+type CheckoutConfigurationInput struct {
+	Content    *CheckoutContentInput         `json:"content,omitempty"`
+	CustomCSS  *string                       `json:"customCss,omitempty"`
+	Palette    *CheckoutPaletteInput         `json:"palette,omitempty"`
+	Typography *TypographyConfigurationInput `json:"typography,omitempty"`
+}
+
+type CheckoutContent struct {
+	CollectPhoneNumber *bool `json:"collectPhoneNumber"`
+}
+
+type CheckoutContentInput struct {
+	CollectPhoneNumber *bool `json:"collectPhoneNumber,omitempty"`
+}
+
+type CheckoutCredentials struct {
+	AccountID string `json:"accountId"`
+	PublicKey string `json:"publicKey"`
+}
+
 type CheckoutOptions struct {
-	SuccessURL            string  `json:"successUrl"`
-	CancelURL             string  `json:"cancelUrl"`
 	AllowPromoCodes       *bool   `json:"allowPromoCodes,omitempty"`
 	AllowTaxIDCollection  *bool   `json:"allowTaxIdCollection,omitempty"`
+	CancelURL             string  `json:"cancelUrl"`
 	CollectBillingAddress *bool   `json:"collectBillingAddress,omitempty"`
-	ReferenceID           *string `json:"referenceId,omitempty"`
 	CollectPhoneNumber    *bool   `json:"collectPhoneNumber,omitempty"`
+	ReferenceID           *string `json:"referenceId,omitempty"`
+	SuccessURL            string  `json:"successUrl"`
+}
+
+type CheckoutPaletteInput struct {
+	BackgroundColor        *string `json:"backgroundColor,omitempty"`
+	BorderColor            *string `json:"borderColor,omitempty"`
+	Primary                *string `json:"primary,omitempty"`
+	SelectionColor         *string `json:"selectionColor,omitempty"`
+	SummaryBackgroundColor *string `json:"summaryBackgroundColor,omitempty"`
+	TextColor              *string `json:"textColor,omitempty"`
+}
+
+type CheckoutState struct {
+	ActiveSubscription *CustomerSubscription      `json:"activeSubscription"`
+	BillingIntegration CheckoutBillingIntegration `json:"billingIntegration"`
+	Configuration      *CheckoutConfiguration     `json:"configuration"`
+	Customer           Customer                   `json:"customer"`
+	Plan               Plan                       `json:"plan"`
+	Resource           *CustomerResource          `json:"resource"`
+	SetupSecret        string                     `json:"setupSecret"`
+}
+
+type CheckoutStateInput struct {
+	BillingCountryCode *string `json:"billingCountryCode,omitempty"`
+	CustomerID         string  `json:"customerId"`
+	PlanID             string  `json:"planId"`
+	ResourceID         *string `json:"resourceId,omitempty"`
 }
 
 type ClearCustomerPersistentCacheInput struct {
 	CustomerID    string  `json:"customerId"`
-	ResourceID    *string `json:"resourceId,omitempty"`
 	EnvironmentID *string `json:"environmentId,omitempty"`
+	ResourceID    *string `json:"resourceId,omitempty"`
 }
 
 type Coupon struct {
-	ID                 string                 `json:"id"`
-	Name               string                 `json:"name"`
-	RefID              string                 `json:"refId"`
-	Description        *string                `json:"description"`
-	CreatedAt          string                 `json:"createdAt"`
-	UpdatedAt          string                 `json:"updatedAt"`
-	EnvironmentID      string                 `json:"environmentId"`
-	Type               CouponType             `json:"type"`
-	Status             CouponStatus           `json:"status"`
-	DiscountValue      float64                `json:"discountValue"`
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	BillingID          *string                `json:"billingId"`
 	BillingLinkURL     *string                `json:"billingLinkUrl"`
-	SyncStates         []*SyncState           `json:"syncStates"`
-	Environment        *Environment           `json:"environment"`
+	CreatedAt          string                 `json:"createdAt"`
 	Customers          []*Customer            `json:"customers"`
+	Description        *string                `json:"description"`
+	DiscountValue      float64                `json:"discountValue"`
+	Environment        *Environment           `json:"environment"`
+	EnvironmentID      string                 `json:"environmentId"`
+	ID                 string                 `json:"id"`
+	Name               string                 `json:"name"`
+	RefID              string                 `json:"refId"`
+	Status             CouponStatus           `json:"status"`
+	SyncStates         []*SyncState           `json:"syncStates"`
+	Type               CouponType             `json:"type"`
+	UpdatedAt          string                 `json:"updatedAt"`
 }
 
 type CouponAggregateGroupBy struct {
+	BillingID     *string       `json:"billingId"`
+	CreatedAt     *string       `json:"createdAt"`
+	Description   *string       `json:"description"`
+	EnvironmentID *string       `json:"environmentId"`
 	ID            *string       `json:"id"`
 	Name          *string       `json:"name"`
 	RefID         *string       `json:"refId"`
-	Description   *string       `json:"description"`
-	CreatedAt     *string       `json:"createdAt"`
-	UpdatedAt     *string       `json:"updatedAt"`
-	EnvironmentID *string       `json:"environmentId"`
-	Type          *CouponType   `json:"type"`
 	Status        *CouponStatus `json:"status"`
-	BillingID     *string       `json:"billingId"`
+	Type          *CouponType   `json:"type"`
+	UpdatedAt     *string       `json:"updatedAt"`
 }
 
 type CouponAvgAggregate struct {
@@ -418,114 +530,116 @@ type CouponAvgAggregate struct {
 }
 
 type CouponConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*CouponEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type CouponCountAggregate struct {
+	BillingID     *int64 `json:"billingId"`
+	CreatedAt     *int64 `json:"createdAt"`
+	Description   *int64 `json:"description"`
+	EnvironmentID *int64 `json:"environmentId"`
 	ID            *int64 `json:"id"`
 	Name          *int64 `json:"name"`
 	RefID         *int64 `json:"refId"`
-	Description   *int64 `json:"description"`
-	CreatedAt     *int64 `json:"createdAt"`
-	UpdatedAt     *int64 `json:"updatedAt"`
-	EnvironmentID *int64 `json:"environmentId"`
-	Type          *int64 `json:"type"`
 	Status        *int64 `json:"status"`
-	BillingID     *int64 `json:"billingId"`
+	Type          *int64 `json:"type"`
+	UpdatedAt     *int64 `json:"updatedAt"`
 }
 
 type CouponEdge struct {
-	// The node containing the Coupon
-	Node Coupon `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Coupon
+	Node Coupon `json:"node"`
 }
 
 type CouponFilter struct {
 	And           []*CouponFilter               `json:"and,omitempty"`
-	Or            []*CouponFilter               `json:"or,omitempty"`
+	BillingID     *StringFieldComparison        `json:"billingId,omitempty"`
+	CreatedAt     *DateFieldComparison          `json:"createdAt,omitempty"`
+	Customers     *CouponFilterCustomerFilter   `json:"customers,omitempty"`
+	Description   *StringFieldComparison        `json:"description,omitempty"`
+	EnvironmentID *StringFieldComparison        `json:"environmentId,omitempty"`
 	ID            *StringFieldComparison        `json:"id,omitempty"`
 	Name          *StringFieldComparison        `json:"name,omitempty"`
+	Or            []*CouponFilter               `json:"or,omitempty"`
 	RefID         *StringFieldComparison        `json:"refId,omitempty"`
-	Description   *StringFieldComparison        `json:"description,omitempty"`
-	CreatedAt     *DateFieldComparison          `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison          `json:"updatedAt,omitempty"`
-	EnvironmentID *StringFieldComparison        `json:"environmentId,omitempty"`
-	Type          *CouponTypeFilterComparison   `json:"type,omitempty"`
 	Status        *CouponStatusFilterComparison `json:"status,omitempty"`
-	BillingID     *StringFieldComparison        `json:"billingId,omitempty"`
-	Customers     *CouponFilterCustomerFilter   `json:"customers,omitempty"`
+	Type          *CouponTypeFilterComparison   `json:"type,omitempty"`
+	UpdatedAt     *DateFieldComparison          `json:"updatedAt,omitempty"`
 }
 
 type CouponFilterCustomerFilter struct {
-	And                  []*CouponFilterCustomerFilter `json:"and,omitempty"`
-	Or                   []*CouponFilterCustomerFilter `json:"or,omitempty"`
-	ID                   *StringFieldComparison        `json:"id,omitempty"`
-	Name                 *StringFieldComparison        `json:"name,omitempty"`
-	Email                *StringFieldComparison        `json:"email,omitempty"`
-	RefID                *StringFieldComparison        `json:"refId,omitempty"`
-	CustomerID           *StringFieldComparison        `json:"customerId,omitempty"`
-	CreatedAt            *DateFieldComparison          `json:"createdAt,omitempty"`
-	UpdatedAt            *DateFieldComparison          `json:"updatedAt,omitempty"`
-	EnvironmentID        *StringFieldComparison        `json:"environmentId,omitempty"`
-	BillingID            *StringFieldComparison        `json:"billingId,omitempty"`
-	CrmID                *StringFieldComparison        `json:"crmId,omitempty"`
-	CrmHubspotCompanyID  *StringFieldComparison        `json:"crmHubspotCompanyId,omitempty"`
-	CrmHubspotCompanyURL *StringFieldComparison        `json:"crmHubspotCompanyUrl,omitempty"`
+	And                  []*CouponFilterCustomerFilter        `json:"and,omitempty"`
+	BillingID            *StringFieldComparison               `json:"billingId,omitempty"`
+	CreatedAt            *DateFieldComparison                 `json:"createdAt,omitempty"`
+	CrmHubspotCompanyID  *StringFieldComparison               `json:"crmHubspotCompanyId,omitempty"`
+	CrmHubspotCompanyURL *StringFieldComparison               `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                *StringFieldComparison               `json:"crmId,omitempty"`
+	CustomerID           *StringFieldComparison               `json:"customerId,omitempty"`
+	DeletedAt            *DateFieldComparison                 `json:"deletedAt,omitempty"`
+	Email                *StringFieldComparison               `json:"email,omitempty"`
+	EnvironmentID        *StringFieldComparison               `json:"environmentId,omitempty"`
+	ID                   *StringFieldComparison               `json:"id,omitempty"`
+	Name                 *StringFieldComparison               `json:"name,omitempty"`
+	Or                   []*CouponFilterCustomerFilter        `json:"or,omitempty"`
+	RefID                *StringFieldComparison               `json:"refId,omitempty"`
+	SearchQuery          *CustomerSearchQueryFilterComparison `json:"searchQuery,omitempty"`
+	UpdatedAt            *DateFieldComparison                 `json:"updatedAt,omitempty"`
 }
 
 type CouponMaxAggregate struct {
+	BillingID     *string       `json:"billingId"`
+	CreatedAt     *string       `json:"createdAt"`
+	Description   *string       `json:"description"`
+	EnvironmentID *string       `json:"environmentId"`
 	ID            *string       `json:"id"`
 	Name          *string       `json:"name"`
 	RefID         *string       `json:"refId"`
-	Description   *string       `json:"description"`
-	CreatedAt     *string       `json:"createdAt"`
-	UpdatedAt     *string       `json:"updatedAt"`
-	EnvironmentID *string       `json:"environmentId"`
-	Type          *CouponType   `json:"type"`
 	Status        *CouponStatus `json:"status"`
-	BillingID     *string       `json:"billingId"`
+	Type          *CouponType   `json:"type"`
+	UpdatedAt     *string       `json:"updatedAt"`
 }
 
 type CouponMinAggregate struct {
+	BillingID     *string       `json:"billingId"`
+	CreatedAt     *string       `json:"createdAt"`
+	Description   *string       `json:"description"`
+	EnvironmentID *string       `json:"environmentId"`
 	ID            *string       `json:"id"`
 	Name          *string       `json:"name"`
 	RefID         *string       `json:"refId"`
-	Description   *string       `json:"description"`
-	CreatedAt     *string       `json:"createdAt"`
-	UpdatedAt     *string       `json:"updatedAt"`
-	EnvironmentID *string       `json:"environmentId"`
-	Type          *CouponType   `json:"type"`
 	Status        *CouponStatus `json:"status"`
-	BillingID     *string       `json:"billingId"`
+	Type          *CouponType   `json:"type"`
+	UpdatedAt     *string       `json:"updatedAt"`
 }
 
 type CouponSort struct {
-	Field     CouponSortFields `json:"field"`
 	Direction SortDirection    `json:"direction"`
+	Field     CouponSortFields `json:"field"`
 	Nulls     *SortNulls       `json:"nulls,omitempty"`
 }
 
 type CouponStatusFilterComparison struct {
-	Is       *bool          `json:"is,omitempty"`
-	IsNot    *bool          `json:"isNot,omitempty"`
 	Eq       *CouponStatus  `json:"eq,omitempty"`
-	Neq      *CouponStatus  `json:"neq,omitempty"`
 	Gt       *CouponStatus  `json:"gt,omitempty"`
 	Gte      *CouponStatus  `json:"gte,omitempty"`
+	ILike    *CouponStatus  `json:"iLike,omitempty"`
+	In       []CouponStatus `json:"in,omitempty"`
+	Is       *bool          `json:"is,omitempty"`
+	IsNot    *bool          `json:"isNot,omitempty"`
+	Like     *CouponStatus  `json:"like,omitempty"`
 	Lt       *CouponStatus  `json:"lt,omitempty"`
 	Lte      *CouponStatus  `json:"lte,omitempty"`
-	Like     *CouponStatus  `json:"like,omitempty"`
-	NotLike  *CouponStatus  `json:"notLike,omitempty"`
-	ILike    *CouponStatus  `json:"iLike,omitempty"`
+	Neq      *CouponStatus  `json:"neq,omitempty"`
 	NotILike *CouponStatus  `json:"notILike,omitempty"`
-	In       []CouponStatus `json:"in,omitempty"`
 	NotIn    []CouponStatus `json:"notIn,omitempty"`
+	NotLike  *CouponStatus  `json:"notLike,omitempty"`
 }
 
 type CouponSumAggregate struct {
@@ -533,41 +647,41 @@ type CouponSumAggregate struct {
 }
 
 type CouponTypeFilterComparison struct {
-	Is       *bool        `json:"is,omitempty"`
-	IsNot    *bool        `json:"isNot,omitempty"`
 	Eq       *CouponType  `json:"eq,omitempty"`
-	Neq      *CouponType  `json:"neq,omitempty"`
 	Gt       *CouponType  `json:"gt,omitempty"`
 	Gte      *CouponType  `json:"gte,omitempty"`
+	ILike    *CouponType  `json:"iLike,omitempty"`
+	In       []CouponType `json:"in,omitempty"`
+	Is       *bool        `json:"is,omitempty"`
+	IsNot    *bool        `json:"isNot,omitempty"`
+	Like     *CouponType  `json:"like,omitempty"`
 	Lt       *CouponType  `json:"lt,omitempty"`
 	Lte      *CouponType  `json:"lte,omitempty"`
-	Like     *CouponType  `json:"like,omitempty"`
-	NotLike  *CouponType  `json:"notLike,omitempty"`
-	ILike    *CouponType  `json:"iLike,omitempty"`
+	Neq      *CouponType  `json:"neq,omitempty"`
 	NotILike *CouponType  `json:"notILike,omitempty"`
-	In       []CouponType `json:"in,omitempty"`
 	NotIn    []CouponType `json:"notIn,omitempty"`
+	NotLike  *CouponType  `json:"notLike,omitempty"`
 }
 
 type CreateCouponInput struct {
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	RefID              string                 `json:"refId"`
-	Description        *string                `json:"description,omitempty"`
-	Name               string                 `json:"name"`
-	Type               CouponType             `json:"type"`
-	DiscountValue      float64                `json:"discountValue"`
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	Description        *string                `json:"description,omitempty"`
+	DiscountValue      float64                `json:"discountValue"`
+	EnvironmentID      *string                `json:"environmentId,omitempty"`
+	Name               string                 `json:"name"`
+	RefID              string                 `json:"refId"`
+	Type               CouponType             `json:"type"`
 }
 
 type CreateEnvironment struct {
-	ID                        *string                     `json:"id,omitempty"`
-	CreatedAt                 *string                     `json:"createdAt,omitempty"`
-	DisplayName               *string                     `json:"displayName,omitempty"`
-	Description               *string                     `json:"description,omitempty"`
-	Slug                      *string                     `json:"slug,omitempty"`
-	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
-	HardenClientAccessEnabled *bool                       `json:"hardenClientAccessEnabled,omitempty"`
 	Color                     *string                     `json:"color,omitempty"`
+	CreatedAt                 *string                     `json:"createdAt,omitempty"`
+	Description               *string                     `json:"description,omitempty"`
+	DisplayName               *string                     `json:"displayName,omitempty"`
+	HardenClientAccessEnabled *bool                       `json:"hardenClientAccessEnabled,omitempty"`
+	ID                        *string                     `json:"id,omitempty"`
+	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
+	Slug                      *string                     `json:"slug,omitempty"`
 }
 
 type CreateEnvironmentOptions struct {
@@ -575,33 +689,33 @@ type CreateEnvironmentOptions struct {
 }
 
 type CreateExperimentInput struct {
-	EnvironmentID     *string               `json:"environmentId,omitempty"`
+	ControlGroupName  string                `json:"controlGroupName"`
 	Description       *string               `json:"description,omitempty"`
+	EnvironmentID     *string               `json:"environmentId,omitempty"`
 	Name              string                `json:"name"`
 	ProductID         string                `json:"productId"`
-	VariantPercentage float64               `json:"variantPercentage"`
-	ControlGroupName  string                `json:"controlGroupName"`
-	VariantGroupName  string                `json:"variantGroupName"`
 	ProductSettings   *ProductSettingsInput `json:"productSettings,omitempty"`
+	VariantGroupName  string                `json:"variantGroupName"`
+	VariantPercentage float64               `json:"variantPercentage"`
 }
 
 type CreateHook struct {
-	ID            *string        `json:"id,omitempty"`
-	Description   *string        `json:"description,omitempty"`
-	SecretKey     *string        `json:"secretKey,omitempty"`
-	Endpoint      *string        `json:"endpoint,omitempty"`
-	Status        *HookStatus    `json:"status,omitempty"`
 	CreatedAt     *string        `json:"createdAt,omitempty"`
+	Description   *string        `json:"description,omitempty"`
+	Endpoint      *string        `json:"endpoint,omitempty"`
 	EnvironmentID *string        `json:"environmentId,omitempty"`
 	EventLogTypes []EventLogType `json:"eventLogTypes,omitempty"`
+	ID            *string        `json:"id,omitempty"`
+	SecretKey     *string        `json:"secretKey,omitempty"`
+	Status        *HookStatus    `json:"status,omitempty"`
 }
 
 type CreateIntegrationInput struct {
 	EnvironmentID      string                   `json:"environmentId"`
+	HubspotCredentials *HubspotCredentialsInput `json:"hubspotCredentials,omitempty"`
+	StripeCredentials  *StripeCredentialsInput  `json:"stripeCredentials,omitempty"`
 	VendorIdentifier   VendorIdentifier         `json:"vendorIdentifier"`
 	ZuoraCredentials   *ZuoraCredentialsInput   `json:"zuoraCredentials,omitempty"`
-	StripeCredentials  *StripeCredentialsInput  `json:"stripeCredentials,omitempty"`
-	HubspotCredentials *HubspotCredentialsInput `json:"hubspotCredentials,omitempty"`
 }
 
 type CreateManyPackageEntitlementsInput struct {
@@ -615,10 +729,8 @@ type CreateManyPromotionalEntitlementsInput struct {
 }
 
 type CreateMeter struct {
-	Filters       []*MeterFilterDefinitionInput `json:"filters"`
-	Aggregation   MeterAggregation              `json:"aggregation"`
-	FeatureID     string                        `json:"featureId"`
-	EnvironmentID string                        `json:"environmentId"`
+	Aggregation MeterAggregation              `json:"aggregation"`
+	Filters     []*MeterFilterDefinitionInput `json:"filters"`
 }
 
 type CreateOneEnvironmentInput struct {
@@ -641,21 +753,16 @@ type CreateOneIntegrationInput struct {
 	Integration CreateIntegrationInput `json:"integration"`
 }
 
-type CreateOneMeterInput struct {
-	// The record to create
-	Meter CreateMeter `json:"meter"`
-}
-
 type CreateOneProductInput struct {
 	// The record to create
 	Product ProductCreateInput `json:"product"`
 }
 
 type CursorPaging struct {
-	// Paginate before opaque cursor
-	Before *string `json:"before,omitempty"`
 	// Paginate after opaque cursor
 	After *string `json:"after,omitempty"`
+	// Paginate before opaque cursor
+	Before *string `json:"before,omitempty"`
 	// Paginate first
 	First *int64 `json:"first,omitempty"`
 	// Paginate last
@@ -663,195 +770,214 @@ type CursorPaging struct {
 }
 
 type Customer struct {
-	ID                              string                    `json:"id"`
-	Name                            *string                   `json:"name"`
-	Email                           *string                   `json:"email"`
-	RefID                           string                    `json:"refId"`
-	CustomerID                      string                    `json:"customerId"`
-	CreatedAt                       *string                   `json:"createdAt"`
-	UpdatedAt                       string                    `json:"updatedAt"`
-	EnvironmentID                   string                    `json:"environmentId"`
-	BillingID                       *string                   `json:"billingId"`
-	BillingLinkURL                  *string                   `json:"billingLinkUrl"`
-	CrmID                           *string                   `json:"crmId"`
-	CrmHubspotCompanyID             *string                   `json:"crmHubspotCompanyId"`
-	CrmHubspotCompanyURL            *string                   `json:"crmHubspotCompanyUrl"`
-	HasPaymentMethod                bool                      `json:"hasPaymentMethod"`
-	HasActiveSubscription           bool                      `json:"hasActiveSubscription"`
-	AdditionalMetaData              map[string]interface{}    `json:"additionalMetaData"`
-	SyncStates                      []*SyncState              `json:"syncStates"`
-	DefaultPaymentMethodID          *string                   `json:"defaultPaymentMethodId"`
-	DefaultPaymentMethodType        *PaymentMethodType        `json:"defaultPaymentMethodType"`
-	DefaultPaymentMethodLast4Digits *string                   `json:"defaultPaymentMethodLast4Digits"`
-	DefaultPaymentExpirationMonth   *int64                    `json:"defaultPaymentExpirationMonth"`
-	DefaultPaymentExpirationYear    *int64                    `json:"defaultPaymentExpirationYear"`
-	TrialedPlans                    []*TrialedPlan            `json:"trialedPlans"`
-	ExperimentInfo                  *ExperimentInfo           `json:"experimentInfo"`
-	ExcludeFromExperiment           *bool                     `json:"excludeFromExperiment"`
-	EligibleForTrial                []*EligibleForTrial       `json:"eligibleForTrial"`
-	BillingCurrency                 *Currency                 `json:"billingCurrency"`
-	HasActiveResource               bool                      `json:"hasActiveResource"`
-	TotalActiveSubscription         float64                   `json:"totalActiveSubscription"`
-	Environment                     *Environment              `json:"environment"`
-	Coupon                          *Coupon                   `json:"coupon"`
-	Experiment                      *Experiment               `json:"experiment"`
-	Subscriptions                   []*CustomerSubscription   `json:"subscriptions"`
-	PromotionalEntitlements         []*PromotionalEntitlement `json:"promotionalEntitlements"`
+	AdditionalMetaData                 map[string]interface{}    `json:"additionalMetaData"`
+	BillingCurrency                    *Currency                 `json:"billingCurrency"`
+	BillingID                          *string                   `json:"billingId"`
+	BillingLinkURL                     *string                   `json:"billingLinkUrl"`
+	Coupon                             *Coupon                   `json:"coupon"`
+	CreatedAt                          *string                   `json:"createdAt"`
+	CrmHubspotCompanyID                *string                   `json:"crmHubspotCompanyId"`
+	CrmHubspotCompanyURL               *string                   `json:"crmHubspotCompanyUrl"`
+	CrmID                              *string                   `json:"crmId"`
+	CustomerID                         string                    `json:"customerId"`
+	DefaultPaymentExpirationMonth      *int64                    `json:"defaultPaymentExpirationMonth"`
+	DefaultPaymentExpirationYear       *int64                    `json:"defaultPaymentExpirationYear"`
+	DefaultPaymentMethodID             *string                   `json:"defaultPaymentMethodId"`
+	DefaultPaymentMethodLast4Digits    *string                   `json:"defaultPaymentMethodLast4Digits"`
+	DefaultPaymentMethodType           *PaymentMethodType        `json:"defaultPaymentMethodType"`
+	DeletedAt                          *string                   `json:"deletedAt"`
+	EligibleForTrial                   []*EligibleForTrial       `json:"eligibleForTrial"`
+	Email                              *string                   `json:"email"`
+	Environment                        *Environment              `json:"environment"`
+	EnvironmentID                      string                    `json:"environmentId"`
+	ExcludeFromExperiment              *bool                     `json:"excludeFromExperiment"`
+	Experiment                         *Experiment               `json:"experiment"`
+	ExperimentInfo                     *ExperimentInfo           `json:"experimentInfo"`
+	HasActiveResource                  bool                      `json:"hasActiveResource"`
+	HasActiveSubscription              bool                      `json:"hasActiveSubscription"`
+	HasPaymentMethod                   bool                      `json:"hasPaymentMethod"`
+	ID                                 string                    `json:"id"`
+	Name                               *string                   `json:"name"`
+	PromotionalEntitlements            []*PromotionalEntitlement `json:"promotionalEntitlements"`
+	RefID                              string                    `json:"refId"`
+	Subscriptions                      []*CustomerSubscription   `json:"subscriptions"`
+	SyncStates                         []*SyncState              `json:"syncStates"`
+	TotalActivePromotionalEntitlements float64                   `json:"totalActivePromotionalEntitlements"`
+	TotalActiveSubscription            float64                   `json:"totalActiveSubscription"`
+	TrialedPlans                       []*TrialedPlan            `json:"trialedPlans"`
+	UpdatedAt                          string                    `json:"updatedAt"`
 }
 
 type CustomerAggregateGroupBy struct {
-	ID                   *string `json:"id"`
-	Name                 *string `json:"name"`
-	Email                *string `json:"email"`
-	RefID                *string `json:"refId"`
-	CustomerID           *string `json:"customerId"`
-	CreatedAt            *string `json:"createdAt"`
-	UpdatedAt            *string `json:"updatedAt"`
-	EnvironmentID        *string `json:"environmentId"`
 	BillingID            *string `json:"billingId"`
-	CrmID                *string `json:"crmId"`
+	CreatedAt            *string `json:"createdAt"`
 	CrmHubspotCompanyID  *string `json:"crmHubspotCompanyId"`
 	CrmHubspotCompanyURL *string `json:"crmHubspotCompanyUrl"`
+	CrmID                *string `json:"crmId"`
+	CustomerID           *string `json:"customerId"`
+	DeletedAt            *string `json:"deletedAt"`
+	Email                *string `json:"email"`
+	EnvironmentID        *string `json:"environmentId"`
+	ID                   *string `json:"id"`
+	Name                 *string `json:"name"`
+	RefID                *string `json:"refId"`
+	SearchQuery          *string `json:"searchQuery"`
+	UpdatedAt            *string `json:"updatedAt"`
+}
+
+type CustomerAggregatedUsage struct {
+	CustomerID string  `json:"customerId"`
+	Usage      float64 `json:"usage"`
 }
 
 type CustomerBillingInfo struct {
 	BillingAddress      *Address               `json:"billingAddress,omitempty"`
-	ShippingAddress     *Address               `json:"shippingAddress,omitempty"`
 	Currency            *Currency              `json:"currency,omitempty"`
-	TaxIds              []*TaxExempt           `json:"taxIds,omitempty"`
-	InvoiceCustomFields map[string]interface{} `json:"invoiceCustomFields,omitempty"`
-	PaymentMethodID     *string                `json:"paymentMethodId,omitempty"`
-	Timezone            *string                `json:"timezone,omitempty"`
-	Language            *string                `json:"language,omitempty"`
 	CustomerName        *string                `json:"customerName,omitempty"`
+	InvoiceCustomFields map[string]interface{} `json:"invoiceCustomFields,omitempty"`
+	Language            *string                `json:"language,omitempty"`
+	Metadata            map[string]interface{} `json:"metadata,omitempty"`
+	PaymentMethodID     *string                `json:"paymentMethodId,omitempty"`
+	ShippingAddress     *Address               `json:"shippingAddress,omitempty"`
+	TaxIds              []*TaxExempt           `json:"taxIds,omitempty"`
+	Timezone            *string                `json:"timezone,omitempty"`
 }
 
 type CustomerConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*CustomerEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type CustomerCountAggregate struct {
-	ID                   *int64 `json:"id"`
-	Name                 *int64 `json:"name"`
-	Email                *int64 `json:"email"`
-	RefID                *int64 `json:"refId"`
-	CustomerID           *int64 `json:"customerId"`
-	CreatedAt            *int64 `json:"createdAt"`
-	UpdatedAt            *int64 `json:"updatedAt"`
-	EnvironmentID        *int64 `json:"environmentId"`
 	BillingID            *int64 `json:"billingId"`
-	CrmID                *int64 `json:"crmId"`
+	CreatedAt            *int64 `json:"createdAt"`
 	CrmHubspotCompanyID  *int64 `json:"crmHubspotCompanyId"`
 	CrmHubspotCompanyURL *int64 `json:"crmHubspotCompanyUrl"`
+	CrmID                *int64 `json:"crmId"`
+	CustomerID           *int64 `json:"customerId"`
+	DeletedAt            *int64 `json:"deletedAt"`
+	Email                *int64 `json:"email"`
+	EnvironmentID        *int64 `json:"environmentId"`
+	ID                   *int64 `json:"id"`
+	Name                 *int64 `json:"name"`
+	RefID                *int64 `json:"refId"`
+	SearchQuery          *int64 `json:"searchQuery"`
+	UpdatedAt            *int64 `json:"updatedAt"`
 }
 
 type CustomerEdge struct {
-	// The node containing the Customer
-	Node Customer `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Customer
+	Node Customer `json:"node"`
 }
 
 type CustomerFilter struct {
 	And                     []*CustomerFilter                           `json:"and,omitempty"`
-	Or                      []*CustomerFilter                           `json:"or,omitempty"`
-	ID                      *StringFieldComparison                      `json:"id,omitempty"`
-	Name                    *StringFieldComparison                      `json:"name,omitempty"`
-	Email                   *StringFieldComparison                      `json:"email,omitempty"`
-	RefID                   *StringFieldComparison                      `json:"refId,omitempty"`
-	CustomerID              *StringFieldComparison                      `json:"customerId,omitempty"`
-	CreatedAt               *DateFieldComparison                        `json:"createdAt,omitempty"`
-	UpdatedAt               *DateFieldComparison                        `json:"updatedAt,omitempty"`
-	EnvironmentID           *StringFieldComparison                      `json:"environmentId,omitempty"`
 	BillingID               *StringFieldComparison                      `json:"billingId,omitempty"`
-	CrmID                   *StringFieldComparison                      `json:"crmId,omitempty"`
+	CreatedAt               *DateFieldComparison                        `json:"createdAt,omitempty"`
 	CrmHubspotCompanyID     *StringFieldComparison                      `json:"crmHubspotCompanyId,omitempty"`
 	CrmHubspotCompanyURL    *StringFieldComparison                      `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                   *StringFieldComparison                      `json:"crmId,omitempty"`
+	CustomerID              *StringFieldComparison                      `json:"customerId,omitempty"`
+	DeletedAt               *DateFieldComparison                        `json:"deletedAt,omitempty"`
+	Email                   *StringFieldComparison                      `json:"email,omitempty"`
+	EnvironmentID           *StringFieldComparison                      `json:"environmentId,omitempty"`
+	ID                      *StringFieldComparison                      `json:"id,omitempty"`
+	Name                    *StringFieldComparison                      `json:"name,omitempty"`
+	Or                      []*CustomerFilter                           `json:"or,omitempty"`
 	PromotionalEntitlements *CustomerFilterPromotionalEntitlementFilter `json:"promotionalEntitlements,omitempty"`
+	RefID                   *StringFieldComparison                      `json:"refId,omitempty"`
+	SearchQuery             *CustomerSearchQueryFilterComparison        `json:"searchQuery,omitempty"`
 	Subscriptions           *CustomerFilterCustomerSubscriptionFilter   `json:"subscriptions,omitempty"`
+	UpdatedAt               *DateFieldComparison                        `json:"updatedAt,omitempty"`
 }
 
 type CustomerFilterCustomerSubscriptionFilter struct {
-	And              []*CustomerFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	Or               []*CustomerFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	EnvironmentID    *StringFieldComparison                      `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison                      `json:"id,omitempty"`
-	CreatedAt        *DateFieldComparison                        `json:"createdAt,omitempty"`
-	StartDate        *DateFieldComparison                        `json:"startDate,omitempty"`
-	EndDate          *DateFieldComparison                        `json:"endDate,omitempty"`
-	CancellationDate *DateFieldComparison                        `json:"cancellationDate,omitempty"`
-	TrialEndDate     *DateFieldComparison                        `json:"trialEndDate,omitempty"`
-	EffectiveEndDate *DateFieldComparison                        `json:"effectiveEndDate,omitempty"`
-	BillingID        *StringFieldComparison                      `json:"billingId,omitempty"`
-	OldBillingID     *StringFieldComparison                      `json:"oldBillingId,omitempty"`
-	CrmID            *StringFieldComparison                      `json:"crmId,omitempty"`
-	CrmLinkURL       *StringFieldComparison                      `json:"crmLinkUrl,omitempty"`
-	Status           *SubscriptionStatusFilterComparison         `json:"status,omitempty"`
-	CancelReason     *SubscriptionCancelReasonFilterComparison   `json:"cancelReason,omitempty"`
-	RefID            *StringFieldComparison                      `json:"refId,omitempty"`
-	SubscriptionID   *StringFieldComparison                      `json:"subscriptionId,omitempty"`
-	ResourceID       *StringFieldComparison                      `json:"resourceId,omitempty"`
-	PricingType      *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
+	And               []*CustomerFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID         *StringFieldComparison                      `json:"billingId,omitempty"`
+	CancelReason      *SubscriptionCancelReasonFilterComparison   `json:"cancelReason,omitempty"`
+	CancellationDate  *DateFieldComparison                        `json:"cancellationDate,omitempty"`
+	CreatedAt         *DateFieldComparison                        `json:"createdAt,omitempty"`
+	CrmID             *StringFieldComparison                      `json:"crmId,omitempty"`
+	CrmLinkURL        *StringFieldComparison                      `json:"crmLinkUrl,omitempty"`
+	EffectiveEndDate  *DateFieldComparison                        `json:"effectiveEndDate,omitempty"`
+	EndDate           *DateFieldComparison                        `json:"endDate,omitempty"`
+	EnvironmentID     *StringFieldComparison                      `json:"environmentId,omitempty"`
+	ID                *StringFieldComparison                      `json:"id,omitempty"`
+	OldBillingID      *StringFieldComparison                      `json:"oldBillingId,omitempty"`
+	Or                []*CustomerFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection *PaymentCollectionFilterComparison          `json:"paymentCollection,omitempty"`
+	PricingType       *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
+	RefID             *StringFieldComparison                      `json:"refId,omitempty"`
+	ResourceID        *StringFieldComparison                      `json:"resourceId,omitempty"`
+	StartDate         *DateFieldComparison                        `json:"startDate,omitempty"`
+	Status            *SubscriptionStatusFilterComparison         `json:"status,omitempty"`
+	SubscriptionID    *StringFieldComparison                      `json:"subscriptionId,omitempty"`
+	TrialEndDate      *DateFieldComparison                        `json:"trialEndDate,omitempty"`
 }
 
 type CustomerFilterPromotionalEntitlementFilter struct {
 	And           []*CustomerFilterPromotionalEntitlementFilter `json:"and,omitempty"`
-	Or            []*CustomerFilterPromotionalEntitlementFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison                        `json:"id,omitempty"`
 	CreatedAt     *DateFieldComparison                          `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
-	Status        *PromotionalEntitlementStatusFilterComparison `json:"status,omitempty"`
 	EnvironmentID *StringFieldComparison                        `json:"environmentId,omitempty"`
+	ID            *StringFieldComparison                        `json:"id,omitempty"`
+	Or            []*CustomerFilterPromotionalEntitlementFilter `json:"or,omitempty"`
+	Status        *PromotionalEntitlementStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
 }
 
 type CustomerInput struct {
-	Name               *string                `json:"name,omitempty"`
-	Email              *string                `json:"email,omitempty"`
-	RefID              *string                `json:"refId,omitempty"`
-	CustomerID         *string                `json:"customerId,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	CrmID              *string                `json:"crmId,omitempty"`
-	CouponRefID        *string                `json:"couponRefId,omitempty"`
-	BillingInformation *CustomerBillingInfo   `json:"billingInformation,omitempty"`
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	ShouldSyncFree     *bool                  `json:"shouldSyncFree,omitempty"`
+	BillingID          *string                `json:"billingId,omitempty"`
+	BillingInformation *CustomerBillingInfo   `json:"billingInformation,omitempty"`
+	CouponRefID        *string                `json:"couponRefId,omitempty"`
 	CreatedAt          *string                `json:"createdAt,omitempty"`
+	CrmID              *string                `json:"crmId,omitempty"`
+	CustomerID         *string                `json:"customerId,omitempty"`
+	Email              *string                `json:"email,omitempty"`
+	EnvironmentID      *string                `json:"environmentId,omitempty"`
+	Name               *string                `json:"name,omitempty"`
+	RefID              *string                `json:"refId,omitempty"`
+	ShouldSyncFree     *bool                  `json:"shouldSyncFree,omitempty"`
 }
 
 type CustomerMaxAggregate struct {
-	ID                   *string `json:"id"`
-	Name                 *string `json:"name"`
-	Email                *string `json:"email"`
-	RefID                *string `json:"refId"`
-	CustomerID           *string `json:"customerId"`
-	CreatedAt            *string `json:"createdAt"`
-	UpdatedAt            *string `json:"updatedAt"`
-	EnvironmentID        *string `json:"environmentId"`
 	BillingID            *string `json:"billingId"`
-	CrmID                *string `json:"crmId"`
+	CreatedAt            *string `json:"createdAt"`
 	CrmHubspotCompanyID  *string `json:"crmHubspotCompanyId"`
 	CrmHubspotCompanyURL *string `json:"crmHubspotCompanyUrl"`
+	CrmID                *string `json:"crmId"`
+	CustomerID           *string `json:"customerId"`
+	DeletedAt            *string `json:"deletedAt"`
+	Email                *string `json:"email"`
+	EnvironmentID        *string `json:"environmentId"`
+	ID                   *string `json:"id"`
+	Name                 *string `json:"name"`
+	RefID                *string `json:"refId"`
+	SearchQuery          *string `json:"searchQuery"`
+	UpdatedAt            *string `json:"updatedAt"`
 }
 
 type CustomerMinAggregate struct {
-	ID                   *string `json:"id"`
-	Name                 *string `json:"name"`
-	Email                *string `json:"email"`
-	RefID                *string `json:"refId"`
-	CustomerID           *string `json:"customerId"`
-	CreatedAt            *string `json:"createdAt"`
-	UpdatedAt            *string `json:"updatedAt"`
-	EnvironmentID        *string `json:"environmentId"`
 	BillingID            *string `json:"billingId"`
-	CrmID                *string `json:"crmId"`
+	CreatedAt            *string `json:"createdAt"`
 	CrmHubspotCompanyID  *string `json:"crmHubspotCompanyId"`
 	CrmHubspotCompanyURL *string `json:"crmHubspotCompanyUrl"`
+	CrmID                *string `json:"crmId"`
+	CustomerID           *string `json:"customerId"`
+	DeletedAt            *string `json:"deletedAt"`
+	Email                *string `json:"email"`
+	EnvironmentID        *string `json:"environmentId"`
+	ID                   *string `json:"id"`
+	Name                 *string `json:"name"`
+	RefID                *string `json:"refId"`
+	SearchQuery          *string `json:"searchQuery"`
+	UpdatedAt            *string `json:"updatedAt"`
 }
 
 type CustomerNoBillingID struct {
@@ -867,490 +993,519 @@ type CustomerNotFoundError struct {
 }
 
 type CustomerPortal struct {
-	Subscriptions           []*CustomerPortalSubscription           `json:"subscriptions"`
+	BillingInformation      CustomerPortalBillingInformation        `json:"billingInformation"`
+	BillingPortalURL        *string                                 `json:"billingPortalUrl"`
+	CanUpgradeSubscription  bool                                    `json:"canUpgradeSubscription"`
+	Configuration           *CustomerPortalConfiguration            `json:"configuration"`
 	Entitlements            []*Entitlement                          `json:"entitlements"`
 	PromotionalEntitlements []*CustomerPortalPromotionalEntitlement `json:"promotionalEntitlements"`
-	BillingInformation      CustomerPortalBillingInformation        `json:"billingInformation"`
-	ShowWatermark           bool                                    `json:"showWatermark"`
-	CanUpgradeSubscription  bool                                    `json:"canUpgradeSubscription"`
-	BillingPortalURL        *string                                 `json:"billingPortalUrl"`
-	Configuration           *CustomerPortalConfiguration            `json:"configuration"`
 	Resource                *CustomerResource                       `json:"resource"`
+	ShowWatermark           bool                                    `json:"showWatermark"`
+	Subscriptions           []*CustomerPortalSubscription           `json:"subscriptions"`
 }
 
 type CustomerPortalAddon struct {
 	AddonID     string  `json:"addonId"`
-	DisplayName string  `json:"displayName"`
 	Description *string `json:"description"`
+	DisplayName string  `json:"displayName"`
 	Quantity    int64   `json:"quantity"`
 }
 
 type CustomerPortalBillingInformation struct {
-	Name                            *string            `json:"name"`
-	Email                           *string            `json:"email"`
-	DefaultPaymentMethodID          *string            `json:"defaultPaymentMethodId"`
-	DefaultPaymentMethodType        *PaymentMethodType `json:"defaultPaymentMethodType"`
-	DefaultPaymentMethodLast4Digits *string            `json:"defaultPaymentMethodLast4Digits"`
 	DefaultPaymentExpirationMonth   *int64             `json:"defaultPaymentExpirationMonth"`
 	DefaultPaymentExpirationYear    *int64             `json:"defaultPaymentExpirationYear"`
+	DefaultPaymentMethodID          *string            `json:"defaultPaymentMethodId"`
+	DefaultPaymentMethodLast4Digits *string            `json:"defaultPaymentMethodLast4Digits"`
+	DefaultPaymentMethodType        *PaymentMethodType `json:"defaultPaymentMethodType"`
+	Email                           *string            `json:"email"`
+	Name                            *string            `json:"name"`
 }
 
 type CustomerPortalColorsPalette struct {
-	Primary                *string `json:"primary"`
-	TextColor              *string `json:"textColor"`
 	BackgroundColor        *string `json:"backgroundColor"`
-	PaywallBackgroundColor *string `json:"paywallBackgroundColor"`
 	BorderColor            *string `json:"borderColor"`
 	CurrentPlanBackground  *string `json:"currentPlanBackground"`
 	IconsColor             *string `json:"iconsColor"`
+	PaywallBackgroundColor *string `json:"paywallBackgroundColor"`
+	Primary                *string `json:"primary"`
+	TextColor              *string `json:"textColor"`
 }
 
 type CustomerPortalColorsPaletteInput struct {
-	Primary                *string `json:"primary,omitempty"`
-	TextColor              *string `json:"textColor,omitempty"`
 	BackgroundColor        *string `json:"backgroundColor,omitempty"`
 	BorderColor            *string `json:"borderColor,omitempty"`
 	CurrentPlanBackground  *string `json:"currentPlanBackground,omitempty"`
 	IconsColor             *string `json:"iconsColor,omitempty"`
 	PaywallBackgroundColor *string `json:"paywallBackgroundColor,omitempty"`
+	Primary                *string `json:"primary,omitempty"`
+	TextColor              *string `json:"textColor,omitempty"`
 }
 
 type CustomerPortalConfiguration struct {
+	CustomCSS  *string                      `json:"customCss"`
 	Palette    *CustomerPortalColorsPalette `json:"palette"`
 	Typography *TypographyConfiguration     `json:"typography"`
-	CustomCSS  *string                      `json:"customCss"`
 }
 
 type CustomerPortalConfigurationInput struct {
+	CustomCSS  *string                           `json:"customCss,omitempty"`
 	Palette    *CustomerPortalColorsPaletteInput `json:"palette,omitempty"`
 	Typography *TypographyConfigurationInput     `json:"typography,omitempty"`
-	CustomCSS  *string                           `json:"customCss,omitempty"`
 }
 
 type CustomerPortalInput struct {
 	CustomerID string  `json:"customerId"`
+	ProductID  *string `json:"productId,omitempty"`
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 type CustomerPortalPricingFeature struct {
+	Description        *string     `json:"description"`
 	DisplayName        string      `json:"displayName"`
+	FeatureType        FeatureType `json:"featureType"`
 	FeatureUnits       *string     `json:"featureUnits"`
 	FeatureUnitsPlural *string     `json:"featureUnitsPlural"`
-	Description        *string     `json:"description"`
-	FeatureType        FeatureType `json:"featureType"`
+	ID                 string      `json:"id"`
 	MeterType          *MeterType  `json:"meterType"`
+	RefID              string      `json:"refId"`
 }
 
 type CustomerPortalPromotionalEntitlement struct {
-	DisplayName       string                       `json:"displayName"`
 	Description       *string                      `json:"description"`
-	UsageLimit        *float64                     `json:"usageLimit"`
-	HasUnlimitedUsage *bool                        `json:"hasUnlimitedUsage"`
-	StartDate         string                       `json:"startDate"`
+	DisplayName       string                       `json:"displayName"`
 	EndDate           *string                      `json:"endDate"`
+	HasUnlimitedUsage *bool                        `json:"hasUnlimitedUsage"`
 	Period            PromotionalEntitlementPeriod `json:"period"`
+	StartDate         string                       `json:"startDate"`
+	UsageLimit        *float64                     `json:"usageLimit"`
 }
 
 type CustomerPortalSubscription struct {
-	SubscriptionID     string                            `json:"subscriptionId"`
-	PlanName           string                            `json:"planName"`
-	Pricing            CustomerPortalSubscriptionPricing `json:"pricing"`
-	Status             SubscriptionStatus                `json:"status"`
-	TotalPrice         *CustomerSubscriptionTotalPrice   `json:"totalPrice"`
-	BillingPeriodRange *DateRange                        `json:"billingPeriodRange"`
-	TrialRemainingDays *int64                            `json:"trialRemainingDays"`
-	Addons             []*CustomerPortalAddon            `json:"addons"`
-	ScheduledUpdates   []*SubscriptionScheduledUpdate    `json:"scheduledUpdates"`
+	Addons             []*CustomerPortalAddon             `json:"addons"`
+	BillingPeriodRange *DateRange                         `json:"billingPeriodRange"`
+	PlanName           string                             `json:"planName"`
+	Prices             []*CustomerPortalSubscriptionPrice `json:"prices"`
+	Pricing            CustomerPortalSubscriptionPricing  `json:"pricing"`
+	PricingType        PricingType                        `json:"pricingType"`
+	ScheduledUpdates   []*SubscriptionScheduledUpdate     `json:"scheduledUpdates"`
+	Status             SubscriptionStatus                 `json:"status"`
+	SubscriptionID     string                             `json:"subscriptionId"`
+	TotalPrice         *CustomerSubscriptionTotalPrice    `json:"totalPrice"`
+	TrialRemainingDays *int64                             `json:"trialRemainingDays"`
+}
+
+type CustomerPortalSubscriptionPrice struct {
+	BillingModel  *BillingModel                 `json:"billingModel"`
+	BillingPeriod *BillingPeriod                `json:"billingPeriod"`
+	Feature       *CustomerPortalPricingFeature `json:"feature"`
+	Price         *Money                        `json:"price"`
 }
 
 type CustomerPortalSubscriptionPricing struct {
+	BillingCountryCode      *string                       `json:"billingCountryCode"`
+	BillingModel            *BillingModel                 `json:"billingModel"`
+	BillingPeriod           *BillingPeriod                `json:"billingPeriod"`
+	Feature                 *CustomerPortalPricingFeature `json:"feature"`
+	Price                   *Money                        `json:"price"`
 	PricingType             PricingType                   `json:"pricingType"`
 	UnitQuantity            *int64                        `json:"unitQuantity"`
-	BillingPeriod           *BillingPeriod                `json:"billingPeriod"`
-	BillingModel            *BillingModel                 `json:"billingModel"`
-	Price                   *Money                        `json:"price"`
-	BillingCountryCode      *string                       `json:"billingCountryCode"`
-	Feature                 *CustomerPortalPricingFeature `json:"feature"`
 	UsageBasedEstimatedBill *float64                      `json:"usageBasedEstimatedBill"`
 }
 
 type CustomerResource struct {
-	EnvironmentID string                  `json:"environmentId"`
-	ResourceID    string                  `json:"resourceId"`
 	CreatedAt     string                  `json:"createdAt"`
 	Customer      Customer                `json:"customer"`
+	EnvironmentID string                  `json:"environmentId"`
+	ResourceID    string                  `json:"resourceId"`
 	Subscriptions []*CustomerSubscription `json:"subscriptions"`
 }
 
 type CustomerResourceAggregateGroupBy struct {
+	CreatedAt     *string `json:"createdAt"`
 	EnvironmentID *string `json:"environmentId"`
 	ResourceID    *string `json:"resourceId"`
-	CreatedAt     *string `json:"createdAt"`
 }
 
 type CustomerResourceConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*CustomerResourceEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type CustomerResourceCountAggregate struct {
+	CreatedAt     *int64 `json:"createdAt"`
 	EnvironmentID *int64 `json:"environmentId"`
 	ResourceID    *int64 `json:"resourceId"`
-	CreatedAt     *int64 `json:"createdAt"`
 }
 
 type CustomerResourceEdge struct {
-	// The node containing the CustomerResource
-	Node CustomerResource `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the CustomerResource
+	Node CustomerResource `json:"node"`
 }
 
 type CustomerResourceFilter struct {
 	And           []*CustomerResourceFilter                         `json:"and,omitempty"`
-	Or            []*CustomerResourceFilter                         `json:"or,omitempty"`
-	EnvironmentID *StringFieldComparison                            `json:"environmentId,omitempty"`
-	ResourceID    *StringFieldComparison                            `json:"resourceId,omitempty"`
 	CreatedAt     *DateFieldComparison                              `json:"createdAt,omitempty"`
 	Customer      *CustomerResourceFilterCustomerFilter             `json:"customer,omitempty"`
+	EnvironmentID *StringFieldComparison                            `json:"environmentId,omitempty"`
+	Or            []*CustomerResourceFilter                         `json:"or,omitempty"`
+	ResourceID    *StringFieldComparison                            `json:"resourceId,omitempty"`
 	Subscriptions *CustomerResourceFilterCustomerSubscriptionFilter `json:"subscriptions,omitempty"`
 }
 
 type CustomerResourceFilterCustomerFilter struct {
 	And                  []*CustomerResourceFilterCustomerFilter `json:"and,omitempty"`
-	Or                   []*CustomerResourceFilterCustomerFilter `json:"or,omitempty"`
-	ID                   *StringFieldComparison                  `json:"id,omitempty"`
-	Name                 *StringFieldComparison                  `json:"name,omitempty"`
-	Email                *StringFieldComparison                  `json:"email,omitempty"`
-	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
-	CustomerID           *StringFieldComparison                  `json:"customerId,omitempty"`
-	CreatedAt            *DateFieldComparison                    `json:"createdAt,omitempty"`
-	UpdatedAt            *DateFieldComparison                    `json:"updatedAt,omitempty"`
-	EnvironmentID        *StringFieldComparison                  `json:"environmentId,omitempty"`
 	BillingID            *StringFieldComparison                  `json:"billingId,omitempty"`
-	CrmID                *StringFieldComparison                  `json:"crmId,omitempty"`
+	CreatedAt            *DateFieldComparison                    `json:"createdAt,omitempty"`
 	CrmHubspotCompanyID  *StringFieldComparison                  `json:"crmHubspotCompanyId,omitempty"`
 	CrmHubspotCompanyURL *StringFieldComparison                  `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                *StringFieldComparison                  `json:"crmId,omitempty"`
+	CustomerID           *StringFieldComparison                  `json:"customerId,omitempty"`
+	DeletedAt            *DateFieldComparison                    `json:"deletedAt,omitempty"`
+	Email                *StringFieldComparison                  `json:"email,omitempty"`
+	EnvironmentID        *StringFieldComparison                  `json:"environmentId,omitempty"`
+	ID                   *StringFieldComparison                  `json:"id,omitempty"`
+	Name                 *StringFieldComparison                  `json:"name,omitempty"`
+	Or                   []*CustomerResourceFilterCustomerFilter `json:"or,omitempty"`
+	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
+	SearchQuery          *CustomerSearchQueryFilterComparison    `json:"searchQuery,omitempty"`
+	UpdatedAt            *DateFieldComparison                    `json:"updatedAt,omitempty"`
 }
 
 type CustomerResourceFilterCustomerSubscriptionFilter struct {
-	And              []*CustomerResourceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	Or               []*CustomerResourceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	EnvironmentID    *StringFieldComparison                              `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison                              `json:"id,omitempty"`
-	CreatedAt        *DateFieldComparison                                `json:"createdAt,omitempty"`
-	StartDate        *DateFieldComparison                                `json:"startDate,omitempty"`
-	EndDate          *DateFieldComparison                                `json:"endDate,omitempty"`
-	CancellationDate *DateFieldComparison                                `json:"cancellationDate,omitempty"`
-	TrialEndDate     *DateFieldComparison                                `json:"trialEndDate,omitempty"`
-	EffectiveEndDate *DateFieldComparison                                `json:"effectiveEndDate,omitempty"`
-	BillingID        *StringFieldComparison                              `json:"billingId,omitempty"`
-	OldBillingID     *StringFieldComparison                              `json:"oldBillingId,omitempty"`
-	CrmID            *StringFieldComparison                              `json:"crmId,omitempty"`
-	CrmLinkURL       *StringFieldComparison                              `json:"crmLinkUrl,omitempty"`
-	Status           *SubscriptionStatusFilterComparison                 `json:"status,omitempty"`
-	CancelReason     *SubscriptionCancelReasonFilterComparison           `json:"cancelReason,omitempty"`
-	RefID            *StringFieldComparison                              `json:"refId,omitempty"`
-	SubscriptionID   *StringFieldComparison                              `json:"subscriptionId,omitempty"`
-	ResourceID       *StringFieldComparison                              `json:"resourceId,omitempty"`
-	PricingType      *PricingTypeFilterComparison                        `json:"pricingType,omitempty"`
+	And               []*CustomerResourceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID         *StringFieldComparison                              `json:"billingId,omitempty"`
+	CancelReason      *SubscriptionCancelReasonFilterComparison           `json:"cancelReason,omitempty"`
+	CancellationDate  *DateFieldComparison                                `json:"cancellationDate,omitempty"`
+	CreatedAt         *DateFieldComparison                                `json:"createdAt,omitempty"`
+	CrmID             *StringFieldComparison                              `json:"crmId,omitempty"`
+	CrmLinkURL        *StringFieldComparison                              `json:"crmLinkUrl,omitempty"`
+	EffectiveEndDate  *DateFieldComparison                                `json:"effectiveEndDate,omitempty"`
+	EndDate           *DateFieldComparison                                `json:"endDate,omitempty"`
+	EnvironmentID     *StringFieldComparison                              `json:"environmentId,omitempty"`
+	ID                *StringFieldComparison                              `json:"id,omitempty"`
+	OldBillingID      *StringFieldComparison                              `json:"oldBillingId,omitempty"`
+	Or                []*CustomerResourceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection *PaymentCollectionFilterComparison                  `json:"paymentCollection,omitempty"`
+	PricingType       *PricingTypeFilterComparison                        `json:"pricingType,omitempty"`
+	RefID             *StringFieldComparison                              `json:"refId,omitempty"`
+	ResourceID        *StringFieldComparison                              `json:"resourceId,omitempty"`
+	StartDate         *DateFieldComparison                                `json:"startDate,omitempty"`
+	Status            *SubscriptionStatusFilterComparison                 `json:"status,omitempty"`
+	SubscriptionID    *StringFieldComparison                              `json:"subscriptionId,omitempty"`
+	TrialEndDate      *DateFieldComparison                                `json:"trialEndDate,omitempty"`
 }
 
 type CustomerResourceMaxAggregate struct {
+	CreatedAt     *string `json:"createdAt"`
 	EnvironmentID *string `json:"environmentId"`
 	ResourceID    *string `json:"resourceId"`
-	CreatedAt     *string `json:"createdAt"`
 }
 
 type CustomerResourceMinAggregate struct {
+	CreatedAt     *string `json:"createdAt"`
 	EnvironmentID *string `json:"environmentId"`
 	ResourceID    *string `json:"resourceId"`
-	CreatedAt     *string `json:"createdAt"`
 }
 
 type CustomerResourceSort struct {
-	Field     CustomerResourceSortFields `json:"field"`
 	Direction SortDirection              `json:"direction"`
+	Field     CustomerResourceSortFields `json:"field"`
 	Nulls     *SortNulls                 `json:"nulls,omitempty"`
 }
 
+type CustomerSearchQueryFilterComparison struct {
+	ILike *string `json:"iLike,omitempty"`
+}
+
 type CustomerSort struct {
-	Field     CustomerSortFields `json:"field"`
 	Direction SortDirection      `json:"direction"`
+	Field     CustomerSortFields `json:"field"`
 	Nulls     *SortNulls         `json:"nulls,omitempty"`
 }
 
 type CustomerSubscription struct {
-	EnvironmentID             string                          `json:"environmentId"`
-	ID                        string                          `json:"id"`
-	CreatedAt                 *string                         `json:"createdAt"`
-	StartDate                 string                          `json:"startDate"`
-	EndDate                   *string                         `json:"endDate"`
-	CancellationDate          *string                         `json:"cancellationDate"`
-	TrialEndDate              *string                         `json:"trialEndDate"`
-	EffectiveEndDate          *string                         `json:"effectiveEndDate"`
+	AdditionalMetaData        map[string]interface{}          `json:"additionalMetaData"`
+	Addons                    []*SubscriptionAddon            `json:"addons"`
 	BillingID                 *string                         `json:"billingId"`
-	OldBillingID              *string                         `json:"oldBillingId"`
 	BillingLinkURL            *string                         `json:"billingLinkUrl"`
+	CancelReason              *SubscriptionCancelReason       `json:"cancelReason"`
+	CancellationDate          *string                         `json:"cancellationDate"`
+	Coupon                    *SubscriptionCoupon             `json:"coupon"`
+	CreatedAt                 *string                         `json:"createdAt"`
 	CrmID                     *string                         `json:"crmId"`
 	CrmLinkURL                *string                         `json:"crmLinkUrl"`
-	Status                    SubscriptionStatus              `json:"status"`
-	CancelReason              *SubscriptionCancelReason       `json:"cancelReason"`
-	RefID                     string                          `json:"refId"`
-	SubscriptionID            string                          `json:"subscriptionId"`
-	ResourceID                *string                         `json:"resourceId"`
-	WasInTrial                *bool                           `json:"wasInTrial"`
-	IsCustomPriceSubscription *bool                           `json:"isCustomPriceSubscription"`
-	Addons                    []*SubscriptionAddon            `json:"addons"`
 	CurrentBillingPeriodEnd   *string                         `json:"currentBillingPeriodEnd"`
+	Customer                  Customer                        `json:"customer"`
+	EffectiveEndDate          *string                         `json:"effectiveEndDate"`
+	EndDate                   *string                         `json:"endDate"`
+	Environment               Environment                     `json:"environment"`
+	EnvironmentID             string                          `json:"environmentId"`
+	Experiment                *Experiment                     `json:"experiment"`
+	ExperimentInfo            *ExperimentInfo                 `json:"experimentInfo"`
+	FutureUpdates             []*SubscriptionFutureUpdate     `json:"futureUpdates"`
+	ID                        string                          `json:"id"`
+	IsCustomPriceSubscription *bool                           `json:"isCustomPriceSubscription"`
+	LatestInvoice             *SubscriptionInvoice            `json:"latestInvoice"`
+	OldBillingID              *string                         `json:"oldBillingId"`
+	OutdatedPricePackages     []string                        `json:"outdatedPricePackages"`
+	PaymentCollection         PaymentCollection               `json:"paymentCollection"`
+	Plan                      Plan                            `json:"plan"`
+	Prices                    []*SubscriptionPrice            `json:"prices"`
 	PricingType               PricingType                     `json:"pricingType"`
-	AdditionalMetaData        map[string]interface{}          `json:"additionalMetaData"`
+	RefID                     string                          `json:"refId"`
+	Resource                  *CustomerResource               `json:"resource"`
+	ResourceID                *string                         `json:"resourceId"`
+	ScheduledUpdates          []*SubscriptionScheduledUpdate  `json:"scheduledUpdates"`
+	StartDate                 string                          `json:"startDate"`
+	Status                    SubscriptionStatus              `json:"status"`
+	SubscriptionEntitlements  []*SubscriptionEntitlement      `json:"subscriptionEntitlements"`
+	SubscriptionID            string                          `json:"subscriptionId"`
 	SyncStates                []*SyncState                    `json:"syncStates"`
 	TotalPrice                *CustomerSubscriptionTotalPrice `json:"totalPrice"`
-	ExperimentInfo            *ExperimentInfo                 `json:"experimentInfo"`
-	Coupon                    *SubscriptionCoupon             `json:"coupon"`
-	SubscriptionEntitlements  []*SubscriptionEntitlement      `json:"subscriptionEntitlements"`
-	ScheduledUpdates          []*SubscriptionScheduledUpdate  `json:"scheduledUpdates"`
-	OutdatedPricePackages     []string                        `json:"outdatedPricePackages"`
-	Customer                  Customer                        `json:"customer"`
-	Resource                  *CustomerResource               `json:"resource"`
-	Plan                      Plan                            `json:"plan"`
-	Environment               Environment                     `json:"environment"`
-	Experiment                *Experiment                     `json:"experiment"`
-	Prices                    []*SubscriptionPrice            `json:"prices"`
+	TrialEndDate              *string                         `json:"trialEndDate"`
+	WasInTrial                *bool                           `json:"wasInTrial"`
 }
 
 type CustomerSubscriptionAggregateGroupBy struct {
-	EnvironmentID    *string                   `json:"environmentId"`
-	ID               *string                   `json:"id"`
-	CreatedAt        *string                   `json:"createdAt"`
-	StartDate        *string                   `json:"startDate"`
-	EndDate          *string                   `json:"endDate"`
-	CancellationDate *string                   `json:"cancellationDate"`
-	TrialEndDate     *string                   `json:"trialEndDate"`
-	EffectiveEndDate *string                   `json:"effectiveEndDate"`
-	BillingID        *string                   `json:"billingId"`
-	OldBillingID     *string                   `json:"oldBillingId"`
-	CrmID            *string                   `json:"crmId"`
-	CrmLinkURL       *string                   `json:"crmLinkUrl"`
-	Status           *SubscriptionStatus       `json:"status"`
-	CancelReason     *SubscriptionCancelReason `json:"cancelReason"`
-	RefID            *string                   `json:"refId"`
-	SubscriptionID   *string                   `json:"subscriptionId"`
-	ResourceID       *string                   `json:"resourceId"`
-	PricingType      *PricingType              `json:"pricingType"`
+	BillingID         *string                   `json:"billingId"`
+	CancelReason      *SubscriptionCancelReason `json:"cancelReason"`
+	CancellationDate  *string                   `json:"cancellationDate"`
+	CreatedAt         *string                   `json:"createdAt"`
+	CrmID             *string                   `json:"crmId"`
+	CrmLinkURL        *string                   `json:"crmLinkUrl"`
+	EffectiveEndDate  *string                   `json:"effectiveEndDate"`
+	EndDate           *string                   `json:"endDate"`
+	EnvironmentID     *string                   `json:"environmentId"`
+	ID                *string                   `json:"id"`
+	OldBillingID      *string                   `json:"oldBillingId"`
+	PaymentCollection *PaymentCollection        `json:"paymentCollection"`
+	PricingType       *PricingType              `json:"pricingType"`
+	RefID             *string                   `json:"refId"`
+	ResourceID        *string                   `json:"resourceId"`
+	StartDate         *string                   `json:"startDate"`
+	Status            *SubscriptionStatus       `json:"status"`
+	SubscriptionID    *string                   `json:"subscriptionId"`
+	TrialEndDate      *string                   `json:"trialEndDate"`
 }
 
 type CustomerSubscriptionConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*CustomerSubscriptionEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type CustomerSubscriptionCountAggregate struct {
-	EnvironmentID    *int64 `json:"environmentId"`
-	ID               *int64 `json:"id"`
-	CreatedAt        *int64 `json:"createdAt"`
-	StartDate        *int64 `json:"startDate"`
-	EndDate          *int64 `json:"endDate"`
-	CancellationDate *int64 `json:"cancellationDate"`
-	TrialEndDate     *int64 `json:"trialEndDate"`
-	EffectiveEndDate *int64 `json:"effectiveEndDate"`
-	BillingID        *int64 `json:"billingId"`
-	OldBillingID     *int64 `json:"oldBillingId"`
-	CrmID            *int64 `json:"crmId"`
-	CrmLinkURL       *int64 `json:"crmLinkUrl"`
-	Status           *int64 `json:"status"`
-	CancelReason     *int64 `json:"cancelReason"`
-	RefID            *int64 `json:"refId"`
-	SubscriptionID   *int64 `json:"subscriptionId"`
-	ResourceID       *int64 `json:"resourceId"`
-	PricingType      *int64 `json:"pricingType"`
+	BillingID         *int64 `json:"billingId"`
+	CancelReason      *int64 `json:"cancelReason"`
+	CancellationDate  *int64 `json:"cancellationDate"`
+	CreatedAt         *int64 `json:"createdAt"`
+	CrmID             *int64 `json:"crmId"`
+	CrmLinkURL        *int64 `json:"crmLinkUrl"`
+	EffectiveEndDate  *int64 `json:"effectiveEndDate"`
+	EndDate           *int64 `json:"endDate"`
+	EnvironmentID     *int64 `json:"environmentId"`
+	ID                *int64 `json:"id"`
+	OldBillingID      *int64 `json:"oldBillingId"`
+	PaymentCollection *int64 `json:"paymentCollection"`
+	PricingType       *int64 `json:"pricingType"`
+	RefID             *int64 `json:"refId"`
+	ResourceID        *int64 `json:"resourceId"`
+	StartDate         *int64 `json:"startDate"`
+	Status            *int64 `json:"status"`
+	SubscriptionID    *int64 `json:"subscriptionId"`
+	TrialEndDate      *int64 `json:"trialEndDate"`
 }
 
 type CustomerSubscriptionEdge struct {
-	// The node containing the CustomerSubscription
-	Node CustomerSubscription `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the CustomerSubscription
+	Node CustomerSubscription `json:"node"`
 }
 
 type CustomerSubscriptionFilter struct {
+	Addons                   *CustomerSubscriptionFilterSubscriptionAddonFilter       `json:"addons,omitempty"`
 	And                      []*CustomerSubscriptionFilter                            `json:"and,omitempty"`
-	Or                       []*CustomerSubscriptionFilter                            `json:"or,omitempty"`
-	EnvironmentID            *StringFieldComparison                                   `json:"environmentId,omitempty"`
-	ID                       *StringFieldComparison                                   `json:"id,omitempty"`
-	CreatedAt                *DateFieldComparison                                     `json:"createdAt,omitempty"`
-	StartDate                *DateFieldComparison                                     `json:"startDate,omitempty"`
-	EndDate                  *DateFieldComparison                                     `json:"endDate,omitempty"`
-	CancellationDate         *DateFieldComparison                                     `json:"cancellationDate,omitempty"`
-	TrialEndDate             *DateFieldComparison                                     `json:"trialEndDate,omitempty"`
-	EffectiveEndDate         *DateFieldComparison                                     `json:"effectiveEndDate,omitempty"`
 	BillingID                *StringFieldComparison                                   `json:"billingId,omitempty"`
-	OldBillingID             *StringFieldComparison                                   `json:"oldBillingId,omitempty"`
+	CancelReason             *SubscriptionCancelReasonFilterComparison                `json:"cancelReason,omitempty"`
+	CancellationDate         *DateFieldComparison                                     `json:"cancellationDate,omitempty"`
+	CreatedAt                *DateFieldComparison                                     `json:"createdAt,omitempty"`
 	CrmID                    *StringFieldComparison                                   `json:"crmId,omitempty"`
 	CrmLinkURL               *StringFieldComparison                                   `json:"crmLinkUrl,omitempty"`
-	Status                   *SubscriptionStatusFilterComparison                      `json:"status,omitempty"`
-	CancelReason             *SubscriptionCancelReasonFilterComparison                `json:"cancelReason,omitempty"`
-	RefID                    *StringFieldComparison                                   `json:"refId,omitempty"`
-	SubscriptionID           *StringFieldComparison                                   `json:"subscriptionId,omitempty"`
-	ResourceID               *StringFieldComparison                                   `json:"resourceId,omitempty"`
-	PricingType              *PricingTypeFilterComparison                             `json:"pricingType,omitempty"`
-	Plan                     *CustomerSubscriptionFilterPlanFilter                    `json:"plan,omitempty"`
-	Resource                 *CustomerSubscriptionFilterCustomerResourceFilter        `json:"resource,omitempty"`
 	Customer                 *CustomerSubscriptionFilterCustomerFilter                `json:"customer,omitempty"`
+	EffectiveEndDate         *DateFieldComparison                                     `json:"effectiveEndDate,omitempty"`
+	EndDate                  *DateFieldComparison                                     `json:"endDate,omitempty"`
+	EnvironmentID            *StringFieldComparison                                   `json:"environmentId,omitempty"`
+	ID                       *StringFieldComparison                                   `json:"id,omitempty"`
+	OldBillingID             *StringFieldComparison                                   `json:"oldBillingId,omitempty"`
+	Or                       []*CustomerSubscriptionFilter                            `json:"or,omitempty"`
+	PaymentCollection        *PaymentCollectionFilterComparison                       `json:"paymentCollection,omitempty"`
+	Plan                     *CustomerSubscriptionFilterPlanFilter                    `json:"plan,omitempty"`
 	Prices                   *CustomerSubscriptionFilterSubscriptionPriceFilter       `json:"prices,omitempty"`
-	Addons                   *CustomerSubscriptionFilterSubscriptionAddonFilter       `json:"addons,omitempty"`
+	PricingType              *PricingTypeFilterComparison                             `json:"pricingType,omitempty"`
+	RefID                    *StringFieldComparison                                   `json:"refId,omitempty"`
+	Resource                 *CustomerSubscriptionFilterCustomerResourceFilter        `json:"resource,omitempty"`
+	ResourceID               *StringFieldComparison                                   `json:"resourceId,omitempty"`
+	StartDate                *DateFieldComparison                                     `json:"startDate,omitempty"`
+	Status                   *SubscriptionStatusFilterComparison                      `json:"status,omitempty"`
 	SubscriptionEntitlements *CustomerSubscriptionFilterSubscriptionEntitlementFilter `json:"subscriptionEntitlements,omitempty"`
+	SubscriptionID           *StringFieldComparison                                   `json:"subscriptionId,omitempty"`
+	TrialEndDate             *DateFieldComparison                                     `json:"trialEndDate,omitempty"`
 }
 
 type CustomerSubscriptionFilterCustomerFilter struct {
 	And                  []*CustomerSubscriptionFilterCustomerFilter `json:"and,omitempty"`
-	Or                   []*CustomerSubscriptionFilterCustomerFilter `json:"or,omitempty"`
-	ID                   *StringFieldComparison                      `json:"id,omitempty"`
-	Name                 *StringFieldComparison                      `json:"name,omitempty"`
-	Email                *StringFieldComparison                      `json:"email,omitempty"`
-	RefID                *StringFieldComparison                      `json:"refId,omitempty"`
-	CustomerID           *StringFieldComparison                      `json:"customerId,omitempty"`
-	CreatedAt            *DateFieldComparison                        `json:"createdAt,omitempty"`
-	UpdatedAt            *DateFieldComparison                        `json:"updatedAt,omitempty"`
-	EnvironmentID        *StringFieldComparison                      `json:"environmentId,omitempty"`
 	BillingID            *StringFieldComparison                      `json:"billingId,omitempty"`
-	CrmID                *StringFieldComparison                      `json:"crmId,omitempty"`
+	CreatedAt            *DateFieldComparison                        `json:"createdAt,omitempty"`
 	CrmHubspotCompanyID  *StringFieldComparison                      `json:"crmHubspotCompanyId,omitempty"`
 	CrmHubspotCompanyURL *StringFieldComparison                      `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                *StringFieldComparison                      `json:"crmId,omitempty"`
+	CustomerID           *StringFieldComparison                      `json:"customerId,omitempty"`
+	DeletedAt            *DateFieldComparison                        `json:"deletedAt,omitempty"`
+	Email                *StringFieldComparison                      `json:"email,omitempty"`
+	EnvironmentID        *StringFieldComparison                      `json:"environmentId,omitempty"`
+	ID                   *StringFieldComparison                      `json:"id,omitempty"`
+	Name                 *StringFieldComparison                      `json:"name,omitempty"`
+	Or                   []*CustomerSubscriptionFilterCustomerFilter `json:"or,omitempty"`
+	RefID                *StringFieldComparison                      `json:"refId,omitempty"`
+	SearchQuery          *CustomerSearchQueryFilterComparison        `json:"searchQuery,omitempty"`
+	UpdatedAt            *DateFieldComparison                        `json:"updatedAt,omitempty"`
 }
 
 type CustomerSubscriptionFilterCustomerResourceFilter struct {
 	And           []*CustomerSubscriptionFilterCustomerResourceFilter `json:"and,omitempty"`
-	Or            []*CustomerSubscriptionFilterCustomerResourceFilter `json:"or,omitempty"`
-	EnvironmentID *StringFieldComparison                              `json:"environmentId,omitempty"`
-	ResourceID    *StringFieldComparison                              `json:"resourceId,omitempty"`
 	CreatedAt     *DateFieldComparison                                `json:"createdAt,omitempty"`
+	EnvironmentID *StringFieldComparison                              `json:"environmentId,omitempty"`
+	Or            []*CustomerSubscriptionFilterCustomerResourceFilter `json:"or,omitempty"`
+	ResourceID    *StringFieldComparison                              `json:"resourceId,omitempty"`
 }
 
 type CustomerSubscriptionFilterPlanFilter struct {
 	And           []*CustomerSubscriptionFilterPlanFilter `json:"and,omitempty"`
-	Or            []*CustomerSubscriptionFilterPlanFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison                  `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison                    `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison                    `json:"updatedAt,omitempty"`
-	RefID         *StringFieldComparison                  `json:"refId,omitempty"`
 	BillingID     *StringFieldComparison                  `json:"billingId,omitempty"`
-	DisplayName   *StringFieldComparison                  `json:"displayName,omitempty"`
-	Status        *PackageStatusFilterComparison          `json:"status,omitempty"`
-	PricingType   *PricingTypeFilterComparison            `json:"pricingType,omitempty"`
+	CreatedAt     *DateFieldComparison                    `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison                  `json:"description,omitempty"`
+	DisplayName   *StringFieldComparison                  `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison                  `json:"environmentId,omitempty"`
-	ProductID     *StringFieldComparison                  `json:"productId,omitempty"`
+	ID            *StringFieldComparison                  `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison                 `json:"isLatest,omitempty"`
+	Or            []*CustomerSubscriptionFilterPlanFilter `json:"or,omitempty"`
+	PricingType   *PricingTypeFilterComparison            `json:"pricingType,omitempty"`
+	ProductID     *StringFieldComparison                  `json:"productId,omitempty"`
+	RefID         *StringFieldComparison                  `json:"refId,omitempty"`
+	Status        *PackageStatusFilterComparison          `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison                    `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison                     `json:"versionNumber,omitempty"`
 }
 
 type CustomerSubscriptionFilterSubscriptionAddonFilter struct {
 	And       []*CustomerSubscriptionFilterSubscriptionAddonFilter `json:"and,omitempty"`
-	Or        []*CustomerSubscriptionFilterSubscriptionAddonFilter `json:"or,omitempty"`
+	CreatedAt *DateFieldComparison                                 `json:"createdAt,omitempty"`
 	ID        *StringFieldComparison                               `json:"id,omitempty"`
+	Or        []*CustomerSubscriptionFilterSubscriptionAddonFilter `json:"or,omitempty"`
 	Quantity  *NumberFieldComparison                               `json:"quantity,omitempty"`
 	UpdatedAt *DateFieldComparison                                 `json:"updatedAt,omitempty"`
-	CreatedAt *DateFieldComparison                                 `json:"createdAt,omitempty"`
 }
 
 type CustomerSubscriptionFilterSubscriptionEntitlementFilter struct {
 	And            []*CustomerSubscriptionFilterSubscriptionEntitlementFilter `json:"and,omitempty"`
-	Or             []*CustomerSubscriptionFilterSubscriptionEntitlementFilter `json:"or,omitempty"`
-	ID             *StringFieldComparison                                     `json:"id,omitempty"`
-	SubscriptionID *StringFieldComparison                                     `json:"subscriptionId,omitempty"`
 	CreatedAt      *DateFieldComparison                                       `json:"createdAt,omitempty"`
-	UpdatedAt      *DateFieldComparison                                       `json:"updatedAt,omitempty"`
 	EnvironmentID  *StringFieldComparison                                     `json:"environmentId,omitempty"`
+	ID             *StringFieldComparison                                     `json:"id,omitempty"`
+	Or             []*CustomerSubscriptionFilterSubscriptionEntitlementFilter `json:"or,omitempty"`
+	SubscriptionID *StringFieldComparison                                     `json:"subscriptionId,omitempty"`
+	UpdatedAt      *DateFieldComparison                                       `json:"updatedAt,omitempty"`
 }
 
 type CustomerSubscriptionFilterSubscriptionPriceFilter struct {
 	And          []*CustomerSubscriptionFilterSubscriptionPriceFilter `json:"and,omitempty"`
-	Or           []*CustomerSubscriptionFilterSubscriptionPriceFilter `json:"or,omitempty"`
-	ID           *StringFieldComparison                               `json:"id,omitempty"`
+	BillingModel *BillingModelFilterComparison                        `json:"billingModel,omitempty"`
 	CreatedAt    *DateFieldComparison                                 `json:"createdAt,omitempty"`
+	FeatureID    *StringFieldComparison                               `json:"featureId,omitempty"`
+	ID           *StringFieldComparison                               `json:"id,omitempty"`
+	Or           []*CustomerSubscriptionFilterSubscriptionPriceFilter `json:"or,omitempty"`
 	UpdatedAt    *DateFieldComparison                                 `json:"updatedAt,omitempty"`
 	UsageLimit   *NumberFieldComparison                               `json:"usageLimit,omitempty"`
-	FeatureID    *StringFieldComparison                               `json:"featureId,omitempty"`
-	BillingModel *BillingModelFilterComparison                        `json:"billingModel,omitempty"`
 }
 
 type CustomerSubscriptionMaxAggregate struct {
-	EnvironmentID    *string                   `json:"environmentId"`
-	ID               *string                   `json:"id"`
-	CreatedAt        *string                   `json:"createdAt"`
-	StartDate        *string                   `json:"startDate"`
-	EndDate          *string                   `json:"endDate"`
-	CancellationDate *string                   `json:"cancellationDate"`
-	TrialEndDate     *string                   `json:"trialEndDate"`
-	EffectiveEndDate *string                   `json:"effectiveEndDate"`
-	BillingID        *string                   `json:"billingId"`
-	OldBillingID     *string                   `json:"oldBillingId"`
-	CrmID            *string                   `json:"crmId"`
-	CrmLinkURL       *string                   `json:"crmLinkUrl"`
-	Status           *SubscriptionStatus       `json:"status"`
-	CancelReason     *SubscriptionCancelReason `json:"cancelReason"`
-	RefID            *string                   `json:"refId"`
-	SubscriptionID   *string                   `json:"subscriptionId"`
-	ResourceID       *string                   `json:"resourceId"`
-	PricingType      *PricingType              `json:"pricingType"`
+	BillingID         *string                   `json:"billingId"`
+	CancelReason      *SubscriptionCancelReason `json:"cancelReason"`
+	CancellationDate  *string                   `json:"cancellationDate"`
+	CreatedAt         *string                   `json:"createdAt"`
+	CrmID             *string                   `json:"crmId"`
+	CrmLinkURL        *string                   `json:"crmLinkUrl"`
+	EffectiveEndDate  *string                   `json:"effectiveEndDate"`
+	EndDate           *string                   `json:"endDate"`
+	EnvironmentID     *string                   `json:"environmentId"`
+	ID                *string                   `json:"id"`
+	OldBillingID      *string                   `json:"oldBillingId"`
+	PaymentCollection *PaymentCollection        `json:"paymentCollection"`
+	PricingType       *PricingType              `json:"pricingType"`
+	RefID             *string                   `json:"refId"`
+	ResourceID        *string                   `json:"resourceId"`
+	StartDate         *string                   `json:"startDate"`
+	Status            *SubscriptionStatus       `json:"status"`
+	SubscriptionID    *string                   `json:"subscriptionId"`
+	TrialEndDate      *string                   `json:"trialEndDate"`
 }
 
 type CustomerSubscriptionMinAggregate struct {
-	EnvironmentID    *string                   `json:"environmentId"`
-	ID               *string                   `json:"id"`
-	CreatedAt        *string                   `json:"createdAt"`
-	StartDate        *string                   `json:"startDate"`
-	EndDate          *string                   `json:"endDate"`
-	CancellationDate *string                   `json:"cancellationDate"`
-	TrialEndDate     *string                   `json:"trialEndDate"`
-	EffectiveEndDate *string                   `json:"effectiveEndDate"`
-	BillingID        *string                   `json:"billingId"`
-	OldBillingID     *string                   `json:"oldBillingId"`
-	CrmID            *string                   `json:"crmId"`
-	CrmLinkURL       *string                   `json:"crmLinkUrl"`
-	Status           *SubscriptionStatus       `json:"status"`
-	CancelReason     *SubscriptionCancelReason `json:"cancelReason"`
-	RefID            *string                   `json:"refId"`
-	SubscriptionID   *string                   `json:"subscriptionId"`
-	ResourceID       *string                   `json:"resourceId"`
-	PricingType      *PricingType              `json:"pricingType"`
+	BillingID         *string                   `json:"billingId"`
+	CancelReason      *SubscriptionCancelReason `json:"cancelReason"`
+	CancellationDate  *string                   `json:"cancellationDate"`
+	CreatedAt         *string                   `json:"createdAt"`
+	CrmID             *string                   `json:"crmId"`
+	CrmLinkURL        *string                   `json:"crmLinkUrl"`
+	EffectiveEndDate  *string                   `json:"effectiveEndDate"`
+	EndDate           *string                   `json:"endDate"`
+	EnvironmentID     *string                   `json:"environmentId"`
+	ID                *string                   `json:"id"`
+	OldBillingID      *string                   `json:"oldBillingId"`
+	PaymentCollection *PaymentCollection        `json:"paymentCollection"`
+	PricingType       *PricingType              `json:"pricingType"`
+	RefID             *string                   `json:"refId"`
+	ResourceID        *string                   `json:"resourceId"`
+	StartDate         *string                   `json:"startDate"`
+	Status            *SubscriptionStatus       `json:"status"`
+	SubscriptionID    *string                   `json:"subscriptionId"`
+	TrialEndDate      *string                   `json:"trialEndDate"`
 }
 
 type CustomerSubscriptionSort struct {
-	Field     CustomerSubscriptionSortFields `json:"field"`
 	Direction SortDirection                  `json:"direction"`
+	Field     CustomerSubscriptionSortFields `json:"field"`
 	Nulls     *SortNulls                     `json:"nulls,omitempty"`
 }
 
 type CustomerSubscriptionTotalPrice struct {
+	AddonsTotal Money `json:"addonsTotal"`
 	SubTotal    Money `json:"subTotal"`
 	Total       Money `json:"total"`
-	AddonsTotal Money `json:"addonsTotal"`
 }
 
 type DateFieldComparison struct {
-	Is         *bool                       `json:"is,omitempty"`
-	IsNot      *bool                       `json:"isNot,omitempty"`
+	Between    *DateFieldComparisonBetween `json:"between,omitempty"`
 	Eq         *string                     `json:"eq,omitempty"`
-	Neq        *string                     `json:"neq,omitempty"`
 	Gt         *string                     `json:"gt,omitempty"`
 	Gte        *string                     `json:"gte,omitempty"`
+	In         []string                    `json:"in,omitempty"`
+	Is         *bool                       `json:"is,omitempty"`
+	IsNot      *bool                       `json:"isNot,omitempty"`
 	Lt         *string                     `json:"lt,omitempty"`
 	Lte        *string                     `json:"lte,omitempty"`
-	In         []string                    `json:"in,omitempty"`
-	NotIn      []string                    `json:"notIn,omitempty"`
-	Between    *DateFieldComparisonBetween `json:"between,omitempty"`
+	Neq        *string                     `json:"neq,omitempty"`
 	NotBetween *DateFieldComparisonBetween `json:"notBetween,omitempty"`
+	NotIn      []string                    `json:"notIn,omitempty"`
 }
 
 type DateFieldComparisonBetween struct {
@@ -1359,34 +1514,29 @@ type DateFieldComparisonBetween struct {
 }
 
 type DateRange struct {
-	Start *string `json:"start"`
 	End   *string `json:"end"`
+	Start *string `json:"start"`
 }
 
 type DefaultTrialConfig struct {
-	Units    TrialPeriodUnits `json:"units"`
 	Duration float64          `json:"duration"`
+	Units    TrialPeriodUnits `json:"units"`
 }
 
 type DefaultTrialConfigChange struct {
-	Before     *DefaultTrialConfig `json:"before"`
 	After      *DefaultTrialConfig `json:"after"`
+	Before     *DefaultTrialConfig `json:"before"`
 	ChangeType *ChangeType         `json:"changeType"`
 }
 
 type DefaultTrialConfigInputDto struct {
-	Units    *TrialPeriodUnits `json:"units,omitempty"`
 	Duration *float64          `json:"duration,omitempty"`
-}
-
-type DeleteCustomerInput struct {
-	ID            string  `json:"id"`
-	EnvironmentID *string `json:"environmentId,omitempty"`
+	Units    *TrialPeriodUnits `json:"units,omitempty"`
 }
 
 type DeleteFeatureInput struct {
-	ID            string  `json:"id"`
 	EnvironmentID *string `json:"environmentId,omitempty"`
+	ID            string  `json:"id"`
 }
 
 type DeleteOneAddonInput struct {
@@ -1430,24 +1580,24 @@ type DeleteOnePromotionalEntitlementInput struct {
 }
 
 type DiscardPackageDraftInput struct {
-	RefID         string `json:"refId"`
 	EnvironmentID string `json:"environmentId"`
+	RefID         string `json:"refId"`
 }
 
 type DowngradeChangeVariables struct {
-	DowngradePlanRefID string             `json:"downgradePlanRefId"`
-	BillingPeriod      *BillingPeriod     `json:"billingPeriod"`
-	BillableFeatures   []*BillableFeature `json:"billableFeatures"`
 	AddonRefIds        *string            `json:"addonRefIds"`
+	BillableFeatures   []*BillableFeature `json:"billableFeatures"`
+	BillingPeriod      *BillingPeriod     `json:"billingPeriod"`
+	DowngradePlanRefID string             `json:"downgradePlanRefId"`
 }
 
 func (DowngradeChangeVariables) IsScheduleVariables() {}
 
 type DuplicatedEntityNotAllowedError struct {
 	Code              string `json:"code"`
-	IsValidationError bool   `json:"isValidationError"`
-	Identifier        string `json:"identifier"`
 	EntityName        string `json:"entityName"`
+	Identifier        string `json:"identifier"`
+	IsValidationError bool   `json:"isValidationError"`
 }
 
 type EditAllowedOnDraftPackageOnlyError struct {
@@ -1456,192 +1606,194 @@ type EditAllowedOnDraftPackageOnlyError struct {
 }
 
 type EligibleForTrial struct {
+	Eligible     bool    `json:"eligible"`
 	ProductID    *string `json:"productId"`
 	ProductRefID *string `json:"productRefId"`
-	Eligible     bool    `json:"eligible"`
 }
 
 type Entitlement struct {
-	IsGranted                bool                     `json:"isGranted"`
-	CustomerID               *string                  `json:"customerId"`
-	ResourceID               *string                  `json:"resourceId"`
 	AccessDeniedReason       *AccessDeniedReason      `json:"accessDeniedReason"`
 	CurrentUsage             *float64                 `json:"currentUsage"`
-	RequestedUsage           *float64                 `json:"requestedUsage"`
-	UsageLimit               *float64                 `json:"usageLimit"`
-	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
-	NextResetDate            *string                  `json:"nextResetDate"`
-	UsageUpdatedAt           *string                  `json:"usageUpdatedAt"`
+	CustomerID               *string                  `json:"customerId"`
+	DisplayNameOverride      *string                  `json:"displayNameOverride"`
 	EntitlementUpdatedAt     *string                  `json:"entitlementUpdatedAt"`
+	Feature                  *EntitlementFeature      `json:"feature"`
+	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
+	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
+	IsGranted                bool                     `json:"isGranted"`
+	MeterID                  *string                  `json:"meterId"`
+	NextResetDate            *string                  `json:"nextResetDate"`
+	RequestedUsage           *float64                 `json:"requestedUsage"`
 	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	Feature                  *EntitlementFeature      `json:"feature"`
-	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
-	DisplayNameOverride      *string                  `json:"displayNameOverride"`
+	ResourceID               *string                  `json:"resourceId"`
+	UsageLimit               *float64                 `json:"usageLimit"`
+	UsageUpdatedAt           *string                  `json:"usageUpdatedAt"`
 }
 
 type EntitlementCheckRequested struct {
 	CustomerID             string                 `json:"customerId"`
-	ResourceID             *string                `json:"resourceId,omitempty"`
-	FeatureID              string                 `json:"featureId"`
-	EnvironmentID          *string                `json:"environmentId,omitempty"`
-	RequestedUsage         *float64               `json:"requestedUsage,omitempty"`
 	EntitlementCheckResult EntitlementCheckResult `json:"entitlementCheckResult"`
+	EnvironmentID          *string                `json:"environmentId,omitempty"`
+	FeatureID              string                 `json:"featureId"`
+	RequestedUsage         *float64               `json:"requestedUsage,omitempty"`
+	ResourceID             *string                `json:"resourceId,omitempty"`
 }
 
 type EntitlementCheckResult struct {
-	HasAccess                       bool                           `json:"hasAccess"`
 	AccessDeniedReason              *AccessDeniedReason            `json:"accessDeniedReason,omitempty"`
 	CurrentUsage                    *float64                       `json:"currentUsage,omitempty"`
-	RequestedUsage                  *float64                       `json:"requestedUsage,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
+	HasAccess                       bool                           `json:"hasAccess"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	NextResetDate                   *string                        `json:"nextResetDate,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	NextResetDate                   *string                        `json:"nextResetDate,omitempty"`
+	RequestedUsage                  *float64                       `json:"requestedUsage,omitempty"`
+	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 }
 
 type EntitlementFeature struct {
-	ID                 string                 `json:"id"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	Description        *string                `json:"description"`
 	DisplayName        string                 `json:"displayName"`
-	RefID              string                 `json:"refId"`
+	FeatureStatus      FeatureStatus          `json:"featureStatus"`
+	FeatureType        FeatureType            `json:"featureType"`
 	FeatureUnits       *string                `json:"featureUnits"`
 	FeatureUnitsPlural *string                `json:"featureUnitsPlural"`
-	Description        *string                `json:"description"`
-	FeatureType        FeatureType            `json:"featureType"`
+	ID                 string                 `json:"id"`
 	MeterType          *MeterType             `json:"meterType"`
-	FeatureStatus      FeatureStatus          `json:"featureStatus"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	RefID              string                 `json:"refId"`
 }
 
 type EntitlementOptions struct {
-	ShouldTrack    *bool    `json:"shouldTrack,omitempty"`
 	RequestedUsage *float64 `json:"requestedUsage,omitempty"`
+	ShouldTrack    *bool    `json:"shouldTrack,omitempty"`
 }
 
 type EntitlementSummary struct {
+	AddonQuantity                 *float64                `json:"addonQuantity"`
 	FeaturePackageEntitlement     *PackageEntitlement     `json:"featurePackageEntitlement"`
 	FeaturePromotionalEntitlement *PromotionalEntitlement `json:"featurePromotionalEntitlement"`
-	PriceEntitlement              *PriceEntitlement       `json:"priceEntitlement"`
-	AddonQuantity                 *float64                `json:"addonQuantity"`
-	Plan                          *Plan                   `json:"plan"`
-	Subscription                  *CustomerSubscription   `json:"subscription"`
 	IsEffectiveEntitlement        bool                    `json:"isEffectiveEntitlement"`
+	Plan                          *Plan                   `json:"plan"`
+	PriceEntitlement              *PriceEntitlement       `json:"priceEntitlement"`
+	Subscription                  *CustomerSubscription   `json:"subscription"`
 }
 
 type EntitlementWithSummary struct {
-	IsGranted                bool                     `json:"isGranted"`
-	CustomerID               *string                  `json:"customerId"`
-	ResourceID               *string                  `json:"resourceId"`
 	AccessDeniedReason       *AccessDeniedReason      `json:"accessDeniedReason"`
 	CurrentUsage             *float64                 `json:"currentUsage"`
-	RequestedUsage           *float64                 `json:"requestedUsage"`
-	UsageLimit               *float64                 `json:"usageLimit"`
-	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
-	NextResetDate            *string                  `json:"nextResetDate"`
-	UsageUpdatedAt           *string                  `json:"usageUpdatedAt"`
+	CustomerID               *string                  `json:"customerId"`
+	DisplayNameOverride      *string                  `json:"displayNameOverride"`
 	EntitlementUpdatedAt     *string                  `json:"entitlementUpdatedAt"`
+	Feature                  *EntitlementFeature      `json:"feature"`
+	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
+	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
+	IsGranted                bool                     `json:"isGranted"`
+	MeterID                  *string                  `json:"meterId"`
+	NextResetDate            *string                  `json:"nextResetDate"`
+	RequestedUsage           *float64                 `json:"requestedUsage"`
 	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	Feature                  *EntitlementFeature      `json:"feature"`
-	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
-	DisplayNameOverride      *string                  `json:"displayNameOverride"`
+	ResourceID               *string                  `json:"resourceId"`
 	Summaries                []*EntitlementSummary    `json:"summaries"`
+	UsageLimit               *float64                 `json:"usageLimit"`
+	UsageUpdatedAt           *string                  `json:"usageUpdatedAt"`
 }
 
 type EntitlementsUpdated struct {
-	Entitlements  []*Entitlement `json:"entitlements"`
-	CustomerID    string         `json:"customerId"`
-	ResourceID    *string        `json:"resourceId"`
 	AccountID     string         `json:"accountId"`
+	CustomerID    string         `json:"customerId"`
+	Entitlements  []*Entitlement `json:"entitlements"`
 	EnvironmentID string         `json:"environmentId"`
+	ResourceID    *string        `json:"resourceId"`
 }
 
 type Environment struct {
-	ID                        string                      `json:"id"`
-	CreatedAt                 *string                     `json:"createdAt"`
-	DisplayName               string                      `json:"displayName"`
-	Description               *string                     `json:"description"`
-	Slug                      string                      `json:"slug"`
-	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus"`
-	SigningToken              string                      `json:"signingToken"`
-	HardenClientAccessEnabled bool                        `json:"hardenClientAccessEnabled"`
-	IsSandbox                 bool                        `json:"isSandbox"`
-	Color                     *string                     `json:"color"`
 	Account                   *Account                    `json:"account"`
 	APIKeys                   []*APIKey                   `json:"apiKeys"`
+	Color                     *string                     `json:"color"`
+	CreatedAt                 *string                     `json:"createdAt"`
+	Description               *string                     `json:"description"`
+	DisplayName               string                      `json:"displayName"`
+	HardenClientAccessEnabled bool                        `json:"hardenClientAccessEnabled"`
+	ID                        string                      `json:"id"`
+	IsSandbox                 bool                        `json:"isSandbox"`
+	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus"`
+	SigningToken              string                      `json:"signingToken"`
+	Slug                      string                      `json:"slug"`
 }
 
 type EnvironmentAggregateGroupBy struct {
-	ID          *string `json:"id"`
 	CreatedAt   *string `json:"createdAt"`
 	DisplayName *string `json:"displayName"`
+	ID          *string `json:"id"`
 	Slug        *string `json:"slug"`
 }
 
 type EnvironmentConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*EnvironmentEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 }
 
 type EnvironmentCountAggregate struct {
-	ID          *int64 `json:"id"`
 	CreatedAt   *int64 `json:"createdAt"`
 	DisplayName *int64 `json:"displayName"`
+	ID          *int64 `json:"id"`
 	Slug        *int64 `json:"slug"`
 }
 
 type EnvironmentDeleteResponse struct {
-	ID                        *string                     `json:"id"`
+	Color                     *string                     `json:"color"`
 	CreatedAt                 *string                     `json:"createdAt"`
-	DisplayName               *string                     `json:"displayName"`
 	Description               *string                     `json:"description"`
-	Slug                      *string                     `json:"slug"`
+	DisplayName               *string                     `json:"displayName"`
+	HardenClientAccessEnabled *bool                       `json:"hardenClientAccessEnabled"`
+	ID                        *string                     `json:"id"`
+	IsSandbox                 *bool                       `json:"isSandbox"`
 	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus"`
 	SigningToken              *string                     `json:"signingToken"`
-	HardenClientAccessEnabled *bool                       `json:"hardenClientAccessEnabled"`
-	IsSandbox                 *bool                       `json:"isSandbox"`
-	Color                     *string                     `json:"color"`
+	Slug                      *string                     `json:"slug"`
 }
 
 type EnvironmentEdge struct {
-	// The node containing the Environment
-	Node Environment `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Environment
+	Node Environment `json:"node"`
 }
 
 type EnvironmentFilter struct {
 	And         []*EnvironmentFilter   `json:"and,omitempty"`
-	Or          []*EnvironmentFilter   `json:"or,omitempty"`
-	ID          *StringFieldComparison `json:"id,omitempty"`
 	CreatedAt   *DateFieldComparison   `json:"createdAt,omitempty"`
 	DisplayName *StringFieldComparison `json:"displayName,omitempty"`
+	ID          *StringFieldComparison `json:"id,omitempty"`
+	Or          []*EnvironmentFilter   `json:"or,omitempty"`
 	Slug        *StringFieldComparison `json:"slug,omitempty"`
 }
 
 type EnvironmentInput struct {
-	DisplayName               *string                     `json:"displayName,omitempty"`
-	Description               *string                     `json:"description,omitempty"`
 	Color                     *string                     `json:"color,omitempty"`
-	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
+	Description               *string                     `json:"description,omitempty"`
+	DisplayName               *string                     `json:"displayName,omitempty"`
 	HardenClientAccessEnabled *bool                       `json:"hardenClientAccessEnabled,omitempty"`
+	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
 }
 
 type EnvironmentMaxAggregate struct {
-	ID          *string `json:"id"`
 	CreatedAt   *string `json:"createdAt"`
 	DisplayName *string `json:"displayName"`
+	ID          *string `json:"id"`
 	Slug        *string `json:"slug"`
 }
 
 type EnvironmentMinAggregate struct {
-	ID          *string `json:"id"`
 	CreatedAt   *string `json:"createdAt"`
 	DisplayName *string `json:"displayName"`
+	ID          *string `json:"id"`
 	Slug        *string `json:"slug"`
 }
 
@@ -1651,102 +1803,111 @@ type EnvironmentMissingError struct {
 }
 
 type EnvironmentSort struct {
-	Field     EnvironmentSortFields `json:"field"`
 	Direction SortDirection         `json:"direction"`
+	Field     EnvironmentSortFields `json:"field"`
 	Nulls     *SortNulls            `json:"nulls,omitempty"`
 }
 
 type EstimateSubscriptionInput struct {
-	EnvironmentID      *string                   `json:"environmentId,omitempty"`
-	CustomerID         string                    `json:"customerId"`
-	ResourceID         *string                   `json:"resourceId,omitempty"`
-	PlanID             string                    `json:"planId"`
-	BillingPeriod      *BillingPeriod            `json:"billingPeriod,omitempty"`
-	BillingCountryCode *string                   `json:"billingCountryCode,omitempty"`
-	PriceUnitAmount    *float64                  `json:"priceUnitAmount,omitempty"`
-	UnitQuantity       *float64                  `json:"unitQuantity,omitempty"`
-	BillableFeatures   []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
 	Addons             []*SubscriptionAddonInput `json:"addons,omitempty"`
-	StartDate          *string                   `json:"startDate,omitempty"`
+	BillableFeatures   []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingCountryCode *string                   `json:"billingCountryCode,omitempty"`
 	BillingInformation *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CustomerID         string                    `json:"customerId"`
+	EnvironmentID      *string                   `json:"environmentId,omitempty"`
+	PlanID             string                    `json:"planId"`
+	PriceUnitAmount    *float64                  `json:"priceUnitAmount,omitempty"`
 	PromotionCode      *string                   `json:"promotionCode,omitempty"`
+	ResourceID         *string                   `json:"resourceId,omitempty"`
 	SkipTrial          *bool                     `json:"skipTrial,omitempty"`
+	StartDate          *string                   `json:"startDate,omitempty"`
+	UnitQuantity       *float64                  `json:"unitQuantity,omitempty"`
 }
 
 type EstimateSubscriptionUpdateInput struct {
+	Addons           []*SubscriptionAddonInput `json:"addons,omitempty"`
+	BillableFeatures []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
 	EnvironmentID    *string                   `json:"environmentId,omitempty"`
+	PromotionCode    *string                   `json:"promotionCode,omitempty"`
 	SubscriptionID   string                    `json:"subscriptionId"`
 	UnitQuantity     *float64                  `json:"unitQuantity,omitempty"`
-	BillableFeatures []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
-	Addons           []*SubscriptionAddonInput `json:"addons,omitempty"`
-	PromotionCode    *string                   `json:"promotionCode,omitempty"`
 }
 
 type EventLog struct {
-	ID               string       `json:"id"`
 	Description      *string      `json:"description"`
-	WebhookEndpoints []string     `json:"webhookEndpoints"`
+	Environment      *Environment `json:"environment"`
 	EnvironmentID    string       `json:"environmentId"`
 	EventLogType     EventLogType `json:"eventLogType"`
-	Environment      *Environment `json:"environment"`
+	ID               string       `json:"id"`
+	WebhookEndpoints []string     `json:"webhookEndpoints"`
 }
 
 type EventLogAggregateGroupBy struct {
-	ID            *string `json:"id"`
 	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
 }
 
 type EventLogCountAggregate struct {
-	ID            *int64 `json:"id"`
 	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
 }
 
 type EventLogEdge struct {
-	// The node containing the EventLog
-	Node EventLog `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the EventLog
+	Node EventLog `json:"node"`
 }
 
 type EventLogMaxAggregate struct {
-	ID            *string `json:"id"`
 	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
 }
 
 type EventLogMinAggregate struct {
-	ID            *string `json:"id"`
 	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+}
+
+type EventsFields struct {
+	Fields map[string]interface{} `json:"fields"`
+}
+
+type EventsFieldsInput struct {
+	EnvironmentID string                        `json:"environmentId"`
+	Filters       []*MeterFilterDefinitionInput `json:"filters,omitempty"`
 }
 
 type Experiment struct {
-	ID                     string           `json:"id"`
-	Name                   string           `json:"name"`
-	RefID                  string           `json:"refId"`
-	Description            *string          `json:"description"`
-	CreatedAt              string           `json:"createdAt"`
-	UpdatedAt              string           `json:"updatedAt"`
-	StartedAt              *string          `json:"startedAt"`
-	StoppedAt              *string          `json:"stoppedAt"`
-	EnvironmentID          string           `json:"environmentId"`
-	ProductID              string           `json:"productId"`
-	Status                 ExperimentStatus `json:"status"`
-	VariantPercentage      float64          `json:"variantPercentage"`
 	ControlGroupName       string           `json:"controlGroupName"`
-	VariantGroupName       string           `json:"variantGroupName"`
-	ProductSettings        ProductSettings  `json:"productSettings"`
-	InitialProductSettings *ProductSettings `json:"initialProductSettings"`
+	CreatedAt              string           `json:"createdAt"`
 	Customers              *Customer        `json:"customers"`
-	Product                *Product         `json:"product"`
+	Description            *string          `json:"description"`
 	Environment            *Environment     `json:"environment"`
+	EnvironmentID          string           `json:"environmentId"`
+	ID                     string           `json:"id"`
+	InitialProductSettings *ProductSettings `json:"initialProductSettings"`
+	Name                   string           `json:"name"`
+	Product                *Product         `json:"product"`
+	ProductID              string           `json:"productId"`
+	ProductSettings        ProductSettings  `json:"productSettings"`
+	RefID                  string           `json:"refId"`
+	StartedAt              *string          `json:"startedAt"`
+	Status                 ExperimentStatus `json:"status"`
+	StoppedAt              *string          `json:"stoppedAt"`
+	UpdatedAt              string           `json:"updatedAt"`
+	VariantGroupName       string           `json:"variantGroupName"`
+	VariantPercentage      float64          `json:"variantPercentage"`
 }
 
 type ExperimentAggregateGroupBy struct {
-	ID            *string           `json:"id"`
-	Name          *string           `json:"name"`
-	RefID         *string           `json:"refId"`
 	CreatedAt     *string           `json:"createdAt"`
 	EnvironmentID *string           `json:"environmentId"`
+	ID            *string           `json:"id"`
+	Name          *string           `json:"name"`
 	ProductID     *string           `json:"productId"`
+	RefID         *string           `json:"refId"`
 	Status        *ExperimentStatus `json:"status"`
 }
 
@@ -1755,114 +1916,116 @@ type ExperimentAvgAggregate struct {
 }
 
 type ExperimentConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*ExperimentEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type ExperimentCountAggregate struct {
-	ID            *int64 `json:"id"`
-	Name          *int64 `json:"name"`
-	RefID         *int64 `json:"refId"`
 	CreatedAt     *int64 `json:"createdAt"`
 	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
+	Name          *int64 `json:"name"`
 	ProductID     *int64 `json:"productId"`
+	RefID         *int64 `json:"refId"`
 	Status        *int64 `json:"status"`
 }
 
 type ExperimentEdge struct {
-	// The node containing the Experiment
-	Node Experiment `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Experiment
+	Node Experiment `json:"node"`
 }
 
 type ExperimentFilter struct {
 	And           []*ExperimentFilter               `json:"and,omitempty"`
-	Or            []*ExperimentFilter               `json:"or,omitempty"`
+	CreatedAt     *DateFieldComparison              `json:"createdAt,omitempty"`
+	Customers     *ExperimentFilterCustomerFilter   `json:"customers,omitempty"`
+	EnvironmentID *StringFieldComparison            `json:"environmentId,omitempty"`
 	ID            *StringFieldComparison            `json:"id,omitempty"`
 	Name          *StringFieldComparison            `json:"name,omitempty"`
-	RefID         *StringFieldComparison            `json:"refId,omitempty"`
-	CreatedAt     *DateFieldComparison              `json:"createdAt,omitempty"`
-	EnvironmentID *StringFieldComparison            `json:"environmentId,omitempty"`
+	Or            []*ExperimentFilter               `json:"or,omitempty"`
 	ProductID     *StringFieldComparison            `json:"productId,omitempty"`
+	RefID         *StringFieldComparison            `json:"refId,omitempty"`
 	Status        *ExperimentStatusFilterComparison `json:"status,omitempty"`
-	Customers     *ExperimentFilterCustomerFilter   `json:"customers,omitempty"`
 }
 
 type ExperimentFilterCustomerFilter struct {
-	And                  []*ExperimentFilterCustomerFilter `json:"and,omitempty"`
-	Or                   []*ExperimentFilterCustomerFilter `json:"or,omitempty"`
-	ID                   *StringFieldComparison            `json:"id,omitempty"`
-	Name                 *StringFieldComparison            `json:"name,omitempty"`
-	Email                *StringFieldComparison            `json:"email,omitempty"`
-	RefID                *StringFieldComparison            `json:"refId,omitempty"`
-	CustomerID           *StringFieldComparison            `json:"customerId,omitempty"`
-	CreatedAt            *DateFieldComparison              `json:"createdAt,omitempty"`
-	UpdatedAt            *DateFieldComparison              `json:"updatedAt,omitempty"`
-	EnvironmentID        *StringFieldComparison            `json:"environmentId,omitempty"`
-	BillingID            *StringFieldComparison            `json:"billingId,omitempty"`
-	CrmID                *StringFieldComparison            `json:"crmId,omitempty"`
-	CrmHubspotCompanyID  *StringFieldComparison            `json:"crmHubspotCompanyId,omitempty"`
-	CrmHubspotCompanyURL *StringFieldComparison            `json:"crmHubspotCompanyUrl,omitempty"`
+	And                  []*ExperimentFilterCustomerFilter    `json:"and,omitempty"`
+	BillingID            *StringFieldComparison               `json:"billingId,omitempty"`
+	CreatedAt            *DateFieldComparison                 `json:"createdAt,omitempty"`
+	CrmHubspotCompanyID  *StringFieldComparison               `json:"crmHubspotCompanyId,omitempty"`
+	CrmHubspotCompanyURL *StringFieldComparison               `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                *StringFieldComparison               `json:"crmId,omitempty"`
+	CustomerID           *StringFieldComparison               `json:"customerId,omitempty"`
+	DeletedAt            *DateFieldComparison                 `json:"deletedAt,omitempty"`
+	Email                *StringFieldComparison               `json:"email,omitempty"`
+	EnvironmentID        *StringFieldComparison               `json:"environmentId,omitempty"`
+	ID                   *StringFieldComparison               `json:"id,omitempty"`
+	Name                 *StringFieldComparison               `json:"name,omitempty"`
+	Or                   []*ExperimentFilterCustomerFilter    `json:"or,omitempty"`
+	RefID                *StringFieldComparison               `json:"refId,omitempty"`
+	SearchQuery          *CustomerSearchQueryFilterComparison `json:"searchQuery,omitempty"`
+	UpdatedAt            *DateFieldComparison                 `json:"updatedAt,omitempty"`
 }
 
 type ExperimentMaxAggregate struct {
-	ID            *string           `json:"id"`
-	Name          *string           `json:"name"`
-	RefID         *string           `json:"refId"`
 	CreatedAt     *string           `json:"createdAt"`
 	EnvironmentID *string           `json:"environmentId"`
+	ID            *string           `json:"id"`
+	Name          *string           `json:"name"`
 	ProductID     *string           `json:"productId"`
+	RefID         *string           `json:"refId"`
 	Status        *ExperimentStatus `json:"status"`
 }
 
 type ExperimentMinAggregate struct {
-	ID            *string           `json:"id"`
-	Name          *string           `json:"name"`
-	RefID         *string           `json:"refId"`
 	CreatedAt     *string           `json:"createdAt"`
 	EnvironmentID *string           `json:"environmentId"`
+	ID            *string           `json:"id"`
+	Name          *string           `json:"name"`
 	ProductID     *string           `json:"productId"`
+	RefID         *string           `json:"refId"`
 	Status        *ExperimentStatus `json:"status"`
 }
 
 type ExperimentSort struct {
-	Field     ExperimentSortFields `json:"field"`
 	Direction SortDirection        `json:"direction"`
+	Field     ExperimentSortFields `json:"field"`
 	Nulls     *SortNulls           `json:"nulls,omitempty"`
 }
 
 type ExperimentStats struct {
-	ControlSubscriptions     float64 `json:"controlSubscriptions"`
 	ControlPaidSubscriptions float64 `json:"controlPaidSubscriptions"`
-	VariantSubscriptions     float64 `json:"variantSubscriptions"`
+	ControlSubscriptions     float64 `json:"controlSubscriptions"`
 	VariantPaidSubscriptions float64 `json:"variantPaidSubscriptions"`
+	VariantSubscriptions     float64 `json:"variantSubscriptions"`
 }
 
 type ExperimentStatsQuery struct {
-	ExperimentRefID string  `json:"experimentRefId"`
 	EnvironmentID   *string `json:"environmentId,omitempty"`
+	ExperimentRefID string  `json:"experimentRefId"`
 }
 
 type ExperimentStatusFilterComparison struct {
-	Is       *bool              `json:"is,omitempty"`
-	IsNot    *bool              `json:"isNot,omitempty"`
 	Eq       *ExperimentStatus  `json:"eq,omitempty"`
-	Neq      *ExperimentStatus  `json:"neq,omitempty"`
 	Gt       *ExperimentStatus  `json:"gt,omitempty"`
 	Gte      *ExperimentStatus  `json:"gte,omitempty"`
+	ILike    *ExperimentStatus  `json:"iLike,omitempty"`
+	In       []ExperimentStatus `json:"in,omitempty"`
+	Is       *bool              `json:"is,omitempty"`
+	IsNot    *bool              `json:"isNot,omitempty"`
+	Like     *ExperimentStatus  `json:"like,omitempty"`
 	Lt       *ExperimentStatus  `json:"lt,omitempty"`
 	Lte      *ExperimentStatus  `json:"lte,omitempty"`
-	Like     *ExperimentStatus  `json:"like,omitempty"`
-	NotLike  *ExperimentStatus  `json:"notLike,omitempty"`
-	ILike    *ExperimentStatus  `json:"iLike,omitempty"`
+	Neq      *ExperimentStatus  `json:"neq,omitempty"`
 	NotILike *ExperimentStatus  `json:"notILike,omitempty"`
-	In       []ExperimentStatus `json:"in,omitempty"`
 	NotIn    []ExperimentStatus `json:"notIn,omitempty"`
+	NotLike  *ExperimentStatus  `json:"notLike,omitempty"`
 }
 
 type ExperimentSumAggregate struct {
@@ -1870,123 +2033,127 @@ type ExperimentSumAggregate struct {
 }
 
 type FailedToImportCustomerError struct {
+	BillingID         string `json:"billingId"`
 	Code              string `json:"code"`
 	IsValidationError bool   `json:"isValidationError"`
-	BillingID         string `json:"billingId"`
 }
 
 type Feature struct {
-	ID                 string                 `json:"id"`
-	DisplayName        string                 `json:"displayName"`
-	RefID              string                 `json:"refId"`
+	Account            *Account               `json:"account"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	CreatedAt          *string                `json:"createdAt"`
-	UpdatedAt          string                 `json:"updatedAt"`
+	Description        *string                `json:"description"`
+	DisplayName        string                 `json:"displayName"`
+	Environment        *Environment           `json:"environment"`
+	EnvironmentID      string                 `json:"environmentId"`
+	FeatureStatus      FeatureStatus          `json:"featureStatus"`
+	FeatureType        FeatureType            `json:"featureType"`
 	FeatureUnits       *string                `json:"featureUnits"`
 	FeatureUnitsPlural *string                `json:"featureUnitsPlural"`
-	Description        *string                `json:"description"`
-	FeatureType        FeatureType            `json:"featureType"`
+	HasEntitlements    *bool                  `json:"hasEntitlements"`
+	HasMeter           *bool                  `json:"hasMeter"`
+	ID                 string                 `json:"id"`
+	Meter              *Meter                 `json:"meter"`
 	MeterType          *MeterType             `json:"meterType"`
-	FeatureStatus      FeatureStatus          `json:"featureStatus"`
-	EnvironmentID      string                 `json:"environmentId"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	Account            *Account               `json:"account"`
-	Environment        *Environment           `json:"environment"`
+	RefID              string                 `json:"refId"`
+	UpdatedAt          string                 `json:"updatedAt"`
 }
 
 type FeatureAggregateGroupBy struct {
-	ID            *string        `json:"id"`
-	DisplayName   *string        `json:"displayName"`
-	RefID         *string        `json:"refId"`
 	CreatedAt     *string        `json:"createdAt"`
-	UpdatedAt     *string        `json:"updatedAt"`
 	Description   *string        `json:"description"`
-	FeatureType   *FeatureType   `json:"featureType"`
-	MeterType     *MeterType     `json:"meterType"`
-	FeatureStatus *FeatureStatus `json:"featureStatus"`
+	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
+	FeatureStatus *FeatureStatus `json:"featureStatus"`
+	FeatureType   *FeatureType   `json:"featureType"`
+	ID            *string        `json:"id"`
+	MeterType     *MeterType     `json:"meterType"`
+	RefID         *string        `json:"refId"`
+	UpdatedAt     *string        `json:"updatedAt"`
 }
 
 type FeatureConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*FeatureEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type FeatureCountAggregate struct {
-	ID            *int64 `json:"id"`
-	DisplayName   *int64 `json:"displayName"`
-	RefID         *int64 `json:"refId"`
 	CreatedAt     *int64 `json:"createdAt"`
-	UpdatedAt     *int64 `json:"updatedAt"`
 	Description   *int64 `json:"description"`
-	FeatureType   *int64 `json:"featureType"`
-	MeterType     *int64 `json:"meterType"`
-	FeatureStatus *int64 `json:"featureStatus"`
+	DisplayName   *int64 `json:"displayName"`
 	EnvironmentID *int64 `json:"environmentId"`
+	FeatureStatus *int64 `json:"featureStatus"`
+	FeatureType   *int64 `json:"featureType"`
+	ID            *int64 `json:"id"`
+	MeterType     *int64 `json:"meterType"`
+	RefID         *int64 `json:"refId"`
+	UpdatedAt     *int64 `json:"updatedAt"`
 }
 
 type FeatureEdge struct {
-	// The node containing the Feature
-	Node Feature `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Feature
+	Node Feature `json:"node"`
 }
 
 type FeatureFilter struct {
 	And           []*FeatureFilter               `json:"and,omitempty"`
-	Or            []*FeatureFilter               `json:"or,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
-	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	RefID         *StringFieldComparison         `json:"refId,omitempty"`
 	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
-	FeatureType   *FeatureTypeFilterComparison   `json:"featureType,omitempty"`
-	MeterType     *MeterTypeFilterComparison     `json:"meterType,omitempty"`
-	FeatureStatus *FeatureStatusFilterComparison `json:"featureStatus,omitempty"`
+	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
+	FeatureStatus *FeatureStatusFilterComparison `json:"featureStatus,omitempty"`
+	FeatureType   *FeatureTypeFilterComparison   `json:"featureType,omitempty"`
+	ID            *StringFieldComparison         `json:"id,omitempty"`
+	MeterType     *MeterTypeFilterComparison     `json:"meterType,omitempty"`
+	Or            []*FeatureFilter               `json:"or,omitempty"`
+	RefID         *StringFieldComparison         `json:"refId,omitempty"`
+	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 }
 
 type FeatureInput struct {
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	Description        *string                `json:"description,omitempty"`
 	DisplayName        string                 `json:"displayName"`
-	RefID              string                 `json:"refId"`
+	EnvironmentID      string                 `json:"environmentId"`
+	FeatureStatus      *FeatureStatus         `json:"featureStatus,omitempty"`
+	FeatureType        FeatureType            `json:"featureType"`
 	FeatureUnits       *string                `json:"featureUnits,omitempty"`
 	FeatureUnitsPlural *string                `json:"featureUnitsPlural,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	FeatureType        FeatureType            `json:"featureType"`
+	Meter              *CreateMeter           `json:"meter,omitempty"`
 	MeterType          *MeterType             `json:"meterType,omitempty"`
-	FeatureStatus      *FeatureStatus         `json:"featureStatus,omitempty"`
-	EnvironmentID      string                 `json:"environmentId"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	RefID              string                 `json:"refId"`
 }
 
 type FeatureMaxAggregate struct {
-	ID            *string        `json:"id"`
-	DisplayName   *string        `json:"displayName"`
-	RefID         *string        `json:"refId"`
 	CreatedAt     *string        `json:"createdAt"`
-	UpdatedAt     *string        `json:"updatedAt"`
 	Description   *string        `json:"description"`
-	FeatureType   *FeatureType   `json:"featureType"`
-	MeterType     *MeterType     `json:"meterType"`
-	FeatureStatus *FeatureStatus `json:"featureStatus"`
+	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
+	FeatureStatus *FeatureStatus `json:"featureStatus"`
+	FeatureType   *FeatureType   `json:"featureType"`
+	ID            *string        `json:"id"`
+	MeterType     *MeterType     `json:"meterType"`
+	RefID         *string        `json:"refId"`
+	UpdatedAt     *string        `json:"updatedAt"`
 }
 
 type FeatureMinAggregate struct {
-	ID            *string        `json:"id"`
-	DisplayName   *string        `json:"displayName"`
-	RefID         *string        `json:"refId"`
 	CreatedAt     *string        `json:"createdAt"`
-	UpdatedAt     *string        `json:"updatedAt"`
 	Description   *string        `json:"description"`
-	FeatureType   *FeatureType   `json:"featureType"`
-	MeterType     *MeterType     `json:"meterType"`
-	FeatureStatus *FeatureStatus `json:"featureStatus"`
+	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
+	FeatureStatus *FeatureStatus `json:"featureStatus"`
+	FeatureType   *FeatureType   `json:"featureType"`
+	ID            *string        `json:"id"`
+	MeterType     *MeterType     `json:"meterType"`
+	RefID         *string        `json:"refId"`
+	UpdatedAt     *string        `json:"updatedAt"`
 }
 
 type FeatureNotFoundError struct {
@@ -1996,57 +2163,57 @@ type FeatureNotFoundError struct {
 }
 
 type FeatureSort struct {
-	Field     FeatureSortFields `json:"field"`
 	Direction SortDirection     `json:"direction"`
+	Field     FeatureSortFields `json:"field"`
 	Nulls     *SortNulls        `json:"nulls,omitempty"`
 }
 
 type FeatureStatusFilterComparison struct {
-	Is       *bool           `json:"is,omitempty"`
-	IsNot    *bool           `json:"isNot,omitempty"`
 	Eq       *FeatureStatus  `json:"eq,omitempty"`
-	Neq      *FeatureStatus  `json:"neq,omitempty"`
 	Gt       *FeatureStatus  `json:"gt,omitempty"`
 	Gte      *FeatureStatus  `json:"gte,omitempty"`
+	ILike    *FeatureStatus  `json:"iLike,omitempty"`
+	In       []FeatureStatus `json:"in,omitempty"`
+	Is       *bool           `json:"is,omitempty"`
+	IsNot    *bool           `json:"isNot,omitempty"`
+	Like     *FeatureStatus  `json:"like,omitempty"`
 	Lt       *FeatureStatus  `json:"lt,omitempty"`
 	Lte      *FeatureStatus  `json:"lte,omitempty"`
-	Like     *FeatureStatus  `json:"like,omitempty"`
-	NotLike  *FeatureStatus  `json:"notLike,omitempty"`
-	ILike    *FeatureStatus  `json:"iLike,omitempty"`
+	Neq      *FeatureStatus  `json:"neq,omitempty"`
 	NotILike *FeatureStatus  `json:"notILike,omitempty"`
-	In       []FeatureStatus `json:"in,omitempty"`
 	NotIn    []FeatureStatus `json:"notIn,omitempty"`
+	NotLike  *FeatureStatus  `json:"notLike,omitempty"`
 }
 
 type FeatureTypeFilterComparison struct {
-	Is       *bool         `json:"is,omitempty"`
-	IsNot    *bool         `json:"isNot,omitempty"`
 	Eq       *FeatureType  `json:"eq,omitempty"`
-	Neq      *FeatureType  `json:"neq,omitempty"`
 	Gt       *FeatureType  `json:"gt,omitempty"`
 	Gte      *FeatureType  `json:"gte,omitempty"`
+	ILike    *FeatureType  `json:"iLike,omitempty"`
+	In       []FeatureType `json:"in,omitempty"`
+	Is       *bool         `json:"is,omitempty"`
+	IsNot    *bool         `json:"isNot,omitempty"`
+	Like     *FeatureType  `json:"like,omitempty"`
 	Lt       *FeatureType  `json:"lt,omitempty"`
 	Lte      *FeatureType  `json:"lte,omitempty"`
-	Like     *FeatureType  `json:"like,omitempty"`
-	NotLike  *FeatureType  `json:"notLike,omitempty"`
-	ILike    *FeatureType  `json:"iLike,omitempty"`
+	Neq      *FeatureType  `json:"neq,omitempty"`
 	NotILike *FeatureType  `json:"notILike,omitempty"`
-	In       []FeatureType `json:"in,omitempty"`
 	NotIn    []FeatureType `json:"notIn,omitempty"`
+	NotLike  *FeatureType  `json:"notLike,omitempty"`
 }
 
 type FetchEntitlementQuery struct {
 	CustomerID    string              `json:"customerId"`
-	ResourceID    *string             `json:"resourceId,omitempty"`
+	EnvironmentID *string             `json:"environmentId,omitempty"`
 	FeatureID     string              `json:"featureId"`
 	Options       *EntitlementOptions `json:"options,omitempty"`
-	EnvironmentID *string             `json:"environmentId,omitempty"`
+	ResourceID    *string             `json:"resourceId,omitempty"`
 }
 
 type FetchEntitlementsQuery struct {
 	CustomerID    string  `json:"customerId"`
-	ResourceID    *string `json:"resourceId,omitempty"`
 	EnvironmentID *string `json:"environmentId,omitempty"`
+	ResourceID    *string `json:"resourceId,omitempty"`
 }
 
 type FontVariant struct {
@@ -2060,9 +2227,10 @@ type FontVariantInput struct {
 }
 
 type GetActiveSubscriptionsInput struct {
-	CustomerID    string  `json:"customerId"`
-	EnvironmentID *string `json:"environmentId,omitempty"`
-	ResourceID    *string `json:"resourceId,omitempty"`
+	CustomerID    string   `json:"customerId"`
+	EnvironmentID *string  `json:"environmentId,omitempty"`
+	ResourceID    *string  `json:"resourceId,omitempty"`
+	ResourceIds   []string `json:"resourceIds,omitempty"`
 }
 
 type GetCustomerByRefIDInput struct {
@@ -2071,134 +2239,152 @@ type GetCustomerByRefIDInput struct {
 }
 
 type GetPackageByRefIDInput struct {
+	EnvironmentID string   `json:"environmentId"`
 	RefID         string   `json:"refId"`
 	VersionNumber *float64 `json:"versionNumber,omitempty"`
-	EnvironmentID string   `json:"environmentId"`
 }
 
 type GetPaywallInput struct {
-	EnvironmentID           *string     `json:"environmentId,omitempty"`
-	ProductID               *string     `json:"productId,omitempty"`
-	CustomerID              *string     `json:"customerId,omitempty"`
-	ResourceID              *string     `json:"resourceId,omitempty"`
 	BillingCountryCode      *string     `json:"billingCountryCode,omitempty"`
-	FetchAllCountriesPrices *bool       `json:"fetchAllCountriesPrices,omitempty"`
 	Context                 *WidgetType `json:"context,omitempty"`
+	CustomerID              *string     `json:"customerId,omitempty"`
+	EnvironmentID           *string     `json:"environmentId,omitempty"`
+	FetchAllCountriesPrices *bool       `json:"fetchAllCountriesPrices,omitempty"`
+	ProductID               *string     `json:"productId,omitempty"`
+	ResourceID              *string     `json:"resourceId,omitempty"`
 }
 
 type GetWidgetConfigurationInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+type GrantPromotionalEntitlementInput struct {
+	CustomEndDate                   *string                        `json:"customEndDate,omitempty"`
+	FeatureID                       string                         `json:"featureId"`
+	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
+	IsVisible                       *bool                          `json:"isVisible,omitempty"`
+	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	Period                          PromotionalEntitlementPeriod   `json:"period"`
+	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
+	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+}
+
+type GrantPromotionalEntitlementsInput struct {
+	CustomerID              string                              `json:"customerId"`
+	EnvironmentID           *string                             `json:"environmentId,omitempty"`
+	PromotionalEntitlements []*GrantPromotionalEntitlementInput `json:"promotionalEntitlements"`
+}
+
 type HiddenFromWidgetsChange struct {
-	Before     []WidgetType `json:"before"`
 	After      []WidgetType `json:"after"`
+	Before     []WidgetType `json:"before"`
 	ChangeType *ChangeType  `json:"changeType"`
 }
 
 type Hook struct {
-	ID            string         `json:"id"`
-	Description   *string        `json:"description"`
-	SecretKey     *string        `json:"secretKey"`
-	Endpoint      string         `json:"endpoint"`
-	Status        HookStatus     `json:"status"`
+	Account       *Account       `json:"account"`
 	CreatedAt     *string        `json:"createdAt"`
+	Description   *string        `json:"description"`
+	Endpoint      string         `json:"endpoint"`
+	Environment   *Environment   `json:"environment"`
 	EnvironmentID string         `json:"environmentId"`
 	EventLogTypes []EventLogType `json:"eventLogTypes"`
-	Account       *Account       `json:"account"`
-	Environment   *Environment   `json:"environment"`
+	ID            string         `json:"id"`
+	SecretKey     *string        `json:"secretKey"`
+	Status        HookStatus     `json:"status"`
 }
 
 type HookAggregateGroupBy struct {
-	ID            *string     `json:"id"`
-	Endpoint      *string     `json:"endpoint"`
-	Status        *HookStatus `json:"status"`
 	CreatedAt     *string     `json:"createdAt"`
+	Endpoint      *string     `json:"endpoint"`
 	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
+	Status        *HookStatus `json:"status"`
 }
 
 type HookConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*HookEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type HookCountAggregate struct {
-	ID            *int64 `json:"id"`
-	Endpoint      *int64 `json:"endpoint"`
-	Status        *int64 `json:"status"`
 	CreatedAt     *int64 `json:"createdAt"`
+	Endpoint      *int64 `json:"endpoint"`
 	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
+	Status        *int64 `json:"status"`
 }
 
 type HookDeleteResponse struct {
-	ID            *string        `json:"id"`
-	Description   *string        `json:"description"`
-	SecretKey     *string        `json:"secretKey"`
-	Endpoint      *string        `json:"endpoint"`
-	Status        *HookStatus    `json:"status"`
 	CreatedAt     *string        `json:"createdAt"`
+	Description   *string        `json:"description"`
+	Endpoint      *string        `json:"endpoint"`
 	EnvironmentID *string        `json:"environmentId"`
 	EventLogTypes []EventLogType `json:"eventLogTypes"`
+	ID            *string        `json:"id"`
+	SecretKey     *string        `json:"secretKey"`
+	Status        *HookStatus    `json:"status"`
 }
 
 type HookEdge struct {
-	// The node containing the Hook
-	Node Hook `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Hook
+	Node Hook `json:"node"`
 }
 
 type HookFilter struct {
 	And           []*HookFilter               `json:"and,omitempty"`
-	Or            []*HookFilter               `json:"or,omitempty"`
-	ID            *StringFieldComparison      `json:"id,omitempty"`
-	Endpoint      *StringFieldComparison      `json:"endpoint,omitempty"`
-	Status        *HookStatusFilterComparison `json:"status,omitempty"`
 	CreatedAt     *DateFieldComparison        `json:"createdAt,omitempty"`
+	Endpoint      *StringFieldComparison      `json:"endpoint,omitempty"`
 	EnvironmentID *StringFieldComparison      `json:"environmentId,omitempty"`
+	ID            *StringFieldComparison      `json:"id,omitempty"`
+	Or            []*HookFilter               `json:"or,omitempty"`
+	Status        *HookStatusFilterComparison `json:"status,omitempty"`
 }
 
 type HookMaxAggregate struct {
-	ID            *string     `json:"id"`
-	Endpoint      *string     `json:"endpoint"`
-	Status        *HookStatus `json:"status"`
 	CreatedAt     *string     `json:"createdAt"`
+	Endpoint      *string     `json:"endpoint"`
 	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
+	Status        *HookStatus `json:"status"`
 }
 
 type HookMinAggregate struct {
-	ID            *string     `json:"id"`
-	Endpoint      *string     `json:"endpoint"`
-	Status        *HookStatus `json:"status"`
 	CreatedAt     *string     `json:"createdAt"`
+	Endpoint      *string     `json:"endpoint"`
 	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
+	Status        *HookStatus `json:"status"`
 }
 
 type HookSort struct {
-	Field     HookSortFields `json:"field"`
 	Direction SortDirection  `json:"direction"`
+	Field     HookSortFields `json:"field"`
 	Nulls     *SortNulls     `json:"nulls,omitempty"`
 }
 
 type HookStatusFilterComparison struct {
-	Is       *bool        `json:"is,omitempty"`
-	IsNot    *bool        `json:"isNot,omitempty"`
 	Eq       *HookStatus  `json:"eq,omitempty"`
-	Neq      *HookStatus  `json:"neq,omitempty"`
 	Gt       *HookStatus  `json:"gt,omitempty"`
 	Gte      *HookStatus  `json:"gte,omitempty"`
+	ILike    *HookStatus  `json:"iLike,omitempty"`
+	In       []HookStatus `json:"in,omitempty"`
+	Is       *bool        `json:"is,omitempty"`
+	IsNot    *bool        `json:"isNot,omitempty"`
+	Like     *HookStatus  `json:"like,omitempty"`
 	Lt       *HookStatus  `json:"lt,omitempty"`
 	Lte      *HookStatus  `json:"lte,omitempty"`
-	Like     *HookStatus  `json:"like,omitempty"`
-	NotLike  *HookStatus  `json:"notLike,omitempty"`
-	ILike    *HookStatus  `json:"iLike,omitempty"`
+	Neq      *HookStatus  `json:"neq,omitempty"`
 	NotILike *HookStatus  `json:"notILike,omitempty"`
-	In       []HookStatus `json:"in,omitempty"`
 	NotIn    []HookStatus `json:"notIn,omitempty"`
+	NotLike  *HookStatus  `json:"notLike,omitempty"`
 }
 
 type HubspotCredentials struct {
@@ -2213,11 +2399,11 @@ type HubspotCredentialsInput struct {
 }
 
 type IdentityForbiddenError struct {
-	Code                 string `json:"code"`
-	IsValidationError    bool   `json:"isValidationError"`
-	CurrentIdentityType  string `json:"currentIdentityType"`
-	RequiredIdentityType string `json:"requiredIdentityType"`
 	AccessedField        string `json:"accessedField"`
+	Code                 string `json:"code"`
+	CurrentIdentityType  string `json:"currentIdentityType"`
+	IsValidationError    bool   `json:"isValidationError"`
+	RequiredIdentityType string `json:"requiredIdentityType"`
 }
 
 type ImportAlreadyInProgressError struct {
@@ -2231,134 +2417,134 @@ type ImportCustomerBulk struct {
 }
 
 type ImportCustomerInput struct {
-	Name               *string                `json:"name,omitempty"`
-	Email              *string                `json:"email,omitempty"`
-	RefID              *string                `json:"refId,omitempty"`
-	CustomerID         *string                `json:"customerId,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	PaymentMethodID    *string                `json:"paymentMethodId,omitempty"`
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	BillingID          *string                `json:"billingId,omitempty"`
+	CustomerID         *string                `json:"customerId,omitempty"`
+	Email              *string                `json:"email,omitempty"`
+	EnvironmentID      *string                `json:"environmentId,omitempty"`
+	Name               *string                `json:"name,omitempty"`
+	PaymentMethodID    *string                `json:"paymentMethodId,omitempty"`
+	RefID              *string                `json:"refId,omitempty"`
 }
 
 type ImportIntegrationCatalogInput struct {
-	EnvironmentID           string              `json:"environmentId"`
-	VendorIdentifier        VendorIdentifier    `json:"vendorIdentifier"`
-	ProductID               string              `json:"productId"`
-	SelectedAddonBillingIds []string            `json:"selectedAddonBillingIds"`
-	EntitySelectionMode     EntitySelectionMode `json:"entitySelectionMode"`
-	PlansSelectionWhitelist []string            `json:"plansSelectionWhitelist,omitempty"`
-	PlansSelectionBlacklist []string            `json:"plansSelectionBlacklist,omitempty"`
 	BillingModel            *BillingModel       `json:"billingModel,omitempty"`
+	EntitySelectionMode     EntitySelectionMode `json:"entitySelectionMode"`
+	EnvironmentID           string              `json:"environmentId"`
 	FeatureUnitName         *string             `json:"featureUnitName,omitempty"`
 	FeatureUnitPluralName   *string             `json:"featureUnitPluralName,omitempty"`
+	PlansSelectionBlacklist []string            `json:"plansSelectionBlacklist,omitempty"`
+	PlansSelectionWhitelist []string            `json:"plansSelectionWhitelist,omitempty"`
+	ProductID               string              `json:"productId"`
+	SelectedAddonBillingIds []string            `json:"selectedAddonBillingIds"`
+	VendorIdentifier        VendorIdentifier    `json:"vendorIdentifier"`
 }
 
 type ImportIntegrationCustomersInput struct {
-	EnvironmentID               string              `json:"environmentId"`
-	VendorIdentifier            VendorIdentifier    `json:"vendorIdentifier"`
-	ProductID                   string              `json:"productId"`
-	EntitySelectionMode         EntitySelectionMode `json:"entitySelectionMode"`
-	CustomersSelectionWhitelist []string            `json:"customersSelectionWhitelist,omitempty"`
 	CustomersSelectionBlacklist []string            `json:"customersSelectionBlacklist,omitempty"`
+	CustomersSelectionWhitelist []string            `json:"customersSelectionWhitelist,omitempty"`
+	EntitySelectionMode         EntitySelectionMode `json:"entitySelectionMode"`
+	EnvironmentID               string              `json:"environmentId"`
+	ProductID                   string              `json:"productId"`
+	VendorIdentifier            VendorIdentifier    `json:"vendorIdentifier"`
 }
 
 type ImportIntegrationTask struct {
-	ID                 string                `json:"id"`
-	EnvironmentID      string                `json:"environmentId"`
 	CreatedAt          *string               `json:"createdAt"`
-	TaskType           TaskType              `json:"taskType"`
-	Status             TaskStatus            `json:"status"`
-	StartDate          string                `json:"startDate"`
-	EndDate            *string               `json:"endDate"`
-	Progress           int64                 `json:"progress"`
-	ProductsCount      int64                 `json:"productsCount"`
 	CustomersCount     int64                 `json:"customersCount"`
-	TotalSubtasksCount int64                 `json:"totalSubtasksCount"`
+	EndDate            *string               `json:"endDate"`
+	EnvironmentID      string                `json:"environmentId"`
+	ID                 string                `json:"id"`
 	ImportErrors       []*ImportSubTaskError `json:"importErrors"`
+	ProductsCount      int64                 `json:"productsCount"`
+	Progress           int64                 `json:"progress"`
+	StartDate          string                `json:"startDate"`
+	Status             TaskStatus            `json:"status"`
+	TaskType           TaskType              `json:"taskType"`
+	TotalSubtasksCount int64                 `json:"totalSubtasksCount"`
 }
 
 type ImportIntegrationTaskAggregateGroupBy struct {
-	ID            *string     `json:"id"`
-	EnvironmentID *string     `json:"environmentId"`
 	CreatedAt     *string     `json:"createdAt"`
-	TaskType      *TaskType   `json:"taskType"`
+	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
 	Status        *TaskStatus `json:"status"`
+	TaskType      *TaskType   `json:"taskType"`
 }
 
 type ImportIntegrationTaskConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*ImportIntegrationTaskEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 }
 
 type ImportIntegrationTaskCountAggregate struct {
-	ID            *int64 `json:"id"`
-	EnvironmentID *int64 `json:"environmentId"`
 	CreatedAt     *int64 `json:"createdAt"`
-	TaskType      *int64 `json:"taskType"`
+	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
 	Status        *int64 `json:"status"`
+	TaskType      *int64 `json:"taskType"`
 }
 
 type ImportIntegrationTaskEdge struct {
-	// The node containing the ImportIntegrationTask
-	Node ImportIntegrationTask `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the ImportIntegrationTask
+	Node ImportIntegrationTask `json:"node"`
 }
 
 type ImportIntegrationTaskFilter struct {
 	And           []*ImportIntegrationTaskFilter `json:"and,omitempty"`
-	Or            []*ImportIntegrationTaskFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
-	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
 	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
-	TaskType      *TaskTypeFilterComparison      `json:"taskType,omitempty"`
+	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
+	ID            *StringFieldComparison         `json:"id,omitempty"`
+	Or            []*ImportIntegrationTaskFilter `json:"or,omitempty"`
 	Status        *TaskStatusFilterComparison    `json:"status,omitempty"`
+	TaskType      *TaskTypeFilterComparison      `json:"taskType,omitempty"`
 }
 
 type ImportIntegrationTaskMaxAggregate struct {
-	ID            *string     `json:"id"`
-	EnvironmentID *string     `json:"environmentId"`
 	CreatedAt     *string     `json:"createdAt"`
-	TaskType      *TaskType   `json:"taskType"`
+	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
 	Status        *TaskStatus `json:"status"`
+	TaskType      *TaskType   `json:"taskType"`
 }
 
 type ImportIntegrationTaskMinAggregate struct {
-	ID            *string     `json:"id"`
-	EnvironmentID *string     `json:"environmentId"`
 	CreatedAt     *string     `json:"createdAt"`
-	TaskType      *TaskType   `json:"taskType"`
+	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
 	Status        *TaskStatus `json:"status"`
+	TaskType      *TaskType   `json:"taskType"`
 }
 
 type ImportIntegrationTaskSort struct {
-	Field     ImportIntegrationTaskSortFields `json:"field"`
 	Direction SortDirection                   `json:"direction"`
+	Field     ImportIntegrationTaskSortFields `json:"field"`
 	Nulls     *SortNulls                      `json:"nulls,omitempty"`
 }
 
 type ImportSubTaskError struct {
-	ID    string `json:"id"`
 	Error string `json:"error"`
+	ID    string `json:"id"`
 }
 
 type ImportSubscriptionInput struct {
-	CustomerID         string                 `json:"customerId"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	ResourceID         *string                `json:"resourceId,omitempty"`
-	PlanID             string                 `json:"planId"`
-	BillingPeriod      *BillingPeriod         `json:"billingPeriod,omitempty"`
-	UnitQuantity       *float64               `json:"unitQuantity,omitempty"`
-	StartDate          *string                `json:"startDate,omitempty"`
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	BillingID          *string                `json:"billingId,omitempty"`
+	BillingPeriod      *BillingPeriod         `json:"billingPeriod,omitempty"`
+	CustomerID         string                 `json:"customerId"`
+	PlanID             string                 `json:"planId"`
+	ResourceID         *string                `json:"resourceId,omitempty"`
+	StartDate          *string                `json:"startDate,omitempty"`
+	UnitQuantity       *float64               `json:"unitQuantity,omitempty"`
 }
 
 type ImportSubscriptionsBulk struct {
-	Subscriptions []*ImportSubscriptionInput `json:"subscriptions"`
 	EnvironmentID *string                    `json:"environmentId,omitempty"`
+	Subscriptions []*ImportSubscriptionInput `json:"subscriptions"`
 }
 
 type InitAddStripeCustomerPaymentMethod struct {
@@ -2376,18 +2562,18 @@ type InitStripePaymentMethodError struct {
 }
 
 type IntFieldComparison struct {
-	Is         *bool                      `json:"is,omitempty"`
-	IsNot      *bool                      `json:"isNot,omitempty"`
+	Between    *IntFieldComparisonBetween `json:"between,omitempty"`
 	Eq         *int64                     `json:"eq,omitempty"`
-	Neq        *int64                     `json:"neq,omitempty"`
 	Gt         *int64                     `json:"gt,omitempty"`
 	Gte        *int64                     `json:"gte,omitempty"`
+	In         []int64                    `json:"in,omitempty"`
+	Is         *bool                      `json:"is,omitempty"`
+	IsNot      *bool                      `json:"isNot,omitempty"`
 	Lt         *int64                     `json:"lt,omitempty"`
 	Lte        *int64                     `json:"lte,omitempty"`
-	In         []int64                    `json:"in,omitempty"`
-	NotIn      []int64                    `json:"notIn,omitempty"`
-	Between    *IntFieldComparisonBetween `json:"between,omitempty"`
+	Neq        *int64                     `json:"neq,omitempty"`
 	NotBetween *IntFieldComparisonBetween `json:"notBetween,omitempty"`
+	NotIn      []int64                    `json:"notIn,omitempty"`
 }
 
 type IntFieldComparisonBetween struct {
@@ -2396,79 +2582,79 @@ type IntFieldComparisonBetween struct {
 }
 
 type Integration struct {
-	ID               string           `json:"id"`
-	CreatedAt        *string          `json:"createdAt"`
-	EnvironmentID    string           `json:"environmentId"`
-	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
-	Credentials      Credentials      `json:"credentials"`
 	Account          *Account         `json:"account"`
+	CreatedAt        *string          `json:"createdAt"`
+	Credentials      Credentials      `json:"credentials"`
 	Environment      *Environment     `json:"environment"`
+	EnvironmentID    string           `json:"environmentId"`
+	ID               string           `json:"id"`
+	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
 type IntegrationAggregateGroupBy struct {
-	ID               *string           `json:"id"`
 	CreatedAt        *string           `json:"createdAt"`
 	EnvironmentID    *string           `json:"environmentId"`
+	ID               *string           `json:"id"`
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
 }
 
 type IntegrationConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*IntegrationEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type IntegrationCountAggregate struct {
-	ID               *int64 `json:"id"`
 	CreatedAt        *int64 `json:"createdAt"`
 	EnvironmentID    *int64 `json:"environmentId"`
+	ID               *int64 `json:"id"`
 	VendorIdentifier *int64 `json:"vendorIdentifier"`
 }
 
 type IntegrationDeleteResponse struct {
-	ID               *string           `json:"id"`
 	CreatedAt        *string           `json:"createdAt"`
-	EnvironmentID    *string           `json:"environmentId"`
-	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
 	Credentials      Credentials       `json:"credentials"`
+	EnvironmentID    *string           `json:"environmentId"`
+	ID               *string           `json:"id"`
+	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
 }
 
 type IntegrationEdge struct {
-	// The node containing the Integration
-	Node Integration `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Integration
+	Node Integration `json:"node"`
 }
 
 type IntegrationFilter struct {
 	And              []*IntegrationFilter              `json:"and,omitempty"`
-	Or               []*IntegrationFilter              `json:"or,omitempty"`
-	ID               *StringFieldComparison            `json:"id,omitempty"`
 	CreatedAt        *DateFieldComparison              `json:"createdAt,omitempty"`
 	EnvironmentID    *StringFieldComparison            `json:"environmentId,omitempty"`
+	ID               *StringFieldComparison            `json:"id,omitempty"`
+	Or               []*IntegrationFilter              `json:"or,omitempty"`
 	VendorIdentifier *VendorIdentifierFilterComparison `json:"vendorIdentifier,omitempty"`
 }
 
 type IntegrationMaxAggregate struct {
-	ID               *string           `json:"id"`
 	CreatedAt        *string           `json:"createdAt"`
 	EnvironmentID    *string           `json:"environmentId"`
+	ID               *string           `json:"id"`
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
 }
 
 type IntegrationMinAggregate struct {
-	ID               *string           `json:"id"`
 	CreatedAt        *string           `json:"createdAt"`
 	EnvironmentID    *string           `json:"environmentId"`
+	ID               *string           `json:"id"`
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
 }
 
 type IntegrationSort struct {
-	Field     IntegrationSortFields `json:"field"`
 	Direction SortDirection         `json:"direction"`
+	Field     IntegrationSortFields `json:"field"`
 	Nulls     *SortNulls            `json:"nulls,omitempty"`
 }
 
@@ -2499,48 +2685,48 @@ type InvalidSubscriptionStatus struct {
 }
 
 type Member struct {
-	ID                     string       `json:"id"`
-	CreatedAt              *string      `json:"createdAt"`
-	MemberStatus           MemberStatus `json:"memberStatus"`
-	Email                  string       `json:"email"`
-	ServiceAPIKey          *string      `json:"serviceApiKey"`
-	CubejsToken            *string      `json:"cubejsToken"`
-	HideGettingStartedPage *bool        `json:"hideGettingStartedPage"`
-	User                   *User        `json:"user"`
 	Account                Account      `json:"account"`
+	CreatedAt              *string      `json:"createdAt"`
+	CubejsToken            *string      `json:"cubejsToken"`
+	Email                  string       `json:"email"`
+	HideGettingStartedPage *bool        `json:"hideGettingStartedPage"`
+	ID                     string       `json:"id"`
+	MemberStatus           MemberStatus `json:"memberStatus"`
+	ServiceAPIKey          *string      `json:"serviceApiKey"`
+	User                   *User        `json:"user"`
 }
 
 type MemberAggregateGroupBy struct {
-	ID        *string `json:"id"`
 	CreatedAt *string `json:"createdAt"`
+	ID        *string `json:"id"`
 }
 
 type MemberConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*MemberEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type MemberCountAggregate struct {
-	ID        *int64 `json:"id"`
 	CreatedAt *int64 `json:"createdAt"`
+	ID        *int64 `json:"id"`
 }
 
 type MemberEdge struct {
-	// The node containing the Member
-	Node Member `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Member
+	Node Member `json:"node"`
 }
 
 type MemberFilter struct {
 	And       []*MemberFilter        `json:"and,omitempty"`
-	Or        []*MemberFilter        `json:"or,omitempty"`
-	ID        *StringFieldComparison `json:"id,omitempty"`
 	CreatedAt *DateFieldComparison   `json:"createdAt,omitempty"`
+	ID        *StringFieldComparison `json:"id,omitempty"`
+	Or        []*MemberFilter        `json:"or,omitempty"`
 }
 
 type MemberInvitationError struct {
@@ -2549,13 +2735,13 @@ type MemberInvitationError struct {
 }
 
 type MemberMaxAggregate struct {
-	ID        *string `json:"id"`
 	CreatedAt *string `json:"createdAt"`
+	ID        *string `json:"id"`
 }
 
 type MemberMinAggregate struct {
-	ID        *string `json:"id"`
 	CreatedAt *string `json:"createdAt"`
+	ID        *string `json:"id"`
 }
 
 type MemberNotFoundError struct {
@@ -2563,83 +2749,41 @@ type MemberNotFoundError struct {
 }
 
 type MemberSort struct {
-	Field     MemberSortFields `json:"field"`
 	Direction SortDirection    `json:"direction"`
+	Field     MemberSortFields `json:"field"`
 	Nulls     *SortNulls       `json:"nulls,omitempty"`
 }
 
 type MembersInviteResponse struct {
-	SuccessInvites []string `json:"successInvites"`
-	SkippedInvites []string `json:"skippedInvites"`
 	FailedInvites  []string `json:"failedInvites"`
+	SkippedInvites []string `json:"skippedInvites"`
+	SuccessInvites []string `json:"successInvites"`
 }
 
 type Meter struct {
-	ID            string                   `json:"id"`
-	CreatedAt     string                   `json:"createdAt"`
-	UpdatedAt     string                   `json:"updatedAt"`
 	Aggregation   Aggregation              `json:"aggregation"`
-	Filters       []*MeterFilterDefinition `json:"filters"`
+	CreatedAt     string                   `json:"createdAt"`
 	EnvironmentID string                   `json:"environmentId"`
-	Account       *Account                 `json:"account"`
-	Environment   *Environment             `json:"environment"`
-	Feature       Feature                  `json:"feature"`
-}
-
-type MeterAggregateGroupBy struct {
-	ID            *string `json:"id"`
-	CreatedAt     *string `json:"createdAt"`
-	UpdatedAt     *string `json:"updatedAt"`
-	EnvironmentID *string `json:"environmentId"`
+	Filters       []*MeterFilterDefinition `json:"filters"`
+	ID            string                   `json:"id"`
+	UpdatedAt     string                   `json:"updatedAt"`
 }
 
 type MeterAggregation struct {
-	Function AggregationFunction `json:"function"`
 	Field    *string             `json:"field,omitempty"`
+	Function AggregationFunction `json:"function"`
 }
 
 type MeterCondition struct {
-	Operation ConditionOperation `json:"operation"`
-	Value     string             `json:"value"`
 	Field     string             `json:"field"`
+	Operation ConditionOperation `json:"operation"`
+	Value     *string            `json:"value"`
 }
 
 type MeterConditionInput struct {
-	Operation ConditionOperation `json:"operation"`
 	Field     string             `json:"field"`
-	Value     string             `json:"value"`
-}
-
-type MeterConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
-	// Array of edges.
-	Edges []*MeterEdge `json:"edges"`
-	// Fetch total count of records
-	TotalCount int64 `json:"totalCount"`
-}
-
-type MeterCountAggregate struct {
-	ID            *int64 `json:"id"`
-	CreatedAt     *int64 `json:"createdAt"`
-	UpdatedAt     *int64 `json:"updatedAt"`
-	EnvironmentID *int64 `json:"environmentId"`
-}
-
-type MeterEdge struct {
-	// The node containing the Meter
-	Node Meter `json:"node"`
-	// Cursor for this node.
-	Cursor string `json:"cursor"`
-}
-
-type MeterFilter struct {
-	And           []*MeterFilter         `json:"and,omitempty"`
-	Or            []*MeterFilter         `json:"or,omitempty"`
-	ID            *StringFieldComparison `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison   `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison   `json:"updatedAt,omitempty"`
-	EnvironmentID *StringFieldComparison `json:"environmentId,omitempty"`
+	Operation ConditionOperation `json:"operation"`
+	Value     *string            `json:"value,omitempty"`
 }
 
 type MeterFilterDefinition struct {
@@ -2650,52 +2794,32 @@ type MeterFilterDefinitionInput struct {
 	Conditions []*MeterConditionInput `json:"conditions"`
 }
 
-type MeterMaxAggregate struct {
-	ID            *string `json:"id"`
-	CreatedAt     *string `json:"createdAt"`
-	UpdatedAt     *string `json:"updatedAt"`
-	EnvironmentID *string `json:"environmentId"`
-}
-
-type MeterMinAggregate struct {
-	ID            *string `json:"id"`
-	CreatedAt     *string `json:"createdAt"`
-	UpdatedAt     *string `json:"updatedAt"`
-	EnvironmentID *string `json:"environmentId"`
-}
-
-type MeterSort struct {
-	Field     MeterSortFields `json:"field"`
-	Direction SortDirection   `json:"direction"`
-	Nulls     *SortNulls      `json:"nulls,omitempty"`
-}
-
 type MeterTypeFilterComparison struct {
-	Is       *bool       `json:"is,omitempty"`
-	IsNot    *bool       `json:"isNot,omitempty"`
 	Eq       *MeterType  `json:"eq,omitempty"`
-	Neq      *MeterType  `json:"neq,omitempty"`
 	Gt       *MeterType  `json:"gt,omitempty"`
 	Gte      *MeterType  `json:"gte,omitempty"`
+	ILike    *MeterType  `json:"iLike,omitempty"`
+	In       []MeterType `json:"in,omitempty"`
+	Is       *bool       `json:"is,omitempty"`
+	IsNot    *bool       `json:"isNot,omitempty"`
+	Like     *MeterType  `json:"like,omitempty"`
 	Lt       *MeterType  `json:"lt,omitempty"`
 	Lte      *MeterType  `json:"lte,omitempty"`
-	Like     *MeterType  `json:"like,omitempty"`
-	NotLike  *MeterType  `json:"notLike,omitempty"`
-	ILike    *MeterType  `json:"iLike,omitempty"`
+	Neq      *MeterType  `json:"neq,omitempty"`
 	NotILike *MeterType  `json:"notILike,omitempty"`
-	In       []MeterType `json:"in,omitempty"`
 	NotIn    []MeterType `json:"notIn,omitempty"`
+	NotLike  *MeterType  `json:"notLike,omitempty"`
 }
 
 type MeteringNotAvailableForFeatureTypeError struct {
 	Code              string `json:"code"`
-	IsValidationError bool   `json:"isValidationError"`
 	FeatureType       string `json:"featureType"`
+	IsValidationError bool   `json:"isValidationError"`
 }
 
 type MockPaywall struct {
-	Plans         []*PaywallPlan        `json:"plans"`
 	Configuration *PaywallConfiguration `json:"configuration"`
+	Plans         []*PaywallPlan        `json:"plans"`
 }
 
 type Money struct {
@@ -2719,18 +2843,18 @@ type MonthlyResetPeriodConfigInput struct {
 }
 
 type NumberFieldComparison struct {
-	Is         *bool                         `json:"is,omitempty"`
-	IsNot      *bool                         `json:"isNot,omitempty"`
+	Between    *NumberFieldComparisonBetween `json:"between,omitempty"`
 	Eq         *float64                      `json:"eq,omitempty"`
-	Neq        *float64                      `json:"neq,omitempty"`
 	Gt         *float64                      `json:"gt,omitempty"`
 	Gte        *float64                      `json:"gte,omitempty"`
+	In         []float64                     `json:"in,omitempty"`
+	Is         *bool                         `json:"is,omitempty"`
+	IsNot      *bool                         `json:"isNot,omitempty"`
 	Lt         *float64                      `json:"lt,omitempty"`
 	Lte        *float64                      `json:"lte,omitempty"`
-	In         []float64                     `json:"in,omitempty"`
-	NotIn      []float64                     `json:"notIn,omitempty"`
-	Between    *NumberFieldComparisonBetween `json:"between,omitempty"`
+	Neq        *float64                      `json:"neq,omitempty"`
 	NotBetween *NumberFieldComparisonBetween `json:"notBetween,omitempty"`
+	NotIn      []float64                     `json:"notIn,omitempty"`
 }
 
 type NumberFieldComparisonBetween struct {
@@ -2743,256 +2867,255 @@ type PackageAlreadyPublishedError struct {
 }
 
 type PackageChanges struct {
-	DisplayName        *StringChangeDto             `json:"displayName"`
-	Description        *StringChangeDto             `json:"description"`
-	HiddenFromWidgets  *HiddenFromWidgetsChange     `json:"hiddenFromWidgets"`
-	PricingType        *PricingTypeChange           `json:"pricingType"`
-	Entitlements       []*PackageEntitlementChange  `json:"entitlements"`
-	Prices             []*PackagePriceChange        `json:"prices"`
-	CompatibleAddons   []*PlanCompatibleAddonChange `json:"compatibleAddons"`
-	BasePlan           *BasePlanChange              `json:"basePlan"`
-	DefaultTrialConfig *DefaultTrialConfigChange    `json:"defaultTrialConfig"`
 	AdditionalMetaData *AdditionalMetaDataChange    `json:"additionalMetaData"`
+	BasePlan           *BasePlanChange              `json:"basePlan"`
+	CompatibleAddons   []*PlanCompatibleAddonChange `json:"compatibleAddons"`
+	DefaultTrialConfig *DefaultTrialConfigChange    `json:"defaultTrialConfig"`
+	Description        *StringChangeDto             `json:"description"`
+	DisplayName        *StringChangeDto             `json:"displayName"`
+	Entitlements       []*PackageEntitlementChange  `json:"entitlements"`
+	HiddenFromWidgets  *HiddenFromWidgetsChange     `json:"hiddenFromWidgets"`
+	Prices             []*PackagePriceChange        `json:"prices"`
+	PricingType        *PricingTypeChange           `json:"pricingType"`
 	TotalChanges       int64                        `json:"totalChanges"`
 }
 
 type PackageDto struct {
-	ID                 string                 `json:"id"`
-	CreatedAt          *string                `json:"createdAt"`
-	UpdatedAt          *string                `json:"updatedAt"`
-	RefID              string                 `json:"refId"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	BillingID          *string                `json:"billingId"`
 	BillingLinkURL     *string                `json:"billingLinkUrl"`
-	DisplayName        string                 `json:"displayName"`
-	Status             PackageStatus          `json:"status"`
-	PricingType        *PricingType           `json:"pricingType"`
+	CreatedAt          *string                `json:"createdAt"`
 	Description        *string                `json:"description"`
-	EnvironmentID      *string                `json:"environmentId"`
-	Type               string                 `json:"type"`
-	ProductID          *string                `json:"productId"`
-	IsLatest           *bool                  `json:"isLatest"`
-	Entitlements       []*PackageEntitlement  `json:"entitlements"`
-	DraftSummary       *PackageDraftSummary   `json:"draftSummary"`
+	DisplayName        string                 `json:"displayName"`
 	DraftDetails       *PackageDraftDetails   `json:"draftDetails"`
-	VersionNumber      int64                  `json:"versionNumber"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	SyncStates         []*SyncState           `json:"syncStates"`
+	DraftSummary       *PackageDraftSummary   `json:"draftSummary"`
+	Entitlements       []*PackageEntitlement  `json:"entitlements"`
+	EnvironmentID      string                 `json:"environmentId"`
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
+	ID                 string                 `json:"id"`
+	IsLatest           *bool                  `json:"isLatest"`
 	Prices             []*Price               `json:"prices"`
+	PricingType        *PricingType           `json:"pricingType"`
+	ProductID          *string                `json:"productId"`
+	RefID              string                 `json:"refId"`
+	Status             PackageStatus          `json:"status"`
+	SyncStates         []*SyncState           `json:"syncStates"`
+	Type               string                 `json:"type"`
+	UpdatedAt          *string                `json:"updatedAt"`
+	VersionNumber      int64                  `json:"versionNumber"`
 }
 
 type PackageDTOFilter struct {
 	And           []*PackageDTOFilter            `json:"and,omitempty"`
-	Or            []*PackageDTOFilter            `json:"or,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
-	RefID         *StringFieldComparison         `json:"refId,omitempty"`
 	BillingID     *StringFieldComparison         `json:"billingId,omitempty"`
-	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
-	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
+	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
-	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
+	ID            *StringFieldComparison         `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	Or            []*PackageDTOFilter            `json:"or,omitempty"`
+	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
+	RefID         *StringFieldComparison         `json:"refId,omitempty"`
+	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison            `json:"versionNumber,omitempty"`
 }
 
 type PackageDTOSort struct {
-	Field     PackageDTOSortFields `json:"field"`
 	Direction SortDirection        `json:"direction"`
+	Field     PackageDTOSortFields `json:"field"`
 	Nulls     *SortNulls           `json:"nulls,omitempty"`
 }
 
 type PackageDraftDetails struct {
-	Version             int64           `json:"version"`
-	UpdatedAt           string          `json:"updatedAt"`
-	UpdatedBy           *string         `json:"updatedBy"`
-	CustomersAffected   *int64          `json:"customersAffected"`
-	ChildPlansWithDraft []*Plan         `json:"childPlansWithDraft"`
 	AffectedChildPlans  []*Plan         `json:"affectedChildPlans"`
 	Changes             *PackageChanges `json:"changes"`
+	ChildPlansWithDraft []*Plan         `json:"childPlansWithDraft"`
+	CustomersAffected   *int64          `json:"customersAffected"`
+	UpdatedAt           string          `json:"updatedAt"`
+	UpdatedBy           *string         `json:"updatedBy"`
+	Version             int64           `json:"version"`
 }
 
 type PackageDraftSummary struct {
-	Version   int64   `json:"version"`
 	UpdatedAt string  `json:"updatedAt"`
 	UpdatedBy *string `json:"updatedBy"`
+	Version   int64   `json:"version"`
 }
 
 type PackageEntitlement struct {
-	ID                       string                   `json:"id"`
-	Description              *string                  `json:"description"`
-	FeatureID                string                   `json:"featureId"`
-	PackageID                string                   `json:"packageId"`
 	CreatedAt                *string                  `json:"createdAt"`
-	UpdatedAt                *string                  `json:"updatedAt"`
-	UsageLimit               *float64                 `json:"usageLimit"`
-	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
-	IsCustom                 *bool                    `json:"isCustom"`
+	Description              *string                  `json:"description"`
+	DisplayNameOverride      *string                  `json:"displayNameOverride"`
 	EnvironmentID            string                   `json:"environmentId"`
+	Feature                  Feature                  `json:"feature"`
+	FeatureID                string                   `json:"featureId"`
+	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
+	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
+	ID                       string                   `json:"id"`
+	IsCustom                 *bool                    `json:"isCustom"`
+	Meter                    *Meter                   `json:"meter"`
+	Order                    *float64                 `json:"order"`
+	Package                  *PackageDto              `json:"package"`
+	PackageID                string                   `json:"packageId"`
 	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	Order                    *float64                 `json:"order"`
-	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
-	DisplayNameOverride      *string                  `json:"displayNameOverride"`
-	Feature                  Feature                  `json:"feature"`
-	Package                  *PackageDto              `json:"package"`
-	Meter                    *Meter                   `json:"meter"`
+	UpdatedAt                *string                  `json:"updatedAt"`
+	UsageLimit               *float64                 `json:"usageLimit"`
 }
 
 type PackageEntitlementAggregateGroupBy struct {
+	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
 	ID            *string `json:"id"`
 	PackageID     *string `json:"packageId"`
-	CreatedAt     *string `json:"createdAt"`
 	UpdatedAt     *string `json:"updatedAt"`
-	EnvironmentID *string `json:"environmentId"`
 }
 
 type PackageEntitlementChange struct {
-	Before     *PackageEntitlement `json:"before"`
 	After      *PackageEntitlement `json:"after"`
+	Before     *PackageEntitlement `json:"before"`
 	ChangeType *ChangeType         `json:"changeType"`
 }
 
 type PackageEntitlementConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*PackageEntitlementEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type PackageEntitlementCountAggregate struct {
+	CreatedAt     *int64 `json:"createdAt"`
+	EnvironmentID *int64 `json:"environmentId"`
 	ID            *int64 `json:"id"`
 	PackageID     *int64 `json:"packageId"`
-	CreatedAt     *int64 `json:"createdAt"`
 	UpdatedAt     *int64 `json:"updatedAt"`
-	EnvironmentID *int64 `json:"environmentId"`
 }
 
 type PackageEntitlementDeleteResponse struct {
-	ID                       *string                  `json:"id"`
-	Description              *string                  `json:"description"`
-	FeatureID                *string                  `json:"featureId"`
-	PackageID                *string                  `json:"packageId"`
 	CreatedAt                *string                  `json:"createdAt"`
-	UpdatedAt                *string                  `json:"updatedAt"`
-	UsageLimit               *float64                 `json:"usageLimit"`
-	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
-	IsCustom                 *bool                    `json:"isCustom"`
+	Description              *string                  `json:"description"`
+	DisplayNameOverride      *string                  `json:"displayNameOverride"`
 	EnvironmentID            *string                  `json:"environmentId"`
+	FeatureID                *string                  `json:"featureId"`
+	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
+	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
+	ID                       *string                  `json:"id"`
+	IsCustom                 *bool                    `json:"isCustom"`
+	Order                    *float64                 `json:"order"`
+	PackageID                *string                  `json:"packageId"`
 	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	Order                    *float64                 `json:"order"`
-	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
-	DisplayNameOverride      *string                  `json:"displayNameOverride"`
+	UpdatedAt                *string                  `json:"updatedAt"`
+	UsageLimit               *float64                 `json:"usageLimit"`
 }
 
 type PackageEntitlementEdge struct {
-	// The node containing the PackageEntitlement
-	Node PackageEntitlement `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the PackageEntitlement
+	Node PackageEntitlement `json:"node"`
 }
 
 type PackageEntitlementFilter struct {
 	And           []*PackageEntitlementFilter               `json:"and,omitempty"`
-	Or            []*PackageEntitlementFilter               `json:"or,omitempty"`
-	ID            *StringFieldComparison                    `json:"id,omitempty"`
-	PackageID     *StringFieldComparison                    `json:"packageId,omitempty"`
 	CreatedAt     *DateFieldComparison                      `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison                      `json:"updatedAt,omitempty"`
 	EnvironmentID *StringFieldComparison                    `json:"environmentId,omitempty"`
-	Package       *PackageEntitlementFilterPackageDTOFilter `json:"package,omitempty"`
 	Feature       *PackageEntitlementFilterFeatureFilter    `json:"feature,omitempty"`
+	ID            *StringFieldComparison                    `json:"id,omitempty"`
+	Or            []*PackageEntitlementFilter               `json:"or,omitempty"`
+	Package       *PackageEntitlementFilterPackageDTOFilter `json:"package,omitempty"`
+	PackageID     *StringFieldComparison                    `json:"packageId,omitempty"`
+	UpdatedAt     *DateFieldComparison                      `json:"updatedAt,omitempty"`
 }
 
 type PackageEntitlementFilterFeatureFilter struct {
 	And           []*PackageEntitlementFilterFeatureFilter `json:"and,omitempty"`
-	Or            []*PackageEntitlementFilterFeatureFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison                   `json:"id,omitempty"`
-	DisplayName   *StringFieldComparison                   `json:"displayName,omitempty"`
-	RefID         *StringFieldComparison                   `json:"refId,omitempty"`
 	CreatedAt     *DateFieldComparison                     `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison                     `json:"updatedAt,omitempty"`
 	Description   *StringFieldComparison                   `json:"description,omitempty"`
-	FeatureType   *FeatureTypeFilterComparison             `json:"featureType,omitempty"`
-	MeterType     *MeterTypeFilterComparison               `json:"meterType,omitempty"`
-	FeatureStatus *FeatureStatusFilterComparison           `json:"featureStatus,omitempty"`
+	DisplayName   *StringFieldComparison                   `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison                   `json:"environmentId,omitempty"`
+	FeatureStatus *FeatureStatusFilterComparison           `json:"featureStatus,omitempty"`
+	FeatureType   *FeatureTypeFilterComparison             `json:"featureType,omitempty"`
+	ID            *StringFieldComparison                   `json:"id,omitempty"`
+	MeterType     *MeterTypeFilterComparison               `json:"meterType,omitempty"`
+	Or            []*PackageEntitlementFilterFeatureFilter `json:"or,omitempty"`
+	RefID         *StringFieldComparison                   `json:"refId,omitempty"`
+	UpdatedAt     *DateFieldComparison                     `json:"updatedAt,omitempty"`
 }
 
 type PackageEntitlementFilterPackageDTOFilter struct {
 	And           []*PackageEntitlementFilterPackageDTOFilter `json:"and,omitempty"`
-	Or            []*PackageEntitlementFilterPackageDTOFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison                      `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison                        `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison                        `json:"updatedAt,omitempty"`
-	RefID         *StringFieldComparison                      `json:"refId,omitempty"`
 	BillingID     *StringFieldComparison                      `json:"billingId,omitempty"`
-	DisplayName   *StringFieldComparison                      `json:"displayName,omitempty"`
-	Status        *PackageStatusFilterComparison              `json:"status,omitempty"`
-	PricingType   *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
+	CreatedAt     *DateFieldComparison                        `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison                      `json:"description,omitempty"`
+	DisplayName   *StringFieldComparison                      `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison                      `json:"environmentId,omitempty"`
-	ProductID     *StringFieldComparison                      `json:"productId,omitempty"`
+	ID            *StringFieldComparison                      `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison                     `json:"isLatest,omitempty"`
+	Or            []*PackageEntitlementFilterPackageDTOFilter `json:"or,omitempty"`
+	PricingType   *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
+	ProductID     *StringFieldComparison                      `json:"productId,omitempty"`
+	RefID         *StringFieldComparison                      `json:"refId,omitempty"`
+	Status        *PackageStatusFilterComparison              `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison                        `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison                         `json:"versionNumber,omitempty"`
 }
 
 type PackageEntitlementInput struct {
 	Description                     *string                        `json:"description,omitempty"`
-	FeatureID                       string                         `json:"featureId"`
-	MeterID                         *string                        `json:"meterId,omitempty"`
-	PackageID                       string                         `json:"packageId"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	IsCustom                        *bool                          `json:"isCustom,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	EnvironmentID                   string                         `json:"environmentId"`
-	Order                           *float64                       `json:"order,omitempty"`
-	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
 	DisplayNameOverride             *string                        `json:"displayNameOverride,omitempty"`
+	EnvironmentID                   string                         `json:"environmentId"`
+	FeatureID                       string                         `json:"featureId"`
+	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
+	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
+	IsCustom                        *bool                          `json:"isCustom,omitempty"`
+	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	Order                           *float64                       `json:"order,omitempty"`
+	PackageID                       string                         `json:"packageId"`
+	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
+	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 }
 
 type PackageEntitlementMaxAggregate struct {
+	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
 	ID            *string `json:"id"`
 	PackageID     *string `json:"packageId"`
-	CreatedAt     *string `json:"createdAt"`
 	UpdatedAt     *string `json:"updatedAt"`
-	EnvironmentID *string `json:"environmentId"`
 }
 
 type PackageEntitlementMinAggregate struct {
+	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
 	ID            *string `json:"id"`
 	PackageID     *string `json:"packageId"`
-	CreatedAt     *string `json:"createdAt"`
 	UpdatedAt     *string `json:"updatedAt"`
-	EnvironmentID *string `json:"environmentId"`
 }
 
 type PackageEntitlementSort struct {
-	Field     PackageEntitlementSortFields `json:"field"`
 	Direction SortDirection                `json:"direction"`
+	Field     PackageEntitlementSortFields `json:"field"`
 	Nulls     *SortNulls                   `json:"nulls,omitempty"`
 }
 
 type PackageEntitlementUpdateInput struct {
 	Description                     *string                        `json:"description,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	IsCustom                        *bool                          `json:"isCustom,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	Order                           *float64                       `json:"order,omitempty"`
-	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
 	DisplayNameOverride             *string                        `json:"displayNameOverride,omitempty"`
+	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
+	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
+	IsCustom                        *bool                          `json:"isCustom,omitempty"`
+	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	Order                           *float64                       `json:"order,omitempty"`
+	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
+	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 }
 
 type PackagePrice struct {
@@ -3001,17 +3124,17 @@ type PackagePrice struct {
 }
 
 type PackagePriceChange struct {
-	Before     *Price      `json:"before"`
 	After      *Price      `json:"after"`
+	Before     *Price      `json:"before"`
 	ChangeType *ChangeType `json:"changeType"`
 }
 
 type PackagePricingInput struct {
-	PricingType   PricingType                `json:"pricingType"`
 	EnvironmentID string                     `json:"environmentId"`
 	PackageID     string                     `json:"packageId"`
 	PricingModel  *PricingModelCreateInput   `json:"pricingModel,omitempty"`
 	PricingModels []*PricingModelCreateInput `json:"pricingModels,omitempty"`
+	PricingType   PricingType                `json:"pricingType"`
 }
 
 type PackagePricingTypeNotSetError struct {
@@ -3026,86 +3149,104 @@ type PackagePublishInput struct {
 }
 
 type PackageStatusFilterComparison struct {
-	Is       *bool           `json:"is,omitempty"`
-	IsNot    *bool           `json:"isNot,omitempty"`
 	Eq       *PackageStatus  `json:"eq,omitempty"`
-	Neq      *PackageStatus  `json:"neq,omitempty"`
 	Gt       *PackageStatus  `json:"gt,omitempty"`
 	Gte      *PackageStatus  `json:"gte,omitempty"`
+	ILike    *PackageStatus  `json:"iLike,omitempty"`
+	In       []PackageStatus `json:"in,omitempty"`
+	Is       *bool           `json:"is,omitempty"`
+	IsNot    *bool           `json:"isNot,omitempty"`
+	Like     *PackageStatus  `json:"like,omitempty"`
 	Lt       *PackageStatus  `json:"lt,omitempty"`
 	Lte      *PackageStatus  `json:"lte,omitempty"`
-	Like     *PackageStatus  `json:"like,omitempty"`
-	NotLike  *PackageStatus  `json:"notLike,omitempty"`
-	ILike    *PackageStatus  `json:"iLike,omitempty"`
+	Neq      *PackageStatus  `json:"neq,omitempty"`
 	NotILike *PackageStatus  `json:"notILike,omitempty"`
-	In       []PackageStatus `json:"in,omitempty"`
 	NotIn    []PackageStatus `json:"notIn,omitempty"`
+	NotLike  *PackageStatus  `json:"notLike,omitempty"`
 }
 
 type PageInfo struct {
+	// The cursor of the last returned record.
+	EndCursor *string `json:"endCursor"`
 	// true if paging forward and there are more records.
 	HasNextPage *bool `json:"hasNextPage"`
 	// true if paging backwards and there are more records.
 	HasPreviousPage *bool `json:"hasPreviousPage"`
 	// The cursor of the first returned record.
 	StartCursor *string `json:"startCursor"`
-	// The cursor of the last returned record.
-	EndCursor *string `json:"endCursor"`
+}
+
+type PaymentCollectionFilterComparison struct {
+	Eq       *PaymentCollection  `json:"eq,omitempty"`
+	Gt       *PaymentCollection  `json:"gt,omitempty"`
+	Gte      *PaymentCollection  `json:"gte,omitempty"`
+	ILike    *PaymentCollection  `json:"iLike,omitempty"`
+	In       []PaymentCollection `json:"in,omitempty"`
+	Is       *bool               `json:"is,omitempty"`
+	IsNot    *bool               `json:"isNot,omitempty"`
+	Like     *PaymentCollection  `json:"like,omitempty"`
+	Lt       *PaymentCollection  `json:"lt,omitempty"`
+	Lte      *PaymentCollection  `json:"lte,omitempty"`
+	Neq      *PaymentCollection  `json:"neq,omitempty"`
+	NotILike *PaymentCollection  `json:"notILike,omitempty"`
+	NotIn    []PaymentCollection `json:"notIn,omitempty"`
+	NotLike  *PaymentCollection  `json:"notLike,omitempty"`
 }
 
 type Paywall struct {
-	Plans               []*Plan                 `json:"plans"`
-	Configuration       *PaywallConfiguration   `json:"configuration"`
-	Customer            *Customer               `json:"customer"`
-	Resource            *CustomerResource       `json:"resource"`
-	ActiveSubscriptions []*CustomerSubscription `json:"activeSubscriptions"`
-	Currency            PaywallCurrency         `json:"currency"`
+	ActiveSubscriptions          []*CustomerSubscription `json:"activeSubscriptions"`
+	Configuration                *PaywallConfiguration   `json:"configuration"`
+	Currency                     PaywallCurrency         `json:"currency"`
+	Customer                     *Customer               `json:"customer"`
+	PaywallCalculatedPricePoints []*PaywallPricePoint    `json:"paywallCalculatedPricePoints"`
+	Plans                        []*Plan                 `json:"plans"`
+	Resource                     *CustomerResource       `json:"resource"`
 }
 
 type PaywallAddon struct {
-	RefID              string                 `json:"refId"`
-	Description        *string                `json:"description"`
-	BillingID          *string                `json:"billingId"`
-	DisplayName        string                 `json:"displayName"`
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	BillingID          *string                `json:"billingId"`
+	Description        *string                `json:"description"`
+	DisplayName        string                 `json:"displayName"`
 	Entitlements       []*Entitlement         `json:"entitlements"`
 	Prices             []*PaywallPrice        `json:"prices"`
 	PricingType        *PricingType           `json:"pricingType"`
+	RefID              string                 `json:"refId"`
 }
 
 type PaywallBasePlan struct {
-	RefID       string `json:"refId"`
 	DisplayName string `json:"displayName"`
+	RefID       string `json:"refId"`
 }
 
 type PaywallColorsPalette struct {
-	Primary               *string `json:"primary"`
-	TextColor             *string `json:"textColor"`
 	BackgroundColor       *string `json:"backgroundColor"`
 	BorderColor           *string `json:"borderColor"`
 	CurrentPlanBackground *string `json:"currentPlanBackground"`
+	Primary               *string `json:"primary"`
+	TextColor             *string `json:"textColor"`
 }
 
 type PaywallColorsPaletteInput struct {
-	Primary               *string `json:"primary,omitempty"`
-	TextColor             *string `json:"textColor,omitempty"`
 	BackgroundColor       *string `json:"backgroundColor,omitempty"`
 	BorderColor           *string `json:"borderColor,omitempty"`
 	CurrentPlanBackground *string `json:"currentPlanBackground,omitempty"`
+	Primary               *string `json:"primary,omitempty"`
+	TextColor             *string `json:"textColor,omitempty"`
 }
 
 type PaywallConfiguration struct {
+	CustomCSS  *string                     `json:"customCss"`
+	Layout     *PaywallLayoutConfiguration `json:"layout"`
 	Palette    *PaywallColorsPalette       `json:"palette"`
 	Typography *TypographyConfiguration    `json:"typography"`
-	Layout     *PaywallLayoutConfiguration `json:"layout"`
-	CustomCSS  *string                     `json:"customCss"`
 }
 
 type PaywallConfigurationInput struct {
+	CustomCSS  *string                          `json:"customCss,omitempty"`
+	Layout     *PaywallLayoutConfigurationInput `json:"layout,omitempty"`
 	Palette    *PaywallColorsPaletteInput       `json:"palette,omitempty"`
 	Typography *TypographyConfigurationInput    `json:"typography,omitempty"`
-	Layout     *PaywallLayoutConfigurationInput `json:"layout,omitempty"`
-	CustomCSS  *string                          `json:"customCss,omitempty"`
 }
 
 type PaywallCurrency struct {
@@ -3115,98 +3256,110 @@ type PaywallCurrency struct {
 
 type PaywallLayoutConfiguration struct {
 	Alignment   *Alignment `json:"alignment"`
-	PlanWidth   *float64   `json:"planWidth"`
 	PlanMargin  *float64   `json:"planMargin"`
 	PlanPadding *float64   `json:"planPadding"`
+	PlanWidth   *float64   `json:"planWidth"`
 }
 
 type PaywallLayoutConfigurationInput struct {
 	Alignment   *Alignment `json:"alignment,omitempty"`
-	PlanWidth   *float64   `json:"planWidth,omitempty"`
 	PlanMargin  *float64   `json:"planMargin,omitempty"`
 	PlanPadding *float64   `json:"planPadding,omitempty"`
+	PlanWidth   *float64   `json:"planWidth,omitempty"`
 }
 
 type PaywallPlan struct {
-	RefID                 string                 `json:"refId"`
+	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
+	BasePlan              *PaywallBasePlan       `json:"basePlan"`
+	BillingID             *string                `json:"billingId"`
+	CompatibleAddons      []*PaywallAddon        `json:"compatibleAddons"`
+	DefaultTrialConfig    *DefaultTrialConfig    `json:"defaultTrialConfig"`
 	Description           *string                `json:"description"`
 	DisplayName           string                 `json:"displayName"`
-	BillingID             *string                `json:"billingId"`
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
-	Product               PaywallProduct         `json:"product"`
-	BasePlan              *PaywallBasePlan       `json:"basePlan"`
-	DefaultTrialConfig    *DefaultTrialConfig    `json:"defaultTrialConfig"`
-	CompatibleAddons      []*PaywallAddon        `json:"compatibleAddons"`
+	Entitlements          []*Entitlement         `json:"entitlements"`
+	InheritedEntitlements []*Entitlement         `json:"inheritedEntitlements"`
 	Prices                []*PaywallPrice        `json:"prices"`
 	PricingType           *PricingType           `json:"pricingType"`
-	InheritedEntitlements []*Entitlement         `json:"inheritedEntitlements"`
-	Entitlements          []*Entitlement         `json:"entitlements"`
+	Product               PaywallProduct         `json:"product"`
+	RefID                 string                 `json:"refId"`
 }
 
 type PaywallPrice struct {
-	BillingPeriod      BillingPeriod       `json:"billingPeriod"`
-	BillingModel       BillingModel        `json:"billingModel"`
-	BillingID          *string             `json:"billingId"`
-	Price              Money               `json:"price"`
 	BillingCountryCode *string             `json:"billingCountryCode"`
-	FeatureID          *string             `json:"featureId"`
-	MinUnitQuantity    *float64            `json:"minUnitQuantity"`
-	MaxUnitQuantity    *float64            `json:"maxUnitQuantity"`
+	BillingID          *string             `json:"billingId"`
+	BillingModel       BillingModel        `json:"billingModel"`
+	BillingPeriod      BillingPeriod       `json:"billingPeriod"`
 	Feature            *EntitlementFeature `json:"feature"`
+	FeatureID          *string             `json:"featureId"`
+	MaxUnitQuantity    *float64            `json:"maxUnitQuantity"`
+	MinUnitQuantity    *float64            `json:"minUnitQuantity"`
+	Price              *Money              `json:"price"`
+	Tiers              []*PriceTier        `json:"tiers"`
+	TiersMode          *TiersMode          `json:"tiersMode"`
+}
+
+type PaywallPricePoint struct {
+	AdditionalChargesMayApply *bool         `json:"additionalChargesMayApply"`
+	Amount                    float64       `json:"amount"`
+	BillingCountryCode        *string       `json:"billingCountryCode"`
+	BillingPeriod             BillingPeriod `json:"billingPeriod"`
+	Currency                  Currency      `json:"currency"`
+	Feature                   *Feature      `json:"feature"`
+	PlanID                    string        `json:"planId"`
 }
 
 type PaywallProduct struct {
-	RefID              string                 `json:"refId"`
-	DisplayName        *string                `json:"displayName"`
-	Description        *string                `json:"description"`
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	Description        *string                `json:"description"`
+	DisplayName        *string                `json:"displayName"`
+	RefID              string                 `json:"refId"`
 }
 
 type Plan struct {
-	ID                    string                 `json:"id"`
-	CreatedAt             *string                `json:"createdAt"`
-	UpdatedAt             *string                `json:"updatedAt"`
-	RefID                 string                 `json:"refId"`
+	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
+	BasePlan              *Plan                  `json:"basePlan"`
 	BillingID             *string                `json:"billingId"`
 	BillingLinkURL        *string                `json:"billingLinkUrl"`
-	DisplayName           string                 `json:"displayName"`
-	Status                PackageStatus          `json:"status"`
-	PricingType           *PricingType           `json:"pricingType"`
-	Description           *string                `json:"description"`
-	EnvironmentID         *string                `json:"environmentId"`
-	Type                  string                 `json:"type"`
-	ProductID             *string                `json:"productId"`
-	IsLatest              *bool                  `json:"isLatest"`
-	Entitlements          []*PackageEntitlement  `json:"entitlements"`
-	DraftSummary          *PackageDraftSummary   `json:"draftSummary"`
-	DraftDetails          *PackageDraftDetails   `json:"draftDetails"`
-	VersionNumber         int64                  `json:"versionNumber"`
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
-	SyncStates            []*SyncState           `json:"syncStates"`
-	HiddenFromWidgets     []WidgetType           `json:"hiddenFromWidgets"`
-	Prices                []*Price               `json:"prices"`
-	IsParent              bool                   `json:"isParent"`
-	InheritedEntitlements []*PackageEntitlement  `json:"inheritedEntitlements"`
-	DefaultTrialConfig    *DefaultTrialConfig    `json:"defaultTrialConfig"`
-	Product               Product                `json:"product"`
-	BasePlan              *Plan                  `json:"basePlan"`
-	Environment           *Environment           `json:"environment"`
 	CompatibleAddons      []*Addon               `json:"compatibleAddons"`
+	CreatedAt             *string                `json:"createdAt"`
+	DefaultTrialConfig    *DefaultTrialConfig    `json:"defaultTrialConfig"`
+	Description           *string                `json:"description"`
+	DisplayName           string                 `json:"displayName"`
+	DraftDetails          *PackageDraftDetails   `json:"draftDetails"`
+	DraftSummary          *PackageDraftSummary   `json:"draftSummary"`
+	Entitlements          []*PackageEntitlement  `json:"entitlements"`
+	Environment           Environment            `json:"environment"`
+	EnvironmentID         string                 `json:"environmentId"`
+	HiddenFromWidgets     []WidgetType           `json:"hiddenFromWidgets"`
+	ID                    string                 `json:"id"`
+	InheritedEntitlements []*PackageEntitlement  `json:"inheritedEntitlements"`
+	IsLatest              *bool                  `json:"isLatest"`
+	IsParent              bool                   `json:"isParent"`
+	Prices                []*Price               `json:"prices"`
+	PricingType           *PricingType           `json:"pricingType"`
+	Product               Product                `json:"product"`
+	ProductID             *string                `json:"productId"`
+	RefID                 string                 `json:"refId"`
+	Status                PackageStatus          `json:"status"`
+	SyncStates            []*SyncState           `json:"syncStates"`
+	Type                  string                 `json:"type"`
+	UpdatedAt             *string                `json:"updatedAt"`
+	VersionNumber         int64                  `json:"versionNumber"`
 }
 
 type PlanAggregateGroupBy struct {
-	ID            *string        `json:"id"`
-	CreatedAt     *string        `json:"createdAt"`
-	UpdatedAt     *string        `json:"updatedAt"`
-	RefID         *string        `json:"refId"`
 	BillingID     *string        `json:"billingId"`
-	DisplayName   *string        `json:"displayName"`
-	Status        *PackageStatus `json:"status"`
-	PricingType   *PricingType   `json:"pricingType"`
+	CreatedAt     *string        `json:"createdAt"`
 	Description   *string        `json:"description"`
+	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
-	ProductID     *string        `json:"productId"`
+	ID            *string        `json:"id"`
 	IsLatest      *bool          `json:"isLatest"`
+	PricingType   *PricingType   `json:"pricingType"`
+	ProductID     *string        `json:"productId"`
+	RefID         *string        `json:"refId"`
+	Status        *PackageStatus `json:"status"`
+	UpdatedAt     *string        `json:"updatedAt"`
 	VersionNumber *int64         `json:"versionNumber"`
 }
 
@@ -3215,134 +3368,134 @@ type PlanAvgAggregate struct {
 }
 
 type PlanCompatibleAddonChange struct {
-	Before     *Addon      `json:"before"`
 	After      *Addon      `json:"after"`
+	Before     *Addon      `json:"before"`
 	ChangeType *ChangeType `json:"changeType"`
 }
 
 type PlanConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*PlanEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type PlanCountAggregate struct {
-	ID            *int64 `json:"id"`
-	CreatedAt     *int64 `json:"createdAt"`
-	UpdatedAt     *int64 `json:"updatedAt"`
-	RefID         *int64 `json:"refId"`
 	BillingID     *int64 `json:"billingId"`
-	DisplayName   *int64 `json:"displayName"`
-	Status        *int64 `json:"status"`
-	PricingType   *int64 `json:"pricingType"`
+	CreatedAt     *int64 `json:"createdAt"`
 	Description   *int64 `json:"description"`
+	DisplayName   *int64 `json:"displayName"`
 	EnvironmentID *int64 `json:"environmentId"`
-	ProductID     *int64 `json:"productId"`
+	ID            *int64 `json:"id"`
 	IsLatest      *int64 `json:"isLatest"`
+	PricingType   *int64 `json:"pricingType"`
+	ProductID     *int64 `json:"productId"`
+	RefID         *int64 `json:"refId"`
+	Status        *int64 `json:"status"`
+	UpdatedAt     *int64 `json:"updatedAt"`
 	VersionNumber *int64 `json:"versionNumber"`
 }
 
 type PlanCreateInput struct {
-	DisplayName        string                 `json:"displayName"`
-	Description        *string                `json:"description,omitempty"`
-	RefID              *string                `json:"refId,omitempty"`
-	Status             *PackageStatus         `json:"status,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	ProductID          string                 `json:"productId"`
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	BillingID          *string                `json:"billingId,omitempty"`
+	Description        *string                `json:"description,omitempty"`
+	DisplayName        string                 `json:"displayName"`
+	EnvironmentID      *string                `json:"environmentId,omitempty"`
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets,omitempty"`
 	ParentPlanID       *string                `json:"parentPlanId,omitempty"`
+	ProductID          string                 `json:"productId"`
+	RefID              *string                `json:"refId,omitempty"`
+	Status             *PackageStatus         `json:"status,omitempty"`
 }
 
 type PlanEdge struct {
-	// The node containing the Plan
-	Node Plan `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Plan
+	Node Plan `json:"node"`
 }
 
 type PlanFilter struct {
 	And              []*PlanFilter                  `json:"and,omitempty"`
-	Or               []*PlanFilter                  `json:"or,omitempty"`
-	ID               *StringFieldComparison         `json:"id,omitempty"`
-	CreatedAt        *DateFieldComparison           `json:"createdAt,omitempty"`
-	UpdatedAt        *DateFieldComparison           `json:"updatedAt,omitempty"`
-	RefID            *StringFieldComparison         `json:"refId,omitempty"`
 	BillingID        *StringFieldComparison         `json:"billingId,omitempty"`
-	DisplayName      *StringFieldComparison         `json:"displayName,omitempty"`
-	Status           *PackageStatusFilterComparison `json:"status,omitempty"`
-	PricingType      *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
-	Description      *StringFieldComparison         `json:"description,omitempty"`
-	EnvironmentID    *StringFieldComparison         `json:"environmentId,omitempty"`
-	ProductID        *StringFieldComparison         `json:"productId,omitempty"`
-	IsLatest         *BooleanFieldComparison        `json:"isLatest,omitempty"`
-	VersionNumber    *IntFieldComparison            `json:"versionNumber,omitempty"`
-	Product          *PlanFilterProductFilter       `json:"product,omitempty"`
 	CompatibleAddons *PlanFilterAddonFilter         `json:"compatibleAddons,omitempty"`
+	CreatedAt        *DateFieldComparison           `json:"createdAt,omitempty"`
+	Description      *StringFieldComparison         `json:"description,omitempty"`
+	DisplayName      *StringFieldComparison         `json:"displayName,omitempty"`
+	EnvironmentID    *StringFieldComparison         `json:"environmentId,omitempty"`
+	ID               *StringFieldComparison         `json:"id,omitempty"`
+	IsLatest         *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	Or               []*PlanFilter                  `json:"or,omitempty"`
+	PricingType      *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	Product          *PlanFilterProductFilter       `json:"product,omitempty"`
+	ProductID        *StringFieldComparison         `json:"productId,omitempty"`
+	RefID            *StringFieldComparison         `json:"refId,omitempty"`
+	Status           *PackageStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt        *DateFieldComparison           `json:"updatedAt,omitempty"`
+	VersionNumber    *IntFieldComparison            `json:"versionNumber,omitempty"`
 }
 
 type PlanFilterAddonFilter struct {
 	And           []*PlanFilterAddonFilter       `json:"and,omitempty"`
-	Or            []*PlanFilterAddonFilter       `json:"or,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
-	RefID         *StringFieldComparison         `json:"refId,omitempty"`
 	BillingID     *StringFieldComparison         `json:"billingId,omitempty"`
-	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
-	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
+	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
-	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
+	ID            *StringFieldComparison         `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	Or            []*PlanFilterAddonFilter       `json:"or,omitempty"`
+	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
+	RefID         *StringFieldComparison         `json:"refId,omitempty"`
+	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison            `json:"versionNumber,omitempty"`
 }
 
 type PlanFilterProductFilter struct {
 	And              []*PlanFilterProductFilter `json:"and,omitempty"`
-	Or               []*PlanFilterProductFilter `json:"or,omitempty"`
-	ID               *StringFieldComparison     `json:"id,omitempty"`
-	DisplayName      *StringFieldComparison     `json:"displayName,omitempty"`
-	RefID            *StringFieldComparison     `json:"refId,omitempty"`
-	Description      *StringFieldComparison     `json:"description,omitempty"`
 	CreatedAt        *DateFieldComparison       `json:"createdAt,omitempty"`
-	UpdatedAt        *DateFieldComparison       `json:"updatedAt,omitempty"`
+	Description      *StringFieldComparison     `json:"description,omitempty"`
+	DisplayName      *StringFieldComparison     `json:"displayName,omitempty"`
 	EnvironmentID    *StringFieldComparison     `json:"environmentId,omitempty"`
+	ID               *StringFieldComparison     `json:"id,omitempty"`
 	IsDefaultProduct *BooleanFieldComparison    `json:"isDefaultProduct,omitempty"`
+	Or               []*PlanFilterProductFilter `json:"or,omitempty"`
+	RefID            *StringFieldComparison     `json:"refId,omitempty"`
+	UpdatedAt        *DateFieldComparison       `json:"updatedAt,omitempty"`
 }
 
 type PlanMaxAggregate struct {
-	ID            *string        `json:"id"`
-	CreatedAt     *string        `json:"createdAt"`
-	UpdatedAt     *string        `json:"updatedAt"`
-	RefID         *string        `json:"refId"`
 	BillingID     *string        `json:"billingId"`
-	DisplayName   *string        `json:"displayName"`
-	Status        *PackageStatus `json:"status"`
-	PricingType   *PricingType   `json:"pricingType"`
+	CreatedAt     *string        `json:"createdAt"`
 	Description   *string        `json:"description"`
+	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
+	ID            *string        `json:"id"`
+	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
+	RefID         *string        `json:"refId"`
+	Status        *PackageStatus `json:"status"`
+	UpdatedAt     *string        `json:"updatedAt"`
 	VersionNumber *int64         `json:"versionNumber"`
 }
 
 type PlanMinAggregate struct {
-	ID            *string        `json:"id"`
-	CreatedAt     *string        `json:"createdAt"`
-	UpdatedAt     *string        `json:"updatedAt"`
-	RefID         *string        `json:"refId"`
 	BillingID     *string        `json:"billingId"`
-	DisplayName   *string        `json:"displayName"`
-	Status        *PackageStatus `json:"status"`
-	PricingType   *PricingType   `json:"pricingType"`
+	CreatedAt     *string        `json:"createdAt"`
 	Description   *string        `json:"description"`
+	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
+	ID            *string        `json:"id"`
+	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
+	RefID         *string        `json:"refId"`
+	Status        *PackageStatus `json:"status"`
+	UpdatedAt     *string        `json:"updatedAt"`
 	VersionNumber *int64         `json:"versionNumber"`
 }
 
@@ -3353,8 +3506,8 @@ type PlanNotFoundError struct {
 }
 
 type PlanSort struct {
-	Field     PlanSortFields `json:"field"`
 	Direction SortDirection  `json:"direction"`
+	Field     PlanSortFields `json:"field"`
 	Nulls     *SortNulls     `json:"nulls,omitempty"`
 }
 
@@ -3363,133 +3516,157 @@ type PlanSumAggregate struct {
 }
 
 type PlanUpdateInput struct {
-	ID                 string                      `json:"id"`
-	DisplayName        *string                     `json:"displayName,omitempty"`
-	Description        *string                     `json:"description,omitempty"`
-	Status             *PackageStatus              `json:"status,omitempty"`
-	BillingID          *string                     `json:"billingId,omitempty"`
-	ParentPlanID       *string                     `json:"parentPlanId,omitempty"`
-	DefaultTrialConfig *DefaultTrialConfigInputDto `json:"defaultTrialConfig,omitempty"`
 	AdditionalMetaData map[string]interface{}      `json:"additionalMetaData,omitempty"`
+	BillingID          *string                     `json:"billingId,omitempty"`
+	DefaultTrialConfig *DefaultTrialConfigInputDto `json:"defaultTrialConfig,omitempty"`
+	Description        *string                     `json:"description,omitempty"`
+	DisplayName        *string                     `json:"displayName,omitempty"`
 	HiddenFromWidgets  []WidgetType                `json:"hiddenFromWidgets,omitempty"`
+	ID                 string                      `json:"id"`
+	ParentPlanID       *string                     `json:"parentPlanId,omitempty"`
+	Status             *PackageStatus              `json:"status,omitempty"`
+}
+
+type PreviewSubscriptionInput struct {
+	Addons             []*SubscriptionAddonInput `json:"addons,omitempty"`
+	BillableFeatures   []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingCountryCode *string                   `json:"billingCountryCode,omitempty"`
+	BillingInformation *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CustomerID         string                    `json:"customerId"`
+	EnvironmentID      *string                   `json:"environmentId,omitempty"`
+	PlanID             string                    `json:"planId"`
+	PromotionCode      *string                   `json:"promotionCode,omitempty"`
+	ResourceID         *string                   `json:"resourceId,omitempty"`
+	StartDate          *string                   `json:"startDate,omitempty"`
+	UnitQuantity       *float64                  `json:"unitQuantity,omitempty"`
 }
 
 type Price struct {
-	ID                  string        `json:"id"`
-	CreatedAt           *string       `json:"createdAt"`
-	BillingPeriod       BillingPeriod `json:"billingPeriod"`
-	BillingModel        BillingModel  `json:"billingModel"`
-	BillingID           *string       `json:"billingId"`
-	Price               Money         `json:"price"`
 	BillingCountryCode  *string       `json:"billingCountryCode"`
-	FeatureID           *string       `json:"featureId"`
-	MinUnitQuantity     *float64      `json:"minUnitQuantity"`
-	PackageID           *string       `json:"packageId"`
-	MaxUnitQuantity     *float64      `json:"maxUnitQuantity"`
-	Feature             *Feature      `json:"feature"`
+	BillingID           *string       `json:"billingId"`
+	BillingModel        BillingModel  `json:"billingModel"`
+	BillingPeriod       BillingPeriod `json:"billingPeriod"`
+	CreatedAt           *string       `json:"createdAt"`
 	CrmID               *string       `json:"crmId"`
 	CrmLinkURL          *string       `json:"crmLinkUrl"`
-	UsedInSubscriptions *bool         `json:"usedInSubscriptions"`
+	Feature             *Feature      `json:"feature"`
+	FeatureID           *string       `json:"featureId"`
+	ID                  string        `json:"id"`
+	MaxUnitQuantity     *float64      `json:"maxUnitQuantity"`
+	MinUnitQuantity     *float64      `json:"minUnitQuantity"`
 	Package             PackageDto    `json:"package"`
+	PackageID           *string       `json:"packageId"`
+	Price               *Money        `json:"price"`
+	Tiers               []*PriceTier  `json:"tiers"`
+	TiersMode           *TiersMode    `json:"tiersMode"`
+	UsedInSubscriptions *bool         `json:"usedInSubscriptions"`
 }
 
 type PriceAggregateGroupBy struct {
-	ID            *string        `json:"id"`
-	CreatedAt     *string        `json:"createdAt"`
-	BillingPeriod *BillingPeriod `json:"billingPeriod"`
-	BillingModel  *BillingModel  `json:"billingModel"`
 	BillingID     *string        `json:"billingId"`
+	BillingModel  *BillingModel  `json:"billingModel"`
+	BillingPeriod *BillingPeriod `json:"billingPeriod"`
+	CreatedAt     *string        `json:"createdAt"`
+	ID            *string        `json:"id"`
+	TiersMode     *TiersMode     `json:"tiersMode"`
 }
 
 type PriceCountAggregate struct {
-	ID            *int64 `json:"id"`
-	CreatedAt     *int64 `json:"createdAt"`
-	BillingPeriod *int64 `json:"billingPeriod"`
-	BillingModel  *int64 `json:"billingModel"`
 	BillingID     *int64 `json:"billingId"`
+	BillingModel  *int64 `json:"billingModel"`
+	BillingPeriod *int64 `json:"billingPeriod"`
+	CreatedAt     *int64 `json:"createdAt"`
+	ID            *int64 `json:"id"`
+	TiersMode     *int64 `json:"tiersMode"`
 }
 
 type PriceDeleteResponse struct {
-	ID                  *string        `json:"id"`
-	CreatedAt           *string        `json:"createdAt"`
-	BillingPeriod       *BillingPeriod `json:"billingPeriod"`
-	BillingModel        *BillingModel  `json:"billingModel"`
-	BillingID           *string        `json:"billingId"`
-	Price               *Money         `json:"price"`
 	BillingCountryCode  *string        `json:"billingCountryCode"`
-	FeatureID           *string        `json:"featureId"`
-	MinUnitQuantity     *float64       `json:"minUnitQuantity"`
-	PackageID           *string        `json:"packageId"`
-	MaxUnitQuantity     *float64       `json:"maxUnitQuantity"`
-	Feature             *Feature       `json:"feature"`
+	BillingID           *string        `json:"billingId"`
+	BillingModel        *BillingModel  `json:"billingModel"`
+	BillingPeriod       *BillingPeriod `json:"billingPeriod"`
+	CreatedAt           *string        `json:"createdAt"`
 	CrmID               *string        `json:"crmId"`
 	CrmLinkURL          *string        `json:"crmLinkUrl"`
+	Feature             *Feature       `json:"feature"`
+	FeatureID           *string        `json:"featureId"`
+	ID                  *string        `json:"id"`
+	MaxUnitQuantity     *float64       `json:"maxUnitQuantity"`
+	MinUnitQuantity     *float64       `json:"minUnitQuantity"`
+	PackageID           *string        `json:"packageId"`
+	Price               *Money         `json:"price"`
+	Tiers               []*PriceTier   `json:"tiers"`
+	TiersMode           *TiersMode     `json:"tiersMode"`
 	UsedInSubscriptions *bool          `json:"usedInSubscriptions"`
 }
 
 type PriceEdge struct {
-	// The node containing the Price
-	Node Price `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Price
+	Node Price `json:"node"`
 }
 
 type PriceEntitlement struct {
 	Description              *string                  `json:"description"`
+	Feature                  Feature                  `json:"feature"`
 	FeatureID                string                   `json:"featureId"`
-	PackageID                string                   `json:"packageId"`
-	UpdatedAt                *string                  `json:"updatedAt"`
-	UsageLimit               *float64                 `json:"usageLimit"`
 	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
+	Package                  PackageDto               `json:"package"`
+	PackageID                string                   `json:"packageId"`
 	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	Package                  PackageDto               `json:"package"`
-	Feature                  Feature                  `json:"feature"`
+	UpdatedAt                *string                  `json:"updatedAt"`
+	UsageLimit               *float64                 `json:"usageLimit"`
 }
 
 type PriceFilter struct {
 	And           []*PriceFilter                 `json:"and,omitempty"`
-	Or            []*PriceFilter                 `json:"or,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
-	BillingPeriod *BillingPeriodFilterComparison `json:"billingPeriod,omitempty"`
-	BillingModel  *BillingModelFilterComparison  `json:"billingModel,omitempty"`
 	BillingID     *StringFieldComparison         `json:"billingId,omitempty"`
+	BillingModel  *BillingModelFilterComparison  `json:"billingModel,omitempty"`
+	BillingPeriod *BillingPeriodFilterComparison `json:"billingPeriod,omitempty"`
+	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
+	ID            *StringFieldComparison         `json:"id,omitempty"`
+	Or            []*PriceFilter                 `json:"or,omitempty"`
 	Package       *PriceFilterPackageDTOFilter   `json:"package,omitempty"`
+	TiersMode     *TiersModeFilterComparison     `json:"tiersMode,omitempty"`
 }
 
 type PriceFilterPackageDTOFilter struct {
 	And           []*PriceFilterPackageDTOFilter `json:"and,omitempty"`
-	Or            []*PriceFilterPackageDTOFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
-	RefID         *StringFieldComparison         `json:"refId,omitempty"`
 	BillingID     *StringFieldComparison         `json:"billingId,omitempty"`
-	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
-	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
+	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
-	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
+	ID            *StringFieldComparison         `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	Or            []*PriceFilterPackageDTOFilter `json:"or,omitempty"`
+	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
+	RefID         *StringFieldComparison         `json:"refId,omitempty"`
+	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison            `json:"versionNumber,omitempty"`
 }
 
 type PriceMaxAggregate struct {
-	ID            *string        `json:"id"`
-	CreatedAt     *string        `json:"createdAt"`
-	BillingPeriod *BillingPeriod `json:"billingPeriod"`
-	BillingModel  *BillingModel  `json:"billingModel"`
 	BillingID     *string        `json:"billingId"`
+	BillingModel  *BillingModel  `json:"billingModel"`
+	BillingPeriod *BillingPeriod `json:"billingPeriod"`
+	CreatedAt     *string        `json:"createdAt"`
+	ID            *string        `json:"id"`
+	TiersMode     *TiersMode     `json:"tiersMode"`
 }
 
 type PriceMinAggregate struct {
-	ID            *string        `json:"id"`
-	CreatedAt     *string        `json:"createdAt"`
-	BillingPeriod *BillingPeriod `json:"billingPeriod"`
-	BillingModel  *BillingModel  `json:"billingModel"`
 	BillingID     *string        `json:"billingId"`
+	BillingModel  *BillingModel  `json:"billingModel"`
+	BillingPeriod *BillingPeriod `json:"billingPeriod"`
+	CreatedAt     *string        `json:"createdAt"`
+	ID            *string        `json:"id"`
+	TiersMode     *TiersMode     `json:"tiersMode"`
 }
 
 type PriceNotFoundError struct {
@@ -3498,195 +3675,207 @@ type PriceNotFoundError struct {
 }
 
 type PricePeriodInput struct {
-	BillingPeriod      BillingPeriod `json:"billingPeriod"`
-	BillingCountryCode *string       `json:"billingCountryCode,omitempty"`
-	Price              MoneyInputDto `json:"price"`
+	BillingCountryCode *string           `json:"billingCountryCode,omitempty"`
+	BillingPeriod      BillingPeriod     `json:"billingPeriod"`
+	Price              *MoneyInputDto    `json:"price,omitempty"`
+	Tiers              []*PriceTierInput `json:"tiers,omitempty"`
 }
 
 type PriceSort struct {
-	Field     PriceSortFields `json:"field"`
 	Direction SortDirection   `json:"direction"`
+	Field     PriceSortFields `json:"field"`
 	Nulls     *SortNulls      `json:"nulls,omitempty"`
+}
+
+type PriceTier struct {
+	UnitPrice Money   `json:"unitPrice"`
+	UpTo      float64 `json:"upTo"`
+}
+
+type PriceTierInput struct {
+	UnitPrice MoneyInputDto `json:"unitPrice"`
+	UpTo      float64       `json:"upTo"`
 }
 
 type PricingModelCreateInput struct {
 	BillingModel    BillingModel        `json:"billingModel"`
-	PricePeriods    []*PricePeriodInput `json:"pricePeriods"`
 	FeatureID       *string             `json:"featureId,omitempty"`
-	MinUnitQuantity *float64            `json:"minUnitQuantity,omitempty"`
 	MaxUnitQuantity *float64            `json:"maxUnitQuantity,omitempty"`
+	MinUnitQuantity *float64            `json:"minUnitQuantity,omitempty"`
+	PricePeriods    []*PricePeriodInput `json:"pricePeriods"`
+	TiersMode       *TiersMode          `json:"tiersMode,omitempty"`
 }
 
 type PricingTypeChange struct {
-	Before     *PricingType `json:"before"`
 	After      *PricingType `json:"after"`
+	Before     *PricingType `json:"before"`
 	ChangeType *ChangeType  `json:"changeType"`
 }
 
 type PricingTypeFilterComparison struct {
-	Is       *bool         `json:"is,omitempty"`
-	IsNot    *bool         `json:"isNot,omitempty"`
 	Eq       *PricingType  `json:"eq,omitempty"`
-	Neq      *PricingType  `json:"neq,omitempty"`
 	Gt       *PricingType  `json:"gt,omitempty"`
 	Gte      *PricingType  `json:"gte,omitempty"`
+	ILike    *PricingType  `json:"iLike,omitempty"`
+	In       []PricingType `json:"in,omitempty"`
+	Is       *bool         `json:"is,omitempty"`
+	IsNot    *bool         `json:"isNot,omitempty"`
+	Like     *PricingType  `json:"like,omitempty"`
 	Lt       *PricingType  `json:"lt,omitempty"`
 	Lte      *PricingType  `json:"lte,omitempty"`
-	Like     *PricingType  `json:"like,omitempty"`
-	NotLike  *PricingType  `json:"notLike,omitempty"`
-	ILike    *PricingType  `json:"iLike,omitempty"`
+	Neq      *PricingType  `json:"neq,omitempty"`
 	NotILike *PricingType  `json:"notILike,omitempty"`
-	In       []PricingType `json:"in,omitempty"`
 	NotIn    []PricingType `json:"notIn,omitempty"`
+	NotLike  *PricingType  `json:"notLike,omitempty"`
 }
 
 type Product struct {
-	ID                    string                 `json:"id"`
-	DisplayName           *string                `json:"displayName"`
-	RefID                 string                 `json:"refId"`
-	Description           *string                `json:"description"`
-	CreatedAt             string                 `json:"createdAt"`
-	UpdatedAt             string                 `json:"updatedAt"`
-	EnvironmentID         string                 `json:"environmentId"`
-	IsDefaultProduct      bool                   `json:"isDefaultProduct"`
-	Plans                 []*Plan                `json:"plans"`
-	Addons                []*Addon               `json:"addons"`
-	ProductSettings       ProductSettings        `json:"productSettings"`
-	MultipleSubscriptions bool                   `json:"multipleSubscriptions"`
 	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
-	HasSubscriptions      bool                   `json:"hasSubscriptions"`
-	Environment           *Environment           `json:"environment"`
+	Addons                []*Addon               `json:"addons"`
+	CreatedAt             string                 `json:"createdAt"`
+	Description           *string                `json:"description"`
+	DisplayName           *string                `json:"displayName"`
 	DowngradePlan         *Plan                  `json:"downgradePlan"`
+	Environment           *Environment           `json:"environment"`
+	EnvironmentID         string                 `json:"environmentId"`
+	HasSubscriptions      bool                   `json:"hasSubscriptions"`
+	ID                    string                 `json:"id"`
+	IsDefaultProduct      bool                   `json:"isDefaultProduct"`
+	MultipleSubscriptions bool                   `json:"multipleSubscriptions"`
+	Plans                 []*Plan                `json:"plans"`
+	ProductSettings       ProductSettings        `json:"productSettings"`
+	RefID                 string                 `json:"refId"`
 	SubscriptionStartPlan *Plan                  `json:"subscriptionStartPlan"`
+	UpdatedAt             string                 `json:"updatedAt"`
 }
 
 type ProductAggregateGroupBy struct {
-	ID               *string `json:"id"`
-	DisplayName      *string `json:"displayName"`
-	RefID            *string `json:"refId"`
-	Description      *string `json:"description"`
 	CreatedAt        *string `json:"createdAt"`
-	UpdatedAt        *string `json:"updatedAt"`
+	Description      *string `json:"description"`
+	DisplayName      *string `json:"displayName"`
 	EnvironmentID    *string `json:"environmentId"`
+	ID               *string `json:"id"`
 	IsDefaultProduct *bool   `json:"isDefaultProduct"`
+	RefID            *string `json:"refId"`
+	UpdatedAt        *string `json:"updatedAt"`
 }
 
 type ProductConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*ProductEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type ProductCountAggregate struct {
-	ID               *int64 `json:"id"`
-	DisplayName      *int64 `json:"displayName"`
-	RefID            *int64 `json:"refId"`
-	Description      *int64 `json:"description"`
 	CreatedAt        *int64 `json:"createdAt"`
-	UpdatedAt        *int64 `json:"updatedAt"`
+	Description      *int64 `json:"description"`
+	DisplayName      *int64 `json:"displayName"`
 	EnvironmentID    *int64 `json:"environmentId"`
+	ID               *int64 `json:"id"`
 	IsDefaultProduct *int64 `json:"isDefaultProduct"`
+	RefID            *int64 `json:"refId"`
+	UpdatedAt        *int64 `json:"updatedAt"`
 }
 
 type ProductCreateInput struct {
+	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
 	Description           *string                `json:"description,omitempty"`
 	DisplayName           *string                `json:"displayName,omitempty"`
-	RefID                 string                 `json:"refId"`
 	EnvironmentID         string                 `json:"environmentId"`
 	MultipleSubscriptions *bool                  `json:"multipleSubscriptions,omitempty"`
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
+	RefID                 string                 `json:"refId"`
 }
 
 type ProductDeleteResponse struct {
-	ID                    *string                `json:"id"`
-	DisplayName           *string                `json:"displayName"`
-	RefID                 *string                `json:"refId"`
-	Description           *string                `json:"description"`
-	CreatedAt             *string                `json:"createdAt"`
-	UpdatedAt             *string                `json:"updatedAt"`
-	EnvironmentID         *string                `json:"environmentId"`
-	IsDefaultProduct      *bool                  `json:"isDefaultProduct"`
-	Plans                 []*Plan                `json:"plans"`
-	Addons                []*Addon               `json:"addons"`
-	ProductSettings       *ProductSettings       `json:"productSettings"`
-	MultipleSubscriptions *bool                  `json:"multipleSubscriptions"`
 	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
+	Addons                []*Addon               `json:"addons"`
+	CreatedAt             *string                `json:"createdAt"`
+	Description           *string                `json:"description"`
+	DisplayName           *string                `json:"displayName"`
+	EnvironmentID         *string                `json:"environmentId"`
+	ID                    *string                `json:"id"`
+	IsDefaultProduct      *bool                  `json:"isDefaultProduct"`
+	MultipleSubscriptions *bool                  `json:"multipleSubscriptions"`
+	Plans                 []*Plan                `json:"plans"`
+	ProductSettings       *ProductSettings       `json:"productSettings"`
+	RefID                 *string                `json:"refId"`
+	UpdatedAt             *string                `json:"updatedAt"`
 }
 
 type ProductEdge struct {
-	// The node containing the Product
-	Node Product `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the Product
+	Node Product `json:"node"`
 }
 
 type ProductFilter struct {
 	And              []*ProductFilter        `json:"and,omitempty"`
-	Or               []*ProductFilter        `json:"or,omitempty"`
-	ID               *StringFieldComparison  `json:"id,omitempty"`
-	DisplayName      *StringFieldComparison  `json:"displayName,omitempty"`
-	RefID            *StringFieldComparison  `json:"refId,omitempty"`
-	Description      *StringFieldComparison  `json:"description,omitempty"`
 	CreatedAt        *DateFieldComparison    `json:"createdAt,omitempty"`
-	UpdatedAt        *DateFieldComparison    `json:"updatedAt,omitempty"`
+	Description      *StringFieldComparison  `json:"description,omitempty"`
+	DisplayName      *StringFieldComparison  `json:"displayName,omitempty"`
 	EnvironmentID    *StringFieldComparison  `json:"environmentId,omitempty"`
+	ID               *StringFieldComparison  `json:"id,omitempty"`
 	IsDefaultProduct *BooleanFieldComparison `json:"isDefaultProduct,omitempty"`
+	Or               []*ProductFilter        `json:"or,omitempty"`
+	RefID            *StringFieldComparison  `json:"refId,omitempty"`
+	UpdatedAt        *DateFieldComparison    `json:"updatedAt,omitempty"`
 }
 
 type ProductMaxAggregate struct {
-	ID            *string `json:"id"`
-	DisplayName   *string `json:"displayName"`
-	RefID         *string `json:"refId"`
-	Description   *string `json:"description"`
 	CreatedAt     *string `json:"createdAt"`
-	UpdatedAt     *string `json:"updatedAt"`
+	Description   *string `json:"description"`
+	DisplayName   *string `json:"displayName"`
 	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+	RefID         *string `json:"refId"`
+	UpdatedAt     *string `json:"updatedAt"`
 }
 
 type ProductMinAggregate struct {
-	ID            *string `json:"id"`
-	DisplayName   *string `json:"displayName"`
-	RefID         *string `json:"refId"`
-	Description   *string `json:"description"`
 	CreatedAt     *string `json:"createdAt"`
-	UpdatedAt     *string `json:"updatedAt"`
+	Description   *string `json:"description"`
+	DisplayName   *string `json:"displayName"`
 	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+	RefID         *string `json:"refId"`
+	UpdatedAt     *string `json:"updatedAt"`
 }
 
 type ProductSettings struct {
-	SubscriptionEndSetup         SubscriptionEndSetup         `json:"subscriptionEndSetup"`
-	SubscriptionCancellationTime SubscriptionCancellationTime `json:"subscriptionCancellationTime"`
 	DowngradePlan                *Plan                        `json:"downgradePlan"`
 	DowngradePlanID              *string                      `json:"downgradePlanId"`
-	SubscriptionStartSetup       SubscriptionStartSetup       `json:"subscriptionStartSetup"`
+	SubscriptionCancellationTime SubscriptionCancellationTime `json:"subscriptionCancellationTime"`
+	SubscriptionEndSetup         SubscriptionEndSetup         `json:"subscriptionEndSetup"`
 	SubscriptionStartPlan        *Plan                        `json:"subscriptionStartPlan"`
 	SubscriptionStartPlanID      *string                      `json:"subscriptionStartPlanId"`
+	SubscriptionStartSetup       SubscriptionStartSetup       `json:"subscriptionStartSetup"`
 }
 
 type ProductSettingsInput struct {
-	SubscriptionEndSetup          SubscriptionEndSetup         `json:"subscriptionEndSetup"`
-	SubscriptionCancellationTime  SubscriptionCancellationTime `json:"subscriptionCancellationTime"`
-	DowngradePlanID               *string                      `json:"downgradePlanId,omitempty"`
-	SubscriptionStartSetup        SubscriptionStartSetup       `json:"subscriptionStartSetup"`
-	SubscriptionStartPlanID       *string                      `json:"subscriptionStartPlanId,omitempty"`
 	DowngradeAtEndOfBillingPeriod *string                      `json:"downgradeAtEndOfBillingPeriod,omitempty"`
+	DowngradePlanID               *string                      `json:"downgradePlanId,omitempty"`
+	SubscriptionCancellationTime  SubscriptionCancellationTime `json:"subscriptionCancellationTime"`
+	SubscriptionEndSetup          SubscriptionEndSetup         `json:"subscriptionEndSetup"`
+	SubscriptionStartPlanID       *string                      `json:"subscriptionStartPlanId,omitempty"`
+	SubscriptionStartSetup        SubscriptionStartSetup       `json:"subscriptionStartSetup"`
 }
 
 type ProductSort struct {
-	Field     ProductSortFields `json:"field"`
 	Direction SortDirection     `json:"direction"`
+	Field     ProductSortFields `json:"field"`
 	Nulls     *SortNulls        `json:"nulls,omitempty"`
 }
 
 type ProductUpdateInput struct {
+	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
 	Description           *string                `json:"description,omitempty"`
 	DisplayName           *string                `json:"displayName,omitempty"`
-	ProductSettings       *ProductSettingsInput  `json:"productSettings,omitempty"`
 	MultipleSubscriptions *bool                  `json:"multipleSubscriptions,omitempty"`
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
+	ProductSettings       *ProductSettingsInput  `json:"productSettings,omitempty"`
 }
 
 type PromotionCodeCustomerNotFirstPurchase struct {
@@ -3720,234 +3909,268 @@ type PromotionCodeNotFound struct {
 }
 
 type PromotionalEntitlement struct {
-	ID                       string                       `json:"id"`
-	Description              *string                      `json:"description"`
-	FeatureID                string                       `json:"featureId"`
 	CreatedAt                *string                      `json:"createdAt"`
-	UpdatedAt                *string                      `json:"updatedAt"`
-	StartDate                string                       `json:"startDate"`
+	Customer                 Customer                     `json:"customer"`
+	Description              *string                      `json:"description"`
 	EndDate                  *string                      `json:"endDate"`
-	IsVisible                bool                         `json:"isVisible"`
-	UsageLimit               *float64                     `json:"usageLimit"`
+	EnvironmentID            string                       `json:"environmentId"`
+	Feature                  Feature                      `json:"feature"`
+	FeatureID                string                       `json:"featureId"`
 	HasUnlimitedUsage        *bool                        `json:"hasUnlimitedUsage"`
-	Unlimited                *bool                        `json:"unlimited"`
-	Status                   PromotionalEntitlementStatus `json:"status"`
+	ID                       string                       `json:"id"`
+	IsVisible                bool                         `json:"isVisible"`
+	Meter                    *Meter                       `json:"meter"`
 	Period                   PromotionalEntitlementPeriod `json:"period"`
 	ResetPeriod              *EntitlementResetPeriod      `json:"resetPeriod"`
 	ResetPeriodConfiguration ResetPeriodConfiguration     `json:"resetPeriodConfiguration"`
-	EnvironmentID            string                       `json:"environmentId"`
-	Feature                  Feature                      `json:"feature"`
-	Customer                 Customer                     `json:"customer"`
+	StartDate                string                       `json:"startDate"`
+	Status                   PromotionalEntitlementStatus `json:"status"`
+	Unlimited                *bool                        `json:"unlimited"`
+	UpdatedAt                *string                      `json:"updatedAt"`
+	UsageLimit               *float64                     `json:"usageLimit"`
 }
 
 type PromotionalEntitlementAggregateGroupBy struct {
-	ID            *string                       `json:"id"`
 	CreatedAt     *string                       `json:"createdAt"`
-	UpdatedAt     *string                       `json:"updatedAt"`
-	Status        *PromotionalEntitlementStatus `json:"status"`
 	EnvironmentID *string                       `json:"environmentId"`
+	ID            *string                       `json:"id"`
+	Status        *PromotionalEntitlementStatus `json:"status"`
+	UpdatedAt     *string                       `json:"updatedAt"`
 }
 
 type PromotionalEntitlementConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*PromotionalEntitlementEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type PromotionalEntitlementCountAggregate struct {
-	ID            *int64 `json:"id"`
 	CreatedAt     *int64 `json:"createdAt"`
-	UpdatedAt     *int64 `json:"updatedAt"`
-	Status        *int64 `json:"status"`
 	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
+	Status        *int64 `json:"status"`
+	UpdatedAt     *int64 `json:"updatedAt"`
 }
 
 type PromotionalEntitlementDeleteResponse struct {
-	ID                       *string                       `json:"id"`
-	Description              *string                       `json:"description"`
-	FeatureID                *string                       `json:"featureId"`
 	CreatedAt                *string                       `json:"createdAt"`
-	UpdatedAt                *string                       `json:"updatedAt"`
-	StartDate                *string                       `json:"startDate"`
+	Description              *string                       `json:"description"`
 	EndDate                  *string                       `json:"endDate"`
-	IsVisible                *bool                         `json:"isVisible"`
-	UsageLimit               *float64                      `json:"usageLimit"`
+	EnvironmentID            *string                       `json:"environmentId"`
+	FeatureID                *string                       `json:"featureId"`
 	HasUnlimitedUsage        *bool                         `json:"hasUnlimitedUsage"`
-	Unlimited                *bool                         `json:"unlimited"`
-	Status                   *PromotionalEntitlementStatus `json:"status"`
+	ID                       *string                       `json:"id"`
+	IsVisible                *bool                         `json:"isVisible"`
 	Period                   *PromotionalEntitlementPeriod `json:"period"`
 	ResetPeriod              *EntitlementResetPeriod       `json:"resetPeriod"`
 	ResetPeriodConfiguration ResetPeriodConfiguration      `json:"resetPeriodConfiguration"`
-	EnvironmentID            *string                       `json:"environmentId"`
+	StartDate                *string                       `json:"startDate"`
+	Status                   *PromotionalEntitlementStatus `json:"status"`
+	Unlimited                *bool                         `json:"unlimited"`
+	UpdatedAt                *string                       `json:"updatedAt"`
+	UsageLimit               *float64                      `json:"usageLimit"`
 }
 
 type PromotionalEntitlementEdge struct {
-	// The node containing the PromotionalEntitlement
-	Node PromotionalEntitlement `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the PromotionalEntitlement
+	Node PromotionalEntitlement `json:"node"`
 }
 
 type PromotionalEntitlementFilter struct {
 	And           []*PromotionalEntitlementFilter               `json:"and,omitempty"`
-	Or            []*PromotionalEntitlementFilter               `json:"or,omitempty"`
-	ID            *StringFieldComparison                        `json:"id,omitempty"`
 	CreatedAt     *DateFieldComparison                          `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
-	Status        *PromotionalEntitlementStatusFilterComparison `json:"status,omitempty"`
 	EnvironmentID *StringFieldComparison                        `json:"environmentId,omitempty"`
+	ID            *StringFieldComparison                        `json:"id,omitempty"`
+	Or            []*PromotionalEntitlementFilter               `json:"or,omitempty"`
+	Status        *PromotionalEntitlementStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
 }
 
 type PromotionalEntitlementInput struct {
-	Description                     *string                        `json:"description,omitempty"`
-	FeatureID                       string                         `json:"featureId"`
 	CustomerID                      string                         `json:"customerId"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
+	Description                     *string                        `json:"description,omitempty"`
 	EndDate                         *string                        `json:"endDate,omitempty"`
-	Period                          PromotionalEntitlementPeriod   `json:"period"`
+	EnvironmentID                   string                         `json:"environmentId"`
+	FeatureID                       string                         `json:"featureId"`
+	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	IsVisible                       bool                           `json:"isVisible"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	Period                          PromotionalEntitlementPeriod   `json:"period"`
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	EnvironmentID                   string                         `json:"environmentId"`
+	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
+	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 }
 
 type PromotionalEntitlementMaxAggregate struct {
-	ID            *string                       `json:"id"`
 	CreatedAt     *string                       `json:"createdAt"`
-	UpdatedAt     *string                       `json:"updatedAt"`
-	Status        *PromotionalEntitlementStatus `json:"status"`
 	EnvironmentID *string                       `json:"environmentId"`
+	ID            *string                       `json:"id"`
+	Status        *PromotionalEntitlementStatus `json:"status"`
+	UpdatedAt     *string                       `json:"updatedAt"`
 }
 
 type PromotionalEntitlementMinAggregate struct {
-	ID            *string                       `json:"id"`
 	CreatedAt     *string                       `json:"createdAt"`
-	UpdatedAt     *string                       `json:"updatedAt"`
-	Status        *PromotionalEntitlementStatus `json:"status"`
 	EnvironmentID *string                       `json:"environmentId"`
+	ID            *string                       `json:"id"`
+	Status        *PromotionalEntitlementStatus `json:"status"`
+	UpdatedAt     *string                       `json:"updatedAt"`
 }
 
 type PromotionalEntitlementSort struct {
-	Field     PromotionalEntitlementSortFields `json:"field"`
 	Direction SortDirection                    `json:"direction"`
+	Field     PromotionalEntitlementSortFields `json:"field"`
 	Nulls     *SortNulls                       `json:"nulls,omitempty"`
 }
 
 type PromotionalEntitlementStatusFilterComparison struct {
-	Is       *bool                          `json:"is,omitempty"`
-	IsNot    *bool                          `json:"isNot,omitempty"`
 	Eq       *PromotionalEntitlementStatus  `json:"eq,omitempty"`
-	Neq      *PromotionalEntitlementStatus  `json:"neq,omitempty"`
 	Gt       *PromotionalEntitlementStatus  `json:"gt,omitempty"`
 	Gte      *PromotionalEntitlementStatus  `json:"gte,omitempty"`
+	ILike    *PromotionalEntitlementStatus  `json:"iLike,omitempty"`
+	In       []PromotionalEntitlementStatus `json:"in,omitempty"`
+	Is       *bool                          `json:"is,omitempty"`
+	IsNot    *bool                          `json:"isNot,omitempty"`
+	Like     *PromotionalEntitlementStatus  `json:"like,omitempty"`
 	Lt       *PromotionalEntitlementStatus  `json:"lt,omitempty"`
 	Lte      *PromotionalEntitlementStatus  `json:"lte,omitempty"`
-	Like     *PromotionalEntitlementStatus  `json:"like,omitempty"`
-	NotLike  *PromotionalEntitlementStatus  `json:"notLike,omitempty"`
-	ILike    *PromotionalEntitlementStatus  `json:"iLike,omitempty"`
+	Neq      *PromotionalEntitlementStatus  `json:"neq,omitempty"`
 	NotILike *PromotionalEntitlementStatus  `json:"notILike,omitempty"`
-	In       []PromotionalEntitlementStatus `json:"in,omitempty"`
 	NotIn    []PromotionalEntitlementStatus `json:"notIn,omitempty"`
+	NotLike  *PromotionalEntitlementStatus  `json:"notLike,omitempty"`
 }
 
 type PromotionalEntitlementUpdateInput struct {
 	Description                     *string                        `json:"description,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	EndDate                         *string                        `json:"endDate,omitempty"`
-	Period                          PromotionalEntitlementPeriod   `json:"period"`
+	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	IsVisible                       bool                           `json:"isVisible"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	Period                          PromotionalEntitlementPeriod   `json:"period"`
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
+	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 }
 
 type ProvisionCustomerInput struct {
-	Name                  *string                             `json:"name,omitempty"`
-	Email                 *string                             `json:"email,omitempty"`
-	RefID                 *string                             `json:"refId,omitempty"`
-	CustomerID            *string                             `json:"customerId,omitempty"`
-	EnvironmentID         *string                             `json:"environmentId,omitempty"`
-	BillingID             *string                             `json:"billingId,omitempty"`
-	CrmID                 *string                             `json:"crmId,omitempty"`
-	CouponRefID           *string                             `json:"couponRefId,omitempty"`
-	BillingInformation    *CustomerBillingInfo                `json:"billingInformation,omitempty"`
 	AdditionalMetaData    map[string]interface{}              `json:"additionalMetaData,omitempty"`
-	ShouldSyncFree        *bool                               `json:"shouldSyncFree,omitempty"`
+	BillingID             *string                             `json:"billingId,omitempty"`
+	BillingInformation    *CustomerBillingInfo                `json:"billingInformation,omitempty"`
+	CouponRefID           *string                             `json:"couponRefId,omitempty"`
 	CreatedAt             *string                             `json:"createdAt,omitempty"`
-	SubscriptionParams    *ProvisionCustomerSubscriptionInput `json:"subscriptionParams,omitempty"`
+	CrmID                 *string                             `json:"crmId,omitempty"`
+	CustomerID            *string                             `json:"customerId,omitempty"`
+	Email                 *string                             `json:"email,omitempty"`
+	EnvironmentID         *string                             `json:"environmentId,omitempty"`
 	ExcludeFromExperiment *bool                               `json:"excludeFromExperiment,omitempty"`
+	Name                  *string                             `json:"name,omitempty"`
+	RefID                 *string                             `json:"refId,omitempty"`
+	ShouldSyncFree        *bool                               `json:"shouldSyncFree,omitempty"`
+	SubscriptionParams    *ProvisionCustomerSubscriptionInput `json:"subscriptionParams,omitempty"`
 }
 
 type ProvisionCustomerSubscriptionInput struct {
-	PlanID                   string                    `json:"planId"`
-	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
-	PriceUnitAmount          *float64                  `json:"priceUnitAmount,omitempty"`
-	UnitQuantity             *float64                  `json:"unitQuantity,omitempty"`
+	AdditionalMetaData       map[string]interface{}    `json:"additionalMetaData,omitempty"`
 	Addons                   []*SubscriptionAddonInput `json:"addons,omitempty"`
+	AwaitPaymentConfirmation *bool                     `json:"awaitPaymentConfirmation,omitempty"`
 	BillableFeatures         []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
-	StartDate                *string                   `json:"startDate,omitempty"`
+	BillingCountryCode       *string                   `json:"billingCountryCode,omitempty"`
+	BillingID                *string                   `json:"billingId,omitempty"`
+	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
+	PlanID                   string                    `json:"planId"`
+	PriceUnitAmount          *float64                  `json:"priceUnitAmount,omitempty"`
+	PromotionCode            *string                   `json:"promotionCode,omitempty"`
 	RefID                    *string                   `json:"refId,omitempty"`
 	ResourceID               *string                   `json:"resourceId,omitempty"`
-	AdditionalMetaData       map[string]interface{}    `json:"additionalMetaData,omitempty"`
-	AwaitPaymentConfirmation *bool                     `json:"awaitPaymentConfirmation,omitempty"`
-	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
-	BillingID                *string                   `json:"billingId,omitempty"`
+	StartDate                *string                   `json:"startDate,omitempty"`
 	SubscriptionID           *string                   `json:"subscriptionId,omitempty"`
-	PromotionCode            *string                   `json:"promotionCode,omitempty"`
-	BillingCountryCode       *string                   `json:"billingCountryCode,omitempty"`
+	UnitQuantity             *float64                  `json:"unitQuantity,omitempty"`
 }
 
 type ProvisionSandboxInput struct {
-	DisplayName  string       `json:"displayName"`
 	BillingModel BillingModel `json:"billingModel"`
+	DisplayName  string       `json:"displayName"`
+}
+
+type ProvisionSubscription struct {
+	AdditionalMetaData       map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	Addons                   []*SubscriptionAddonInput `json:"addons,omitempty"`
+	AwaitPaymentConfirmation *bool                     `json:"awaitPaymentConfirmation,omitempty"`
+	BillableFeatures         []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingCountryCode       *string                   `json:"billingCountryCode,omitempty"`
+	BillingID                *string                   `json:"billingId,omitempty"`
+	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CheckoutOptions          *CheckoutOptions          `json:"checkoutOptions,omitempty"`
+	CustomerID               string                    `json:"customerId"`
+	PlanID                   string                    `json:"planId"`
+	PriceUnitAmount          *float64                  `json:"priceUnitAmount,omitempty"`
+	PromotionCode            *string                   `json:"promotionCode,omitempty"`
+	RefID                    *string                   `json:"refId,omitempty"`
+	ResourceID               *string                   `json:"resourceId,omitempty"`
+	SkipTrial                *bool                     `json:"skipTrial,omitempty"`
+	StartDate                *string                   `json:"startDate,omitempty"`
+	SubscriptionID           *string                   `json:"subscriptionId,omitempty"`
+	UnitQuantity             *float64                  `json:"unitQuantity,omitempty"`
 }
 
 type ProvisionSubscriptionInput struct {
-	PlanID                   string                    `json:"planId"`
-	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
-	PriceUnitAmount          *float64                  `json:"priceUnitAmount,omitempty"`
-	UnitQuantity             *float64                  `json:"unitQuantity,omitempty"`
+	AdditionalMetaData       map[string]interface{}    `json:"additionalMetaData,omitempty"`
 	Addons                   []*SubscriptionAddonInput `json:"addons,omitempty"`
+	AwaitPaymentConfirmation *bool                     `json:"awaitPaymentConfirmation,omitempty"`
 	BillableFeatures         []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
-	StartDate                *string                   `json:"startDate,omitempty"`
+	BillingCountryCode       *string                   `json:"billingCountryCode,omitempty"`
+	BillingID                *string                   `json:"billingId,omitempty"`
+	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CheckoutOptions          *CheckoutOptions          `json:"checkoutOptions,omitempty"`
+	CustomerID               string                    `json:"customerId"`
+	PlanID                   string                    `json:"planId"`
+	PriceUnitAmount          *float64                  `json:"priceUnitAmount,omitempty"`
+	PromotionCode            *string                   `json:"promotionCode,omitempty"`
 	RefID                    *string                   `json:"refId,omitempty"`
 	ResourceID               *string                   `json:"resourceId,omitempty"`
-	AdditionalMetaData       map[string]interface{}    `json:"additionalMetaData,omitempty"`
-	AwaitPaymentConfirmation *bool                     `json:"awaitPaymentConfirmation,omitempty"`
-	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
-	BillingID                *string                   `json:"billingId,omitempty"`
-	SubscriptionID           *string                   `json:"subscriptionId,omitempty"`
-	PromotionCode            *string                   `json:"promotionCode,omitempty"`
-	BillingCountryCode       *string                   `json:"billingCountryCode,omitempty"`
-	CustomerID               string                    `json:"customerId"`
 	SkipTrial                *bool                     `json:"skipTrial,omitempty"`
-	CheckoutOptions          *CheckoutOptions          `json:"checkoutOptions,omitempty"`
+	StartDate                *string                   `json:"startDate,omitempty"`
+	SubscriptionID           *string                   `json:"subscriptionId,omitempty"`
+	UnitQuantity             *float64                  `json:"unitQuantity,omitempty"`
 }
 
 type ProvisionSubscriptionResult struct {
-	ID                string                      `json:"id"`
-	Status            ProvisionSubscriptionStatus `json:"status"`
 	CheckoutBillingID *string                     `json:"checkoutBillingId"`
 	CheckoutURL       *string                     `json:"checkoutUrl"`
-	Subscription      *CustomerSubscription       `json:"subscription"`
+	ID                string                      `json:"id"`
 	IsScheduled       *bool                       `json:"isScheduled"`
+	Status            ProvisionSubscriptionStatus `json:"status"`
+	Subscription      *CustomerSubscription       `json:"subscription"`
 }
 
 type ProvisionedCustomer struct {
 	Customer                     Customer                     `json:"customer"`
-	SubscriptionStrategyDecision SubscriptionDecisionStrategy `json:"subscriptionStrategyDecision"`
-	SubscriptionDecisionStrategy SubscriptionDecisionStrategy `json:"subscriptionDecisionStrategy"`
 	Subscription                 *CustomerSubscription        `json:"subscription"`
+	SubscriptionDecisionStrategy SubscriptionDecisionStrategy `json:"subscriptionDecisionStrategy"`
+	SubscriptionStrategyDecision SubscriptionDecisionStrategy `json:"subscriptionStrategyDecision"`
 }
 
 type PublishPackageResult struct {
 	TaskID *string `json:"taskId"`
+}
+
+type RecalculateEntitlementsInput struct {
+	CustomerIds           []string `json:"customerIds,omitempty"`
+	EnvironmentID         string   `json:"environmentId"`
+	ForAllCustomers       *bool    `json:"forAllCustomers,omitempty"`
+	LastCalculationBefore *string  `json:"lastCalculationBefore,omitempty"`
+}
+
+type RecalculateEntitlementsResult struct {
+	TaskID string `json:"taskId"`
 }
 
 type RemoveBasePlanFromPlanInput struct {
@@ -3993,13 +4216,13 @@ type RemoveExperimentFromCustomerSubscriptionInput struct {
 }
 
 type ReportUsageInput struct {
-	Value          float64              `json:"value"`
-	FeatureID      string               `json:"featureId"`
-	CustomerID     string               `json:"customerId"`
-	ResourceID     *string              `json:"resourceId,omitempty"`
 	CreatedAt      *string              `json:"createdAt,omitempty"`
-	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
+	CustomerID     string               `json:"customerId"`
 	EnvironmentID  *string              `json:"environmentId,omitempty"`
+	FeatureID      string               `json:"featureId"`
+	ResourceID     *string              `json:"resourceId,omitempty"`
+	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
+	Value          float64              `json:"value"`
 }
 
 type ResyncIntegrationInput struct {
@@ -4011,9 +4234,15 @@ type ResyncIntegrationResult struct {
 	TaskID string `json:"taskId"`
 }
 
+type RevokePromotionalEntitlementInput struct {
+	CustomerID    string  `json:"customerId"`
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	FeatureID     string  `json:"featureId"`
+}
+
 type SdkConfiguration struct {
-	SentryDsn                *string `json:"sentryDsn"`
 	IsWidgetWatermarkEnabled *bool   `json:"isWidgetWatermarkEnabled"`
+	SentryDsn                *string `json:"sentryDsn"`
 }
 
 type SetBasePlanOnPlanInput struct {
@@ -4069,79 +4298,79 @@ type StopExperimentInput struct {
 }
 
 type StringChangeDto struct {
-	Before     *string     `json:"before"`
 	After      *string     `json:"after"`
+	Before     *string     `json:"before"`
 	ChangeType *ChangeType `json:"changeType"`
 }
 
 type StringFieldComparison struct {
-	Is       *bool    `json:"is,omitempty"`
-	IsNot    *bool    `json:"isNot,omitempty"`
 	Eq       *string  `json:"eq,omitempty"`
-	Neq      *string  `json:"neq,omitempty"`
 	Gt       *string  `json:"gt,omitempty"`
 	Gte      *string  `json:"gte,omitempty"`
+	ILike    *string  `json:"iLike,omitempty"`
+	In       []string `json:"in,omitempty"`
+	Is       *bool    `json:"is,omitempty"`
+	IsNot    *bool    `json:"isNot,omitempty"`
+	Like     *string  `json:"like,omitempty"`
 	Lt       *string  `json:"lt,omitempty"`
 	Lte      *string  `json:"lte,omitempty"`
-	Like     *string  `json:"like,omitempty"`
-	NotLike  *string  `json:"notLike,omitempty"`
-	ILike    *string  `json:"iLike,omitempty"`
+	Neq      *string  `json:"neq,omitempty"`
 	NotILike *string  `json:"notILike,omitempty"`
-	In       []string `json:"in,omitempty"`
 	NotIn    []string `json:"notIn,omitempty"`
+	NotLike  *string  `json:"notLike,omitempty"`
 }
 
 type StripeCredentials struct {
+	AccountDisplayName string `json:"accountDisplayName"`
 	AccountID          string `json:"accountId"`
 	IsTestMode         bool   `json:"isTestMode"`
-	AccountDisplayName string `json:"accountDisplayName"`
 }
 
 func (StripeCredentials) IsCredentials() {}
 
 type StripeCredentialsInput struct {
+	AccountID         *string `json:"accountId,omitempty"`
 	AuthorizationCode string  `json:"authorizationCode"`
 	IsTestMode        bool    `json:"isTestMode"`
-	AccountID         *string `json:"accountId,omitempty"`
 }
 
 type StripeCustomer struct {
-	ID                   string  `json:"id"`
-	Name                 string  `json:"name"`
-	Email                string  `json:"email"`
-	SubscriptionsCount   float64 `json:"subscriptionsCount"`
-	SubscriptionPlanName *string `json:"subscriptionPlanName"`
 	CreatedAt            string  `json:"createdAt"`
-	IsSynced             bool    `json:"isSynced"`
+	Email                string  `json:"email"`
 	EnvironmentID        *string `json:"environmentId"`
+	ID                   string  `json:"id"`
+	IsSynced             bool    `json:"isSynced"`
+	Name                 string  `json:"name"`
+	SubscriptionPlanName *string `json:"subscriptionPlanName"`
+	SubscriptionsCount   float64 `json:"subscriptionsCount"`
 }
 
 type StripeCustomerIsDeleted struct {
+	BillingID         string `json:"billingId"`
 	Code              string `json:"code"`
 	IsValidationError bool   `json:"isValidationError"`
-	BillingID         string `json:"billingId"`
 }
 
 type StripeCustomerSearchInput struct {
+	CustomerName  *string `json:"customerName,omitempty"`
 	EnvironmentID string  `json:"environmentId"`
 	NextPage      *string `json:"nextPage,omitempty"`
-	CustomerName  *string `json:"customerName,omitempty"`
 }
 
 type StripeCustomerSearchResult struct {
 	Customers  []*StripeCustomer `json:"customers"`
-	TotalCount int64             `json:"totalCount"`
 	NextPage   *string           `json:"nextPage"`
+	TotalCount int64             `json:"totalCount"`
 }
 
 type StripeProduct struct {
-	ID                    string                `json:"id"`
-	Name                  string                `json:"name"`
-	Prices                []*StripeProductPrice `json:"prices"`
-	NotSupportedForImport bool                  `json:"notSupportedForImport"`
-	UpdatedAt             string                `json:"updatedAt"`
-	IsSynced              bool                  `json:"isSynced"`
 	EnvironmentID         *string               `json:"environmentId"`
+	ID                    string                `json:"id"`
+	IsSynced              bool                  `json:"isSynced"`
+	Name                  string                `json:"name"`
+	NotSupportedForImport bool                  `json:"notSupportedForImport"`
+	Prices                []*StripeProductPrice `json:"prices"`
+	UpdatedAt             string                `json:"updatedAt"`
 }
 
 type StripeProductPrice struct {
@@ -4156,9 +4385,9 @@ type StripeProductSearchInput struct {
 }
 
 type StripeProductSearchResult struct {
+	NextPage                 *string          `json:"nextPage"`
 	Products                 []*StripeProduct `json:"products"`
 	TotalCount               int64            `json:"totalCount"`
-	NextPage                 *string          `json:"nextPage"`
 	UsageBasedProductPresent *bool            `json:"usageBasedProductPresent"`
 }
 
@@ -4172,31 +4401,26 @@ type StripeSubscriptionSearchInput struct {
 }
 
 type StripeSubscriptionSearchResult struct {
+	NextPage      *string               `json:"nextPage"`
 	Subscriptions []*StripeSubscription `json:"subscriptions"`
 	TotalCount    int64                 `json:"totalCount"`
-	NextPage      *string               `json:"nextPage"`
-}
-
-type Subscription struct {
-	EntitlementsUpdated EntitlementsUpdated `json:"entitlementsUpdated"`
-	UsageUpdated        UsageUpdated        `json:"usageUpdated"`
 }
 
 type SubscriptionAddon struct {
-	ID           string               `json:"id"`
-	Quantity     float64              `json:"quantity"`
-	UpdatedAt    string               `json:"updatedAt"`
-	CreatedAt    *string              `json:"createdAt"`
-	Subscription CustomerSubscription `json:"subscription"`
 	Addon        Addon                `json:"addon"`
+	CreatedAt    *string              `json:"createdAt"`
+	ID           string               `json:"id"`
 	Price        *Price               `json:"price"`
+	Quantity     float64              `json:"quantity"`
+	Subscription CustomerSubscription `json:"subscription"`
+	UpdatedAt    string               `json:"updatedAt"`
 }
 
 type SubscriptionAddonAggregateGroupBy struct {
+	CreatedAt *string  `json:"createdAt"`
 	ID        *string  `json:"id"`
 	Quantity  *float64 `json:"quantity"`
 	UpdatedAt *string  `json:"updatedAt"`
-	CreatedAt *string  `json:"createdAt"`
 }
 
 type SubscriptionAddonAvgAggregate struct {
@@ -4204,80 +4428,82 @@ type SubscriptionAddonAvgAggregate struct {
 }
 
 type SubscriptionAddonCountAggregate struct {
+	CreatedAt *int64 `json:"createdAt"`
 	ID        *int64 `json:"id"`
 	Quantity  *int64 `json:"quantity"`
 	UpdatedAt *int64 `json:"updatedAt"`
-	CreatedAt *int64 `json:"createdAt"`
 }
 
 type SubscriptionAddonEdge struct {
-	// The node containing the SubscriptionAddon
-	Node SubscriptionAddon `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the SubscriptionAddon
+	Node SubscriptionAddon `json:"node"`
 }
 
 type SubscriptionAddonFilter struct {
-	And          []*SubscriptionAddonFilter                         `json:"and,omitempty"`
-	Or           []*SubscriptionAddonFilter                         `json:"or,omitempty"`
-	ID           *StringFieldComparison                             `json:"id,omitempty"`
-	Quantity     *NumberFieldComparison                             `json:"quantity,omitempty"`
-	UpdatedAt    *DateFieldComparison                               `json:"updatedAt,omitempty"`
-	CreatedAt    *DateFieldComparison                               `json:"createdAt,omitempty"`
-	Price        *SubscriptionAddonFilterPriceFilter                `json:"price,omitempty"`
 	Addon        *SubscriptionAddonFilterAddonFilter                `json:"addon,omitempty"`
+	And          []*SubscriptionAddonFilter                         `json:"and,omitempty"`
+	CreatedAt    *DateFieldComparison                               `json:"createdAt,omitempty"`
+	ID           *StringFieldComparison                             `json:"id,omitempty"`
+	Or           []*SubscriptionAddonFilter                         `json:"or,omitempty"`
+	Price        *SubscriptionAddonFilterPriceFilter                `json:"price,omitempty"`
+	Quantity     *NumberFieldComparison                             `json:"quantity,omitempty"`
 	Subscription *SubscriptionAddonFilterCustomerSubscriptionFilter `json:"subscription,omitempty"`
+	UpdatedAt    *DateFieldComparison                               `json:"updatedAt,omitempty"`
 }
 
 type SubscriptionAddonFilterAddonFilter struct {
 	And           []*SubscriptionAddonFilterAddonFilter `json:"and,omitempty"`
-	Or            []*SubscriptionAddonFilterAddonFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison                `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison                  `json:"updatedAt,omitempty"`
-	RefID         *StringFieldComparison                `json:"refId,omitempty"`
 	BillingID     *StringFieldComparison                `json:"billingId,omitempty"`
-	DisplayName   *StringFieldComparison                `json:"displayName,omitempty"`
-	Status        *PackageStatusFilterComparison        `json:"status,omitempty"`
-	PricingType   *PricingTypeFilterComparison          `json:"pricingType,omitempty"`
+	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison                `json:"description,omitempty"`
+	DisplayName   *StringFieldComparison                `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison                `json:"environmentId,omitempty"`
-	ProductID     *StringFieldComparison                `json:"productId,omitempty"`
+	ID            *StringFieldComparison                `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison               `json:"isLatest,omitempty"`
+	Or            []*SubscriptionAddonFilterAddonFilter `json:"or,omitempty"`
+	PricingType   *PricingTypeFilterComparison          `json:"pricingType,omitempty"`
+	ProductID     *StringFieldComparison                `json:"productId,omitempty"`
+	RefID         *StringFieldComparison                `json:"refId,omitempty"`
+	Status        *PackageStatusFilterComparison        `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison                  `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison                   `json:"versionNumber,omitempty"`
 }
 
 type SubscriptionAddonFilterCustomerSubscriptionFilter struct {
-	And              []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	Or               []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	EnvironmentID    *StringFieldComparison                               `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison                               `json:"id,omitempty"`
-	CreatedAt        *DateFieldComparison                                 `json:"createdAt,omitempty"`
-	StartDate        *DateFieldComparison                                 `json:"startDate,omitempty"`
-	EndDate          *DateFieldComparison                                 `json:"endDate,omitempty"`
-	CancellationDate *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
-	TrialEndDate     *DateFieldComparison                                 `json:"trialEndDate,omitempty"`
-	EffectiveEndDate *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
-	BillingID        *StringFieldComparison                               `json:"billingId,omitempty"`
-	OldBillingID     *StringFieldComparison                               `json:"oldBillingId,omitempty"`
-	CrmID            *StringFieldComparison                               `json:"crmId,omitempty"`
-	CrmLinkURL       *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
-	Status           *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
-	CancelReason     *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
-	RefID            *StringFieldComparison                               `json:"refId,omitempty"`
-	SubscriptionID   *StringFieldComparison                               `json:"subscriptionId,omitempty"`
-	ResourceID       *StringFieldComparison                               `json:"resourceId,omitempty"`
-	PricingType      *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
+	And               []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID         *StringFieldComparison                               `json:"billingId,omitempty"`
+	CancelReason      *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
+	CancellationDate  *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
+	CreatedAt         *DateFieldComparison                                 `json:"createdAt,omitempty"`
+	CrmID             *StringFieldComparison                               `json:"crmId,omitempty"`
+	CrmLinkURL        *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
+	EffectiveEndDate  *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
+	EndDate           *DateFieldComparison                                 `json:"endDate,omitempty"`
+	EnvironmentID     *StringFieldComparison                               `json:"environmentId,omitempty"`
+	ID                *StringFieldComparison                               `json:"id,omitempty"`
+	OldBillingID      *StringFieldComparison                               `json:"oldBillingId,omitempty"`
+	Or                []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
+	PricingType       *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
+	RefID             *StringFieldComparison                               `json:"refId,omitempty"`
+	ResourceID        *StringFieldComparison                               `json:"resourceId,omitempty"`
+	StartDate         *DateFieldComparison                                 `json:"startDate,omitempty"`
+	Status            *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
+	SubscriptionID    *StringFieldComparison                               `json:"subscriptionId,omitempty"`
+	TrialEndDate      *DateFieldComparison                                 `json:"trialEndDate,omitempty"`
 }
 
 type SubscriptionAddonFilterPriceFilter struct {
 	And           []*SubscriptionAddonFilterPriceFilter `json:"and,omitempty"`
-	Or            []*SubscriptionAddonFilterPriceFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison                `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
-	BillingPeriod *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
-	BillingModel  *BillingModelFilterComparison         `json:"billingModel,omitempty"`
 	BillingID     *StringFieldComparison                `json:"billingId,omitempty"`
+	BillingModel  *BillingModelFilterComparison         `json:"billingModel,omitempty"`
+	BillingPeriod *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
+	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
+	ID            *StringFieldComparison                `json:"id,omitempty"`
+	Or            []*SubscriptionAddonFilterPriceFilter `json:"or,omitempty"`
+	TiersMode     *TiersModeFilterComparison            `json:"tiersMode,omitempty"`
 }
 
 type SubscriptionAddonInput struct {
@@ -4286,22 +4512,22 @@ type SubscriptionAddonInput struct {
 }
 
 type SubscriptionAddonMaxAggregate struct {
+	CreatedAt *string  `json:"createdAt"`
 	ID        *string  `json:"id"`
 	Quantity  *float64 `json:"quantity"`
 	UpdatedAt *string  `json:"updatedAt"`
-	CreatedAt *string  `json:"createdAt"`
 }
 
 type SubscriptionAddonMinAggregate struct {
+	CreatedAt *string  `json:"createdAt"`
 	ID        *string  `json:"id"`
 	Quantity  *float64 `json:"quantity"`
 	UpdatedAt *string  `json:"updatedAt"`
-	CreatedAt *string  `json:"createdAt"`
 }
 
 type SubscriptionAddonSort struct {
-	Field     SubscriptionAddonSortFields `json:"field"`
 	Direction SortDirection               `json:"direction"`
+	Field     SubscriptionAddonSortFields `json:"field"`
 	Nulls     *SortNulls                  `json:"nulls,omitempty"`
 }
 
@@ -4317,276 +4543,301 @@ type SubscriptionAlreadyCanceledOrExpired struct {
 }
 
 type SubscriptionBillingInfo struct {
-	TaxRateIds []string `json:"taxRateIds,omitempty"`
+	TaxPercentage *float64 `json:"taxPercentage,omitempty"`
+	TaxRateIds    []string `json:"taxRateIds,omitempty"`
 }
 
 type SubscriptionCancelReasonFilterComparison struct {
-	Is       *bool                      `json:"is,omitempty"`
-	IsNot    *bool                      `json:"isNot,omitempty"`
 	Eq       *SubscriptionCancelReason  `json:"eq,omitempty"`
-	Neq      *SubscriptionCancelReason  `json:"neq,omitempty"`
 	Gt       *SubscriptionCancelReason  `json:"gt,omitempty"`
 	Gte      *SubscriptionCancelReason  `json:"gte,omitempty"`
+	ILike    *SubscriptionCancelReason  `json:"iLike,omitempty"`
+	In       []SubscriptionCancelReason `json:"in,omitempty"`
+	Is       *bool                      `json:"is,omitempty"`
+	IsNot    *bool                      `json:"isNot,omitempty"`
+	Like     *SubscriptionCancelReason  `json:"like,omitempty"`
 	Lt       *SubscriptionCancelReason  `json:"lt,omitempty"`
 	Lte      *SubscriptionCancelReason  `json:"lte,omitempty"`
-	Like     *SubscriptionCancelReason  `json:"like,omitempty"`
-	NotLike  *SubscriptionCancelReason  `json:"notLike,omitempty"`
-	ILike    *SubscriptionCancelReason  `json:"iLike,omitempty"`
+	Neq      *SubscriptionCancelReason  `json:"neq,omitempty"`
 	NotILike *SubscriptionCancelReason  `json:"notILike,omitempty"`
-	In       []SubscriptionCancelReason `json:"in,omitempty"`
 	NotIn    []SubscriptionCancelReason `json:"notIn,omitempty"`
+	NotLike  *SubscriptionCancelReason  `json:"notLike,omitempty"`
 }
 
 type SubscriptionCancellationInput struct {
-	SubscriptionRefID            string                        `json:"subscriptionRefId"`
-	EnvironmentID                *string                       `json:"environmentId,omitempty"`
-	SubscriptionCancellationTime *SubscriptionCancellationTime `json:"subscriptionCancellationTime,omitempty"`
-	EndDate                      *string                       `json:"endDate,omitempty"`
+	EndDate                        *string                         `json:"endDate,omitempty"`
+	EnvironmentID                  *string                         `json:"environmentId,omitempty"`
+	SubscriptionCancellationAction *SubscriptionCancellationAction `json:"subscriptionCancellationAction,omitempty"`
+	SubscriptionCancellationTime   *SubscriptionCancellationTime   `json:"subscriptionCancellationTime,omitempty"`
+	SubscriptionRefID              string                          `json:"subscriptionRefId"`
 }
 
 type SubscriptionCoupon struct {
+	DiscountValue float64    `json:"discountValue"`
+	EnvironmentID string     `json:"environmentId"`
 	ID            string     `json:"id"`
 	Name          string     `json:"name"`
 	RefID         string     `json:"refId"`
-	EnvironmentID string     `json:"environmentId"`
 	Type          CouponType `json:"type"`
-	DiscountValue float64    `json:"discountValue"`
 }
 
 type SubscriptionEntitlement struct {
-	ID                       string                   `json:"id"`
-	Description              *string                  `json:"description"`
-	FeatureID                string                   `json:"featureId"`
-	SubscriptionID           string                   `json:"subscriptionId"`
 	CreatedAt                *string                  `json:"createdAt"`
-	UpdatedAt                *string                  `json:"updatedAt"`
-	UsageLimit               *float64                 `json:"usageLimit"`
-	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
+	Description              *string                  `json:"description"`
 	EnvironmentID            string                   `json:"environmentId"`
+	Feature                  Feature                  `json:"feature"`
+	FeatureID                string                   `json:"featureId"`
+	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
+	ID                       string                   `json:"id"`
+	Meter                    *Meter                   `json:"meter"`
 	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	Feature                  Feature                  `json:"feature"`
 	Subscription             CustomerSubscription     `json:"subscription"`
+	SubscriptionID           string                   `json:"subscriptionId"`
+	UpdatedAt                *string                  `json:"updatedAt"`
+	UsageLimit               *float64                 `json:"usageLimit"`
 }
 
 type SubscriptionEntitlementAggregateGroupBy struct {
+	CreatedAt      *string `json:"createdAt"`
+	EnvironmentID  *string `json:"environmentId"`
 	ID             *string `json:"id"`
 	SubscriptionID *string `json:"subscriptionId"`
-	CreatedAt      *string `json:"createdAt"`
 	UpdatedAt      *string `json:"updatedAt"`
-	EnvironmentID  *string `json:"environmentId"`
 }
 
 type SubscriptionEntitlementConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*SubscriptionEntitlementEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 }
 
 type SubscriptionEntitlementCountAggregate struct {
+	CreatedAt      *int64 `json:"createdAt"`
+	EnvironmentID  *int64 `json:"environmentId"`
 	ID             *int64 `json:"id"`
 	SubscriptionID *int64 `json:"subscriptionId"`
-	CreatedAt      *int64 `json:"createdAt"`
 	UpdatedAt      *int64 `json:"updatedAt"`
-	EnvironmentID  *int64 `json:"environmentId"`
 }
 
 type SubscriptionEntitlementEdge struct {
-	// The node containing the SubscriptionEntitlement
-	Node SubscriptionEntitlement `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the SubscriptionEntitlement
+	Node SubscriptionEntitlement `json:"node"`
 }
 
 type SubscriptionEntitlementFilter struct {
 	And            []*SubscriptionEntitlementFilter                         `json:"and,omitempty"`
-	Or             []*SubscriptionEntitlementFilter                         `json:"or,omitempty"`
-	ID             *StringFieldComparison                                   `json:"id,omitempty"`
-	SubscriptionID *StringFieldComparison                                   `json:"subscriptionId,omitempty"`
 	CreatedAt      *DateFieldComparison                                     `json:"createdAt,omitempty"`
-	UpdatedAt      *DateFieldComparison                                     `json:"updatedAt,omitempty"`
 	EnvironmentID  *StringFieldComparison                                   `json:"environmentId,omitempty"`
-	Subscription   *SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"subscription,omitempty"`
 	Feature        *SubscriptionEntitlementFilterFeatureFilter              `json:"feature,omitempty"`
+	ID             *StringFieldComparison                                   `json:"id,omitempty"`
+	Or             []*SubscriptionEntitlementFilter                         `json:"or,omitempty"`
+	Subscription   *SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"subscription,omitempty"`
+	SubscriptionID *StringFieldComparison                                   `json:"subscriptionId,omitempty"`
+	UpdatedAt      *DateFieldComparison                                     `json:"updatedAt,omitempty"`
 }
 
 type SubscriptionEntitlementFilterCustomerSubscriptionFilter struct {
-	And              []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	Or               []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	EnvironmentID    *StringFieldComparison                                     `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison                                     `json:"id,omitempty"`
-	CreatedAt        *DateFieldComparison                                       `json:"createdAt,omitempty"`
-	StartDate        *DateFieldComparison                                       `json:"startDate,omitempty"`
-	EndDate          *DateFieldComparison                                       `json:"endDate,omitempty"`
-	CancellationDate *DateFieldComparison                                       `json:"cancellationDate,omitempty"`
-	TrialEndDate     *DateFieldComparison                                       `json:"trialEndDate,omitempty"`
-	EffectiveEndDate *DateFieldComparison                                       `json:"effectiveEndDate,omitempty"`
-	BillingID        *StringFieldComparison                                     `json:"billingId,omitempty"`
-	OldBillingID     *StringFieldComparison                                     `json:"oldBillingId,omitempty"`
-	CrmID            *StringFieldComparison                                     `json:"crmId,omitempty"`
-	CrmLinkURL       *StringFieldComparison                                     `json:"crmLinkUrl,omitempty"`
-	Status           *SubscriptionStatusFilterComparison                        `json:"status,omitempty"`
-	CancelReason     *SubscriptionCancelReasonFilterComparison                  `json:"cancelReason,omitempty"`
-	RefID            *StringFieldComparison                                     `json:"refId,omitempty"`
-	SubscriptionID   *StringFieldComparison                                     `json:"subscriptionId,omitempty"`
-	ResourceID       *StringFieldComparison                                     `json:"resourceId,omitempty"`
-	PricingType      *PricingTypeFilterComparison                               `json:"pricingType,omitempty"`
+	And               []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID         *StringFieldComparison                                     `json:"billingId,omitempty"`
+	CancelReason      *SubscriptionCancelReasonFilterComparison                  `json:"cancelReason,omitempty"`
+	CancellationDate  *DateFieldComparison                                       `json:"cancellationDate,omitempty"`
+	CreatedAt         *DateFieldComparison                                       `json:"createdAt,omitempty"`
+	CrmID             *StringFieldComparison                                     `json:"crmId,omitempty"`
+	CrmLinkURL        *StringFieldComparison                                     `json:"crmLinkUrl,omitempty"`
+	EffectiveEndDate  *DateFieldComparison                                       `json:"effectiveEndDate,omitempty"`
+	EndDate           *DateFieldComparison                                       `json:"endDate,omitempty"`
+	EnvironmentID     *StringFieldComparison                                     `json:"environmentId,omitempty"`
+	ID                *StringFieldComparison                                     `json:"id,omitempty"`
+	OldBillingID      *StringFieldComparison                                     `json:"oldBillingId,omitempty"`
+	Or                []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection *PaymentCollectionFilterComparison                         `json:"paymentCollection,omitempty"`
+	PricingType       *PricingTypeFilterComparison                               `json:"pricingType,omitempty"`
+	RefID             *StringFieldComparison                                     `json:"refId,omitempty"`
+	ResourceID        *StringFieldComparison                                     `json:"resourceId,omitempty"`
+	StartDate         *DateFieldComparison                                       `json:"startDate,omitempty"`
+	Status            *SubscriptionStatusFilterComparison                        `json:"status,omitempty"`
+	SubscriptionID    *StringFieldComparison                                     `json:"subscriptionId,omitempty"`
+	TrialEndDate      *DateFieldComparison                                       `json:"trialEndDate,omitempty"`
 }
 
 type SubscriptionEntitlementFilterFeatureFilter struct {
 	And           []*SubscriptionEntitlementFilterFeatureFilter `json:"and,omitempty"`
-	Or            []*SubscriptionEntitlementFilterFeatureFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison                        `json:"id,omitempty"`
-	DisplayName   *StringFieldComparison                        `json:"displayName,omitempty"`
-	RefID         *StringFieldComparison                        `json:"refId,omitempty"`
 	CreatedAt     *DateFieldComparison                          `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
 	Description   *StringFieldComparison                        `json:"description,omitempty"`
-	FeatureType   *FeatureTypeFilterComparison                  `json:"featureType,omitempty"`
-	MeterType     *MeterTypeFilterComparison                    `json:"meterType,omitempty"`
-	FeatureStatus *FeatureStatusFilterComparison                `json:"featureStatus,omitempty"`
+	DisplayName   *StringFieldComparison                        `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison                        `json:"environmentId,omitempty"`
+	FeatureStatus *FeatureStatusFilterComparison                `json:"featureStatus,omitempty"`
+	FeatureType   *FeatureTypeFilterComparison                  `json:"featureType,omitempty"`
+	ID            *StringFieldComparison                        `json:"id,omitempty"`
+	MeterType     *MeterTypeFilterComparison                    `json:"meterType,omitempty"`
+	Or            []*SubscriptionEntitlementFilterFeatureFilter `json:"or,omitempty"`
+	RefID         *StringFieldComparison                        `json:"refId,omitempty"`
+	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
 }
 
 type SubscriptionEntitlementInput struct {
 	Description                     *string                        `json:"description,omitempty"`
 	FeatureID                       string                         `json:"featureId"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 }
 
 type SubscriptionEntitlementMaxAggregate struct {
+	CreatedAt      *string `json:"createdAt"`
+	EnvironmentID  *string `json:"environmentId"`
 	ID             *string `json:"id"`
 	SubscriptionID *string `json:"subscriptionId"`
-	CreatedAt      *string `json:"createdAt"`
 	UpdatedAt      *string `json:"updatedAt"`
-	EnvironmentID  *string `json:"environmentId"`
 }
 
 type SubscriptionEntitlementMinAggregate struct {
+	CreatedAt      *string `json:"createdAt"`
+	EnvironmentID  *string `json:"environmentId"`
 	ID             *string `json:"id"`
 	SubscriptionID *string `json:"subscriptionId"`
-	CreatedAt      *string `json:"createdAt"`
 	UpdatedAt      *string `json:"updatedAt"`
-	EnvironmentID  *string `json:"environmentId"`
 }
 
 type SubscriptionEntitlementSort struct {
-	Field     SubscriptionEntitlementSortFields `json:"field"`
 	Direction SortDirection                     `json:"direction"`
+	Field     SubscriptionEntitlementSortFields `json:"field"`
 	Nulls     *SortNulls                        `json:"nulls,omitempty"`
 }
 
+type SubscriptionFutureUpdate struct {
+	BillingID                *string                    `json:"billingId"`
+	CreatedAt                *string                    `json:"createdAt"`
+	ScheduleStatus           SubscriptionScheduleStatus `json:"scheduleStatus"`
+	ScheduleVariables        ScheduleVariables          `json:"scheduleVariables"`
+	ScheduledExecutionTime   string                     `json:"scheduledExecutionTime"`
+	SubscriptionScheduleType SubscriptionScheduleType   `json:"subscriptionScheduleType"`
+	TargetPackage            *PackageDto                `json:"targetPackage"`
+}
+
 type SubscriptionInput struct {
-	PlanID                    string                          `json:"planId"`
-	BillingPeriod             *BillingPeriod                  `json:"billingPeriod,omitempty"`
-	PriceUnitAmount           *float64                        `json:"priceUnitAmount,omitempty"`
-	UnitQuantity              *float64                        `json:"unitQuantity,omitempty"`
-	Addons                    []*SubscriptionAddonInput       `json:"addons,omitempty"`
-	BillableFeatures          []*BillableFeatureInput         `json:"billableFeatures,omitempty"`
-	StartDate                 *string                         `json:"startDate,omitempty"`
-	RefID                     *string                         `json:"refId,omitempty"`
-	ResourceID                *string                         `json:"resourceId,omitempty"`
 	AdditionalMetaData        map[string]interface{}          `json:"additionalMetaData,omitempty"`
+	Addons                    []*SubscriptionAddonInput       `json:"addons,omitempty"`
 	AwaitPaymentConfirmation  *bool                           `json:"awaitPaymentConfirmation,omitempty"`
-	BillingInformation        *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
-	BillingID                 *string                         `json:"billingId,omitempty"`
-	SubscriptionID            *string                         `json:"subscriptionId,omitempty"`
-	PromotionCode             *string                         `json:"promotionCode,omitempty"`
+	BillableFeatures          []*BillableFeatureInput         `json:"billableFeatures,omitempty"`
 	BillingCountryCode        *string                         `json:"billingCountryCode,omitempty"`
-	CustomerID                string                          `json:"customerId"`
+	BillingID                 *string                         `json:"billingId,omitempty"`
+	BillingInformation        *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
+	BillingPeriod             *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	CrmID                     *string                         `json:"crmId,omitempty"`
-	IsTrial                   *bool                           `json:"isTrial,omitempty"`
-	IsOverridingTrialConfig   *bool                           `json:"isOverridingTrialConfig,omitempty"`
-	IsCustomPriceSubscription *bool                           `json:"isCustomPriceSubscription,omitempty"`
+	CustomerID                string                          `json:"customerId"`
 	EndDate                   *string                         `json:"endDate,omitempty"`
 	EnvironmentID             *string                         `json:"environmentId,omitempty"`
+	IsCustomPriceSubscription *bool                           `json:"isCustomPriceSubscription,omitempty"`
+	IsOverridingTrialConfig   *bool                           `json:"isOverridingTrialConfig,omitempty"`
+	IsTrial                   *bool                           `json:"isTrial,omitempty"`
+	PlanID                    string                          `json:"planId"`
+	PriceUnitAmount           *float64                        `json:"priceUnitAmount,omitempty"`
+	PromotionCode             *string                         `json:"promotionCode,omitempty"`
+	RefID                     *string                         `json:"refId,omitempty"`
+	ResourceID                *string                         `json:"resourceId,omitempty"`
+	StartDate                 *string                         `json:"startDate,omitempty"`
 	SubscriptionEntitlements  []*SubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
+	SubscriptionID            *string                         `json:"subscriptionId,omitempty"`
+	UnitQuantity              *float64                        `json:"unitQuantity,omitempty"`
+}
+
+type SubscriptionInvoice struct {
+	BillingID      string                    `json:"billingId"`
+	CreatedAt      string                    `json:"createdAt"`
+	ErrorMessage   *string                   `json:"errorMessage"`
+	PaymentSecret  *string                   `json:"paymentSecret"`
+	PaymentURL     *string                   `json:"paymentUrl"`
+	RequiresAction bool                      `json:"requiresAction"`
+	Status         SubscriptionInvoiceStatus `json:"status"`
+	UpdatedAt      string                    `json:"updatedAt"`
 }
 
 type SubscriptionMigrationInput struct {
-	SubscriptionID            string                     `json:"subscriptionId"`
 	EnvironmentID             *string                    `json:"environmentId,omitempty"`
+	SubscriptionID            string                     `json:"subscriptionId"`
 	SubscriptionMigrationTime *SubscriptionMigrationTime `json:"subscriptionMigrationTime,omitempty"`
 }
 
 type SubscriptionMigrationTask struct {
-	ID                     string        `json:"id"`
-	EnvironmentID          string        `json:"environmentId"`
-	CreatedAt              *string       `json:"createdAt"`
-	TaskType               TaskType      `json:"taskType"`
-	Status                 TaskStatus    `json:"status"`
-	StartDate              string        `json:"startDate"`
-	EndDate                *string       `json:"endDate"`
-	Progress               int64         `json:"progress"`
-	InitiatedPackageID     *string       `json:"initiatedPackageId"`
 	AffectedCustomersCount *int64        `json:"affectedCustomersCount"`
+	CreatedAt              *string       `json:"createdAt"`
+	EndDate                *string       `json:"endDate"`
+	EnvironmentID          string        `json:"environmentId"`
+	ID                     string        `json:"id"`
+	InitiatedPackageID     *string       `json:"initiatedPackageId"`
 	Packages               []*PackageDto `json:"packages"`
+	Progress               int64         `json:"progress"`
+	StartDate              string        `json:"startDate"`
+	Status                 TaskStatus    `json:"status"`
+	TaskType               TaskType      `json:"taskType"`
 }
 
 type SubscriptionMigrationTaskAggregateGroupBy struct {
-	ID            *string     `json:"id"`
-	EnvironmentID *string     `json:"environmentId"`
 	CreatedAt     *string     `json:"createdAt"`
-	TaskType      *TaskType   `json:"taskType"`
+	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
 	Status        *TaskStatus `json:"status"`
+	TaskType      *TaskType   `json:"taskType"`
 }
 
 type SubscriptionMigrationTaskConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*SubscriptionMigrationTaskEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 }
 
 type SubscriptionMigrationTaskCountAggregate struct {
-	ID            *int64 `json:"id"`
-	EnvironmentID *int64 `json:"environmentId"`
 	CreatedAt     *int64 `json:"createdAt"`
-	TaskType      *int64 `json:"taskType"`
+	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
 	Status        *int64 `json:"status"`
+	TaskType      *int64 `json:"taskType"`
 }
 
 type SubscriptionMigrationTaskEdge struct {
-	// The node containing the SubscriptionMigrationTask
-	Node SubscriptionMigrationTask `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the SubscriptionMigrationTask
+	Node SubscriptionMigrationTask `json:"node"`
 }
 
 type SubscriptionMigrationTaskFilter struct {
 	And           []*SubscriptionMigrationTaskFilter `json:"and,omitempty"`
-	Or            []*SubscriptionMigrationTaskFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison             `json:"id,omitempty"`
-	EnvironmentID *StringFieldComparison             `json:"environmentId,omitempty"`
 	CreatedAt     *DateFieldComparison               `json:"createdAt,omitempty"`
-	TaskType      *TaskTypeFilterComparison          `json:"taskType,omitempty"`
+	EnvironmentID *StringFieldComparison             `json:"environmentId,omitempty"`
+	ID            *StringFieldComparison             `json:"id,omitempty"`
+	Or            []*SubscriptionMigrationTaskFilter `json:"or,omitempty"`
 	Status        *TaskStatusFilterComparison        `json:"status,omitempty"`
+	TaskType      *TaskTypeFilterComparison          `json:"taskType,omitempty"`
 }
 
 type SubscriptionMigrationTaskMaxAggregate struct {
-	ID            *string     `json:"id"`
-	EnvironmentID *string     `json:"environmentId"`
 	CreatedAt     *string     `json:"createdAt"`
-	TaskType      *TaskType   `json:"taskType"`
+	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
 	Status        *TaskStatus `json:"status"`
+	TaskType      *TaskType   `json:"taskType"`
 }
 
 type SubscriptionMigrationTaskMinAggregate struct {
-	ID            *string     `json:"id"`
-	EnvironmentID *string     `json:"environmentId"`
 	CreatedAt     *string     `json:"createdAt"`
-	TaskType      *TaskType   `json:"taskType"`
+	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
 	Status        *TaskStatus `json:"status"`
+	TaskType      *TaskType   `json:"taskType"`
 }
 
 type SubscriptionMigrationTaskSort struct {
-	Field     SubscriptionMigrationTaskSortFields `json:"field"`
 	Direction SortDirection                       `json:"direction"`
+	Field     SubscriptionMigrationTaskSortFields `json:"field"`
 	Nulls     *SortNulls                          `json:"nulls,omitempty"`
 }
 
@@ -4597,55 +4848,57 @@ type SubscriptionMustHaveSinglePlanError struct {
 }
 
 type SubscriptionPreview struct {
-	SubTotal           Money                           `json:"subTotal"`
-	TotalExcludingTax  Money                           `json:"totalExcludingTax"`
-	Total              Money                           `json:"total"`
-	Tax                *Money                          `json:"tax"`
-	TaxDetails         *SubscriptionPreviewTaxDetails  `json:"taxDetails"`
-	Discount           *SubscriptionPreviewDiscountDto `json:"discount"`
-	BillingPeriodRange DateRange                       `json:"billingPeriodRange"`
-	Proration          *SubscriptionPreviewProrations  `json:"proration"`
-	Subscription       *SubscriptionPricePreviewDto    `json:"subscription"`
+	BillingPeriodRange  DateRange                       `json:"billingPeriodRange"`
+	Discount            *SubscriptionPreviewDiscountDto `json:"discount"`
+	HasScheduledUpdates *bool                           `json:"hasScheduledUpdates"`
+	IsPlanDowngrade     *bool                           `json:"isPlanDowngrade"`
+	Proration           *SubscriptionPreviewProrations  `json:"proration"`
+	SubTotal            Money                           `json:"subTotal"`
+	Subscription        *SubscriptionPricePreviewDto    `json:"subscription"`
+	Tax                 *Money                          `json:"tax"`
+	TaxDetails          *SubscriptionPreviewTaxDetails  `json:"taxDetails"`
+	Total               Money                           `json:"total"`
+	TotalExcludingTax   Money                           `json:"totalExcludingTax"`
 }
 
 type SubscriptionPreviewDiscountDto struct {
+	DurationInMonths *float64             `json:"durationInMonths"`
+	DurationType     DiscountDurationType `json:"durationType"`
 	Type             DiscountType         `json:"type"`
 	Value            float64              `json:"value"`
-	DurationType     DiscountDurationType `json:"durationType"`
-	DurationInMonths *float64             `json:"durationInMonths"`
 }
 
 type SubscriptionPreviewProrations struct {
-	ProrationDate string `json:"prorationDate"`
 	Credit        Money  `json:"credit"`
 	Debit         Money  `json:"debit"`
 	NetAmount     Money  `json:"netAmount"`
+	ProrationDate string `json:"prorationDate"`
 }
 
 type SubscriptionPreviewTaxDetails struct {
 	DisplayName string  `json:"displayName"`
-	Percentage  float64 `json:"percentage"`
 	Inclusive   bool    `json:"inclusive"`
+	Percentage  float64 `json:"percentage"`
 }
 
 type SubscriptionPrice struct {
-	ID           string               `json:"id"`
+	BillingModel *BillingModel        `json:"billingModel"`
 	CreatedAt    *string              `json:"createdAt"`
+	FeatureID    *string              `json:"featureId"`
+	ID           string               `json:"id"`
+	Price        *Price               `json:"price"`
+	Subscription CustomerSubscription `json:"subscription"`
 	UpdatedAt    string               `json:"updatedAt"`
 	UsageLimit   *float64             `json:"usageLimit"`
-	FeatureID    *string              `json:"featureId"`
-	BillingModel *BillingModel        `json:"billingModel"`
-	Subscription CustomerSubscription `json:"subscription"`
-	Price        *Price               `json:"price"`
 }
 
 type SubscriptionPriceAggregateGroupBy struct {
-	ID           *string       `json:"id"`
+	BillingModel *BillingModel `json:"billingModel"`
 	CreatedAt    *string       `json:"createdAt"`
+	FeatureID    *string       `json:"featureId"`
+	ID           *string       `json:"id"`
 	UpdatedAt    *string       `json:"updatedAt"`
 	UsageLimit   *float64      `json:"usageLimit"`
-	FeatureID    *string       `json:"featureId"`
-	BillingModel *BillingModel `json:"billingModel"`
 }
 
 type SubscriptionPriceAvgAggregate struct {
@@ -4653,95 +4906,97 @@ type SubscriptionPriceAvgAggregate struct {
 }
 
 type SubscriptionPriceCountAggregate struct {
-	ID           *int64 `json:"id"`
+	BillingModel *int64 `json:"billingModel"`
 	CreatedAt    *int64 `json:"createdAt"`
+	FeatureID    *int64 `json:"featureId"`
+	ID           *int64 `json:"id"`
 	UpdatedAt    *int64 `json:"updatedAt"`
 	UsageLimit   *int64 `json:"usageLimit"`
-	FeatureID    *int64 `json:"featureId"`
-	BillingModel *int64 `json:"billingModel"`
 }
 
 type SubscriptionPriceEdge struct {
-	// The node containing the SubscriptionPrice
-	Node SubscriptionPrice `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the SubscriptionPrice
+	Node SubscriptionPrice `json:"node"`
 }
 
 type SubscriptionPriceFilter struct {
 	And          []*SubscriptionPriceFilter                         `json:"and,omitempty"`
-	Or           []*SubscriptionPriceFilter                         `json:"or,omitempty"`
-	ID           *StringFieldComparison                             `json:"id,omitempty"`
-	CreatedAt    *DateFieldComparison                               `json:"createdAt,omitempty"`
-	UpdatedAt    *DateFieldComparison                               `json:"updatedAt,omitempty"`
-	UsageLimit   *NumberFieldComparison                             `json:"usageLimit,omitempty"`
-	FeatureID    *StringFieldComparison                             `json:"featureId,omitempty"`
 	BillingModel *BillingModelFilterComparison                      `json:"billingModel,omitempty"`
+	CreatedAt    *DateFieldComparison                               `json:"createdAt,omitempty"`
+	FeatureID    *StringFieldComparison                             `json:"featureId,omitempty"`
+	ID           *StringFieldComparison                             `json:"id,omitempty"`
+	Or           []*SubscriptionPriceFilter                         `json:"or,omitempty"`
 	Price        *SubscriptionPriceFilterPriceFilter                `json:"price,omitempty"`
 	Subscription *SubscriptionPriceFilterCustomerSubscriptionFilter `json:"subscription,omitempty"`
+	UpdatedAt    *DateFieldComparison                               `json:"updatedAt,omitempty"`
+	UsageLimit   *NumberFieldComparison                             `json:"usageLimit,omitempty"`
 }
 
 type SubscriptionPriceFilterCustomerSubscriptionFilter struct {
-	And              []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	Or               []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	EnvironmentID    *StringFieldComparison                               `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison                               `json:"id,omitempty"`
-	CreatedAt        *DateFieldComparison                                 `json:"createdAt,omitempty"`
-	StartDate        *DateFieldComparison                                 `json:"startDate,omitempty"`
-	EndDate          *DateFieldComparison                                 `json:"endDate,omitempty"`
-	CancellationDate *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
-	TrialEndDate     *DateFieldComparison                                 `json:"trialEndDate,omitempty"`
-	EffectiveEndDate *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
-	BillingID        *StringFieldComparison                               `json:"billingId,omitempty"`
-	OldBillingID     *StringFieldComparison                               `json:"oldBillingId,omitempty"`
-	CrmID            *StringFieldComparison                               `json:"crmId,omitempty"`
-	CrmLinkURL       *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
-	Status           *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
-	CancelReason     *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
-	RefID            *StringFieldComparison                               `json:"refId,omitempty"`
-	SubscriptionID   *StringFieldComparison                               `json:"subscriptionId,omitempty"`
-	ResourceID       *StringFieldComparison                               `json:"resourceId,omitempty"`
-	PricingType      *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
+	And               []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID         *StringFieldComparison                               `json:"billingId,omitempty"`
+	CancelReason      *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
+	CancellationDate  *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
+	CreatedAt         *DateFieldComparison                                 `json:"createdAt,omitempty"`
+	CrmID             *StringFieldComparison                               `json:"crmId,omitempty"`
+	CrmLinkURL        *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
+	EffectiveEndDate  *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
+	EndDate           *DateFieldComparison                                 `json:"endDate,omitempty"`
+	EnvironmentID     *StringFieldComparison                               `json:"environmentId,omitempty"`
+	ID                *StringFieldComparison                               `json:"id,omitempty"`
+	OldBillingID      *StringFieldComparison                               `json:"oldBillingId,omitempty"`
+	Or                []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
+	PricingType       *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
+	RefID             *StringFieldComparison                               `json:"refId,omitempty"`
+	ResourceID        *StringFieldComparison                               `json:"resourceId,omitempty"`
+	StartDate         *DateFieldComparison                                 `json:"startDate,omitempty"`
+	Status            *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
+	SubscriptionID    *StringFieldComparison                               `json:"subscriptionId,omitempty"`
+	TrialEndDate      *DateFieldComparison                                 `json:"trialEndDate,omitempty"`
 }
 
 type SubscriptionPriceFilterPriceFilter struct {
 	And           []*SubscriptionPriceFilterPriceFilter `json:"and,omitempty"`
-	Or            []*SubscriptionPriceFilterPriceFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison                `json:"id,omitempty"`
-	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
-	BillingPeriod *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
-	BillingModel  *BillingModelFilterComparison         `json:"billingModel,omitempty"`
 	BillingID     *StringFieldComparison                `json:"billingId,omitempty"`
+	BillingModel  *BillingModelFilterComparison         `json:"billingModel,omitempty"`
+	BillingPeriod *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
+	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
+	ID            *StringFieldComparison                `json:"id,omitempty"`
+	Or            []*SubscriptionPriceFilterPriceFilter `json:"or,omitempty"`
+	TiersMode     *TiersModeFilterComparison            `json:"tiersMode,omitempty"`
 }
 
 type SubscriptionPriceMaxAggregate struct {
-	ID           *string       `json:"id"`
+	BillingModel *BillingModel `json:"billingModel"`
 	CreatedAt    *string       `json:"createdAt"`
+	FeatureID    *string       `json:"featureId"`
+	ID           *string       `json:"id"`
 	UpdatedAt    *string       `json:"updatedAt"`
 	UsageLimit   *float64      `json:"usageLimit"`
-	FeatureID    *string       `json:"featureId"`
-	BillingModel *BillingModel `json:"billingModel"`
 }
 
 type SubscriptionPriceMinAggregate struct {
-	ID           *string       `json:"id"`
+	BillingModel *BillingModel `json:"billingModel"`
 	CreatedAt    *string       `json:"createdAt"`
+	FeatureID    *string       `json:"featureId"`
+	ID           *string       `json:"id"`
 	UpdatedAt    *string       `json:"updatedAt"`
 	UsageLimit   *float64      `json:"usageLimit"`
-	FeatureID    *string       `json:"featureId"`
-	BillingModel *BillingModel `json:"billingModel"`
 }
 
 type SubscriptionPricePreviewDto struct {
 	SubTotal          Money `json:"subTotal"`
-	TotalExcludingTax Money `json:"totalExcludingTax"`
-	Total             Money `json:"total"`
 	Tax               Money `json:"tax"`
+	Total             Money `json:"total"`
+	TotalExcludingTax Money `json:"totalExcludingTax"`
 }
 
 type SubscriptionPriceSort struct {
-	Field     SubscriptionPriceSortFields `json:"field"`
 	Direction SortDirection               `json:"direction"`
+	Field     SubscriptionPriceSortFields `json:"field"`
 	Nulls     *SortNulls                  `json:"nulls,omitempty"`
 }
 
@@ -4750,75 +5005,80 @@ type SubscriptionPriceSumAggregate struct {
 }
 
 type SubscriptionScheduledUpdate struct {
-	CreatedAt                *string                    `json:"createdAt"`
-	ScheduledExecutionTime   string                     `json:"scheduledExecutionTime"`
 	BillingID                *string                    `json:"billingId"`
-	SubscriptionScheduleType SubscriptionScheduleType   `json:"subscriptionScheduleType"`
+	CreatedAt                *string                    `json:"createdAt"`
 	ScheduleStatus           SubscriptionScheduleStatus `json:"scheduleStatus"`
-	TargetPackage            *PackageDto                `json:"targetPackage"`
 	ScheduleVariables        ScheduleVariables          `json:"scheduleVariables"`
+	ScheduledExecutionTime   string                     `json:"scheduledExecutionTime"`
+	SubscriptionScheduleType SubscriptionScheduleType   `json:"subscriptionScheduleType"`
+	TargetPackage            *PackageDto                `json:"targetPackage"`
 }
 
 type SubscriptionStatusFilterComparison struct {
-	Is       *bool                `json:"is,omitempty"`
-	IsNot    *bool                `json:"isNot,omitempty"`
 	Eq       *SubscriptionStatus  `json:"eq,omitempty"`
-	Neq      *SubscriptionStatus  `json:"neq,omitempty"`
 	Gt       *SubscriptionStatus  `json:"gt,omitempty"`
 	Gte      *SubscriptionStatus  `json:"gte,omitempty"`
+	ILike    *SubscriptionStatus  `json:"iLike,omitempty"`
+	In       []SubscriptionStatus `json:"in,omitempty"`
+	Is       *bool                `json:"is,omitempty"`
+	IsNot    *bool                `json:"isNot,omitempty"`
+	Like     *SubscriptionStatus  `json:"like,omitempty"`
 	Lt       *SubscriptionStatus  `json:"lt,omitempty"`
 	Lte      *SubscriptionStatus  `json:"lte,omitempty"`
-	Like     *SubscriptionStatus  `json:"like,omitempty"`
-	NotLike  *SubscriptionStatus  `json:"notLike,omitempty"`
-	ILike    *SubscriptionStatus  `json:"iLike,omitempty"`
+	Neq      *SubscriptionStatus  `json:"neq,omitempty"`
 	NotILike *SubscriptionStatus  `json:"notILike,omitempty"`
-	In       []SubscriptionStatus `json:"in,omitempty"`
 	NotIn    []SubscriptionStatus `json:"notIn,omitempty"`
+	NotLike  *SubscriptionStatus  `json:"notLike,omitempty"`
 }
 
 type SubscriptionUpdateScheduleCancellationInput struct {
-	SubscriptionID string  `json:"subscriptionId"`
-	EnvironmentID  *string `json:"environmentId,omitempty"`
+	EnvironmentID  *string                     `json:"environmentId,omitempty"`
+	Status         *SubscriptionScheduleStatus `json:"status,omitempty"`
+	SubscriptionID string                      `json:"subscriptionId"`
 }
 
 type SyncState struct {
+	Error            *string          `json:"error"`
 	Status           SyncStatus       `json:"status"`
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
-	Error            *string          `json:"error"`
+}
+
+type SyncTaxRatesInput struct {
+	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
 type TaskStatusFilterComparison struct {
-	Is       *bool        `json:"is,omitempty"`
-	IsNot    *bool        `json:"isNot,omitempty"`
 	Eq       *TaskStatus  `json:"eq,omitempty"`
-	Neq      *TaskStatus  `json:"neq,omitempty"`
 	Gt       *TaskStatus  `json:"gt,omitempty"`
 	Gte      *TaskStatus  `json:"gte,omitempty"`
+	ILike    *TaskStatus  `json:"iLike,omitempty"`
+	In       []TaskStatus `json:"in,omitempty"`
+	Is       *bool        `json:"is,omitempty"`
+	IsNot    *bool        `json:"isNot,omitempty"`
+	Like     *TaskStatus  `json:"like,omitempty"`
 	Lt       *TaskStatus  `json:"lt,omitempty"`
 	Lte      *TaskStatus  `json:"lte,omitempty"`
-	Like     *TaskStatus  `json:"like,omitempty"`
-	NotLike  *TaskStatus  `json:"notLike,omitempty"`
-	ILike    *TaskStatus  `json:"iLike,omitempty"`
+	Neq      *TaskStatus  `json:"neq,omitempty"`
 	NotILike *TaskStatus  `json:"notILike,omitempty"`
-	In       []TaskStatus `json:"in,omitempty"`
 	NotIn    []TaskStatus `json:"notIn,omitempty"`
+	NotLike  *TaskStatus  `json:"notLike,omitempty"`
 }
 
 type TaskTypeFilterComparison struct {
-	Is       *bool      `json:"is,omitempty"`
-	IsNot    *bool      `json:"isNot,omitempty"`
 	Eq       *TaskType  `json:"eq,omitempty"`
-	Neq      *TaskType  `json:"neq,omitempty"`
 	Gt       *TaskType  `json:"gt,omitempty"`
 	Gte      *TaskType  `json:"gte,omitempty"`
+	ILike    *TaskType  `json:"iLike,omitempty"`
+	In       []TaskType `json:"in,omitempty"`
+	Is       *bool      `json:"is,omitempty"`
+	IsNot    *bool      `json:"isNot,omitempty"`
+	Like     *TaskType  `json:"like,omitempty"`
 	Lt       *TaskType  `json:"lt,omitempty"`
 	Lte      *TaskType  `json:"lte,omitempty"`
-	Like     *TaskType  `json:"like,omitempty"`
-	NotLike  *TaskType  `json:"notLike,omitempty"`
-	ILike    *TaskType  `json:"iLike,omitempty"`
+	Neq      *TaskType  `json:"neq,omitempty"`
 	NotILike *TaskType  `json:"notILike,omitempty"`
-	In       []TaskType `json:"in,omitempty"`
 	NotIn    []TaskType `json:"notIn,omitempty"`
+	NotLike  *TaskType  `json:"notLike,omitempty"`
 }
 
 type TaxExempt struct {
@@ -4832,16 +5092,39 @@ type TestHook struct {
 }
 
 type TestHookInput struct {
-	EnvironmentID string       `json:"environmentId"`
 	EndpointURL   string       `json:"endpointUrl"`
+	EnvironmentID string       `json:"environmentId"`
 	HookEventType EventLogType `json:"hookEventType"`
 }
 
 type TestHookResult struct {
+	ResponsePayload    string   `json:"responsePayload"`
 	ResponseStatusCode *float64 `json:"responseStatusCode"`
 	ResponseStatusText *string  `json:"responseStatusText"`
-	ResponsePayload    string   `json:"responsePayload"`
 	ResponseSuccess    bool     `json:"responseSuccess"`
+}
+
+type TiersModeFilterComparison struct {
+	Eq       *TiersMode  `json:"eq,omitempty"`
+	Gt       *TiersMode  `json:"gt,omitempty"`
+	Gte      *TiersMode  `json:"gte,omitempty"`
+	ILike    *TiersMode  `json:"iLike,omitempty"`
+	In       []TiersMode `json:"in,omitempty"`
+	Is       *bool       `json:"is,omitempty"`
+	IsNot    *bool       `json:"isNot,omitempty"`
+	Like     *TiersMode  `json:"like,omitempty"`
+	Lt       *TiersMode  `json:"lt,omitempty"`
+	Lte      *TiersMode  `json:"lte,omitempty"`
+	Neq      *TiersMode  `json:"neq,omitempty"`
+	NotILike *TiersMode  `json:"notILike,omitempty"`
+	NotIn    []TiersMode `json:"notIn,omitempty"`
+	NotLike  *TiersMode  `json:"notLike,omitempty"`
+}
+
+type TransferSubscriptionInput struct {
+	CustomerID            string `json:"customerId"`
+	DestinationResourceID string `json:"destinationResourceId"`
+	SourceResourceID      string `json:"sourceResourceId"`
 }
 
 type TrialMinDateError struct {
@@ -4856,44 +5139,44 @@ type TrialMustBeCancelledImmediately struct {
 }
 
 type TrialedPlan struct {
-	ProductID    *string `json:"productId"`
 	PlanID       *string `json:"planId"`
 	PlanRefID    *string `json:"planRefId"`
+	ProductID    *string `json:"productId"`
 	ProductRefID *string `json:"productRefId"`
 }
 
 type TypographyConfiguration struct {
+	Body       *FontVariant `json:"body"`
 	FontFamily *string      `json:"fontFamily"`
 	H1         *FontVariant `json:"h1"`
 	H2         *FontVariant `json:"h2"`
 	H3         *FontVariant `json:"h3"`
-	Body       *FontVariant `json:"body"`
 }
 
 type TypographyConfigurationInput struct {
+	Body       *FontVariantInput `json:"body,omitempty"`
 	FontFamily *string           `json:"fontFamily,omitempty"`
 	H1         *FontVariantInput `json:"h1,omitempty"`
 	H2         *FontVariantInput `json:"h2,omitempty"`
 	H3         *FontVariantInput `json:"h3,omitempty"`
-	Body       *FontVariantInput `json:"body,omitempty"`
 }
 
 type UnPublishedPackageError struct {
 	Code                   string   `json:"code"`
-	PackageType            string   `json:"packageType"`
 	NonPublishedPackageIds []string `json:"nonPublishedPackageIds"`
+	PackageType            string   `json:"packageType"`
 }
 
 type UncompatibleSubscriptionAddonError struct {
 	Code                string   `json:"code"`
 	IsValidationError   bool     `json:"isValidationError"`
-	PlanDisplayName     string   `json:"planDisplayName"`
 	NonCompatibleAddons []string `json:"nonCompatibleAddons"`
+	PlanDisplayName     string   `json:"planDisplayName"`
 }
 
 type UnitAmountChangeVariables struct {
-	NewUnitAmount *float64 `json:"newUnitAmount"`
 	FeatureID     *string  `json:"featureId"`
+	NewUnitAmount *float64 `json:"newUnitAmount"`
 }
 
 func (UnitAmountChangeVariables) IsScheduleVariables() {}
@@ -4909,32 +5192,32 @@ type UnsupportedVendorIdentifierError struct {
 }
 
 type UpdateAccountInput struct {
-	ID                            *string            `json:"id,omitempty"`
 	DisplayName                   string             `json:"displayName"`
-	Timezone                      *string            `json:"timezone,omitempty"`
+	ID                            *string            `json:"id,omitempty"`
 	SubscriptionBillingAnchor     *BillingAnchor     `json:"subscriptionBillingAnchor,omitempty"`
 	SubscriptionProrationBehavior *ProrationBehavior `json:"subscriptionProrationBehavior,omitempty"`
+	Timezone                      *string            `json:"timezone,omitempty"`
 }
 
 type UpdateCouponInput struct {
-	RefID              string                 `json:"refId"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	Description        *string                `json:"description,omitempty"`
 	EnvironmentID      *string                `json:"environmentId,omitempty"`
 	Name               string                 `json:"name"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	RefID              string                 `json:"refId"`
 }
 
 type UpdateCustomerInput struct {
-	RefID              *string                `json:"refId,omitempty"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	BillingID          *string                `json:"billingId,omitempty"`
+	BillingInformation *CustomerBillingInfo   `json:"billingInformation,omitempty"`
+	CouponRefID        *string                `json:"couponRefId,omitempty"`
+	CrmID              *string                `json:"crmId,omitempty"`
 	CustomerID         *string                `json:"customerId,omitempty"`
-	Name               *string                `json:"name,omitempty"`
 	Email              *string                `json:"email,omitempty"`
 	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	CrmID              *string                `json:"crmId,omitempty"`
-	CouponRefID        *string                `json:"couponRefId,omitempty"`
-	BillingInformation *CustomerBillingInfo   `json:"billingInformation,omitempty"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	Name               *string                `json:"name,omitempty"`
+	RefID              *string                `json:"refId,omitempty"`
 }
 
 type UpdateEntitlementsOrderDto struct {
@@ -4943,58 +5226,59 @@ type UpdateEntitlementsOrderDto struct {
 }
 
 type UpdateExperimentInput struct {
-	EnvironmentID     *string               `json:"environmentId,omitempty"`
-	RefID             string                `json:"refId"`
+	ControlGroupName  *string               `json:"controlGroupName,omitempty"`
 	Description       *string               `json:"description,omitempty"`
+	EnvironmentID     *string               `json:"environmentId,omitempty"`
 	Name              *string               `json:"name,omitempty"`
 	ProductID         *string               `json:"productId,omitempty"`
-	VariantPercentage *float64              `json:"variantPercentage,omitempty"`
-	ControlGroupName  *string               `json:"controlGroupName,omitempty"`
-	VariantGroupName  *string               `json:"variantGroupName,omitempty"`
 	ProductSettings   *ProductSettingsInput `json:"productSettings,omitempty"`
+	RefID             string                `json:"refId"`
+	VariantGroupName  *string               `json:"variantGroupName,omitempty"`
+	VariantPercentage *float64              `json:"variantPercentage,omitempty"`
 }
 
 type UpdateFeature struct {
-	ID                 *string                `json:"id,omitempty"`
-	DisplayName        *string                `json:"displayName,omitempty"`
-	RefID              *string                `json:"refId,omitempty"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	CreatedAt          *string                `json:"createdAt,omitempty"`
-	UpdatedAt          *string                `json:"updatedAt,omitempty"`
+	Description        *string                `json:"description,omitempty"`
+	DisplayName        *string                `json:"displayName,omitempty"`
+	EnvironmentID      *string                `json:"environmentId,omitempty"`
+	FeatureStatus      *FeatureStatus         `json:"featureStatus,omitempty"`
+	FeatureType        *FeatureType           `json:"featureType,omitempty"`
 	FeatureUnits       *string                `json:"featureUnits,omitempty"`
 	FeatureUnitsPlural *string                `json:"featureUnitsPlural,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	FeatureType        *FeatureType           `json:"featureType,omitempty"`
+	ID                 *string                `json:"id,omitempty"`
 	MeterType          *MeterType             `json:"meterType,omitempty"`
-	FeatureStatus      *FeatureStatus         `json:"featureStatus,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	RefID              *string                `json:"refId,omitempty"`
+	UpdatedAt          *string                `json:"updatedAt,omitempty"`
 }
 
 type UpdateFeatureInput struct {
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	Description        *string                `json:"description,omitempty"`
+	DisplayName        *string                `json:"displayName,omitempty"`
+	EnvironmentID      string                 `json:"environmentId"`
 	FeatureUnits       *string                `json:"featureUnits,omitempty"`
 	FeatureUnitsPlural *string                `json:"featureUnitsPlural,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	EnvironmentID      string                 `json:"environmentId"`
-	DisplayName        *string                `json:"displayName,omitempty"`
+	Meter              *CreateMeter           `json:"meter,omitempty"`
 	RefID              string                 `json:"refId"`
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 }
 
 type UpdateHook struct {
-	ID            *string        `json:"id,omitempty"`
-	Description   *string        `json:"description,omitempty"`
-	SecretKey     *string        `json:"secretKey,omitempty"`
-	Endpoint      *string        `json:"endpoint,omitempty"`
-	Status        *HookStatus    `json:"status,omitempty"`
 	CreatedAt     *string        `json:"createdAt,omitempty"`
+	Description   *string        `json:"description,omitempty"`
+	Endpoint      *string        `json:"endpoint,omitempty"`
 	EnvironmentID *string        `json:"environmentId,omitempty"`
 	EventLogTypes []EventLogType `json:"eventLogTypes,omitempty"`
+	ID            *string        `json:"id,omitempty"`
+	SecretKey     *string        `json:"secretKey,omitempty"`
+	Status        *HookStatus    `json:"status,omitempty"`
 }
 
 type UpdateIntegrationInput struct {
+	StripeCredentials *StripeCredentialsInput `json:"stripeCredentials,omitempty"`
 	VendorIdentifier  VendorIdentifier        `json:"vendorIdentifier"`
 	ZuoraCredentials  *ZuoraCredentialsInput  `json:"zuoraCredentials,omitempty"`
-	StripeCredentials *StripeCredentialsInput `json:"stripeCredentials,omitempty"`
 }
 
 type UpdateOneEnvironmentInput struct {
@@ -5047,9 +5331,9 @@ type UpdateOnePromotionalEntitlementInput struct {
 }
 
 type UpdatePackageEntitlementOrderInput struct {
+	Entitlements  []*UpdatePackageEntitlementOrderItemInput `json:"entitlements"`
 	EnvironmentID *string                                   `json:"environmentId,omitempty"`
 	PackageID     string                                    `json:"packageId"`
-	Entitlements  []*UpdatePackageEntitlementOrderItemInput `json:"entitlements"`
 }
 
 type UpdatePackageEntitlementOrderItemInput struct {
@@ -5058,40 +5342,58 @@ type UpdatePackageEntitlementOrderItemInput struct {
 }
 
 type UpdateSubscriptionEntitlementInput struct {
-	ID                              string                         `json:"id"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	ID                              string                         `json:"id"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 }
 
 type UpdateSubscriptionInput struct {
 	AdditionalMetaData       map[string]interface{}                `json:"additionalMetaData,omitempty"`
-	EnvironmentID            *string                               `json:"environmentId,omitempty"`
-	UnitQuantity             *float64                              `json:"unitQuantity,omitempty"`
-	BillableFeatures         []*BillableFeatureInput               `json:"billableFeatures,omitempty"`
-	RefID                    *string                               `json:"refId,omitempty"`
-	SubscriptionID           *string                               `json:"subscriptionId,omitempty"`
 	Addons                   []*SubscriptionAddonInput             `json:"addons,omitempty"`
-	TrialEndDate             *string                               `json:"trialEndDate,omitempty"`
-	PromotionCode            *string                               `json:"promotionCode,omitempty"`
-	SubscriptionEntitlements []*UpdateSubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
+	AwaitPaymentConfirmation *bool                                 `json:"awaitPaymentConfirmation,omitempty"`
+	BillableFeatures         []*BillableFeatureInput               `json:"billableFeatures,omitempty"`
 	BillingPeriod            *BillingPeriod                        `json:"billingPeriod,omitempty"`
+	EnvironmentID            *string                               `json:"environmentId,omitempty"`
+	PromotionCode            *string                               `json:"promotionCode,omitempty"`
+	RefID                    *string                               `json:"refId,omitempty"`
+	SubscriptionEntitlements []*UpdateSubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
+	SubscriptionID           *string                               `json:"subscriptionId,omitempty"`
+	TrialEndDate             *string                               `json:"trialEndDate,omitempty"`
+	UnitQuantity             *float64                              `json:"unitQuantity,omitempty"`
 }
 
 type UpdateUserInput struct {
-	Name       string      `json:"name"`
 	Department *Department `json:"department,omitempty"`
+	Name       string      `json:"name"`
+}
+
+type UsageEvent struct {
+	CustomerID string                 `json:"customerId"`
+	Dimensions map[string]interface{} `json:"dimensions"`
+	EventName  string                 `json:"eventName"`
+	ID         string                 `json:"id"`
+	Timestamp  string                 `json:"timestamp"`
 }
 
 type UsageEventReportInput struct {
-	EventName      string                 `json:"eventName"`
 	CustomerID     string                 `json:"customerId"`
+	Dimensions     map[string]interface{} `json:"dimensions,omitempty"`
+	EventName      string                 `json:"eventName"`
+	IdempotencyKey string                 `json:"idempotencyKey"`
 	ResourceID     *string                `json:"resourceId,omitempty"`
 	Timestamp      *string                `json:"timestamp,omitempty"`
-	IdempotencyKey string                 `json:"idempotencyKey"`
-	Dimensions     map[string]interface{} `json:"dimensions,omitempty"`
+}
+
+type UsageEventsInput struct {
+	EnvironmentID string                        `json:"environmentId"`
+	Filters       []*MeterFilterDefinitionInput `json:"filters,omitempty"`
+}
+
+type UsageEventsPreview struct {
+	Events []*UsageEvent `json:"events"`
 }
 
 type UsageEventsReportInput struct {
@@ -5100,39 +5402,39 @@ type UsageEventsReportInput struct {
 }
 
 type UsageHistory struct {
-	StartDate         string                   `json:"startDate"`
 	EndDate           *string                  `json:"endDate"`
+	StartDate         string                   `json:"startDate"`
 	UsageMeasurements []*UsageMeasurementPoint `json:"usageMeasurements"`
 }
 
 type UsageHistoryInput struct {
-	StartDate                       string                         `json:"startDate"`
-	EndDate                         *string                        `json:"endDate,omitempty"`
-	FeatureRefID                    string                         `json:"featureRefId"`
 	CustomerRefID                   string                         `json:"customerRefId"`
-	ResourceRefID                   *string                        `json:"resourceRefId,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	EndDate                         *string                        `json:"endDate,omitempty"`
 	EnvironmentID                   *string                        `json:"environmentId,omitempty"`
+	FeatureRefID                    string                         `json:"featureRefId"`
+	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	ResourceRefID                   *string                        `json:"resourceRefId,omitempty"`
+	StartDate                       string                         `json:"startDate"`
+	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 }
 
 type UsageMeasurement struct {
+	CreatedAt     string      `json:"createdAt"`
+	Customer      Customer    `json:"customer"`
+	CustomerID    string      `json:"customerId"`
+	Environment   Environment `json:"environment"`
+	EnvironmentID string      `json:"environmentId"`
+	Feature       Feature     `json:"feature"`
+	FeatureID     string      `json:"featureId"`
 	ID            string      `json:"id"`
 	Value         float64     `json:"value"`
-	FeatureID     string      `json:"featureId"`
-	CustomerID    string      `json:"customerId"`
-	EnvironmentID string      `json:"environmentId"`
-	CreatedAt     string      `json:"createdAt"`
-	Environment   Environment `json:"environment"`
-	Feature       Feature     `json:"feature"`
-	Customer      Customer    `json:"customer"`
 }
 
 type UsageMeasurementAggregateGroupBy struct {
-	ID            *string `json:"id"`
-	EnvironmentID *string `json:"environmentId"`
 	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
 }
 
 type UsageMeasurementAvgAggregate struct {
@@ -5140,100 +5442,102 @@ type UsageMeasurementAvgAggregate struct {
 }
 
 type UsageMeasurementConnection struct {
-	// Paging information
-	PageInfo PageInfo `json:"pageInfo"`
 	// Array of edges.
 	Edges []*UsageMeasurementEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 	// Fetch total count of records
 	TotalCount int64 `json:"totalCount"`
 }
 
 type UsageMeasurementCountAggregate struct {
-	ID            *int64 `json:"id"`
-	EnvironmentID *int64 `json:"environmentId"`
 	CreatedAt     *int64 `json:"createdAt"`
+	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
 }
 
 type UsageMeasurementCreateInput struct {
-	Value          float64              `json:"value"`
-	FeatureID      string               `json:"featureId"`
-	CustomerID     string               `json:"customerId"`
-	ResourceID     *string              `json:"resourceId,omitempty"`
 	CreatedAt      *string              `json:"createdAt,omitempty"`
-	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
+	CustomerID     string               `json:"customerId"`
 	EnvironmentID  *string              `json:"environmentId,omitempty"`
+	FeatureID      string               `json:"featureId"`
+	ResourceID     *string              `json:"resourceId,omitempty"`
+	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
+	Value          float64              `json:"value"`
 }
 
 type UsageMeasurementEdge struct {
-	// The node containing the UsageMeasurement
-	Node UsageMeasurement `json:"node"`
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
+	// The node containing the UsageMeasurement
+	Node UsageMeasurement `json:"node"`
 }
 
 type UsageMeasurementFilter struct {
 	And           []*UsageMeasurementFilter             `json:"and,omitempty"`
-	Or            []*UsageMeasurementFilter             `json:"or,omitempty"`
-	ID            *StringFieldComparison                `json:"id,omitempty"`
-	EnvironmentID *StringFieldComparison                `json:"environmentId,omitempty"`
 	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
 	Customer      *UsageMeasurementFilterCustomerFilter `json:"customer,omitempty"`
+	EnvironmentID *StringFieldComparison                `json:"environmentId,omitempty"`
 	Feature       *UsageMeasurementFilterFeatureFilter  `json:"feature,omitempty"`
+	ID            *StringFieldComparison                `json:"id,omitempty"`
+	Or            []*UsageMeasurementFilter             `json:"or,omitempty"`
 }
 
 type UsageMeasurementFilterCustomerFilter struct {
 	And                  []*UsageMeasurementFilterCustomerFilter `json:"and,omitempty"`
-	Or                   []*UsageMeasurementFilterCustomerFilter `json:"or,omitempty"`
-	ID                   *StringFieldComparison                  `json:"id,omitempty"`
-	Name                 *StringFieldComparison                  `json:"name,omitempty"`
-	Email                *StringFieldComparison                  `json:"email,omitempty"`
-	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
-	CustomerID           *StringFieldComparison                  `json:"customerId,omitempty"`
-	CreatedAt            *DateFieldComparison                    `json:"createdAt,omitempty"`
-	UpdatedAt            *DateFieldComparison                    `json:"updatedAt,omitempty"`
-	EnvironmentID        *StringFieldComparison                  `json:"environmentId,omitempty"`
 	BillingID            *StringFieldComparison                  `json:"billingId,omitempty"`
-	CrmID                *StringFieldComparison                  `json:"crmId,omitempty"`
+	CreatedAt            *DateFieldComparison                    `json:"createdAt,omitempty"`
 	CrmHubspotCompanyID  *StringFieldComparison                  `json:"crmHubspotCompanyId,omitempty"`
 	CrmHubspotCompanyURL *StringFieldComparison                  `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                *StringFieldComparison                  `json:"crmId,omitempty"`
+	CustomerID           *StringFieldComparison                  `json:"customerId,omitempty"`
+	DeletedAt            *DateFieldComparison                    `json:"deletedAt,omitempty"`
+	Email                *StringFieldComparison                  `json:"email,omitempty"`
+	EnvironmentID        *StringFieldComparison                  `json:"environmentId,omitempty"`
+	ID                   *StringFieldComparison                  `json:"id,omitempty"`
+	Name                 *StringFieldComparison                  `json:"name,omitempty"`
+	Or                   []*UsageMeasurementFilterCustomerFilter `json:"or,omitempty"`
+	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
+	SearchQuery          *CustomerSearchQueryFilterComparison    `json:"searchQuery,omitempty"`
+	UpdatedAt            *DateFieldComparison                    `json:"updatedAt,omitempty"`
 }
 
 type UsageMeasurementFilterFeatureFilter struct {
 	And           []*UsageMeasurementFilterFeatureFilter `json:"and,omitempty"`
-	Or            []*UsageMeasurementFilterFeatureFilter `json:"or,omitempty"`
-	ID            *StringFieldComparison                 `json:"id,omitempty"`
-	DisplayName   *StringFieldComparison                 `json:"displayName,omitempty"`
-	RefID         *StringFieldComparison                 `json:"refId,omitempty"`
 	CreatedAt     *DateFieldComparison                   `json:"createdAt,omitempty"`
-	UpdatedAt     *DateFieldComparison                   `json:"updatedAt,omitempty"`
 	Description   *StringFieldComparison                 `json:"description,omitempty"`
-	FeatureType   *FeatureTypeFilterComparison           `json:"featureType,omitempty"`
-	MeterType     *MeterTypeFilterComparison             `json:"meterType,omitempty"`
-	FeatureStatus *FeatureStatusFilterComparison         `json:"featureStatus,omitempty"`
+	DisplayName   *StringFieldComparison                 `json:"displayName,omitempty"`
 	EnvironmentID *StringFieldComparison                 `json:"environmentId,omitempty"`
+	FeatureStatus *FeatureStatusFilterComparison         `json:"featureStatus,omitempty"`
+	FeatureType   *FeatureTypeFilterComparison           `json:"featureType,omitempty"`
+	ID            *StringFieldComparison                 `json:"id,omitempty"`
+	MeterType     *MeterTypeFilterComparison             `json:"meterType,omitempty"`
+	Or            []*UsageMeasurementFilterFeatureFilter `json:"or,omitempty"`
+	RefID         *StringFieldComparison                 `json:"refId,omitempty"`
+	UpdatedAt     *DateFieldComparison                   `json:"updatedAt,omitempty"`
 }
 
 type UsageMeasurementMaxAggregate struct {
-	ID            *string `json:"id"`
-	EnvironmentID *string `json:"environmentId"`
 	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
 }
 
 type UsageMeasurementMinAggregate struct {
-	ID            *string `json:"id"`
-	EnvironmentID *string `json:"environmentId"`
 	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
 }
 
 type UsageMeasurementPoint struct {
 	Date         string  `json:"date"`
-	Value        float64 `json:"value"`
 	IsResetPoint *bool   `json:"isResetPoint"`
+	Value        float64 `json:"value"`
 }
 
 type UsageMeasurementSort struct {
-	Field     UsageMeasurementSortFields `json:"field"`
 	Direction SortDirection              `json:"direction"`
+	Field     UsageMeasurementSortFields `json:"field"`
 	Nulls     *SortNulls                 `json:"nulls,omitempty"`
 }
 
@@ -5242,57 +5546,57 @@ type UsageMeasurementSumAggregate struct {
 }
 
 type UsageMeasurementUpdated struct {
-	CurrentUsage  float64  `json:"currentUsage"`
-	FeatureID     string   `json:"featureId"`
-	CustomerID    string   `json:"customerId"`
-	ResourceID    *string  `json:"resourceId"`
-	EnvironmentID string   `json:"environmentId"`
 	AccountID     string   `json:"accountId"`
+	CurrentUsage  float64  `json:"currentUsage"`
+	CustomerID    string   `json:"customerId"`
+	EnvironmentID string   `json:"environmentId"`
+	FeatureID     string   `json:"featureId"`
 	NextResetDate *float64 `json:"nextResetDate"`
+	ResourceID    *string  `json:"resourceId"`
 }
 
 type UsageMeasurementWithCurrentUsage struct {
-	ID            string   `json:"id"`
-	Value         float64  `json:"value"`
+	CreatedAt     string   `json:"createdAt"`
 	CurrentUsage  *float64 `json:"currentUsage"`
+	CustomerID    string   `json:"customerId"`
+	EnvironmentID string   `json:"environmentId"`
+	FeatureID     string   `json:"featureId"`
+	ID            string   `json:"id"`
 	NextResetDate *string  `json:"nextResetDate"`
 	Timestamp     string   `json:"timestamp"`
-	FeatureID     string   `json:"featureId"`
-	EnvironmentID string   `json:"environmentId"`
-	CustomerID    string   `json:"customerId"`
-	CreatedAt     string   `json:"createdAt"`
+	Value         float64  `json:"value"`
 }
 
 type UsageUpdated struct {
-	Usage       UsageMeasurementUpdated `json:"usage"`
 	Entitlement Entitlement             `json:"entitlement"`
+	Usage       UsageMeasurementUpdated `json:"usage"`
 }
 
 type User struct {
-	ID              string      `json:"id"`
+	Department      *Department `json:"department"`
 	Email           *string     `json:"email"`
-	Name            *string     `json:"name"`
-	ProfileImageURL *string     `json:"profileImageUrl"`
+	ID              string      `json:"id"`
 	LastSeenAt      *string     `json:"lastSeenAt"`
 	Memberships     []*Member   `json:"memberships"`
-	Department      *Department `json:"department"`
+	Name            *string     `json:"name"`
+	ProfileImageURL *string     `json:"profileImageUrl"`
 }
 
 type VendorIdentifierFilterComparison struct {
-	Is       *bool              `json:"is,omitempty"`
-	IsNot    *bool              `json:"isNot,omitempty"`
 	Eq       *VendorIdentifier  `json:"eq,omitempty"`
-	Neq      *VendorIdentifier  `json:"neq,omitempty"`
 	Gt       *VendorIdentifier  `json:"gt,omitempty"`
 	Gte      *VendorIdentifier  `json:"gte,omitempty"`
+	ILike    *VendorIdentifier  `json:"iLike,omitempty"`
+	In       []VendorIdentifier `json:"in,omitempty"`
+	Is       *bool              `json:"is,omitempty"`
+	IsNot    *bool              `json:"isNot,omitempty"`
+	Like     *VendorIdentifier  `json:"like,omitempty"`
 	Lt       *VendorIdentifier  `json:"lt,omitempty"`
 	Lte      *VendorIdentifier  `json:"lte,omitempty"`
-	Like     *VendorIdentifier  `json:"like,omitempty"`
-	NotLike  *VendorIdentifier  `json:"notLike,omitempty"`
-	ILike    *VendorIdentifier  `json:"iLike,omitempty"`
+	Neq      *VendorIdentifier  `json:"neq,omitempty"`
 	NotILike *VendorIdentifier  `json:"notILike,omitempty"`
-	In       []VendorIdentifier `json:"in,omitempty"`
 	NotIn    []VendorIdentifier `json:"notIn,omitempty"`
+	NotLike  *VendorIdentifier  `json:"notLike,omitempty"`
 }
 
 type WeeklyResetPeriodConfig struct {
@@ -5306,14 +5610,16 @@ type WeeklyResetPeriodConfigInput struct {
 }
 
 type WidgetConfiguration struct {
+	Checkout       *CheckoutConfiguration       `json:"checkout"`
 	CustomerPortal *CustomerPortalConfiguration `json:"customerPortal"`
 	Paywall        *PaywallConfiguration        `json:"paywall"`
 }
 
 type WidgetConfigurationUpdateInput struct {
+	CheckoutConfiguration       *CheckoutConfigurationInput       `json:"checkoutConfiguration,omitempty"`
+	CustomerPortalConfiguration *CustomerPortalConfigurationInput `json:"customerPortalConfiguration,omitempty"`
 	EnvironmentID               *string                           `json:"environmentId,omitempty"`
 	PaywallConfiguration        *PaywallConfigurationInput        `json:"paywallConfiguration,omitempty"`
-	CustomerPortalConfiguration *CustomerPortalConfigurationInput `json:"customerPortalConfiguration,omitempty"`
 }
 
 type ZuoraCredentials struct {
@@ -5331,20 +5637,21 @@ type ZuoraCredentialsInput struct {
 }
 
 type ExperimentInfo struct {
+	GroupName string              `json:"groupName"`
+	GroupType ExperimentGroupType `json:"groupType"`
 	ID        string              `json:"id"`
 	Name      string              `json:"name"`
 	Status    ExperimentStatus    `json:"status"`
-	GroupType ExperimentGroupType `json:"groupType"`
-	GroupName string              `json:"groupName"`
 }
 
 // DenyReason of get access policy
 type AccessDeniedReason string
 
 const (
-	AccessDeniedReasonFeatureNotFound                    AccessDeniedReason = "FeatureNotFound"
+	AccessDeniedReasonCustomerIsArchived                 AccessDeniedReason = "CustomerIsArchived"
 	AccessDeniedReasonCustomerNotFound                   AccessDeniedReason = "CustomerNotFound"
 	AccessDeniedReasonCustomerResourceNotFound           AccessDeniedReason = "CustomerResourceNotFound"
+	AccessDeniedReasonFeatureNotFound                    AccessDeniedReason = "FeatureNotFound"
 	AccessDeniedReasonNoActiveSubscription               AccessDeniedReason = "NoActiveSubscription"
 	AccessDeniedReasonNoFeatureEntitlementInSubscription AccessDeniedReason = "NoFeatureEntitlementInSubscription"
 	AccessDeniedReasonRequestedUsageExceedingLimit       AccessDeniedReason = "RequestedUsageExceedingLimit"
@@ -5352,9 +5659,10 @@ const (
 )
 
 var AllAccessDeniedReason = []AccessDeniedReason{
-	AccessDeniedReasonFeatureNotFound,
+	AccessDeniedReasonCustomerIsArchived,
 	AccessDeniedReasonCustomerNotFound,
 	AccessDeniedReasonCustomerResourceNotFound,
+	AccessDeniedReasonFeatureNotFound,
 	AccessDeniedReasonNoActiveSubscription,
 	AccessDeniedReasonNoFeatureEntitlementInSubscription,
 	AccessDeniedReasonRequestedUsageExceedingLimit,
@@ -5363,7 +5671,7 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 
 func (e AccessDeniedReason) IsValid() bool {
 	switch e {
-	case AccessDeniedReasonFeatureNotFound, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonUnknown:
+	case AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonUnknown:
 		return true
 	}
 	return false
@@ -5393,18 +5701,18 @@ func (e AccessDeniedReason) MarshalGQL(w io.Writer) {
 type AccountStatus string
 
 const (
-	AccountStatusBlocked AccountStatus = "BLOCKED"
 	AccountStatusActive  AccountStatus = "ACTIVE"
+	AccountStatusBlocked AccountStatus = "BLOCKED"
 )
 
 var AllAccountStatus = []AccountStatus{
-	AccountStatusBlocked,
 	AccountStatusActive,
+	AccountStatusBlocked,
 }
 
 func (e AccountStatus) IsValid() bool {
 	switch e {
-	case AccountStatusBlocked, AccountStatusActive:
+	case AccountStatusActive, AccountStatusBlocked:
 		return true
 	}
 	return false
@@ -5434,40 +5742,40 @@ func (e AccountStatus) MarshalGQL(w io.Writer) {
 type AddonSortFields string
 
 const (
-	AddonSortFieldsID            AddonSortFields = "id"
-	AddonSortFieldsCreatedAt     AddonSortFields = "createdAt"
-	AddonSortFieldsUpdatedAt     AddonSortFields = "updatedAt"
-	AddonSortFieldsRefID         AddonSortFields = "refId"
 	AddonSortFieldsBillingID     AddonSortFields = "billingId"
-	AddonSortFieldsDisplayName   AddonSortFields = "displayName"
-	AddonSortFieldsStatus        AddonSortFields = "status"
-	AddonSortFieldsPricingType   AddonSortFields = "pricingType"
+	AddonSortFieldsCreatedAt     AddonSortFields = "createdAt"
 	AddonSortFieldsDescription   AddonSortFields = "description"
+	AddonSortFieldsDisplayName   AddonSortFields = "displayName"
 	AddonSortFieldsEnvironmentID AddonSortFields = "environmentId"
-	AddonSortFieldsProductID     AddonSortFields = "productId"
+	AddonSortFieldsID            AddonSortFields = "id"
 	AddonSortFieldsIsLatest      AddonSortFields = "isLatest"
+	AddonSortFieldsPricingType   AddonSortFields = "pricingType"
+	AddonSortFieldsProductID     AddonSortFields = "productId"
+	AddonSortFieldsRefID         AddonSortFields = "refId"
+	AddonSortFieldsStatus        AddonSortFields = "status"
+	AddonSortFieldsUpdatedAt     AddonSortFields = "updatedAt"
 	AddonSortFieldsVersionNumber AddonSortFields = "versionNumber"
 )
 
 var AllAddonSortFields = []AddonSortFields{
-	AddonSortFieldsID,
-	AddonSortFieldsCreatedAt,
-	AddonSortFieldsUpdatedAt,
-	AddonSortFieldsRefID,
 	AddonSortFieldsBillingID,
-	AddonSortFieldsDisplayName,
-	AddonSortFieldsStatus,
-	AddonSortFieldsPricingType,
+	AddonSortFieldsCreatedAt,
 	AddonSortFieldsDescription,
+	AddonSortFieldsDisplayName,
 	AddonSortFieldsEnvironmentID,
-	AddonSortFieldsProductID,
+	AddonSortFieldsID,
 	AddonSortFieldsIsLatest,
+	AddonSortFieldsPricingType,
+	AddonSortFieldsProductID,
+	AddonSortFieldsRefID,
+	AddonSortFieldsStatus,
+	AddonSortFieldsUpdatedAt,
 	AddonSortFieldsVersionNumber,
 }
 
 func (e AddonSortFields) IsValid() bool {
 	switch e {
-	case AddonSortFieldsID, AddonSortFieldsCreatedAt, AddonSortFieldsUpdatedAt, AddonSortFieldsRefID, AddonSortFieldsBillingID, AddonSortFieldsDisplayName, AddonSortFieldsStatus, AddonSortFieldsPricingType, AddonSortFieldsDescription, AddonSortFieldsEnvironmentID, AddonSortFieldsProductID, AddonSortFieldsIsLatest, AddonSortFieldsVersionNumber:
+	case AddonSortFieldsBillingID, AddonSortFieldsCreatedAt, AddonSortFieldsDescription, AddonSortFieldsDisplayName, AddonSortFieldsEnvironmentID, AddonSortFieldsID, AddonSortFieldsIsLatest, AddonSortFieldsPricingType, AddonSortFieldsProductID, AddonSortFieldsRefID, AddonSortFieldsStatus, AddonSortFieldsUpdatedAt, AddonSortFieldsVersionNumber:
 		return true
 	}
 	return false
@@ -5498,26 +5806,26 @@ func (e AddonSortFields) MarshalGQL(w io.Writer) {
 type AggregationFunction string
 
 const (
-	AggregationFunctionSum    AggregationFunction = "SUM"
-	AggregationFunctionMax    AggregationFunction = "MAX"
-	AggregationFunctionMin    AggregationFunction = "MIN"
 	AggregationFunctionAvg    AggregationFunction = "AVG"
 	AggregationFunctionCount  AggregationFunction = "COUNT"
+	AggregationFunctionMax    AggregationFunction = "MAX"
+	AggregationFunctionMin    AggregationFunction = "MIN"
+	AggregationFunctionSum    AggregationFunction = "SUM"
 	AggregationFunctionUnique AggregationFunction = "UNIQUE"
 )
 
 var AllAggregationFunction = []AggregationFunction{
-	AggregationFunctionSum,
-	AggregationFunctionMax,
-	AggregationFunctionMin,
 	AggregationFunctionAvg,
 	AggregationFunctionCount,
+	AggregationFunctionMax,
+	AggregationFunctionMin,
+	AggregationFunctionSum,
 	AggregationFunctionUnique,
 }
 
 func (e AggregationFunction) IsValid() bool {
 	switch e {
-	case AggregationFunctionSum, AggregationFunctionMax, AggregationFunctionMin, AggregationFunctionAvg, AggregationFunctionCount, AggregationFunctionUnique:
+	case AggregationFunctionAvg, AggregationFunctionCount, AggregationFunctionMax, AggregationFunctionMin, AggregationFunctionSum, AggregationFunctionUnique:
 		return true
 	}
 	return false
@@ -5548,20 +5856,20 @@ func (e AggregationFunction) MarshalGQL(w io.Writer) {
 type Alignment string
 
 const (
-	AlignmentLeft   Alignment = "LEFT"
 	AlignmentCenter Alignment = "CENTER"
+	AlignmentLeft   Alignment = "LEFT"
 	AlignmentRight  Alignment = "RIGHT"
 )
 
 var AllAlignment = []Alignment{
-	AlignmentLeft,
 	AlignmentCenter,
+	AlignmentLeft,
 	AlignmentRight,
 }
 
 func (e Alignment) IsValid() bool {
 	switch e {
-	case AlignmentLeft, AlignmentCenter, AlignmentRight:
+	case AlignmentCenter, AlignmentLeft, AlignmentRight:
 		return true
 	}
 	return false
@@ -5630,18 +5938,18 @@ func (e APIKeySortFields) MarshalGQL(w io.Writer) {
 type APIKeyType string
 
 const (
-	APIKeyTypeServer APIKeyType = "SERVER"
 	APIKeyTypeClient APIKeyType = "CLIENT"
+	APIKeyTypeServer APIKeyType = "SERVER"
 )
 
 var AllAPIKeyType = []APIKeyType{
-	APIKeyTypeServer,
 	APIKeyTypeClient,
+	APIKeyTypeServer,
 }
 
 func (e APIKeyType) IsValid() bool {
 	switch e {
-	case APIKeyTypeServer, APIKeyTypeClient:
+	case APIKeyTypeClient, APIKeyTypeServer:
 		return true
 	}
 	return false
@@ -5671,18 +5979,18 @@ func (e APIKeyType) MarshalGQL(w io.Writer) {
 type BillingAnchor string
 
 const (
-	BillingAnchorSubscriptionStart BillingAnchor = "SUBSCRIPTION_START"
 	BillingAnchorStartOfTheMonth   BillingAnchor = "START_OF_THE_MONTH"
+	BillingAnchorSubscriptionStart BillingAnchor = "SUBSCRIPTION_START"
 )
 
 var AllBillingAnchor = []BillingAnchor{
-	BillingAnchorSubscriptionStart,
 	BillingAnchorStartOfTheMonth,
+	BillingAnchorSubscriptionStart,
 }
 
 func (e BillingAnchor) IsValid() bool {
 	switch e {
-	case BillingAnchorSubscriptionStart, BillingAnchorStartOfTheMonth:
+	case BillingAnchorStartOfTheMonth, BillingAnchorSubscriptionStart:
 		return true
 	}
 	return false
@@ -5757,18 +6065,18 @@ func (e BillingModel) MarshalGQL(w io.Writer) {
 type BillingPeriod string
 
 const (
-	BillingPeriodMonthly  BillingPeriod = "MONTHLY"
 	BillingPeriodAnnually BillingPeriod = "ANNUALLY"
+	BillingPeriodMonthly  BillingPeriod = "MONTHLY"
 )
 
 var AllBillingPeriod = []BillingPeriod{
-	BillingPeriodMonthly,
 	BillingPeriodAnnually,
+	BillingPeriodMonthly,
 }
 
 func (e BillingPeriod) IsValid() bool {
 	switch e {
-	case BillingPeriodMonthly, BillingPeriodAnnually:
+	case BillingPeriodAnnually, BillingPeriodMonthly:
 		return true
 	}
 	return false
@@ -5795,25 +6103,65 @@ func (e BillingPeriod) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Billing vendor identifiers
+type BillingVendorIdentifier string
+
+const (
+	BillingVendorIdentifierStripe BillingVendorIdentifier = "STRIPE"
+)
+
+var AllBillingVendorIdentifier = []BillingVendorIdentifier{
+	BillingVendorIdentifierStripe,
+}
+
+func (e BillingVendorIdentifier) IsValid() bool {
+	switch e {
+	case BillingVendorIdentifierStripe:
+		return true
+	}
+	return false
+}
+
+func (e BillingVendorIdentifier) String() string {
+	return string(e)
+}
+
+func (e *BillingVendorIdentifier) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = BillingVendorIdentifier(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid BillingVendorIdentifier", str)
+	}
+	return nil
+}
+
+func (e BillingVendorIdentifier) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type ChangeType string
 
 const (
-	ChangeTypeReordered ChangeType = "REORDERED"
-	ChangeTypeModified  ChangeType = "MODIFIED"
 	ChangeTypeAdded     ChangeType = "ADDED"
 	ChangeTypeDeleted   ChangeType = "DELETED"
+	ChangeTypeModified  ChangeType = "MODIFIED"
+	ChangeTypeReordered ChangeType = "REORDERED"
 )
 
 var AllChangeType = []ChangeType{
-	ChangeTypeReordered,
-	ChangeTypeModified,
 	ChangeTypeAdded,
 	ChangeTypeDeleted,
+	ChangeTypeModified,
+	ChangeTypeReordered,
 }
 
 func (e ChangeType) IsValid() bool {
 	switch e {
-	case ChangeTypeReordered, ChangeTypeModified, ChangeTypeAdded, ChangeTypeDeleted:
+	case ChangeTypeAdded, ChangeTypeDeleted, ChangeTypeModified, ChangeTypeReordered:
 		return true
 	}
 	return false
@@ -5845,29 +6193,29 @@ type ConditionOperation string
 
 const (
 	ConditionOperationEquals             ConditionOperation = "EQUALS"
-	ConditionOperationNotEquals          ConditionOperation = "NOT_EQUALS"
 	ConditionOperationGreaterThan        ConditionOperation = "GREATER_THAN"
 	ConditionOperationGreaterThanOrEqual ConditionOperation = "GREATER_THAN_OR_EQUAL"
+	ConditionOperationIsNotNull          ConditionOperation = "IS_NOT_NULL"
+	ConditionOperationIsNull             ConditionOperation = "IS_NULL"
 	ConditionOperationLessThan           ConditionOperation = "LESS_THAN"
 	ConditionOperationLessThanOrEqual    ConditionOperation = "LESS_THAN_OR_EQUAL"
-	ConditionOperationIsNull             ConditionOperation = "IS_NULL"
-	ConditionOperationIsNotNull          ConditionOperation = "IS_NOT_NULL"
+	ConditionOperationNotEquals          ConditionOperation = "NOT_EQUALS"
 )
 
 var AllConditionOperation = []ConditionOperation{
 	ConditionOperationEquals,
-	ConditionOperationNotEquals,
 	ConditionOperationGreaterThan,
 	ConditionOperationGreaterThanOrEqual,
+	ConditionOperationIsNotNull,
+	ConditionOperationIsNull,
 	ConditionOperationLessThan,
 	ConditionOperationLessThanOrEqual,
-	ConditionOperationIsNull,
-	ConditionOperationIsNotNull,
+	ConditionOperationNotEquals,
 }
 
 func (e ConditionOperation) IsValid() bool {
 	switch e {
-	case ConditionOperationEquals, ConditionOperationNotEquals, ConditionOperationGreaterThan, ConditionOperationGreaterThanOrEqual, ConditionOperationLessThan, ConditionOperationLessThanOrEqual, ConditionOperationIsNull, ConditionOperationIsNotNull:
+	case ConditionOperationEquals, ConditionOperationGreaterThan, ConditionOperationGreaterThanOrEqual, ConditionOperationIsNotNull, ConditionOperationIsNull, ConditionOperationLessThan, ConditionOperationLessThanOrEqual, ConditionOperationNotEquals:
 		return true
 	}
 	return false
@@ -5897,34 +6245,34 @@ func (e ConditionOperation) MarshalGQL(w io.Writer) {
 type CouponSortFields string
 
 const (
+	CouponSortFieldsBillingID     CouponSortFields = "billingId"
+	CouponSortFieldsCreatedAt     CouponSortFields = "createdAt"
+	CouponSortFieldsDescription   CouponSortFields = "description"
+	CouponSortFieldsEnvironmentID CouponSortFields = "environmentId"
 	CouponSortFieldsID            CouponSortFields = "id"
 	CouponSortFieldsName          CouponSortFields = "name"
 	CouponSortFieldsRefID         CouponSortFields = "refId"
-	CouponSortFieldsDescription   CouponSortFields = "description"
-	CouponSortFieldsCreatedAt     CouponSortFields = "createdAt"
-	CouponSortFieldsUpdatedAt     CouponSortFields = "updatedAt"
-	CouponSortFieldsEnvironmentID CouponSortFields = "environmentId"
-	CouponSortFieldsType          CouponSortFields = "type"
 	CouponSortFieldsStatus        CouponSortFields = "status"
-	CouponSortFieldsBillingID     CouponSortFields = "billingId"
+	CouponSortFieldsType          CouponSortFields = "type"
+	CouponSortFieldsUpdatedAt     CouponSortFields = "updatedAt"
 )
 
 var AllCouponSortFields = []CouponSortFields{
+	CouponSortFieldsBillingID,
+	CouponSortFieldsCreatedAt,
+	CouponSortFieldsDescription,
+	CouponSortFieldsEnvironmentID,
 	CouponSortFieldsID,
 	CouponSortFieldsName,
 	CouponSortFieldsRefID,
-	CouponSortFieldsDescription,
-	CouponSortFieldsCreatedAt,
-	CouponSortFieldsUpdatedAt,
-	CouponSortFieldsEnvironmentID,
-	CouponSortFieldsType,
 	CouponSortFieldsStatus,
-	CouponSortFieldsBillingID,
+	CouponSortFieldsType,
+	CouponSortFieldsUpdatedAt,
 }
 
 func (e CouponSortFields) IsValid() bool {
 	switch e {
-	case CouponSortFieldsID, CouponSortFieldsName, CouponSortFieldsRefID, CouponSortFieldsDescription, CouponSortFieldsCreatedAt, CouponSortFieldsUpdatedAt, CouponSortFieldsEnvironmentID, CouponSortFieldsType, CouponSortFieldsStatus, CouponSortFieldsBillingID:
+	case CouponSortFieldsBillingID, CouponSortFieldsCreatedAt, CouponSortFieldsDescription, CouponSortFieldsEnvironmentID, CouponSortFieldsID, CouponSortFieldsName, CouponSortFieldsRefID, CouponSortFieldsStatus, CouponSortFieldsType, CouponSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -6039,7 +6387,6 @@ func (e CouponType) MarshalGQL(w io.Writer) {
 type Currency string
 
 const (
-	CurrencyUsd Currency = "USD"
 	CurrencyAed Currency = "AED"
 	CurrencyAll Currency = "ALL"
 	CurrencyAmd Currency = "AMD"
@@ -6061,8 +6408,10 @@ const (
 	CurrencyCad Currency = "CAD"
 	CurrencyCdf Currency = "CDF"
 	CurrencyChf Currency = "CHF"
+	CurrencyClp Currency = "CLP"
 	CurrencyCny Currency = "CNY"
 	CurrencyCzk Currency = "CZK"
+	CurrencyDjf Currency = "DJF"
 	CurrencyDkk Currency = "DKK"
 	CurrencyDop Currency = "DOP"
 	CurrencyDzd Currency = "DZD"
@@ -6074,6 +6423,7 @@ const (
 	CurrencyGel Currency = "GEL"
 	CurrencyGip Currency = "GIP"
 	CurrencyGmd Currency = "GMD"
+	CurrencyGnf Currency = "GNF"
 	CurrencyGyd Currency = "GYD"
 	CurrencyHkd Currency = "HKD"
 	CurrencyHrk Currency = "HRK"
@@ -6117,6 +6467,7 @@ const (
 	CurrencyPhp Currency = "PHP"
 	CurrencyPkr Currency = "PKR"
 	CurrencyPln Currency = "PLN"
+	CurrencyPyg Currency = "PYG"
 	CurrencyQar Currency = "QAR"
 	CurrencyRon Currency = "RON"
 	CurrencyRsd Currency = "RSD"
@@ -6138,26 +6489,22 @@ const (
 	CurrencyTtd Currency = "TTD"
 	CurrencyTzs Currency = "TZS"
 	CurrencyUah Currency = "UAH"
+	CurrencyUgx Currency = "UGX"
+	CurrencyUsd Currency = "USD"
 	CurrencyUzs Currency = "UZS"
 	CurrencyVnd Currency = "VND"
 	CurrencyVuv Currency = "VUV"
 	CurrencyWst Currency = "WST"
 	CurrencyXaf Currency = "XAF"
 	CurrencyXcd Currency = "XCD"
+	CurrencyXof Currency = "XOF"
+	CurrencyXpf Currency = "XPF"
 	CurrencyYer Currency = "YER"
 	CurrencyZar Currency = "ZAR"
 	CurrencyZmw Currency = "ZMW"
-	CurrencyClp Currency = "CLP"
-	CurrencyDjf Currency = "DJF"
-	CurrencyGnf Currency = "GNF"
-	CurrencyUgx Currency = "UGX"
-	CurrencyPyg Currency = "PYG"
-	CurrencyXof Currency = "XOF"
-	CurrencyXpf Currency = "XPF"
 )
 
 var AllCurrency = []Currency{
-	CurrencyUsd,
 	CurrencyAed,
 	CurrencyAll,
 	CurrencyAmd,
@@ -6179,8 +6526,10 @@ var AllCurrency = []Currency{
 	CurrencyCad,
 	CurrencyCdf,
 	CurrencyChf,
+	CurrencyClp,
 	CurrencyCny,
 	CurrencyCzk,
+	CurrencyDjf,
 	CurrencyDkk,
 	CurrencyDop,
 	CurrencyDzd,
@@ -6192,6 +6541,7 @@ var AllCurrency = []Currency{
 	CurrencyGel,
 	CurrencyGip,
 	CurrencyGmd,
+	CurrencyGnf,
 	CurrencyGyd,
 	CurrencyHkd,
 	CurrencyHrk,
@@ -6235,6 +6585,7 @@ var AllCurrency = []Currency{
 	CurrencyPhp,
 	CurrencyPkr,
 	CurrencyPln,
+	CurrencyPyg,
 	CurrencyQar,
 	CurrencyRon,
 	CurrencyRsd,
@@ -6256,27 +6607,24 @@ var AllCurrency = []Currency{
 	CurrencyTtd,
 	CurrencyTzs,
 	CurrencyUah,
+	CurrencyUgx,
+	CurrencyUsd,
 	CurrencyUzs,
 	CurrencyVnd,
 	CurrencyVuv,
 	CurrencyWst,
 	CurrencyXaf,
 	CurrencyXcd,
+	CurrencyXof,
+	CurrencyXpf,
 	CurrencyYer,
 	CurrencyZar,
 	CurrencyZmw,
-	CurrencyClp,
-	CurrencyDjf,
-	CurrencyGnf,
-	CurrencyUgx,
-	CurrencyPyg,
-	CurrencyXof,
-	CurrencyXpf,
 }
 
 func (e Currency) IsValid() bool {
 	switch e {
-	case CurrencyUsd, CurrencyAed, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBdt, CurrencyBgn, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBsd, CurrencyBwp, CurrencyByn, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyCny, CurrencyCzk, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEgp, CurrencyEtb, CurrencyEur, CurrencyFjd, CurrencyGbp, CurrencyGel, CurrencyGip, CurrencyGmd, CurrencyGyd, CurrencyHkd, CurrencyHrk, CurrencyHtg, CurrencyIDR, CurrencyIls, CurrencyInr, CurrencyIsk, CurrencyJmd, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKrw, CurrencyKyd, CurrencyKzt, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySek, CurrencySgd, CurrencySle, CurrencySll, CurrencySos, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTzs, CurrencyUah, CurrencyUzs, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXcd, CurrencyYer, CurrencyZar, CurrencyZmw, CurrencyClp, CurrencyDjf, CurrencyGnf, CurrencyUgx, CurrencyPyg, CurrencyXof, CurrencyXpf:
+	case CurrencyAed, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBdt, CurrencyBgn, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBsd, CurrencyBwp, CurrencyByn, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClp, CurrencyCny, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEgp, CurrencyEtb, CurrencyEur, CurrencyFjd, CurrencyGbp, CurrencyGel, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGyd, CurrencyHkd, CurrencyHrk, CurrencyHtg, CurrencyIDR, CurrencyIls, CurrencyInr, CurrencyIsk, CurrencyJmd, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKrw, CurrencyKyd, CurrencyKzt, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySek, CurrencySgd, CurrencySle, CurrencySll, CurrencySos, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUzs, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXcd, CurrencyXof, CurrencyXpf, CurrencyYer, CurrencyZar, CurrencyZmw:
 		return true
 	}
 	return false
@@ -6306,20 +6654,20 @@ func (e Currency) MarshalGQL(w io.Writer) {
 type CustomerResourceSortFields string
 
 const (
+	CustomerResourceSortFieldsCreatedAt     CustomerResourceSortFields = "createdAt"
 	CustomerResourceSortFieldsEnvironmentID CustomerResourceSortFields = "environmentId"
 	CustomerResourceSortFieldsResourceID    CustomerResourceSortFields = "resourceId"
-	CustomerResourceSortFieldsCreatedAt     CustomerResourceSortFields = "createdAt"
 )
 
 var AllCustomerResourceSortFields = []CustomerResourceSortFields{
+	CustomerResourceSortFieldsCreatedAt,
 	CustomerResourceSortFieldsEnvironmentID,
 	CustomerResourceSortFieldsResourceID,
-	CustomerResourceSortFieldsCreatedAt,
 }
 
 func (e CustomerResourceSortFields) IsValid() bool {
 	switch e {
-	case CustomerResourceSortFieldsEnvironmentID, CustomerResourceSortFieldsResourceID, CustomerResourceSortFieldsCreatedAt:
+	case CustomerResourceSortFieldsCreatedAt, CustomerResourceSortFieldsEnvironmentID, CustomerResourceSortFieldsResourceID:
 		return true
 	}
 	return false
@@ -6349,38 +6697,42 @@ func (e CustomerResourceSortFields) MarshalGQL(w io.Writer) {
 type CustomerSortFields string
 
 const (
-	CustomerSortFieldsID                   CustomerSortFields = "id"
-	CustomerSortFieldsName                 CustomerSortFields = "name"
-	CustomerSortFieldsEmail                CustomerSortFields = "email"
-	CustomerSortFieldsRefID                CustomerSortFields = "refId"
-	CustomerSortFieldsCustomerID           CustomerSortFields = "customerId"
-	CustomerSortFieldsCreatedAt            CustomerSortFields = "createdAt"
-	CustomerSortFieldsUpdatedAt            CustomerSortFields = "updatedAt"
-	CustomerSortFieldsEnvironmentID        CustomerSortFields = "environmentId"
 	CustomerSortFieldsBillingID            CustomerSortFields = "billingId"
-	CustomerSortFieldsCrmID                CustomerSortFields = "crmId"
+	CustomerSortFieldsCreatedAt            CustomerSortFields = "createdAt"
 	CustomerSortFieldsCrmHubspotCompanyID  CustomerSortFields = "crmHubspotCompanyId"
 	CustomerSortFieldsCrmHubspotCompanyURL CustomerSortFields = "crmHubspotCompanyUrl"
+	CustomerSortFieldsCrmID                CustomerSortFields = "crmId"
+	CustomerSortFieldsCustomerID           CustomerSortFields = "customerId"
+	CustomerSortFieldsDeletedAt            CustomerSortFields = "deletedAt"
+	CustomerSortFieldsEmail                CustomerSortFields = "email"
+	CustomerSortFieldsEnvironmentID        CustomerSortFields = "environmentId"
+	CustomerSortFieldsID                   CustomerSortFields = "id"
+	CustomerSortFieldsName                 CustomerSortFields = "name"
+	CustomerSortFieldsRefID                CustomerSortFields = "refId"
+	CustomerSortFieldsSearchQuery          CustomerSortFields = "searchQuery"
+	CustomerSortFieldsUpdatedAt            CustomerSortFields = "updatedAt"
 )
 
 var AllCustomerSortFields = []CustomerSortFields{
-	CustomerSortFieldsID,
-	CustomerSortFieldsName,
-	CustomerSortFieldsEmail,
-	CustomerSortFieldsRefID,
-	CustomerSortFieldsCustomerID,
-	CustomerSortFieldsCreatedAt,
-	CustomerSortFieldsUpdatedAt,
-	CustomerSortFieldsEnvironmentID,
 	CustomerSortFieldsBillingID,
-	CustomerSortFieldsCrmID,
+	CustomerSortFieldsCreatedAt,
 	CustomerSortFieldsCrmHubspotCompanyID,
 	CustomerSortFieldsCrmHubspotCompanyURL,
+	CustomerSortFieldsCrmID,
+	CustomerSortFieldsCustomerID,
+	CustomerSortFieldsDeletedAt,
+	CustomerSortFieldsEmail,
+	CustomerSortFieldsEnvironmentID,
+	CustomerSortFieldsID,
+	CustomerSortFieldsName,
+	CustomerSortFieldsRefID,
+	CustomerSortFieldsSearchQuery,
+	CustomerSortFieldsUpdatedAt,
 }
 
 func (e CustomerSortFields) IsValid() bool {
 	switch e {
-	case CustomerSortFieldsID, CustomerSortFieldsName, CustomerSortFieldsEmail, CustomerSortFieldsRefID, CustomerSortFieldsCustomerID, CustomerSortFieldsCreatedAt, CustomerSortFieldsUpdatedAt, CustomerSortFieldsEnvironmentID, CustomerSortFieldsBillingID, CustomerSortFieldsCrmID, CustomerSortFieldsCrmHubspotCompanyID, CustomerSortFieldsCrmHubspotCompanyURL:
+	case CustomerSortFieldsBillingID, CustomerSortFieldsCreatedAt, CustomerSortFieldsCrmHubspotCompanyID, CustomerSortFieldsCrmHubspotCompanyURL, CustomerSortFieldsCrmID, CustomerSortFieldsCustomerID, CustomerSortFieldsDeletedAt, CustomerSortFieldsEmail, CustomerSortFieldsEnvironmentID, CustomerSortFieldsID, CustomerSortFieldsName, CustomerSortFieldsRefID, CustomerSortFieldsSearchQuery, CustomerSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -6410,50 +6762,52 @@ func (e CustomerSortFields) MarshalGQL(w io.Writer) {
 type CustomerSubscriptionSortFields string
 
 const (
-	CustomerSubscriptionSortFieldsEnvironmentID    CustomerSubscriptionSortFields = "environmentId"
-	CustomerSubscriptionSortFieldsID               CustomerSubscriptionSortFields = "id"
-	CustomerSubscriptionSortFieldsCreatedAt        CustomerSubscriptionSortFields = "createdAt"
-	CustomerSubscriptionSortFieldsStartDate        CustomerSubscriptionSortFields = "startDate"
-	CustomerSubscriptionSortFieldsEndDate          CustomerSubscriptionSortFields = "endDate"
-	CustomerSubscriptionSortFieldsCancellationDate CustomerSubscriptionSortFields = "cancellationDate"
-	CustomerSubscriptionSortFieldsTrialEndDate     CustomerSubscriptionSortFields = "trialEndDate"
-	CustomerSubscriptionSortFieldsEffectiveEndDate CustomerSubscriptionSortFields = "effectiveEndDate"
-	CustomerSubscriptionSortFieldsBillingID        CustomerSubscriptionSortFields = "billingId"
-	CustomerSubscriptionSortFieldsOldBillingID     CustomerSubscriptionSortFields = "oldBillingId"
-	CustomerSubscriptionSortFieldsCrmID            CustomerSubscriptionSortFields = "crmId"
-	CustomerSubscriptionSortFieldsCrmLinkURL       CustomerSubscriptionSortFields = "crmLinkUrl"
-	CustomerSubscriptionSortFieldsStatus           CustomerSubscriptionSortFields = "status"
-	CustomerSubscriptionSortFieldsCancelReason     CustomerSubscriptionSortFields = "cancelReason"
-	CustomerSubscriptionSortFieldsRefID            CustomerSubscriptionSortFields = "refId"
-	CustomerSubscriptionSortFieldsSubscriptionID   CustomerSubscriptionSortFields = "subscriptionId"
-	CustomerSubscriptionSortFieldsResourceID       CustomerSubscriptionSortFields = "resourceId"
-	CustomerSubscriptionSortFieldsPricingType      CustomerSubscriptionSortFields = "pricingType"
+	CustomerSubscriptionSortFieldsBillingID         CustomerSubscriptionSortFields = "billingId"
+	CustomerSubscriptionSortFieldsCancelReason      CustomerSubscriptionSortFields = "cancelReason"
+	CustomerSubscriptionSortFieldsCancellationDate  CustomerSubscriptionSortFields = "cancellationDate"
+	CustomerSubscriptionSortFieldsCreatedAt         CustomerSubscriptionSortFields = "createdAt"
+	CustomerSubscriptionSortFieldsCrmID             CustomerSubscriptionSortFields = "crmId"
+	CustomerSubscriptionSortFieldsCrmLinkURL        CustomerSubscriptionSortFields = "crmLinkUrl"
+	CustomerSubscriptionSortFieldsEffectiveEndDate  CustomerSubscriptionSortFields = "effectiveEndDate"
+	CustomerSubscriptionSortFieldsEndDate           CustomerSubscriptionSortFields = "endDate"
+	CustomerSubscriptionSortFieldsEnvironmentID     CustomerSubscriptionSortFields = "environmentId"
+	CustomerSubscriptionSortFieldsID                CustomerSubscriptionSortFields = "id"
+	CustomerSubscriptionSortFieldsOldBillingID      CustomerSubscriptionSortFields = "oldBillingId"
+	CustomerSubscriptionSortFieldsPaymentCollection CustomerSubscriptionSortFields = "paymentCollection"
+	CustomerSubscriptionSortFieldsPricingType       CustomerSubscriptionSortFields = "pricingType"
+	CustomerSubscriptionSortFieldsRefID             CustomerSubscriptionSortFields = "refId"
+	CustomerSubscriptionSortFieldsResourceID        CustomerSubscriptionSortFields = "resourceId"
+	CustomerSubscriptionSortFieldsStartDate         CustomerSubscriptionSortFields = "startDate"
+	CustomerSubscriptionSortFieldsStatus            CustomerSubscriptionSortFields = "status"
+	CustomerSubscriptionSortFieldsSubscriptionID    CustomerSubscriptionSortFields = "subscriptionId"
+	CustomerSubscriptionSortFieldsTrialEndDate      CustomerSubscriptionSortFields = "trialEndDate"
 )
 
 var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
-	CustomerSubscriptionSortFieldsEnvironmentID,
-	CustomerSubscriptionSortFieldsID,
-	CustomerSubscriptionSortFieldsCreatedAt,
-	CustomerSubscriptionSortFieldsStartDate,
-	CustomerSubscriptionSortFieldsEndDate,
-	CustomerSubscriptionSortFieldsCancellationDate,
-	CustomerSubscriptionSortFieldsTrialEndDate,
-	CustomerSubscriptionSortFieldsEffectiveEndDate,
 	CustomerSubscriptionSortFieldsBillingID,
-	CustomerSubscriptionSortFieldsOldBillingID,
+	CustomerSubscriptionSortFieldsCancelReason,
+	CustomerSubscriptionSortFieldsCancellationDate,
+	CustomerSubscriptionSortFieldsCreatedAt,
 	CustomerSubscriptionSortFieldsCrmID,
 	CustomerSubscriptionSortFieldsCrmLinkURL,
-	CustomerSubscriptionSortFieldsStatus,
-	CustomerSubscriptionSortFieldsCancelReason,
-	CustomerSubscriptionSortFieldsRefID,
-	CustomerSubscriptionSortFieldsSubscriptionID,
-	CustomerSubscriptionSortFieldsResourceID,
+	CustomerSubscriptionSortFieldsEffectiveEndDate,
+	CustomerSubscriptionSortFieldsEndDate,
+	CustomerSubscriptionSortFieldsEnvironmentID,
+	CustomerSubscriptionSortFieldsID,
+	CustomerSubscriptionSortFieldsOldBillingID,
+	CustomerSubscriptionSortFieldsPaymentCollection,
 	CustomerSubscriptionSortFieldsPricingType,
+	CustomerSubscriptionSortFieldsRefID,
+	CustomerSubscriptionSortFieldsResourceID,
+	CustomerSubscriptionSortFieldsStartDate,
+	CustomerSubscriptionSortFieldsStatus,
+	CustomerSubscriptionSortFieldsSubscriptionID,
+	CustomerSubscriptionSortFieldsTrialEndDate,
 }
 
 func (e CustomerSubscriptionSortFields) IsValid() bool {
 	switch e {
-	case CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsTrialEndDate, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsPricingType:
+	case CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
 		return true
 	}
 	return false
@@ -6483,28 +6837,28 @@ func (e CustomerSubscriptionSortFields) MarshalGQL(w io.Writer) {
 type Department string
 
 const (
+	DepartmentCeoOrFounder Department = "CEO_OR_FOUNDER"
 	DepartmentEngineering  Department = "ENGINEERING"
-	DepartmentProduct      Department = "PRODUCT"
 	DepartmentGrowth       Department = "GROWTH"
 	DepartmentMarketing    Department = "MARKETING"
 	DepartmentMonetization Department = "MONETIZATION"
-	DepartmentCeoOrFounder Department = "CEO_OR_FOUNDER"
 	DepartmentOther        Department = "OTHER"
+	DepartmentProduct      Department = "PRODUCT"
 )
 
 var AllDepartment = []Department{
+	DepartmentCeoOrFounder,
 	DepartmentEngineering,
-	DepartmentProduct,
 	DepartmentGrowth,
 	DepartmentMarketing,
 	DepartmentMonetization,
-	DepartmentCeoOrFounder,
 	DepartmentOther,
+	DepartmentProduct,
 }
 
 func (e Department) IsValid() bool {
 	switch e {
-	case DepartmentEngineering, DepartmentProduct, DepartmentGrowth, DepartmentMarketing, DepartmentMonetization, DepartmentCeoOrFounder, DepartmentOther:
+	case DepartmentCeoOrFounder, DepartmentEngineering, DepartmentGrowth, DepartmentMarketing, DepartmentMonetization, DepartmentOther, DepartmentProduct:
 		return true
 	}
 	return false
@@ -6536,19 +6890,19 @@ type DiscountDurationType string
 
 const (
 	DiscountDurationTypeForever   DiscountDurationType = "FOREVER"
-	DiscountDurationTypeRepeating DiscountDurationType = "REPEATING"
 	DiscountDurationTypeOnce      DiscountDurationType = "ONCE"
+	DiscountDurationTypeRepeating DiscountDurationType = "REPEATING"
 )
 
 var AllDiscountDurationType = []DiscountDurationType{
 	DiscountDurationTypeForever,
-	DiscountDurationTypeRepeating,
 	DiscountDurationTypeOnce,
+	DiscountDurationTypeRepeating,
 }
 
 func (e DiscountDurationType) IsValid() bool {
 	switch e {
-	case DiscountDurationTypeForever, DiscountDurationTypeRepeating, DiscountDurationTypeOnce:
+	case DiscountDurationTypeForever, DiscountDurationTypeOnce, DiscountDurationTypeRepeating:
 		return true
 	}
 	return false
@@ -6621,22 +6975,22 @@ func (e DiscountType) MarshalGQL(w io.Writer) {
 type EntitlementResetPeriod string
 
 const (
-	EntitlementResetPeriodMonth EntitlementResetPeriod = "MONTH"
-	EntitlementResetPeriodWeek  EntitlementResetPeriod = "WEEK"
 	EntitlementResetPeriodDay   EntitlementResetPeriod = "DAY"
 	EntitlementResetPeriodHour  EntitlementResetPeriod = "HOUR"
+	EntitlementResetPeriodMonth EntitlementResetPeriod = "MONTH"
+	EntitlementResetPeriodWeek  EntitlementResetPeriod = "WEEK"
 )
 
 var AllEntitlementResetPeriod = []EntitlementResetPeriod{
-	EntitlementResetPeriodMonth,
-	EntitlementResetPeriodWeek,
 	EntitlementResetPeriodDay,
 	EntitlementResetPeriodHour,
+	EntitlementResetPeriodMonth,
+	EntitlementResetPeriodWeek,
 }
 
 func (e EntitlementResetPeriod) IsValid() bool {
 	switch e {
-	case EntitlementResetPeriodMonth, EntitlementResetPeriodWeek, EntitlementResetPeriodDay, EntitlementResetPeriodHour:
+	case EntitlementResetPeriodDay, EntitlementResetPeriodHour, EntitlementResetPeriodMonth, EntitlementResetPeriodWeek:
 		return true
 	}
 	return false
@@ -6708,22 +7062,22 @@ func (e EntitySelectionMode) MarshalGQL(w io.Writer) {
 type EnvironmentProvisionStatus string
 
 const (
-	EnvironmentProvisionStatusNotProvisioned EnvironmentProvisionStatus = "NOT_PROVISIONED"
-	EnvironmentProvisionStatusInProgress     EnvironmentProvisionStatus = "IN_PROGRESS"
-	EnvironmentProvisionStatusFailed         EnvironmentProvisionStatus = "FAILED"
 	EnvironmentProvisionStatusDone           EnvironmentProvisionStatus = "DONE"
+	EnvironmentProvisionStatusFailed         EnvironmentProvisionStatus = "FAILED"
+	EnvironmentProvisionStatusInProgress     EnvironmentProvisionStatus = "IN_PROGRESS"
+	EnvironmentProvisionStatusNotProvisioned EnvironmentProvisionStatus = "NOT_PROVISIONED"
 )
 
 var AllEnvironmentProvisionStatus = []EnvironmentProvisionStatus{
-	EnvironmentProvisionStatusNotProvisioned,
-	EnvironmentProvisionStatusInProgress,
-	EnvironmentProvisionStatusFailed,
 	EnvironmentProvisionStatusDone,
+	EnvironmentProvisionStatusFailed,
+	EnvironmentProvisionStatusInProgress,
+	EnvironmentProvisionStatusNotProvisioned,
 }
 
 func (e EnvironmentProvisionStatus) IsValid() bool {
 	switch e {
-	case EnvironmentProvisionStatusNotProvisioned, EnvironmentProvisionStatusInProgress, EnvironmentProvisionStatusFailed, EnvironmentProvisionStatusDone:
+	case EnvironmentProvisionStatusDone, EnvironmentProvisionStatusFailed, EnvironmentProvisionStatusInProgress, EnvironmentProvisionStatusNotProvisioned:
 		return true
 	}
 	return false
@@ -6753,22 +7107,22 @@ func (e EnvironmentProvisionStatus) MarshalGQL(w io.Writer) {
 type EnvironmentSortFields string
 
 const (
-	EnvironmentSortFieldsID          EnvironmentSortFields = "id"
 	EnvironmentSortFieldsCreatedAt   EnvironmentSortFields = "createdAt"
 	EnvironmentSortFieldsDisplayName EnvironmentSortFields = "displayName"
+	EnvironmentSortFieldsID          EnvironmentSortFields = "id"
 	EnvironmentSortFieldsSlug        EnvironmentSortFields = "slug"
 )
 
 var AllEnvironmentSortFields = []EnvironmentSortFields{
-	EnvironmentSortFieldsID,
 	EnvironmentSortFieldsCreatedAt,
 	EnvironmentSortFieldsDisplayName,
+	EnvironmentSortFieldsID,
 	EnvironmentSortFieldsSlug,
 }
 
 func (e EnvironmentSortFields) IsValid() bool {
 	switch e {
-	case EnvironmentSortFieldsID, EnvironmentSortFieldsCreatedAt, EnvironmentSortFieldsDisplayName, EnvironmentSortFieldsSlug:
+	case EnvironmentSortFieldsCreatedAt, EnvironmentSortFieldsDisplayName, EnvironmentSortFieldsID, EnvironmentSortFieldsSlug:
 		return true
 	}
 	return false
@@ -6799,204 +7153,214 @@ func (e EnvironmentSortFields) MarshalGQL(w io.Writer) {
 type ErrorCode string
 
 const (
-	ErrorCodeRateLimitExceeded                                ErrorCode = "RateLimitExceeded"
-	ErrorCodeBadUserInput                                     ErrorCode = "BadUserInput"
-	ErrorCodeUnauthenticated                                  ErrorCode = "Unauthenticated"
-	ErrorCodeCustomerNotFound                                 ErrorCode = "CustomerNotFound"
-	ErrorCodeTooManySubscriptionsPerCustomer                  ErrorCode = "TooManySubscriptionsPerCustomer"
-	ErrorCodeCustomerResourceNotFound                         ErrorCode = "CustomerResourceNotFound"
-	ErrorCodeFeatureNotFound                                  ErrorCode = "FeatureNotFound"
-	ErrorCodeDuplicatedEntityNotAllowed                       ErrorCode = "DuplicatedEntityNotAllowed"
-	ErrorCodeIntegrityViolation                               ErrorCode = "IntegrityViolation"
-	ErrorCodeMemberNotFound                                   ErrorCode = "MemberNotFound"
-	ErrorCodePlanNotFound                                     ErrorCode = "PlanNotFound"
-	ErrorCodeSubscriptionMustHaveSinglePlanError              ErrorCode = "SubscriptionMustHaveSinglePlanError"
+	ErrorCodeAccountNotFoundError                             ErrorCode = "AccountNotFoundError"
+	ErrorCodeAddonHasToHavePriceError                         ErrorCode = "AddonHasToHavePriceError"
 	ErrorCodeAddonNotFound                                    ErrorCode = "AddonNotFound"
-	ErrorCodeScheduledMigrationAlreadyExistsError             ErrorCode = "ScheduledMigrationAlreadyExistsError"
-	ErrorCodeSubscriptionAlreadyOnLatestPlanError             ErrorCode = "SubscriptionAlreadyOnLatestPlanError"
-	ErrorCodeEnvironmentMissing                               ErrorCode = "EnvironmentMissing"
-	ErrorCodeEntityIDDifferentFromRefIDError                  ErrorCode = "EntityIdDifferentFromRefIdError"
-	ErrorCodeUnsupportedFeatureType                           ErrorCode = "UnsupportedFeatureType"
-	ErrorCodeUnsupportedVendorIdentifier                      ErrorCode = "UnsupportedVendorIdentifier"
-	ErrorCodeUnsupportedSubscriptionScheduleType              ErrorCode = "UnsupportedSubscriptionScheduleType"
-	ErrorCodeInvalidEntitlementResetPeriod                    ErrorCode = "InvalidEntitlementResetPeriod"
-	ErrorCodeUncompatibleSubscriptionAddon                    ErrorCode = "UncompatibleSubscriptionAddon"
-	ErrorCodeUnPublishedPackage                               ErrorCode = "UnPublishedPackage"
-	ErrorCodeMeteringNotAvailableForFeatureType               ErrorCode = "MeteringNotAvailableForFeatureType"
-	ErrorCodeIdentityForbidden                                ErrorCode = "IdentityForbidden"
+	ErrorCodeAddonWithDraftCannotBeDeletedError               ErrorCode = "AddonWithDraftCannotBeDeletedError"
+	ErrorCodeArchivedCouponCantBeApplied                      ErrorCode = "ArchivedCouponCantBeApplied"
 	ErrorCodeAuthCustomerMismatch                             ErrorCode = "AuthCustomerMismatch"
-	ErrorCodeFetchAllCountriesPricesNotAllowed                ErrorCode = "FetchAllCountriesPricesNotAllowed"
-	ErrorCodeMemberInvitationError                            ErrorCode = "MemberInvitationError"
-	ErrorCodeUnexpectedError                                  ErrorCode = "UnexpectedError"
-	ErrorCodePlanAlreadyExtended                              ErrorCode = "PlanAlreadyExtended"
-	ErrorCodePlansCircularDependencyError                     ErrorCode = "PlansCircularDependencyError"
-	ErrorCodeNoFeatureEntitlementInSubscription               ErrorCode = "NoFeatureEntitlementInSubscription"
+	ErrorCodeBadUserInput                                     ErrorCode = "BadUserInput"
+	ErrorCodeBillingPeriodMissingError                        ErrorCode = "BillingPeriodMissingError"
+	ErrorCodeCannotDeleteCustomerError                        ErrorCode = "CannotDeleteCustomerError"
+	ErrorCodeCannotDeleteFeatureError                         ErrorCode = "CannotDeleteFeatureError"
+	ErrorCodeCannotDeleteProductError                         ErrorCode = "CannotDeleteProductError"
+	ErrorCodeCannotEditPackageInNonDraftMode                  ErrorCode = "CannotEditPackageInNonDraftMode"
+	ErrorCodeCannotReportUsageForEntitlementWithMeterError    ErrorCode = "CannotReportUsageForEntitlementWithMeterError"
+	ErrorCodeCannotUpsertToPackageThatHasDraft                ErrorCode = "CannotUpsertToPackageThatHasDraft"
 	ErrorCodeCheckoutIsNotSupported                           ErrorCode = "CheckoutIsNotSupported"
-	ErrorCodePriceNotFound                                    ErrorCode = "PriceNotFound"
-	ErrorCodeInvalidMemberDelete                              ErrorCode = "InvalidMemberDelete"
-	ErrorCodePackageAlreadyPublished                          ErrorCode = "PackageAlreadyPublished"
-	ErrorCodeSubscriptionNotFound                             ErrorCode = "SubscriptionNotFound"
+	ErrorCodeCheckoutOptionsMissing                           ErrorCode = "CheckoutOptionsMissing"
+	ErrorCodeCouponNotFound                                   ErrorCode = "CouponNotFound"
+	ErrorCodeCustomerAlreadyHaveCustomerCoupon                ErrorCode = "CustomerAlreadyHaveCustomerCoupon"
+	ErrorCodeCustomerAlreadyUsesCoupon                        ErrorCode = "CustomerAlreadyUsesCoupon"
+	ErrorCodeCustomerHasNoPaymentMethod                       ErrorCode = "CustomerHasNoPaymentMethod"
+	ErrorCodeCustomerNoBillingID                              ErrorCode = "CustomerNoBillingId"
+	ErrorCodeCustomerNotFound                                 ErrorCode = "CustomerNotFound"
+	ErrorCodeCustomerResourceNotFound                         ErrorCode = "CustomerResourceNotFound"
+	ErrorCodeDowngradeBillingPeriodNotSupportedError          ErrorCode = "DowngradeBillingPeriodNotSupportedError"
 	ErrorCodeDraftPlanCantBeArchived                          ErrorCode = "DraftPlanCantBeArchived"
-	ErrorCodePlanWithChildCantBeDeleted                       ErrorCode = "PlanWithChildCantBeDeleted"
+	ErrorCodeDuplicatedEntityNotAllowed                       ErrorCode = "DuplicatedEntityNotAllowed"
+	ErrorCodeEditAllowedOnDraftPackageOnlyError               ErrorCode = "EditAllowedOnDraftPackageOnlyError"
+	ErrorCodeEntitlementsMustBelongToSamePackage              ErrorCode = "EntitlementsMustBelongToSamePackage"
+	ErrorCodeEntityIDDifferentFromRefIDError                  ErrorCode = "EntityIdDifferentFromRefIdError"
+	ErrorCodeEntityIsArchivedError                            ErrorCode = "EntityIsArchivedError"
+	ErrorCodeEnvironmentMissing                               ErrorCode = "EnvironmentMissing"
+	ErrorCodeExperimentAlreadyRunning                         ErrorCode = "ExperimentAlreadyRunning"
+	ErrorCodeExperimentNotFoundError                          ErrorCode = "ExperimentNotFoundError"
+	ErrorCodeExperimentStatusError                            ErrorCode = "ExperimentStatusError"
+	ErrorCodeFailedToCreateCheckoutSessionError               ErrorCode = "FailedToCreateCheckoutSessionError"
+	ErrorCodeFailedToImportCustomer                           ErrorCode = "FailedToImportCustomer"
+	ErrorCodeFeatureNotFound                                  ErrorCode = "FeatureNotFound"
+	ErrorCodeFetchAllCountriesPricesNotAllowed                ErrorCode = "FetchAllCountriesPricesNotAllowed"
+	ErrorCodeIdentityForbidden                                ErrorCode = "IdentityForbidden"
+	ErrorCodeImportAlreadyInProgress                          ErrorCode = "ImportAlreadyInProgress"
+	ErrorCodeImportSubscriptionsBulkError                     ErrorCode = "ImportSubscriptionsBulkError"
+	ErrorCodeInitStripePaymentMethodError                     ErrorCode = "InitStripePaymentMethodError"
+	ErrorCodeIntegrationNotFound                              ErrorCode = "IntegrationNotFound"
+	ErrorCodeIntegrityViolation                               ErrorCode = "IntegrityViolation"
+	ErrorCodeInvalidAddressError                              ErrorCode = "InvalidAddressError"
+	ErrorCodeInvalidArgumentError                             ErrorCode = "InvalidArgumentError"
+	ErrorCodeInvalidCancellationDate                          ErrorCode = "InvalidCancellationDate"
+	ErrorCodeInvalidEntitlementResetPeriod                    ErrorCode = "InvalidEntitlementResetPeriod"
+	ErrorCodeInvalidMemberDelete                              ErrorCode = "InvalidMemberDelete"
+	ErrorCodeInvalidMetadataError                             ErrorCode = "InvalidMetadataError"
+	ErrorCodeInvalidQuantity                                  ErrorCode = "InvalidQuantity"
+	ErrorCodeInvalidSubscriptionStatus                        ErrorCode = "InvalidSubscriptionStatus"
+	ErrorCodeInvalidUpdatePriceUnitAmountError                ErrorCode = "InvalidUpdatePriceUnitAmountError"
+	ErrorCodeMemberInvitationError                            ErrorCode = "MemberInvitationError"
+	ErrorCodeMemberNotFound                                   ErrorCode = "MemberNotFound"
+	ErrorCodeMeterMustBeAssociatedToMeteredFeature            ErrorCode = "MeterMustBeAssociatedToMeteredFeature"
+	ErrorCodeMeteringNotAvailableForFeatureType               ErrorCode = "MeteringNotAvailableForFeatureType"
+	ErrorCodeMissingEntityIDError                             ErrorCode = "MissingEntityIdError"
+	ErrorCodeNoFeatureEntitlementInSubscription               ErrorCode = "NoFeatureEntitlementInSubscription"
+	ErrorCodeNoProductsAvailable                              ErrorCode = "NoProductsAvailable"
+	ErrorCodeOperationNotAllowedDuringInProgressExperiment    ErrorCode = "OperationNotAllowedDuringInProgressExperiment"
+	ErrorCodePackageAlreadyPublished                          ErrorCode = "PackageAlreadyPublished"
+	ErrorCodePackagePricingTypeNotSet                         ErrorCode = "PackagePricingTypeNotSet"
+	ErrorCodePaymentMethodNotFoundError                       ErrorCode = "PaymentMethodNotFoundError"
+	ErrorCodePlanAlreadyExtended                              ErrorCode = "PlanAlreadyExtended"
 	ErrorCodePlanCannotBePublishWhenBasePlanIsDraft           ErrorCode = "PlanCannotBePublishWhenBasePlanIsDraft"
 	ErrorCodePlanIsUsedAsDefaultStartPlan                     ErrorCode = "PlanIsUsedAsDefaultStartPlan"
 	ErrorCodePlanIsUsedAsDowngradePlan                        ErrorCode = "PlanIsUsedAsDowngradePlan"
-	ErrorCodeInvalidAddressError                              ErrorCode = "InvalidAddressError"
-	ErrorCodeInvalidQuantity                                  ErrorCode = "InvalidQuantity"
-	ErrorCodeBillingPeriodMissingError                        ErrorCode = "BillingPeriodMissingError"
-	ErrorCodeDowngradeBillingPeriodNotSupportedError          ErrorCode = "DowngradeBillingPeriodNotSupportedError"
-	ErrorCodeCustomerHasNoPaymentMethod                       ErrorCode = "CustomerHasNoPaymentMethod"
-	ErrorCodeCustomerAlreadyUsesCoupon                        ErrorCode = "CustomerAlreadyUsesCoupon"
-	ErrorCodeCustomerAlreadyHaveCustomerCoupon                ErrorCode = "CustomerAlreadyHaveCustomerCoupon"
-	ErrorCodeCheckoutOptionsMissing                           ErrorCode = "CheckoutOptionsMissing"
-	ErrorCodeSubscriptionAlreadyCanceledOrExpired             ErrorCode = "SubscriptionAlreadyCanceledOrExpired"
-	ErrorCodeTrialMustBeCancelledImmediately                  ErrorCode = "TrialMustBeCancelledImmediately"
-	ErrorCodeInvalidCancellationDate                          ErrorCode = "InvalidCancellationDate"
-	ErrorCodeFailedToImportCustomer                           ErrorCode = "FailedToImportCustomer"
-	ErrorCodePackagePricingTypeNotSet                         ErrorCode = "PackagePricingTypeNotSet"
-	ErrorCodeTrialMinDateError                                ErrorCode = "TrialMinDateError"
-	ErrorCodeInvalidSubscriptionStatus                        ErrorCode = "InvalidSubscriptionStatus"
-	ErrorCodeInvalidArgumentError                             ErrorCode = "InvalidArgumentError"
-	ErrorCodeEditAllowedOnDraftPackageOnlyError               ErrorCode = "EditAllowedOnDraftPackageOnlyError"
-	ErrorCodeIntegrationNotFound                              ErrorCode = "IntegrationNotFound"
-	ErrorCodeResyncAlreadyInProgress                          ErrorCode = "ResyncAlreadyInProgress"
-	ErrorCodeCouponNotFound                                   ErrorCode = "CouponNotFound"
-	ErrorCodeArchivedCouponCantBeApplied                      ErrorCode = "ArchivedCouponCantBeApplied"
-	ErrorCodeImportAlreadyInProgress                          ErrorCode = "ImportAlreadyInProgress"
-	ErrorCodeCustomerNoBillingID                              ErrorCode = "CustomerNoBillingId"
-	ErrorCodeStripeCustomerIsDeleted                          ErrorCode = "StripeCustomerIsDeleted"
-	ErrorCodeInitStripePaymentMethodError                     ErrorCode = "InitStripePaymentMethodError"
-	ErrorCodeAddonHasToHavePriceError                         ErrorCode = "AddonHasToHavePriceError"
-	ErrorCodeSelectedBillingModelDoesntMatchImportedItemError ErrorCode = "SelectedBillingModelDoesntMatchImportedItemError"
-	ErrorCodeCannotDeleteProductError                         ErrorCode = "CannotDeleteProductError"
-	ErrorCodeCannotDeleteCustomerError                        ErrorCode = "CannotDeleteCustomerError"
-	ErrorCodeCannotDeleteFeatureError                         ErrorCode = "CannotDeleteFeatureError"
-	ErrorCodeInvalidUpdatePriceUnitAmountError                ErrorCode = "InvalidUpdatePriceUnitAmountError"
-	ErrorCodeAccountNotFoundError                             ErrorCode = "AccountNotFoundError"
-	ErrorCodeExperimentNotFoundError                          ErrorCode = "ExperimentNotFoundError"
-	ErrorCodeExperimentAlreadyRunning                         ErrorCode = "ExperimentAlreadyRunning"
-	ErrorCodeExperimentStatusError                            ErrorCode = "ExperimentStatusError"
-	ErrorCodeOperationNotAllowedDuringInProgressExperiment    ErrorCode = "OperationNotAllowedDuringInProgressExperiment"
-	ErrorCodeEntitlementsMustBelongToSamePackage              ErrorCode = "EntitlementsMustBelongToSamePackage"
-	ErrorCodeMeterDoesNotBelongToTheEntitlementFeature        ErrorCode = "MeterDoesNotBelongToTheEntitlementFeature"
-	ErrorCodeMeterMustBeAssociatedToIncrementalFeature        ErrorCode = "MeterMustBeAssociatedToIncrementalFeature"
-	ErrorCodeCannotEditPackageInNonDraftMode                  ErrorCode = "CannotEditPackageInNonDraftMode"
-	ErrorCodeMissingEntityIDError                             ErrorCode = "MissingEntityIdError"
-	ErrorCodeNoProductsAvailable                              ErrorCode = "NoProductsAvailable"
-	ErrorCodePromotionCodeNotFound                            ErrorCode = "PromotionCodeNotFound"
-	ErrorCodePromotionCodeNotForCustomer                      ErrorCode = "PromotionCodeNotForCustomer"
-	ErrorCodePromotionCodeNotActive                           ErrorCode = "PromotionCodeNotActive"
+	ErrorCodePlanNotFound                                     ErrorCode = "PlanNotFound"
+	ErrorCodePlanWithChildCantBeDeleted                       ErrorCode = "PlanWithChildCantBeDeleted"
+	ErrorCodePlansCircularDependencyError                     ErrorCode = "PlansCircularDependencyError"
+	ErrorCodePriceNotFound                                    ErrorCode = "PriceNotFound"
+	ErrorCodePromotionCodeCustomerNotFirstPurchase            ErrorCode = "PromotionCodeCustomerNotFirstPurchase"
 	ErrorCodePromotionCodeMaxRedemptionsReached               ErrorCode = "PromotionCodeMaxRedemptionsReached"
 	ErrorCodePromotionCodeMinimumAmountNotReached             ErrorCode = "PromotionCodeMinimumAmountNotReached"
-	ErrorCodePromotionCodeCustomerNotFirstPurchase            ErrorCode = "PromotionCodeCustomerNotFirstPurchase"
-	ErrorCodeFailedToCreateCheckoutSessionError               ErrorCode = "FailedToCreateCheckoutSessionError"
-	ErrorCodeAddonWithDraftCannotBeDeletedError               ErrorCode = "AddonWithDraftCannotBeDeletedError"
-	ErrorCodePaymentMethodNotFoundError                       ErrorCode = "PaymentMethodNotFoundError"
+	ErrorCodePromotionCodeNotActive                           ErrorCode = "PromotionCodeNotActive"
+	ErrorCodePromotionCodeNotForCustomer                      ErrorCode = "PromotionCodeNotForCustomer"
+	ErrorCodePromotionCodeNotFound                            ErrorCode = "PromotionCodeNotFound"
+	ErrorCodePromotionalEntitlementNotFoundError              ErrorCode = "PromotionalEntitlementNotFoundError"
+	ErrorCodeRateLimitExceeded                                ErrorCode = "RateLimitExceeded"
+	ErrorCodeRecalculateEntitlementsError                     ErrorCode = "RecalculateEntitlementsError"
+	ErrorCodeResyncAlreadyInProgress                          ErrorCode = "ResyncAlreadyInProgress"
+	ErrorCodeScheduledMigrationAlreadyExistsError             ErrorCode = "ScheduledMigrationAlreadyExistsError"
+	ErrorCodeSelectedBillingModelDoesntMatchImportedItemError ErrorCode = "SelectedBillingModelDoesntMatchImportedItemError"
+	ErrorCodeStripeCustomerIsDeleted                          ErrorCode = "StripeCustomerIsDeleted"
 	ErrorCodeStripeError                                      ErrorCode = "StripeError"
-	ErrorCodeCannotReportUsageForEntitlementWithMeterError    ErrorCode = "CannotReportUsageForEntitlementWithMeterError"
+	ErrorCodeSubscriptionAlreadyCanceledOrExpired             ErrorCode = "SubscriptionAlreadyCanceledOrExpired"
+	ErrorCodeSubscriptionAlreadyOnLatestPlanError             ErrorCode = "SubscriptionAlreadyOnLatestPlanError"
+	ErrorCodeSubscriptionMustHaveSinglePlanError              ErrorCode = "SubscriptionMustHaveSinglePlanError"
+	ErrorCodeSubscriptionNotFound                             ErrorCode = "SubscriptionNotFound"
+	ErrorCodeTooManySubscriptionsPerCustomer                  ErrorCode = "TooManySubscriptionsPerCustomer"
+	ErrorCodeTrialMinDateError                                ErrorCode = "TrialMinDateError"
+	ErrorCodeTrialMustBeCancelledImmediately                  ErrorCode = "TrialMustBeCancelledImmediately"
+	ErrorCodeUnPublishedPackage                               ErrorCode = "UnPublishedPackage"
+	ErrorCodeUnauthenticated                                  ErrorCode = "Unauthenticated"
+	ErrorCodeUncompatibleSubscriptionAddon                    ErrorCode = "UncompatibleSubscriptionAddon"
+	ErrorCodeUnexpectedError                                  ErrorCode = "UnexpectedError"
+	ErrorCodeUnsupportedFeatureType                           ErrorCode = "UnsupportedFeatureType"
+	ErrorCodeUnsupportedSubscriptionScheduleType              ErrorCode = "UnsupportedSubscriptionScheduleType"
+	ErrorCodeUnsupportedVendorIdentifier                      ErrorCode = "UnsupportedVendorIdentifier"
 )
 
 var AllErrorCode = []ErrorCode{
-	ErrorCodeRateLimitExceeded,
-	ErrorCodeBadUserInput,
-	ErrorCodeUnauthenticated,
-	ErrorCodeCustomerNotFound,
-	ErrorCodeTooManySubscriptionsPerCustomer,
-	ErrorCodeCustomerResourceNotFound,
-	ErrorCodeFeatureNotFound,
-	ErrorCodeDuplicatedEntityNotAllowed,
-	ErrorCodeIntegrityViolation,
-	ErrorCodeMemberNotFound,
-	ErrorCodePlanNotFound,
-	ErrorCodeSubscriptionMustHaveSinglePlanError,
+	ErrorCodeAccountNotFoundError,
+	ErrorCodeAddonHasToHavePriceError,
 	ErrorCodeAddonNotFound,
-	ErrorCodeScheduledMigrationAlreadyExistsError,
-	ErrorCodeSubscriptionAlreadyOnLatestPlanError,
-	ErrorCodeEnvironmentMissing,
-	ErrorCodeEntityIDDifferentFromRefIDError,
-	ErrorCodeUnsupportedFeatureType,
-	ErrorCodeUnsupportedVendorIdentifier,
-	ErrorCodeUnsupportedSubscriptionScheduleType,
-	ErrorCodeInvalidEntitlementResetPeriod,
-	ErrorCodeUncompatibleSubscriptionAddon,
-	ErrorCodeUnPublishedPackage,
-	ErrorCodeMeteringNotAvailableForFeatureType,
-	ErrorCodeIdentityForbidden,
+	ErrorCodeAddonWithDraftCannotBeDeletedError,
+	ErrorCodeArchivedCouponCantBeApplied,
 	ErrorCodeAuthCustomerMismatch,
-	ErrorCodeFetchAllCountriesPricesNotAllowed,
-	ErrorCodeMemberInvitationError,
-	ErrorCodeUnexpectedError,
-	ErrorCodePlanAlreadyExtended,
-	ErrorCodePlansCircularDependencyError,
-	ErrorCodeNoFeatureEntitlementInSubscription,
+	ErrorCodeBadUserInput,
+	ErrorCodeBillingPeriodMissingError,
+	ErrorCodeCannotDeleteCustomerError,
+	ErrorCodeCannotDeleteFeatureError,
+	ErrorCodeCannotDeleteProductError,
+	ErrorCodeCannotEditPackageInNonDraftMode,
+	ErrorCodeCannotReportUsageForEntitlementWithMeterError,
+	ErrorCodeCannotUpsertToPackageThatHasDraft,
 	ErrorCodeCheckoutIsNotSupported,
-	ErrorCodePriceNotFound,
-	ErrorCodeInvalidMemberDelete,
-	ErrorCodePackageAlreadyPublished,
-	ErrorCodeSubscriptionNotFound,
+	ErrorCodeCheckoutOptionsMissing,
+	ErrorCodeCouponNotFound,
+	ErrorCodeCustomerAlreadyHaveCustomerCoupon,
+	ErrorCodeCustomerAlreadyUsesCoupon,
+	ErrorCodeCustomerHasNoPaymentMethod,
+	ErrorCodeCustomerNoBillingID,
+	ErrorCodeCustomerNotFound,
+	ErrorCodeCustomerResourceNotFound,
+	ErrorCodeDowngradeBillingPeriodNotSupportedError,
 	ErrorCodeDraftPlanCantBeArchived,
-	ErrorCodePlanWithChildCantBeDeleted,
+	ErrorCodeDuplicatedEntityNotAllowed,
+	ErrorCodeEditAllowedOnDraftPackageOnlyError,
+	ErrorCodeEntitlementsMustBelongToSamePackage,
+	ErrorCodeEntityIDDifferentFromRefIDError,
+	ErrorCodeEntityIsArchivedError,
+	ErrorCodeEnvironmentMissing,
+	ErrorCodeExperimentAlreadyRunning,
+	ErrorCodeExperimentNotFoundError,
+	ErrorCodeExperimentStatusError,
+	ErrorCodeFailedToCreateCheckoutSessionError,
+	ErrorCodeFailedToImportCustomer,
+	ErrorCodeFeatureNotFound,
+	ErrorCodeFetchAllCountriesPricesNotAllowed,
+	ErrorCodeIdentityForbidden,
+	ErrorCodeImportAlreadyInProgress,
+	ErrorCodeImportSubscriptionsBulkError,
+	ErrorCodeInitStripePaymentMethodError,
+	ErrorCodeIntegrationNotFound,
+	ErrorCodeIntegrityViolation,
+	ErrorCodeInvalidAddressError,
+	ErrorCodeInvalidArgumentError,
+	ErrorCodeInvalidCancellationDate,
+	ErrorCodeInvalidEntitlementResetPeriod,
+	ErrorCodeInvalidMemberDelete,
+	ErrorCodeInvalidMetadataError,
+	ErrorCodeInvalidQuantity,
+	ErrorCodeInvalidSubscriptionStatus,
+	ErrorCodeInvalidUpdatePriceUnitAmountError,
+	ErrorCodeMemberInvitationError,
+	ErrorCodeMemberNotFound,
+	ErrorCodeMeterMustBeAssociatedToMeteredFeature,
+	ErrorCodeMeteringNotAvailableForFeatureType,
+	ErrorCodeMissingEntityIDError,
+	ErrorCodeNoFeatureEntitlementInSubscription,
+	ErrorCodeNoProductsAvailable,
+	ErrorCodeOperationNotAllowedDuringInProgressExperiment,
+	ErrorCodePackageAlreadyPublished,
+	ErrorCodePackagePricingTypeNotSet,
+	ErrorCodePaymentMethodNotFoundError,
+	ErrorCodePlanAlreadyExtended,
 	ErrorCodePlanCannotBePublishWhenBasePlanIsDraft,
 	ErrorCodePlanIsUsedAsDefaultStartPlan,
 	ErrorCodePlanIsUsedAsDowngradePlan,
-	ErrorCodeInvalidAddressError,
-	ErrorCodeInvalidQuantity,
-	ErrorCodeBillingPeriodMissingError,
-	ErrorCodeDowngradeBillingPeriodNotSupportedError,
-	ErrorCodeCustomerHasNoPaymentMethod,
-	ErrorCodeCustomerAlreadyUsesCoupon,
-	ErrorCodeCustomerAlreadyHaveCustomerCoupon,
-	ErrorCodeCheckoutOptionsMissing,
-	ErrorCodeSubscriptionAlreadyCanceledOrExpired,
-	ErrorCodeTrialMustBeCancelledImmediately,
-	ErrorCodeInvalidCancellationDate,
-	ErrorCodeFailedToImportCustomer,
-	ErrorCodePackagePricingTypeNotSet,
-	ErrorCodeTrialMinDateError,
-	ErrorCodeInvalidSubscriptionStatus,
-	ErrorCodeInvalidArgumentError,
-	ErrorCodeEditAllowedOnDraftPackageOnlyError,
-	ErrorCodeIntegrationNotFound,
-	ErrorCodeResyncAlreadyInProgress,
-	ErrorCodeCouponNotFound,
-	ErrorCodeArchivedCouponCantBeApplied,
-	ErrorCodeImportAlreadyInProgress,
-	ErrorCodeCustomerNoBillingID,
-	ErrorCodeStripeCustomerIsDeleted,
-	ErrorCodeInitStripePaymentMethodError,
-	ErrorCodeAddonHasToHavePriceError,
-	ErrorCodeSelectedBillingModelDoesntMatchImportedItemError,
-	ErrorCodeCannotDeleteProductError,
-	ErrorCodeCannotDeleteCustomerError,
-	ErrorCodeCannotDeleteFeatureError,
-	ErrorCodeInvalidUpdatePriceUnitAmountError,
-	ErrorCodeAccountNotFoundError,
-	ErrorCodeExperimentNotFoundError,
-	ErrorCodeExperimentAlreadyRunning,
-	ErrorCodeExperimentStatusError,
-	ErrorCodeOperationNotAllowedDuringInProgressExperiment,
-	ErrorCodeEntitlementsMustBelongToSamePackage,
-	ErrorCodeMeterDoesNotBelongToTheEntitlementFeature,
-	ErrorCodeMeterMustBeAssociatedToIncrementalFeature,
-	ErrorCodeCannotEditPackageInNonDraftMode,
-	ErrorCodeMissingEntityIDError,
-	ErrorCodeNoProductsAvailable,
-	ErrorCodePromotionCodeNotFound,
-	ErrorCodePromotionCodeNotForCustomer,
-	ErrorCodePromotionCodeNotActive,
+	ErrorCodePlanNotFound,
+	ErrorCodePlanWithChildCantBeDeleted,
+	ErrorCodePlansCircularDependencyError,
+	ErrorCodePriceNotFound,
+	ErrorCodePromotionCodeCustomerNotFirstPurchase,
 	ErrorCodePromotionCodeMaxRedemptionsReached,
 	ErrorCodePromotionCodeMinimumAmountNotReached,
-	ErrorCodePromotionCodeCustomerNotFirstPurchase,
-	ErrorCodeFailedToCreateCheckoutSessionError,
-	ErrorCodeAddonWithDraftCannotBeDeletedError,
-	ErrorCodePaymentMethodNotFoundError,
+	ErrorCodePromotionCodeNotActive,
+	ErrorCodePromotionCodeNotForCustomer,
+	ErrorCodePromotionCodeNotFound,
+	ErrorCodePromotionalEntitlementNotFoundError,
+	ErrorCodeRateLimitExceeded,
+	ErrorCodeRecalculateEntitlementsError,
+	ErrorCodeResyncAlreadyInProgress,
+	ErrorCodeScheduledMigrationAlreadyExistsError,
+	ErrorCodeSelectedBillingModelDoesntMatchImportedItemError,
+	ErrorCodeStripeCustomerIsDeleted,
 	ErrorCodeStripeError,
-	ErrorCodeCannotReportUsageForEntitlementWithMeterError,
+	ErrorCodeSubscriptionAlreadyCanceledOrExpired,
+	ErrorCodeSubscriptionAlreadyOnLatestPlanError,
+	ErrorCodeSubscriptionMustHaveSinglePlanError,
+	ErrorCodeSubscriptionNotFound,
+	ErrorCodeTooManySubscriptionsPerCustomer,
+	ErrorCodeTrialMinDateError,
+	ErrorCodeTrialMustBeCancelledImmediately,
+	ErrorCodeUnPublishedPackage,
+	ErrorCodeUnauthenticated,
+	ErrorCodeUncompatibleSubscriptionAddon,
+	ErrorCodeUnexpectedError,
+	ErrorCodeUnsupportedFeatureType,
+	ErrorCodeUnsupportedSubscriptionScheduleType,
+	ErrorCodeUnsupportedVendorIdentifier,
 }
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeRateLimitExceeded, ErrorCodeBadUserInput, ErrorCodeUnauthenticated, ErrorCodeCustomerNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeCustomerResourceNotFound, ErrorCodeFeatureNotFound, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeIntegrityViolation, ErrorCodeMemberNotFound, ErrorCodePlanNotFound, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeAddonNotFound, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeEnvironmentMissing, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnPublishedPackage, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeIdentityForbidden, ErrorCodeAuthCustomerMismatch, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeMemberInvitationError, ErrorCodeUnexpectedError, ErrorCodePlanAlreadyExtended, ErrorCodePlansCircularDependencyError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeCheckoutIsNotSupported, ErrorCodePriceNotFound, ErrorCodeInvalidMemberDelete, ErrorCodePackageAlreadyPublished, ErrorCodeSubscriptionNotFound, ErrorCodeDraftPlanCantBeArchived, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodeInvalidAddressError, ErrorCodeInvalidQuantity, ErrorCodeBillingPeriodMissingError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCheckoutOptionsMissing, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeInvalidCancellationDate, ErrorCodeFailedToImportCustomer, ErrorCodePackagePricingTypeNotSet, ErrorCodeTrialMinDateError, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidArgumentError, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeIntegrationNotFound, ErrorCodeResyncAlreadyInProgress, ErrorCodeCouponNotFound, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeImportAlreadyInProgress, ErrorCodeCustomerNoBillingID, ErrorCodeStripeCustomerIsDeleted, ErrorCodeInitStripePaymentMethodError, ErrorCodeAddonHasToHavePriceError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeAccountNotFoundError, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentStatusError, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeMeterDoesNotBelongToTheEntitlementFeature, ErrorCodeMeterMustBeAssociatedToIncrementalFeature, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeMissingEntityIDError, ErrorCodeNoProductsAvailable, ErrorCodePromotionCodeNotFound, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodePaymentMethodNotFoundError, ErrorCodeStripeError, ErrorCodeCannotReportUsageForEntitlementWithMeterError:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeBadUserInput, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanAlreadyExtended, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
 		return true
 	}
 	return false
@@ -7027,110 +7391,114 @@ func (e ErrorCode) MarshalGQL(w io.Writer) {
 type EventLogType string
 
 const (
-	EventLogTypeCustomerCreated                                 EventLogType = "CUSTOMER_CREATED"
-	EventLogTypeCustomerUpdated                                 EventLogType = "CUSTOMER_UPDATED"
-	EventLogTypeCustomerDeleted                                 EventLogType = "CUSTOMER_DELETED"
-	EventLogTypeSubscriptionCreated                             EventLogType = "SUBSCRIPTION_CREATED"
-	EventLogTypeSubscriptionTrialStarted                        EventLogType = "SUBSCRIPTION_TRIAL_STARTED"
-	EventLogTypeSubscriptionTrialExpired                        EventLogType = "SUBSCRIPTION_TRIAL_EXPIRED"
-	EventLogTypeSubscriptionTrialConverted                      EventLogType = "SUBSCRIPTION_TRIAL_CONVERTED"
-	EventLogTypeSubscriptionTrialEndsSoon                       EventLogType = "SUBSCRIPTION_TRIAL_ENDS_SOON"
-	EventLogTypeSubscriptionUpdated                             EventLogType = "SUBSCRIPTION_UPDATED"
-	EventLogTypeSubscriptionCanceled                            EventLogType = "SUBSCRIPTION_CANCELED"
-	EventLogTypeSubscriptionExpired                             EventLogType = "SUBSCRIPTION_EXPIRED"
-	EventLogTypeSubscriptionUsageUpdated                        EventLogType = "SUBSCRIPTION_USAGE_UPDATED"
-	EventLogTypeCreateSubscriptionFailed                        EventLogType = "CREATE_SUBSCRIPTION_FAILED"
-	EventLogTypePlanCreated                                     EventLogType = "PLAN_CREATED"
-	EventLogTypePlanUpdated                                     EventLogType = "PLAN_UPDATED"
-	EventLogTypePlanDeleted                                     EventLogType = "PLAN_DELETED"
 	EventLogTypeAddonCreated                                    EventLogType = "ADDON_CREATED"
-	EventLogTypeAddonUpdated                                    EventLogType = "ADDON_UPDATED"
 	EventLogTypeAddonDeleted                                    EventLogType = "ADDON_DELETED"
-	EventLogTypeFeatureCreated                                  EventLogType = "FEATURE_CREATED"
-	EventLogTypeFeatureUpdated                                  EventLogType = "FEATURE_UPDATED"
-	EventLogTypeFeatureDeleted                                  EventLogType = "FEATURE_DELETED"
-	EventLogTypeEntitlementRequested                            EventLogType = "ENTITLEMENT_REQUESTED"
-	EventLogTypeEntitlementGranted                              EventLogType = "ENTITLEMENT_GRANTED"
-	EventLogTypeEntitlementDenied                               EventLogType = "ENTITLEMENT_DENIED"
-	EventLogTypeEntitlementsUpdated                             EventLogType = "ENTITLEMENTS_UPDATED"
-	EventLogTypeMeasurementReported                             EventLogType = "MEASUREMENT_REPORTED"
-	EventLogTypePromotionalEntitlementGranted                   EventLogType = "PROMOTIONAL_ENTITLEMENT_GRANTED"
-	EventLogTypePromotionalEntitlementUpdated                   EventLogType = "PROMOTIONAL_ENTITLEMENT_UPDATED"
-	EventLogTypePromotionalEntitlementExpired                   EventLogType = "PROMOTIONAL_ENTITLEMENT_EXPIRED"
-	EventLogTypePromotionalEntitlementRevoked                   EventLogType = "PROMOTIONAL_ENTITLEMENT_REVOKED"
-	EventLogTypePackagePublished                                EventLogType = "PACKAGE_PUBLISHED"
-	EventLogTypeResyncIntegrationTriggered                      EventLogType = "RESYNC_INTEGRATION_TRIGGERED"
+	EventLogTypeAddonUpdated                                    EventLogType = "ADDON_UPDATED"
+	EventLogTypeCouponArchived                                  EventLogType = "COUPON_ARCHIVED"
 	EventLogTypeCouponCreated                                   EventLogType = "COUPON_CREATED"
 	EventLogTypeCouponUpdated                                   EventLogType = "COUPON_UPDATED"
-	EventLogTypeCouponArchived                                  EventLogType = "COUPON_ARCHIVED"
+	EventLogTypeCreateSubscriptionFailed                        EventLogType = "CREATE_SUBSCRIPTION_FAILED"
+	EventLogTypeCustomerCreated                                 EventLogType = "CUSTOMER_CREATED"
+	EventLogTypeCustomerDeleted                                 EventLogType = "CUSTOMER_DELETED"
+	EventLogTypeCustomerEntitlementCalculationTriggered         EventLogType = "CUSTOMER_ENTITLEMENT_CALCULATION_TRIGGERED"
+	EventLogTypeCustomerPaymentFailed                           EventLogType = "CUSTOMER_PAYMENT_FAILED"
+	EventLogTypeCustomerResourceEntitlementCalculationTriggered EventLogType = "CUSTOMER_RESOURCE_ENTITLEMENT_CALCULATION_TRIGGERED"
+	EventLogTypeCustomerUpdated                                 EventLogType = "CUSTOMER_UPDATED"
+	EventLogTypeEdgeAPIDataResync                               EventLogType = "EDGE_API_DATA_RESYNC"
+	EventLogTypeEntitlementsUpdated                             EventLogType = "ENTITLEMENTS_UPDATED"
+	EventLogTypeEntitlementDenied                               EventLogType = "ENTITLEMENT_DENIED"
+	EventLogTypeEntitlementGranted                              EventLogType = "ENTITLEMENT_GRANTED"
+	EventLogTypeEntitlementRequested                            EventLogType = "ENTITLEMENT_REQUESTED"
+	EventLogTypeEnvironmentDeleted                              EventLogType = "ENVIRONMENT_DELETED"
+	EventLogTypeFeatureCreated                                  EventLogType = "FEATURE_CREATED"
+	EventLogTypeFeatureDeleted                                  EventLogType = "FEATURE_DELETED"
+	EventLogTypeFeatureUpdated                                  EventLogType = "FEATURE_UPDATED"
 	EventLogTypeImportIntegrationCatalogTriggered               EventLogType = "IMPORT_INTEGRATION_CATALOG_TRIGGERED"
 	EventLogTypeImportIntegrationCustomersTriggered             EventLogType = "IMPORT_INTEGRATION_CUSTOMERS_TRIGGERED"
-	EventLogTypeSyncFailed                                      EventLogType = "SYNC_FAILED"
-	EventLogTypeCustomerPaymentFailed                           EventLogType = "CUSTOMER_PAYMENT_FAILED"
+	EventLogTypeImportSubscriptionsBulkTriggered                EventLogType = "IMPORT_SUBSCRIPTIONS_BULK_TRIGGERED"
+	EventLogTypeMeasurementReported                             EventLogType = "MEASUREMENT_REPORTED"
+	EventLogTypePackagePublished                                EventLogType = "PACKAGE_PUBLISHED"
+	EventLogTypePlanCreated                                     EventLogType = "PLAN_CREATED"
+	EventLogTypePlanDeleted                                     EventLogType = "PLAN_DELETED"
+	EventLogTypePlanUpdated                                     EventLogType = "PLAN_UPDATED"
 	EventLogTypeProductCreated                                  EventLogType = "PRODUCT_CREATED"
-	EventLogTypeProductUpdated                                  EventLogType = "PRODUCT_UPDATED"
 	EventLogTypeProductDeleted                                  EventLogType = "PRODUCT_DELETED"
-	EventLogTypeEnvironmentDeleted                              EventLogType = "ENVIRONMENT_DELETED"
+	EventLogTypeProductUpdated                                  EventLogType = "PRODUCT_UPDATED"
+	EventLogTypePromotionalEntitlementExpired                   EventLogType = "PROMOTIONAL_ENTITLEMENT_EXPIRED"
+	EventLogTypePromotionalEntitlementGranted                   EventLogType = "PROMOTIONAL_ENTITLEMENT_GRANTED"
+	EventLogTypePromotionalEntitlementRevoked                   EventLogType = "PROMOTIONAL_ENTITLEMENT_REVOKED"
+	EventLogTypePromotionalEntitlementUpdated                   EventLogType = "PROMOTIONAL_ENTITLEMENT_UPDATED"
+	EventLogTypeRecalculateEntitlementsTriggered                EventLogType = "RECALCULATE_ENTITLEMENTS_TRIGGERED"
+	EventLogTypeResyncIntegrationTriggered                      EventLogType = "RESYNC_INTEGRATION_TRIGGERED"
+	EventLogTypeSubscriptionCanceled                            EventLogType = "SUBSCRIPTION_CANCELED"
+	EventLogTypeSubscriptionCreated                             EventLogType = "SUBSCRIPTION_CREATED"
+	EventLogTypeSubscriptionExpired                             EventLogType = "SUBSCRIPTION_EXPIRED"
+	EventLogTypeSubscriptionTrialConverted                      EventLogType = "SUBSCRIPTION_TRIAL_CONVERTED"
+	EventLogTypeSubscriptionTrialEndsSoon                       EventLogType = "SUBSCRIPTION_TRIAL_ENDS_SOON"
+	EventLogTypeSubscriptionTrialExpired                        EventLogType = "SUBSCRIPTION_TRIAL_EXPIRED"
+	EventLogTypeSubscriptionTrialStarted                        EventLogType = "SUBSCRIPTION_TRIAL_STARTED"
+	EventLogTypeSubscriptionUpdated                             EventLogType = "SUBSCRIPTION_UPDATED"
+	EventLogTypeSubscriptionUsageUpdated                        EventLogType = "SUBSCRIPTION_USAGE_UPDATED"
+	EventLogTypeSyncFailed                                      EventLogType = "SYNC_FAILED"
 	EventLogTypeWidgetConfigurationUpdated                      EventLogType = "WIDGET_CONFIGURATION_UPDATED"
-	EventLogTypeEdgeAPIDataResync                               EventLogType = "EDGE_API_DATA_RESYNC"
-	EventLogTypeCustomerResourceEntitlementCalculationTriggered EventLogType = "CUSTOMER_RESOURCE_ENTITLEMENT_CALCULATION_TRIGGERED"
-	EventLogTypeCustomerEntitlementCalculationTriggered         EventLogType = "CUSTOMER_ENTITLEMENT_CALCULATION_TRIGGERED"
 )
 
 var AllEventLogType = []EventLogType{
-	EventLogTypeCustomerCreated,
-	EventLogTypeCustomerUpdated,
-	EventLogTypeCustomerDeleted,
-	EventLogTypeSubscriptionCreated,
-	EventLogTypeSubscriptionTrialStarted,
-	EventLogTypeSubscriptionTrialExpired,
-	EventLogTypeSubscriptionTrialConverted,
-	EventLogTypeSubscriptionTrialEndsSoon,
-	EventLogTypeSubscriptionUpdated,
-	EventLogTypeSubscriptionCanceled,
-	EventLogTypeSubscriptionExpired,
-	EventLogTypeSubscriptionUsageUpdated,
-	EventLogTypeCreateSubscriptionFailed,
-	EventLogTypePlanCreated,
-	EventLogTypePlanUpdated,
-	EventLogTypePlanDeleted,
 	EventLogTypeAddonCreated,
-	EventLogTypeAddonUpdated,
 	EventLogTypeAddonDeleted,
-	EventLogTypeFeatureCreated,
-	EventLogTypeFeatureUpdated,
-	EventLogTypeFeatureDeleted,
-	EventLogTypeEntitlementRequested,
-	EventLogTypeEntitlementGranted,
-	EventLogTypeEntitlementDenied,
-	EventLogTypeEntitlementsUpdated,
-	EventLogTypeMeasurementReported,
-	EventLogTypePromotionalEntitlementGranted,
-	EventLogTypePromotionalEntitlementUpdated,
-	EventLogTypePromotionalEntitlementExpired,
-	EventLogTypePromotionalEntitlementRevoked,
-	EventLogTypePackagePublished,
-	EventLogTypeResyncIntegrationTriggered,
+	EventLogTypeAddonUpdated,
+	EventLogTypeCouponArchived,
 	EventLogTypeCouponCreated,
 	EventLogTypeCouponUpdated,
-	EventLogTypeCouponArchived,
+	EventLogTypeCreateSubscriptionFailed,
+	EventLogTypeCustomerCreated,
+	EventLogTypeCustomerDeleted,
+	EventLogTypeCustomerEntitlementCalculationTriggered,
+	EventLogTypeCustomerPaymentFailed,
+	EventLogTypeCustomerResourceEntitlementCalculationTriggered,
+	EventLogTypeCustomerUpdated,
+	EventLogTypeEdgeAPIDataResync,
+	EventLogTypeEntitlementsUpdated,
+	EventLogTypeEntitlementDenied,
+	EventLogTypeEntitlementGranted,
+	EventLogTypeEntitlementRequested,
+	EventLogTypeEnvironmentDeleted,
+	EventLogTypeFeatureCreated,
+	EventLogTypeFeatureDeleted,
+	EventLogTypeFeatureUpdated,
 	EventLogTypeImportIntegrationCatalogTriggered,
 	EventLogTypeImportIntegrationCustomersTriggered,
-	EventLogTypeSyncFailed,
-	EventLogTypeCustomerPaymentFailed,
+	EventLogTypeImportSubscriptionsBulkTriggered,
+	EventLogTypeMeasurementReported,
+	EventLogTypePackagePublished,
+	EventLogTypePlanCreated,
+	EventLogTypePlanDeleted,
+	EventLogTypePlanUpdated,
 	EventLogTypeProductCreated,
-	EventLogTypeProductUpdated,
 	EventLogTypeProductDeleted,
-	EventLogTypeEnvironmentDeleted,
+	EventLogTypeProductUpdated,
+	EventLogTypePromotionalEntitlementExpired,
+	EventLogTypePromotionalEntitlementGranted,
+	EventLogTypePromotionalEntitlementRevoked,
+	EventLogTypePromotionalEntitlementUpdated,
+	EventLogTypeRecalculateEntitlementsTriggered,
+	EventLogTypeResyncIntegrationTriggered,
+	EventLogTypeSubscriptionCanceled,
+	EventLogTypeSubscriptionCreated,
+	EventLogTypeSubscriptionExpired,
+	EventLogTypeSubscriptionTrialConverted,
+	EventLogTypeSubscriptionTrialEndsSoon,
+	EventLogTypeSubscriptionTrialExpired,
+	EventLogTypeSubscriptionTrialStarted,
+	EventLogTypeSubscriptionUpdated,
+	EventLogTypeSubscriptionUsageUpdated,
+	EventLogTypeSyncFailed,
 	EventLogTypeWidgetConfigurationUpdated,
-	EventLogTypeEdgeAPIDataResync,
-	EventLogTypeCustomerResourceEntitlementCalculationTriggered,
-	EventLogTypeCustomerEntitlementCalculationTriggered,
 }
 
 func (e EventLogType) IsValid() bool {
 	switch e {
-	case EventLogTypeCustomerCreated, EventLogTypeCustomerUpdated, EventLogTypeCustomerDeleted, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionUsageUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypePlanCreated, EventLogTypePlanUpdated, EventLogTypePlanDeleted, EventLogTypeAddonCreated, EventLogTypeAddonUpdated, EventLogTypeAddonDeleted, EventLogTypeFeatureCreated, EventLogTypeFeatureUpdated, EventLogTypeFeatureDeleted, EventLogTypeEntitlementRequested, EventLogTypeEntitlementGranted, EventLogTypeEntitlementDenied, EventLogTypeEntitlementsUpdated, EventLogTypeMeasurementReported, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementRevoked, EventLogTypePackagePublished, EventLogTypeResyncIntegrationTriggered, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCouponArchived, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeSyncFailed, EventLogTypeCustomerPaymentFailed, EventLogTypeProductCreated, EventLogTypeProductUpdated, EventLogTypeProductDeleted, EventLogTypeEnvironmentDeleted, EventLogTypeWidgetConfigurationUpdated, EventLogTypeEdgeAPIDataResync, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerEntitlementCalculationTriggered:
+	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPIDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
 		return true
 	}
 	return false
@@ -7160,28 +7528,28 @@ func (e EventLogType) MarshalGQL(w io.Writer) {
 type ExperimentSortFields string
 
 const (
-	ExperimentSortFieldsID            ExperimentSortFields = "id"
-	ExperimentSortFieldsName          ExperimentSortFields = "name"
-	ExperimentSortFieldsRefID         ExperimentSortFields = "refId"
 	ExperimentSortFieldsCreatedAt     ExperimentSortFields = "createdAt"
 	ExperimentSortFieldsEnvironmentID ExperimentSortFields = "environmentId"
+	ExperimentSortFieldsID            ExperimentSortFields = "id"
+	ExperimentSortFieldsName          ExperimentSortFields = "name"
 	ExperimentSortFieldsProductID     ExperimentSortFields = "productId"
+	ExperimentSortFieldsRefID         ExperimentSortFields = "refId"
 	ExperimentSortFieldsStatus        ExperimentSortFields = "status"
 )
 
 var AllExperimentSortFields = []ExperimentSortFields{
-	ExperimentSortFieldsID,
-	ExperimentSortFieldsName,
-	ExperimentSortFieldsRefID,
 	ExperimentSortFieldsCreatedAt,
 	ExperimentSortFieldsEnvironmentID,
+	ExperimentSortFieldsID,
+	ExperimentSortFieldsName,
 	ExperimentSortFieldsProductID,
+	ExperimentSortFieldsRefID,
 	ExperimentSortFieldsStatus,
 }
 
 func (e ExperimentSortFields) IsValid() bool {
 	switch e {
-	case ExperimentSortFieldsID, ExperimentSortFieldsName, ExperimentSortFieldsRefID, ExperimentSortFieldsCreatedAt, ExperimentSortFieldsEnvironmentID, ExperimentSortFieldsProductID, ExperimentSortFieldsStatus:
+	case ExperimentSortFieldsCreatedAt, ExperimentSortFieldsEnvironmentID, ExperimentSortFieldsID, ExperimentSortFieldsName, ExperimentSortFieldsProductID, ExperimentSortFieldsRefID, ExperimentSortFieldsStatus:
 		return true
 	}
 	return false
@@ -7212,20 +7580,20 @@ func (e ExperimentSortFields) MarshalGQL(w io.Writer) {
 type ExperimentStatus string
 
 const (
+	ExperimentStatusCompleted  ExperimentStatus = "COMPLETED"
 	ExperimentStatusDraft      ExperimentStatus = "DRAFT"
 	ExperimentStatusInProgress ExperimentStatus = "IN_PROGRESS"
-	ExperimentStatusCompleted  ExperimentStatus = "COMPLETED"
 )
 
 var AllExperimentStatus = []ExperimentStatus{
+	ExperimentStatusCompleted,
 	ExperimentStatusDraft,
 	ExperimentStatusInProgress,
-	ExperimentStatusCompleted,
 }
 
 func (e ExperimentStatus) IsValid() bool {
 	switch e {
-	case ExperimentStatusDraft, ExperimentStatusInProgress, ExperimentStatusCompleted:
+	case ExperimentStatusCompleted, ExperimentStatusDraft, ExperimentStatusInProgress:
 		return true
 	}
 	return false
@@ -7255,34 +7623,34 @@ func (e ExperimentStatus) MarshalGQL(w io.Writer) {
 type FeatureSortFields string
 
 const (
-	FeatureSortFieldsID            FeatureSortFields = "id"
-	FeatureSortFieldsDisplayName   FeatureSortFields = "displayName"
-	FeatureSortFieldsRefID         FeatureSortFields = "refId"
 	FeatureSortFieldsCreatedAt     FeatureSortFields = "createdAt"
-	FeatureSortFieldsUpdatedAt     FeatureSortFields = "updatedAt"
 	FeatureSortFieldsDescription   FeatureSortFields = "description"
-	FeatureSortFieldsFeatureType   FeatureSortFields = "featureType"
-	FeatureSortFieldsMeterType     FeatureSortFields = "meterType"
-	FeatureSortFieldsFeatureStatus FeatureSortFields = "featureStatus"
+	FeatureSortFieldsDisplayName   FeatureSortFields = "displayName"
 	FeatureSortFieldsEnvironmentID FeatureSortFields = "environmentId"
+	FeatureSortFieldsFeatureStatus FeatureSortFields = "featureStatus"
+	FeatureSortFieldsFeatureType   FeatureSortFields = "featureType"
+	FeatureSortFieldsID            FeatureSortFields = "id"
+	FeatureSortFieldsMeterType     FeatureSortFields = "meterType"
+	FeatureSortFieldsRefID         FeatureSortFields = "refId"
+	FeatureSortFieldsUpdatedAt     FeatureSortFields = "updatedAt"
 )
 
 var AllFeatureSortFields = []FeatureSortFields{
-	FeatureSortFieldsID,
-	FeatureSortFieldsDisplayName,
-	FeatureSortFieldsRefID,
 	FeatureSortFieldsCreatedAt,
-	FeatureSortFieldsUpdatedAt,
 	FeatureSortFieldsDescription,
-	FeatureSortFieldsFeatureType,
-	FeatureSortFieldsMeterType,
-	FeatureSortFieldsFeatureStatus,
+	FeatureSortFieldsDisplayName,
 	FeatureSortFieldsEnvironmentID,
+	FeatureSortFieldsFeatureStatus,
+	FeatureSortFieldsFeatureType,
+	FeatureSortFieldsID,
+	FeatureSortFieldsMeterType,
+	FeatureSortFieldsRefID,
+	FeatureSortFieldsUpdatedAt,
 }
 
 func (e FeatureSortFields) IsValid() bool {
 	switch e {
-	case FeatureSortFieldsID, FeatureSortFieldsDisplayName, FeatureSortFieldsRefID, FeatureSortFieldsCreatedAt, FeatureSortFieldsUpdatedAt, FeatureSortFieldsDescription, FeatureSortFieldsFeatureType, FeatureSortFieldsMeterType, FeatureSortFieldsFeatureStatus, FeatureSortFieldsEnvironmentID:
+	case FeatureSortFieldsCreatedAt, FeatureSortFieldsDescription, FeatureSortFieldsDisplayName, FeatureSortFieldsEnvironmentID, FeatureSortFieldsFeatureStatus, FeatureSortFieldsFeatureType, FeatureSortFieldsID, FeatureSortFieldsMeterType, FeatureSortFieldsRefID, FeatureSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -7313,20 +7681,20 @@ func (e FeatureSortFields) MarshalGQL(w io.Writer) {
 type FeatureStatus string
 
 const (
+	FeatureStatusActive    FeatureStatus = "ACTIVE"
 	FeatureStatusNew       FeatureStatus = "NEW"
 	FeatureStatusSuspended FeatureStatus = "SUSPENDED"
-	FeatureStatusActive    FeatureStatus = "ACTIVE"
 )
 
 var AllFeatureStatus = []FeatureStatus{
+	FeatureStatusActive,
 	FeatureStatusNew,
 	FeatureStatusSuspended,
-	FeatureStatusActive,
 }
 
 func (e FeatureStatus) IsValid() bool {
 	switch e {
-	case FeatureStatusNew, FeatureStatusSuspended, FeatureStatusActive:
+	case FeatureStatusActive, FeatureStatusNew, FeatureStatusSuspended:
 		return true
 	}
 	return false
@@ -7399,18 +7767,18 @@ func (e FeatureType) MarshalGQL(w io.Writer) {
 type FontWeight string
 
 const (
-	FontWeightNormal FontWeight = "NORMAL"
 	FontWeightBold   FontWeight = "BOLD"
+	FontWeightNormal FontWeight = "NORMAL"
 )
 
 var AllFontWeight = []FontWeight{
-	FontWeightNormal,
 	FontWeightBold,
+	FontWeightNormal,
 }
 
 func (e FontWeight) IsValid() bool {
 	switch e {
-	case FontWeightNormal, FontWeightBold:
+	case FontWeightBold, FontWeightNormal:
 		return true
 	}
 	return false
@@ -7440,24 +7808,24 @@ func (e FontWeight) MarshalGQL(w io.Writer) {
 type HookSortFields string
 
 const (
-	HookSortFieldsID            HookSortFields = "id"
-	HookSortFieldsEndpoint      HookSortFields = "endpoint"
-	HookSortFieldsStatus        HookSortFields = "status"
 	HookSortFieldsCreatedAt     HookSortFields = "createdAt"
+	HookSortFieldsEndpoint      HookSortFields = "endpoint"
 	HookSortFieldsEnvironmentID HookSortFields = "environmentId"
+	HookSortFieldsID            HookSortFields = "id"
+	HookSortFieldsStatus        HookSortFields = "status"
 )
 
 var AllHookSortFields = []HookSortFields{
-	HookSortFieldsID,
-	HookSortFieldsEndpoint,
-	HookSortFieldsStatus,
 	HookSortFieldsCreatedAt,
+	HookSortFieldsEndpoint,
 	HookSortFieldsEnvironmentID,
+	HookSortFieldsID,
+	HookSortFieldsStatus,
 }
 
 func (e HookSortFields) IsValid() bool {
 	switch e {
-	case HookSortFieldsID, HookSortFieldsEndpoint, HookSortFieldsStatus, HookSortFieldsCreatedAt, HookSortFieldsEnvironmentID:
+	case HookSortFieldsCreatedAt, HookSortFieldsEndpoint, HookSortFieldsEnvironmentID, HookSortFieldsID, HookSortFieldsStatus:
 		return true
 	}
 	return false
@@ -7488,18 +7856,18 @@ func (e HookSortFields) MarshalGQL(w io.Writer) {
 type HookStatus string
 
 const (
-	HookStatusInactive HookStatus = "INACTIVE"
 	HookStatusActive   HookStatus = "ACTIVE"
+	HookStatusInactive HookStatus = "INACTIVE"
 )
 
 var AllHookStatus = []HookStatus{
-	HookStatusInactive,
 	HookStatusActive,
+	HookStatusInactive,
 }
 
 func (e HookStatus) IsValid() bool {
 	switch e {
-	case HookStatusInactive, HookStatusActive:
+	case HookStatusActive, HookStatusInactive:
 		return true
 	}
 	return false
@@ -7529,24 +7897,24 @@ func (e HookStatus) MarshalGQL(w io.Writer) {
 type ImportIntegrationTaskSortFields string
 
 const (
-	ImportIntegrationTaskSortFieldsID            ImportIntegrationTaskSortFields = "id"
-	ImportIntegrationTaskSortFieldsEnvironmentID ImportIntegrationTaskSortFields = "environmentId"
 	ImportIntegrationTaskSortFieldsCreatedAt     ImportIntegrationTaskSortFields = "createdAt"
-	ImportIntegrationTaskSortFieldsTaskType      ImportIntegrationTaskSortFields = "taskType"
+	ImportIntegrationTaskSortFieldsEnvironmentID ImportIntegrationTaskSortFields = "environmentId"
+	ImportIntegrationTaskSortFieldsID            ImportIntegrationTaskSortFields = "id"
 	ImportIntegrationTaskSortFieldsStatus        ImportIntegrationTaskSortFields = "status"
+	ImportIntegrationTaskSortFieldsTaskType      ImportIntegrationTaskSortFields = "taskType"
 )
 
 var AllImportIntegrationTaskSortFields = []ImportIntegrationTaskSortFields{
-	ImportIntegrationTaskSortFieldsID,
-	ImportIntegrationTaskSortFieldsEnvironmentID,
 	ImportIntegrationTaskSortFieldsCreatedAt,
-	ImportIntegrationTaskSortFieldsTaskType,
+	ImportIntegrationTaskSortFieldsEnvironmentID,
+	ImportIntegrationTaskSortFieldsID,
 	ImportIntegrationTaskSortFieldsStatus,
+	ImportIntegrationTaskSortFieldsTaskType,
 }
 
 func (e ImportIntegrationTaskSortFields) IsValid() bool {
 	switch e {
-	case ImportIntegrationTaskSortFieldsID, ImportIntegrationTaskSortFieldsEnvironmentID, ImportIntegrationTaskSortFieldsCreatedAt, ImportIntegrationTaskSortFieldsTaskType, ImportIntegrationTaskSortFieldsStatus:
+	case ImportIntegrationTaskSortFieldsCreatedAt, ImportIntegrationTaskSortFieldsEnvironmentID, ImportIntegrationTaskSortFieldsID, ImportIntegrationTaskSortFieldsStatus, ImportIntegrationTaskSortFieldsTaskType:
 		return true
 	}
 	return false
@@ -7576,22 +7944,22 @@ func (e ImportIntegrationTaskSortFields) MarshalGQL(w io.Writer) {
 type IntegrationSortFields string
 
 const (
-	IntegrationSortFieldsID               IntegrationSortFields = "id"
 	IntegrationSortFieldsCreatedAt        IntegrationSortFields = "createdAt"
 	IntegrationSortFieldsEnvironmentID    IntegrationSortFields = "environmentId"
+	IntegrationSortFieldsID               IntegrationSortFields = "id"
 	IntegrationSortFieldsVendorIdentifier IntegrationSortFields = "vendorIdentifier"
 )
 
 var AllIntegrationSortFields = []IntegrationSortFields{
-	IntegrationSortFieldsID,
 	IntegrationSortFieldsCreatedAt,
 	IntegrationSortFieldsEnvironmentID,
+	IntegrationSortFieldsID,
 	IntegrationSortFieldsVendorIdentifier,
 }
 
 func (e IntegrationSortFields) IsValid() bool {
 	switch e {
-	case IntegrationSortFieldsID, IntegrationSortFieldsCreatedAt, IntegrationSortFieldsEnvironmentID, IntegrationSortFieldsVendorIdentifier:
+	case IntegrationSortFieldsCreatedAt, IntegrationSortFieldsEnvironmentID, IntegrationSortFieldsID, IntegrationSortFieldsVendorIdentifier:
 		return true
 	}
 	return false
@@ -7621,18 +7989,18 @@ func (e IntegrationSortFields) MarshalGQL(w io.Writer) {
 type MemberSortFields string
 
 const (
-	MemberSortFieldsID        MemberSortFields = "id"
 	MemberSortFieldsCreatedAt MemberSortFields = "createdAt"
+	MemberSortFieldsID        MemberSortFields = "id"
 )
 
 var AllMemberSortFields = []MemberSortFields{
-	MemberSortFieldsID,
 	MemberSortFieldsCreatedAt,
+	MemberSortFieldsID,
 }
 
 func (e MemberSortFields) IsValid() bool {
 	switch e {
-	case MemberSortFieldsID, MemberSortFieldsCreatedAt:
+	case MemberSortFieldsCreatedAt, MemberSortFieldsID:
 		return true
 	}
 	return false
@@ -7701,69 +8069,24 @@ func (e MemberStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-type MeterSortFields string
-
-const (
-	MeterSortFieldsID            MeterSortFields = "id"
-	MeterSortFieldsCreatedAt     MeterSortFields = "createdAt"
-	MeterSortFieldsUpdatedAt     MeterSortFields = "updatedAt"
-	MeterSortFieldsEnvironmentID MeterSortFields = "environmentId"
-)
-
-var AllMeterSortFields = []MeterSortFields{
-	MeterSortFieldsID,
-	MeterSortFieldsCreatedAt,
-	MeterSortFieldsUpdatedAt,
-	MeterSortFieldsEnvironmentID,
-}
-
-func (e MeterSortFields) IsValid() bool {
-	switch e {
-	case MeterSortFieldsID, MeterSortFieldsCreatedAt, MeterSortFieldsUpdatedAt, MeterSortFieldsEnvironmentID:
-		return true
-	}
-	return false
-}
-
-func (e MeterSortFields) String() string {
-	return string(e)
-}
-
-func (e *MeterSortFields) UnmarshalGQL(v interface{}) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = MeterSortFields(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid MeterSortFields", str)
-	}
-	return nil
-}
-
-func (e MeterSortFields) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
-}
-
 // The meter type of the feature
 type MeterType string
 
 const (
-	MeterTypeNone        MeterType = "None"
 	MeterTypeFluctuating MeterType = "Fluctuating"
 	MeterTypeIncremental MeterType = "Incremental"
+	MeterTypeNone        MeterType = "None"
 )
 
 var AllMeterType = []MeterType{
-	MeterTypeNone,
 	MeterTypeFluctuating,
 	MeterTypeIncremental,
+	MeterTypeNone,
 }
 
 func (e MeterType) IsValid() bool {
 	switch e {
-	case MeterTypeNone, MeterTypeFluctuating, MeterTypeIncremental:
+	case MeterTypeFluctuating, MeterTypeIncremental, MeterTypeNone:
 		return true
 	}
 	return false
@@ -7794,18 +8117,18 @@ func (e MeterType) MarshalGQL(w io.Writer) {
 type MonthlyAccordingTo string
 
 const (
-	MonthlyAccordingToSubscriptionStart MonthlyAccordingTo = "SubscriptionStart"
 	MonthlyAccordingToStartOfTheMonth   MonthlyAccordingTo = "StartOfTheMonth"
+	MonthlyAccordingToSubscriptionStart MonthlyAccordingTo = "SubscriptionStart"
 )
 
 var AllMonthlyAccordingTo = []MonthlyAccordingTo{
-	MonthlyAccordingToSubscriptionStart,
 	MonthlyAccordingToStartOfTheMonth,
+	MonthlyAccordingToSubscriptionStart,
 }
 
 func (e MonthlyAccordingTo) IsValid() bool {
 	switch e {
-	case MonthlyAccordingToSubscriptionStart, MonthlyAccordingToStartOfTheMonth:
+	case MonthlyAccordingToStartOfTheMonth, MonthlyAccordingToSubscriptionStart:
 		return true
 	}
 	return false
@@ -7835,40 +8158,40 @@ func (e MonthlyAccordingTo) MarshalGQL(w io.Writer) {
 type PackageDTOSortFields string
 
 const (
-	PackageDTOSortFieldsID            PackageDTOSortFields = "id"
-	PackageDTOSortFieldsCreatedAt     PackageDTOSortFields = "createdAt"
-	PackageDTOSortFieldsUpdatedAt     PackageDTOSortFields = "updatedAt"
-	PackageDTOSortFieldsRefID         PackageDTOSortFields = "refId"
 	PackageDTOSortFieldsBillingID     PackageDTOSortFields = "billingId"
-	PackageDTOSortFieldsDisplayName   PackageDTOSortFields = "displayName"
-	PackageDTOSortFieldsStatus        PackageDTOSortFields = "status"
-	PackageDTOSortFieldsPricingType   PackageDTOSortFields = "pricingType"
+	PackageDTOSortFieldsCreatedAt     PackageDTOSortFields = "createdAt"
 	PackageDTOSortFieldsDescription   PackageDTOSortFields = "description"
+	PackageDTOSortFieldsDisplayName   PackageDTOSortFields = "displayName"
 	PackageDTOSortFieldsEnvironmentID PackageDTOSortFields = "environmentId"
-	PackageDTOSortFieldsProductID     PackageDTOSortFields = "productId"
+	PackageDTOSortFieldsID            PackageDTOSortFields = "id"
 	PackageDTOSortFieldsIsLatest      PackageDTOSortFields = "isLatest"
+	PackageDTOSortFieldsPricingType   PackageDTOSortFields = "pricingType"
+	PackageDTOSortFieldsProductID     PackageDTOSortFields = "productId"
+	PackageDTOSortFieldsRefID         PackageDTOSortFields = "refId"
+	PackageDTOSortFieldsStatus        PackageDTOSortFields = "status"
+	PackageDTOSortFieldsUpdatedAt     PackageDTOSortFields = "updatedAt"
 	PackageDTOSortFieldsVersionNumber PackageDTOSortFields = "versionNumber"
 )
 
 var AllPackageDTOSortFields = []PackageDTOSortFields{
-	PackageDTOSortFieldsID,
-	PackageDTOSortFieldsCreatedAt,
-	PackageDTOSortFieldsUpdatedAt,
-	PackageDTOSortFieldsRefID,
 	PackageDTOSortFieldsBillingID,
-	PackageDTOSortFieldsDisplayName,
-	PackageDTOSortFieldsStatus,
-	PackageDTOSortFieldsPricingType,
+	PackageDTOSortFieldsCreatedAt,
 	PackageDTOSortFieldsDescription,
+	PackageDTOSortFieldsDisplayName,
 	PackageDTOSortFieldsEnvironmentID,
-	PackageDTOSortFieldsProductID,
+	PackageDTOSortFieldsID,
 	PackageDTOSortFieldsIsLatest,
+	PackageDTOSortFieldsPricingType,
+	PackageDTOSortFieldsProductID,
+	PackageDTOSortFieldsRefID,
+	PackageDTOSortFieldsStatus,
+	PackageDTOSortFieldsUpdatedAt,
 	PackageDTOSortFieldsVersionNumber,
 }
 
 func (e PackageDTOSortFields) IsValid() bool {
 	switch e {
-	case PackageDTOSortFieldsID, PackageDTOSortFieldsCreatedAt, PackageDTOSortFieldsUpdatedAt, PackageDTOSortFieldsRefID, PackageDTOSortFieldsBillingID, PackageDTOSortFieldsDisplayName, PackageDTOSortFieldsStatus, PackageDTOSortFieldsPricingType, PackageDTOSortFieldsDescription, PackageDTOSortFieldsEnvironmentID, PackageDTOSortFieldsProductID, PackageDTOSortFieldsIsLatest, PackageDTOSortFieldsVersionNumber:
+	case PackageDTOSortFieldsBillingID, PackageDTOSortFieldsCreatedAt, PackageDTOSortFieldsDescription, PackageDTOSortFieldsDisplayName, PackageDTOSortFieldsEnvironmentID, PackageDTOSortFieldsID, PackageDTOSortFieldsIsLatest, PackageDTOSortFieldsPricingType, PackageDTOSortFieldsProductID, PackageDTOSortFieldsRefID, PackageDTOSortFieldsStatus, PackageDTOSortFieldsUpdatedAt, PackageDTOSortFieldsVersionNumber:
 		return true
 	}
 	return false
@@ -7898,24 +8221,24 @@ func (e PackageDTOSortFields) MarshalGQL(w io.Writer) {
 type PackageEntitlementSortFields string
 
 const (
+	PackageEntitlementSortFieldsCreatedAt     PackageEntitlementSortFields = "createdAt"
+	PackageEntitlementSortFieldsEnvironmentID PackageEntitlementSortFields = "environmentId"
 	PackageEntitlementSortFieldsID            PackageEntitlementSortFields = "id"
 	PackageEntitlementSortFieldsPackageID     PackageEntitlementSortFields = "packageId"
-	PackageEntitlementSortFieldsCreatedAt     PackageEntitlementSortFields = "createdAt"
 	PackageEntitlementSortFieldsUpdatedAt     PackageEntitlementSortFields = "updatedAt"
-	PackageEntitlementSortFieldsEnvironmentID PackageEntitlementSortFields = "environmentId"
 )
 
 var AllPackageEntitlementSortFields = []PackageEntitlementSortFields{
+	PackageEntitlementSortFieldsCreatedAt,
+	PackageEntitlementSortFieldsEnvironmentID,
 	PackageEntitlementSortFieldsID,
 	PackageEntitlementSortFieldsPackageID,
-	PackageEntitlementSortFieldsCreatedAt,
 	PackageEntitlementSortFieldsUpdatedAt,
-	PackageEntitlementSortFieldsEnvironmentID,
 }
 
 func (e PackageEntitlementSortFields) IsValid() bool {
 	switch e {
-	case PackageEntitlementSortFieldsID, PackageEntitlementSortFieldsPackageID, PackageEntitlementSortFieldsCreatedAt, PackageEntitlementSortFieldsUpdatedAt, PackageEntitlementSortFieldsEnvironmentID:
+	case PackageEntitlementSortFieldsCreatedAt, PackageEntitlementSortFieldsEnvironmentID, PackageEntitlementSortFieldsID, PackageEntitlementSortFieldsPackageID, PackageEntitlementSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -7946,20 +8269,20 @@ func (e PackageEntitlementSortFields) MarshalGQL(w io.Writer) {
 type PackageStatus string
 
 const (
+	PackageStatusArchived  PackageStatus = "ARCHIVED"
 	PackageStatusDraft     PackageStatus = "DRAFT"
 	PackageStatusPublished PackageStatus = "PUBLISHED"
-	PackageStatusArchived  PackageStatus = "ARCHIVED"
 )
 
 var AllPackageStatus = []PackageStatus{
+	PackageStatusArchived,
 	PackageStatusDraft,
 	PackageStatusPublished,
-	PackageStatusArchived,
 }
 
 func (e PackageStatus) IsValid() bool {
 	switch e {
-	case PackageStatusDraft, PackageStatusPublished, PackageStatusArchived:
+	case PackageStatusArchived, PackageStatusDraft, PackageStatusPublished:
 		return true
 	}
 	return false
@@ -7986,22 +8309,68 @@ func (e PackageStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Payment collection
+type PaymentCollection string
+
+const (
+	PaymentCollectionActionRequired PaymentCollection = "ACTION_REQUIRED"
+	PaymentCollectionFailed         PaymentCollection = "FAILED"
+	PaymentCollectionNotRequired    PaymentCollection = "NOT_REQUIRED"
+	PaymentCollectionProcessing     PaymentCollection = "PROCESSING"
+)
+
+var AllPaymentCollection = []PaymentCollection{
+	PaymentCollectionActionRequired,
+	PaymentCollectionFailed,
+	PaymentCollectionNotRequired,
+	PaymentCollectionProcessing,
+}
+
+func (e PaymentCollection) IsValid() bool {
+	switch e {
+	case PaymentCollectionActionRequired, PaymentCollectionFailed, PaymentCollectionNotRequired, PaymentCollectionProcessing:
+		return true
+	}
+	return false
+}
+
+func (e PaymentCollection) String() string {
+	return string(e)
+}
+
+func (e *PaymentCollection) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = PaymentCollection(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid PaymentCollection", str)
+	}
+	return nil
+}
+
+func (e PaymentCollection) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 // Type of a payment method
 type PaymentMethodType string
 
 const (
-	PaymentMethodTypeCard PaymentMethodType = "CARD"
 	PaymentMethodTypeBank PaymentMethodType = "BANK"
+	PaymentMethodTypeCard PaymentMethodType = "CARD"
 )
 
 var AllPaymentMethodType = []PaymentMethodType{
-	PaymentMethodTypeCard,
 	PaymentMethodTypeBank,
+	PaymentMethodTypeCard,
 }
 
 func (e PaymentMethodType) IsValid() bool {
 	switch e {
-	case PaymentMethodTypeCard, PaymentMethodTypeBank:
+	case PaymentMethodTypeBank, PaymentMethodTypeCard:
 		return true
 	}
 	return false
@@ -8031,40 +8400,40 @@ func (e PaymentMethodType) MarshalGQL(w io.Writer) {
 type PlanSortFields string
 
 const (
-	PlanSortFieldsID            PlanSortFields = "id"
-	PlanSortFieldsCreatedAt     PlanSortFields = "createdAt"
-	PlanSortFieldsUpdatedAt     PlanSortFields = "updatedAt"
-	PlanSortFieldsRefID         PlanSortFields = "refId"
 	PlanSortFieldsBillingID     PlanSortFields = "billingId"
-	PlanSortFieldsDisplayName   PlanSortFields = "displayName"
-	PlanSortFieldsStatus        PlanSortFields = "status"
-	PlanSortFieldsPricingType   PlanSortFields = "pricingType"
+	PlanSortFieldsCreatedAt     PlanSortFields = "createdAt"
 	PlanSortFieldsDescription   PlanSortFields = "description"
+	PlanSortFieldsDisplayName   PlanSortFields = "displayName"
 	PlanSortFieldsEnvironmentID PlanSortFields = "environmentId"
-	PlanSortFieldsProductID     PlanSortFields = "productId"
+	PlanSortFieldsID            PlanSortFields = "id"
 	PlanSortFieldsIsLatest      PlanSortFields = "isLatest"
+	PlanSortFieldsPricingType   PlanSortFields = "pricingType"
+	PlanSortFieldsProductID     PlanSortFields = "productId"
+	PlanSortFieldsRefID         PlanSortFields = "refId"
+	PlanSortFieldsStatus        PlanSortFields = "status"
+	PlanSortFieldsUpdatedAt     PlanSortFields = "updatedAt"
 	PlanSortFieldsVersionNumber PlanSortFields = "versionNumber"
 )
 
 var AllPlanSortFields = []PlanSortFields{
-	PlanSortFieldsID,
-	PlanSortFieldsCreatedAt,
-	PlanSortFieldsUpdatedAt,
-	PlanSortFieldsRefID,
 	PlanSortFieldsBillingID,
-	PlanSortFieldsDisplayName,
-	PlanSortFieldsStatus,
-	PlanSortFieldsPricingType,
+	PlanSortFieldsCreatedAt,
 	PlanSortFieldsDescription,
+	PlanSortFieldsDisplayName,
 	PlanSortFieldsEnvironmentID,
-	PlanSortFieldsProductID,
+	PlanSortFieldsID,
 	PlanSortFieldsIsLatest,
+	PlanSortFieldsPricingType,
+	PlanSortFieldsProductID,
+	PlanSortFieldsRefID,
+	PlanSortFieldsStatus,
+	PlanSortFieldsUpdatedAt,
 	PlanSortFieldsVersionNumber,
 }
 
 func (e PlanSortFields) IsValid() bool {
 	switch e {
-	case PlanSortFieldsID, PlanSortFieldsCreatedAt, PlanSortFieldsUpdatedAt, PlanSortFieldsRefID, PlanSortFieldsBillingID, PlanSortFieldsDisplayName, PlanSortFieldsStatus, PlanSortFieldsPricingType, PlanSortFieldsDescription, PlanSortFieldsEnvironmentID, PlanSortFieldsProductID, PlanSortFieldsIsLatest, PlanSortFieldsVersionNumber:
+	case PlanSortFieldsBillingID, PlanSortFieldsCreatedAt, PlanSortFieldsDescription, PlanSortFieldsDisplayName, PlanSortFieldsEnvironmentID, PlanSortFieldsID, PlanSortFieldsIsLatest, PlanSortFieldsPricingType, PlanSortFieldsProductID, PlanSortFieldsRefID, PlanSortFieldsStatus, PlanSortFieldsUpdatedAt, PlanSortFieldsVersionNumber:
 		return true
 	}
 	return false
@@ -8094,24 +8463,26 @@ func (e PlanSortFields) MarshalGQL(w io.Writer) {
 type PriceSortFields string
 
 const (
-	PriceSortFieldsID            PriceSortFields = "id"
-	PriceSortFieldsCreatedAt     PriceSortFields = "createdAt"
-	PriceSortFieldsBillingPeriod PriceSortFields = "billingPeriod"
-	PriceSortFieldsBillingModel  PriceSortFields = "billingModel"
 	PriceSortFieldsBillingID     PriceSortFields = "billingId"
+	PriceSortFieldsBillingModel  PriceSortFields = "billingModel"
+	PriceSortFieldsBillingPeriod PriceSortFields = "billingPeriod"
+	PriceSortFieldsCreatedAt     PriceSortFields = "createdAt"
+	PriceSortFieldsID            PriceSortFields = "id"
+	PriceSortFieldsTiersMode     PriceSortFields = "tiersMode"
 )
 
 var AllPriceSortFields = []PriceSortFields{
-	PriceSortFieldsID,
-	PriceSortFieldsCreatedAt,
-	PriceSortFieldsBillingPeriod,
-	PriceSortFieldsBillingModel,
 	PriceSortFieldsBillingID,
+	PriceSortFieldsBillingModel,
+	PriceSortFieldsBillingPeriod,
+	PriceSortFieldsCreatedAt,
+	PriceSortFieldsID,
+	PriceSortFieldsTiersMode,
 }
 
 func (e PriceSortFields) IsValid() bool {
 	switch e {
-	case PriceSortFieldsID, PriceSortFieldsCreatedAt, PriceSortFieldsBillingPeriod, PriceSortFieldsBillingModel, PriceSortFieldsBillingID:
+	case PriceSortFieldsBillingID, PriceSortFieldsBillingModel, PriceSortFieldsBillingPeriod, PriceSortFieldsCreatedAt, PriceSortFieldsID, PriceSortFieldsTiersMode:
 		return true
 	}
 	return false
@@ -8142,20 +8513,20 @@ func (e PriceSortFields) MarshalGQL(w io.Writer) {
 type PricingType string
 
 const (
+	PricingTypeCustom PricingType = "CUSTOM"
 	PricingTypeFree   PricingType = "FREE"
 	PricingTypePaid   PricingType = "PAID"
-	PricingTypeCustom PricingType = "CUSTOM"
 )
 
 var AllPricingType = []PricingType{
+	PricingTypeCustom,
 	PricingTypeFree,
 	PricingTypePaid,
-	PricingTypeCustom,
 }
 
 func (e PricingType) IsValid() bool {
 	switch e {
-	case PricingTypeFree, PricingTypePaid, PricingTypeCustom:
+	case PricingTypeCustom, PricingTypeFree, PricingTypePaid:
 		return true
 	}
 	return false
@@ -8185,30 +8556,30 @@ func (e PricingType) MarshalGQL(w io.Writer) {
 type ProductSortFields string
 
 const (
-	ProductSortFieldsID               ProductSortFields = "id"
-	ProductSortFieldsDisplayName      ProductSortFields = "displayName"
-	ProductSortFieldsRefID            ProductSortFields = "refId"
-	ProductSortFieldsDescription      ProductSortFields = "description"
 	ProductSortFieldsCreatedAt        ProductSortFields = "createdAt"
-	ProductSortFieldsUpdatedAt        ProductSortFields = "updatedAt"
+	ProductSortFieldsDescription      ProductSortFields = "description"
+	ProductSortFieldsDisplayName      ProductSortFields = "displayName"
 	ProductSortFieldsEnvironmentID    ProductSortFields = "environmentId"
+	ProductSortFieldsID               ProductSortFields = "id"
 	ProductSortFieldsIsDefaultProduct ProductSortFields = "isDefaultProduct"
+	ProductSortFieldsRefID            ProductSortFields = "refId"
+	ProductSortFieldsUpdatedAt        ProductSortFields = "updatedAt"
 )
 
 var AllProductSortFields = []ProductSortFields{
-	ProductSortFieldsID,
-	ProductSortFieldsDisplayName,
-	ProductSortFieldsRefID,
-	ProductSortFieldsDescription,
 	ProductSortFieldsCreatedAt,
-	ProductSortFieldsUpdatedAt,
+	ProductSortFieldsDescription,
+	ProductSortFieldsDisplayName,
 	ProductSortFieldsEnvironmentID,
+	ProductSortFieldsID,
 	ProductSortFieldsIsDefaultProduct,
+	ProductSortFieldsRefID,
+	ProductSortFieldsUpdatedAt,
 }
 
 func (e ProductSortFields) IsValid() bool {
 	switch e {
-	case ProductSortFieldsID, ProductSortFieldsDisplayName, ProductSortFieldsRefID, ProductSortFieldsDescription, ProductSortFieldsCreatedAt, ProductSortFieldsUpdatedAt, ProductSortFieldsEnvironmentID, ProductSortFieldsIsDefaultProduct:
+	case ProductSortFieldsCreatedAt, ProductSortFieldsDescription, ProductSortFieldsDisplayName, ProductSortFieldsEnvironmentID, ProductSortFieldsID, ProductSortFieldsIsDefaultProduct, ProductSortFieldsRefID, ProductSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -8239,26 +8610,26 @@ func (e ProductSortFields) MarshalGQL(w io.Writer) {
 type PromotionalEntitlementPeriod string
 
 const (
-	PromotionalEntitlementPeriodOneWeek  PromotionalEntitlementPeriod = "ONE_WEEK"
-	PromotionalEntitlementPeriodOneMonth PromotionalEntitlementPeriod = "ONE_MONTH"
-	PromotionalEntitlementPeriodSixMonth PromotionalEntitlementPeriod = "SIX_MONTH"
-	PromotionalEntitlementPeriodOneYear  PromotionalEntitlementPeriod = "ONE_YEAR"
-	PromotionalEntitlementPeriodLifetime PromotionalEntitlementPeriod = "LIFETIME"
 	PromotionalEntitlementPeriodCustom   PromotionalEntitlementPeriod = "CUSTOM"
+	PromotionalEntitlementPeriodLifetime PromotionalEntitlementPeriod = "LIFETIME"
+	PromotionalEntitlementPeriodOneMonth PromotionalEntitlementPeriod = "ONE_MONTH"
+	PromotionalEntitlementPeriodOneWeek  PromotionalEntitlementPeriod = "ONE_WEEK"
+	PromotionalEntitlementPeriodOneYear  PromotionalEntitlementPeriod = "ONE_YEAR"
+	PromotionalEntitlementPeriodSixMonth PromotionalEntitlementPeriod = "SIX_MONTH"
 )
 
 var AllPromotionalEntitlementPeriod = []PromotionalEntitlementPeriod{
-	PromotionalEntitlementPeriodOneWeek,
-	PromotionalEntitlementPeriodOneMonth,
-	PromotionalEntitlementPeriodSixMonth,
-	PromotionalEntitlementPeriodOneYear,
-	PromotionalEntitlementPeriodLifetime,
 	PromotionalEntitlementPeriodCustom,
+	PromotionalEntitlementPeriodLifetime,
+	PromotionalEntitlementPeriodOneMonth,
+	PromotionalEntitlementPeriodOneWeek,
+	PromotionalEntitlementPeriodOneYear,
+	PromotionalEntitlementPeriodSixMonth,
 }
 
 func (e PromotionalEntitlementPeriod) IsValid() bool {
 	switch e {
-	case PromotionalEntitlementPeriodOneWeek, PromotionalEntitlementPeriodOneMonth, PromotionalEntitlementPeriodSixMonth, PromotionalEntitlementPeriodOneYear, PromotionalEntitlementPeriodLifetime, PromotionalEntitlementPeriodCustom:
+	case PromotionalEntitlementPeriodCustom, PromotionalEntitlementPeriodLifetime, PromotionalEntitlementPeriodOneMonth, PromotionalEntitlementPeriodOneWeek, PromotionalEntitlementPeriodOneYear, PromotionalEntitlementPeriodSixMonth:
 		return true
 	}
 	return false
@@ -8288,24 +8659,24 @@ func (e PromotionalEntitlementPeriod) MarshalGQL(w io.Writer) {
 type PromotionalEntitlementSortFields string
 
 const (
-	PromotionalEntitlementSortFieldsID            PromotionalEntitlementSortFields = "id"
 	PromotionalEntitlementSortFieldsCreatedAt     PromotionalEntitlementSortFields = "createdAt"
-	PromotionalEntitlementSortFieldsUpdatedAt     PromotionalEntitlementSortFields = "updatedAt"
-	PromotionalEntitlementSortFieldsStatus        PromotionalEntitlementSortFields = "status"
 	PromotionalEntitlementSortFieldsEnvironmentID PromotionalEntitlementSortFields = "environmentId"
+	PromotionalEntitlementSortFieldsID            PromotionalEntitlementSortFields = "id"
+	PromotionalEntitlementSortFieldsStatus        PromotionalEntitlementSortFields = "status"
+	PromotionalEntitlementSortFieldsUpdatedAt     PromotionalEntitlementSortFields = "updatedAt"
 )
 
 var AllPromotionalEntitlementSortFields = []PromotionalEntitlementSortFields{
-	PromotionalEntitlementSortFieldsID,
 	PromotionalEntitlementSortFieldsCreatedAt,
-	PromotionalEntitlementSortFieldsUpdatedAt,
-	PromotionalEntitlementSortFieldsStatus,
 	PromotionalEntitlementSortFieldsEnvironmentID,
+	PromotionalEntitlementSortFieldsID,
+	PromotionalEntitlementSortFieldsStatus,
+	PromotionalEntitlementSortFieldsUpdatedAt,
 }
 
 func (e PromotionalEntitlementSortFields) IsValid() bool {
 	switch e {
-	case PromotionalEntitlementSortFieldsID, PromotionalEntitlementSortFieldsCreatedAt, PromotionalEntitlementSortFieldsUpdatedAt, PromotionalEntitlementSortFieldsStatus, PromotionalEntitlementSortFieldsEnvironmentID:
+	case PromotionalEntitlementSortFieldsCreatedAt, PromotionalEntitlementSortFieldsEnvironmentID, PromotionalEntitlementSortFieldsID, PromotionalEntitlementSortFieldsStatus, PromotionalEntitlementSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -8379,18 +8750,18 @@ func (e PromotionalEntitlementStatus) MarshalGQL(w io.Writer) {
 type ProrationBehavior string
 
 const (
-	ProrationBehaviorInvoiceImmediately ProrationBehavior = "INVOICE_IMMEDIATELY"
 	ProrationBehaviorCreateProrations   ProrationBehavior = "CREATE_PRORATIONS"
+	ProrationBehaviorInvoiceImmediately ProrationBehavior = "INVOICE_IMMEDIATELY"
 )
 
 var AllProrationBehavior = []ProrationBehavior{
-	ProrationBehaviorInvoiceImmediately,
 	ProrationBehaviorCreateProrations,
+	ProrationBehaviorInvoiceImmediately,
 }
 
 func (e ProrationBehavior) IsValid() bool {
 	switch e {
-	case ProrationBehaviorInvoiceImmediately, ProrationBehaviorCreateProrations:
+	case ProrationBehaviorCreateProrations, ProrationBehaviorInvoiceImmediately:
 		return true
 	}
 	return false
@@ -8463,18 +8834,18 @@ func (e ProvisionSubscriptionStatus) MarshalGQL(w io.Writer) {
 type PublishMigrationType string
 
 const (
-	PublishMigrationTypeNewCustomers PublishMigrationType = "NEW_CUSTOMERS"
 	PublishMigrationTypeAllCustomers PublishMigrationType = "ALL_CUSTOMERS"
+	PublishMigrationTypeNewCustomers PublishMigrationType = "NEW_CUSTOMERS"
 )
 
 var AllPublishMigrationType = []PublishMigrationType{
-	PublishMigrationTypeNewCustomers,
 	PublishMigrationTypeAllCustomers,
+	PublishMigrationTypeNewCustomers,
 }
 
 func (e PublishMigrationType) IsValid() bool {
 	switch e {
-	case PublishMigrationTypeNewCustomers, PublishMigrationTypeAllCustomers:
+	case PublishMigrationTypeAllCustomers, PublishMigrationTypeNewCustomers:
 		return true
 	}
 	return false
@@ -8588,18 +8959,20 @@ func (e SortNulls) MarshalGQL(w io.Writer) {
 type SourceType string
 
 const (
-	SourceTypeJsClientSdk   SourceType = "JS_CLIENT_SDK"
-	SourceTypeNodeServerSdk SourceType = "NODE_SERVER_SDK"
+	SourceTypeJsClientSdk            SourceType = "JS_CLIENT_SDK"
+	SourceTypeNodeServerSdk          SourceType = "NODE_SERVER_SDK"
+	SourceTypePersistentCacheService SourceType = "PERSISTENT_CACHE_SERVICE"
 )
 
 var AllSourceType = []SourceType{
 	SourceTypeJsClientSdk,
 	SourceTypeNodeServerSdk,
+	SourceTypePersistentCacheService,
 }
 
 func (e SourceType) IsValid() bool {
 	switch e {
-	case SourceTypeJsClientSdk, SourceTypeNodeServerSdk:
+	case SourceTypeJsClientSdk, SourceTypeNodeServerSdk, SourceTypePersistentCacheService:
 		return true
 	}
 	return false
@@ -8629,22 +9002,22 @@ func (e SourceType) MarshalGQL(w io.Writer) {
 type SubscriptionAddonSortFields string
 
 const (
+	SubscriptionAddonSortFieldsCreatedAt SubscriptionAddonSortFields = "createdAt"
 	SubscriptionAddonSortFieldsID        SubscriptionAddonSortFields = "id"
 	SubscriptionAddonSortFieldsQuantity  SubscriptionAddonSortFields = "quantity"
 	SubscriptionAddonSortFieldsUpdatedAt SubscriptionAddonSortFields = "updatedAt"
-	SubscriptionAddonSortFieldsCreatedAt SubscriptionAddonSortFields = "createdAt"
 )
 
 var AllSubscriptionAddonSortFields = []SubscriptionAddonSortFields{
+	SubscriptionAddonSortFieldsCreatedAt,
 	SubscriptionAddonSortFieldsID,
 	SubscriptionAddonSortFieldsQuantity,
 	SubscriptionAddonSortFieldsUpdatedAt,
-	SubscriptionAddonSortFieldsCreatedAt,
 }
 
 func (e SubscriptionAddonSortFields) IsValid() bool {
 	switch e {
-	case SubscriptionAddonSortFieldsID, SubscriptionAddonSortFieldsQuantity, SubscriptionAddonSortFieldsUpdatedAt, SubscriptionAddonSortFieldsCreatedAt:
+	case SubscriptionAddonSortFieldsCreatedAt, SubscriptionAddonSortFieldsID, SubscriptionAddonSortFieldsQuantity, SubscriptionAddonSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -8675,32 +9048,34 @@ func (e SubscriptionAddonSortFields) MarshalGQL(w io.Writer) {
 type SubscriptionCancelReason string
 
 const (
-	SubscriptionCancelReasonUpgradeOrDowngrade    SubscriptionCancelReason = "UpgradeOrDowngrade"
 	SubscriptionCancelReasonCancelledByBilling    SubscriptionCancelReason = "CancelledByBilling"
-	SubscriptionCancelReasonExpired               SubscriptionCancelReason = "Expired"
+	SubscriptionCancelReasonCustomerArchived      SubscriptionCancelReason = "CustomerArchived"
 	SubscriptionCancelReasonDetachBilling         SubscriptionCancelReason = "DetachBilling"
-	SubscriptionCancelReasonTrialEnded            SubscriptionCancelReason = "TrialEnded"
+	SubscriptionCancelReasonExpired               SubscriptionCancelReason = "Expired"
 	SubscriptionCancelReasonImmediate             SubscriptionCancelReason = "Immediate"
-	SubscriptionCancelReasonTrialConverted        SubscriptionCancelReason = "TrialConverted"
 	SubscriptionCancelReasonPendingPaymentExpired SubscriptionCancelReason = "PendingPaymentExpired"
 	SubscriptionCancelReasonScheduledCancellation SubscriptionCancelReason = "ScheduledCancellation"
+	SubscriptionCancelReasonTrialConverted        SubscriptionCancelReason = "TrialConverted"
+	SubscriptionCancelReasonTrialEnded            SubscriptionCancelReason = "TrialEnded"
+	SubscriptionCancelReasonUpgradeOrDowngrade    SubscriptionCancelReason = "UpgradeOrDowngrade"
 )
 
 var AllSubscriptionCancelReason = []SubscriptionCancelReason{
-	SubscriptionCancelReasonUpgradeOrDowngrade,
 	SubscriptionCancelReasonCancelledByBilling,
-	SubscriptionCancelReasonExpired,
+	SubscriptionCancelReasonCustomerArchived,
 	SubscriptionCancelReasonDetachBilling,
-	SubscriptionCancelReasonTrialEnded,
+	SubscriptionCancelReasonExpired,
 	SubscriptionCancelReasonImmediate,
-	SubscriptionCancelReasonTrialConverted,
 	SubscriptionCancelReasonPendingPaymentExpired,
 	SubscriptionCancelReasonScheduledCancellation,
+	SubscriptionCancelReasonTrialConverted,
+	SubscriptionCancelReasonTrialEnded,
+	SubscriptionCancelReasonUpgradeOrDowngrade,
 }
 
 func (e SubscriptionCancelReason) IsValid() bool {
 	switch e {
-	case SubscriptionCancelReasonUpgradeOrDowngrade, SubscriptionCancelReasonCancelledByBilling, SubscriptionCancelReasonExpired, SubscriptionCancelReasonDetachBilling, SubscriptionCancelReasonTrialEnded, SubscriptionCancelReasonImmediate, SubscriptionCancelReasonTrialConverted, SubscriptionCancelReasonPendingPaymentExpired, SubscriptionCancelReasonScheduledCancellation:
+	case SubscriptionCancelReasonCancelledByBilling, SubscriptionCancelReasonCustomerArchived, SubscriptionCancelReasonDetachBilling, SubscriptionCancelReasonExpired, SubscriptionCancelReasonImmediate, SubscriptionCancelReasonPendingPaymentExpired, SubscriptionCancelReasonScheduledCancellation, SubscriptionCancelReasonTrialConverted, SubscriptionCancelReasonTrialEnded, SubscriptionCancelReasonUpgradeOrDowngrade:
 		return true
 	}
 	return false
@@ -8724,6 +9099,47 @@ func (e *SubscriptionCancelReason) UnmarshalGQL(v interface{}) error {
 }
 
 func (e SubscriptionCancelReason) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type SubscriptionCancellationAction string
+
+const (
+	SubscriptionCancellationActionDefault            SubscriptionCancellationAction = "DEFAULT"
+	SubscriptionCancellationActionRevokeEntitlements SubscriptionCancellationAction = "REVOKE_ENTITLEMENTS"
+)
+
+var AllSubscriptionCancellationAction = []SubscriptionCancellationAction{
+	SubscriptionCancellationActionDefault,
+	SubscriptionCancellationActionRevokeEntitlements,
+}
+
+func (e SubscriptionCancellationAction) IsValid() bool {
+	switch e {
+	case SubscriptionCancellationActionDefault, SubscriptionCancellationActionRevokeEntitlements:
+		return true
+	}
+	return false
+}
+
+func (e SubscriptionCancellationAction) String() string {
+	return string(e)
+}
+
+func (e *SubscriptionCancellationAction) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = SubscriptionCancellationAction(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid SubscriptionCancellationAction", str)
+	}
+	return nil
+}
+
+func (e SubscriptionCancellationAction) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -8819,18 +9235,18 @@ func (e SubscriptionDecisionStrategy) MarshalGQL(w io.Writer) {
 type SubscriptionEndSetup string
 
 const (
-	SubscriptionEndSetupDowngradeToFree    SubscriptionEndSetup = "DOWNGRADE_TO_FREE"
 	SubscriptionEndSetupCancelSubscription SubscriptionEndSetup = "CANCEL_SUBSCRIPTION"
+	SubscriptionEndSetupDowngradeToFree    SubscriptionEndSetup = "DOWNGRADE_TO_FREE"
 )
 
 var AllSubscriptionEndSetup = []SubscriptionEndSetup{
-	SubscriptionEndSetupDowngradeToFree,
 	SubscriptionEndSetupCancelSubscription,
+	SubscriptionEndSetupDowngradeToFree,
 }
 
 func (e SubscriptionEndSetup) IsValid() bool {
 	switch e {
-	case SubscriptionEndSetupDowngradeToFree, SubscriptionEndSetupCancelSubscription:
+	case SubscriptionEndSetupCancelSubscription, SubscriptionEndSetupDowngradeToFree:
 		return true
 	}
 	return false
@@ -8860,24 +9276,24 @@ func (e SubscriptionEndSetup) MarshalGQL(w io.Writer) {
 type SubscriptionEntitlementSortFields string
 
 const (
+	SubscriptionEntitlementSortFieldsCreatedAt      SubscriptionEntitlementSortFields = "createdAt"
+	SubscriptionEntitlementSortFieldsEnvironmentID  SubscriptionEntitlementSortFields = "environmentId"
 	SubscriptionEntitlementSortFieldsID             SubscriptionEntitlementSortFields = "id"
 	SubscriptionEntitlementSortFieldsSubscriptionID SubscriptionEntitlementSortFields = "subscriptionId"
-	SubscriptionEntitlementSortFieldsCreatedAt      SubscriptionEntitlementSortFields = "createdAt"
 	SubscriptionEntitlementSortFieldsUpdatedAt      SubscriptionEntitlementSortFields = "updatedAt"
-	SubscriptionEntitlementSortFieldsEnvironmentID  SubscriptionEntitlementSortFields = "environmentId"
 )
 
 var AllSubscriptionEntitlementSortFields = []SubscriptionEntitlementSortFields{
+	SubscriptionEntitlementSortFieldsCreatedAt,
+	SubscriptionEntitlementSortFieldsEnvironmentID,
 	SubscriptionEntitlementSortFieldsID,
 	SubscriptionEntitlementSortFieldsSubscriptionID,
-	SubscriptionEntitlementSortFieldsCreatedAt,
 	SubscriptionEntitlementSortFieldsUpdatedAt,
-	SubscriptionEntitlementSortFieldsEnvironmentID,
 }
 
 func (e SubscriptionEntitlementSortFields) IsValid() bool {
 	switch e {
-	case SubscriptionEntitlementSortFieldsID, SubscriptionEntitlementSortFieldsSubscriptionID, SubscriptionEntitlementSortFieldsCreatedAt, SubscriptionEntitlementSortFieldsUpdatedAt, SubscriptionEntitlementSortFieldsEnvironmentID:
+	case SubscriptionEntitlementSortFieldsCreatedAt, SubscriptionEntitlementSortFieldsEnvironmentID, SubscriptionEntitlementSortFieldsID, SubscriptionEntitlementSortFieldsSubscriptionID, SubscriptionEntitlementSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -8904,27 +9320,71 @@ func (e SubscriptionEntitlementSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// SubscriptionInvoice status
+type SubscriptionInvoiceStatus string
+
+const (
+	SubscriptionInvoiceStatusCanceled SubscriptionInvoiceStatus = "CANCELED"
+	SubscriptionInvoiceStatusOpen     SubscriptionInvoiceStatus = "OPEN"
+	SubscriptionInvoiceStatusPaid     SubscriptionInvoiceStatus = "PAID"
+)
+
+var AllSubscriptionInvoiceStatus = []SubscriptionInvoiceStatus{
+	SubscriptionInvoiceStatusCanceled,
+	SubscriptionInvoiceStatusOpen,
+	SubscriptionInvoiceStatusPaid,
+}
+
+func (e SubscriptionInvoiceStatus) IsValid() bool {
+	switch e {
+	case SubscriptionInvoiceStatusCanceled, SubscriptionInvoiceStatusOpen, SubscriptionInvoiceStatusPaid:
+		return true
+	}
+	return false
+}
+
+func (e SubscriptionInvoiceStatus) String() string {
+	return string(e)
+}
+
+func (e *SubscriptionInvoiceStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = SubscriptionInvoiceStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid SubscriptionInvoiceStatus", str)
+	}
+	return nil
+}
+
+func (e SubscriptionInvoiceStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type SubscriptionMigrationTaskSortFields string
 
 const (
-	SubscriptionMigrationTaskSortFieldsID            SubscriptionMigrationTaskSortFields = "id"
-	SubscriptionMigrationTaskSortFieldsEnvironmentID SubscriptionMigrationTaskSortFields = "environmentId"
 	SubscriptionMigrationTaskSortFieldsCreatedAt     SubscriptionMigrationTaskSortFields = "createdAt"
-	SubscriptionMigrationTaskSortFieldsTaskType      SubscriptionMigrationTaskSortFields = "taskType"
+	SubscriptionMigrationTaskSortFieldsEnvironmentID SubscriptionMigrationTaskSortFields = "environmentId"
+	SubscriptionMigrationTaskSortFieldsID            SubscriptionMigrationTaskSortFields = "id"
 	SubscriptionMigrationTaskSortFieldsStatus        SubscriptionMigrationTaskSortFields = "status"
+	SubscriptionMigrationTaskSortFieldsTaskType      SubscriptionMigrationTaskSortFields = "taskType"
 )
 
 var AllSubscriptionMigrationTaskSortFields = []SubscriptionMigrationTaskSortFields{
-	SubscriptionMigrationTaskSortFieldsID,
-	SubscriptionMigrationTaskSortFieldsEnvironmentID,
 	SubscriptionMigrationTaskSortFieldsCreatedAt,
-	SubscriptionMigrationTaskSortFieldsTaskType,
+	SubscriptionMigrationTaskSortFieldsEnvironmentID,
+	SubscriptionMigrationTaskSortFieldsID,
 	SubscriptionMigrationTaskSortFieldsStatus,
+	SubscriptionMigrationTaskSortFieldsTaskType,
 }
 
 func (e SubscriptionMigrationTaskSortFields) IsValid() bool {
 	switch e {
-	case SubscriptionMigrationTaskSortFieldsID, SubscriptionMigrationTaskSortFieldsEnvironmentID, SubscriptionMigrationTaskSortFieldsCreatedAt, SubscriptionMigrationTaskSortFieldsTaskType, SubscriptionMigrationTaskSortFieldsStatus:
+	case SubscriptionMigrationTaskSortFieldsCreatedAt, SubscriptionMigrationTaskSortFieldsEnvironmentID, SubscriptionMigrationTaskSortFieldsID, SubscriptionMigrationTaskSortFieldsStatus, SubscriptionMigrationTaskSortFieldsTaskType:
 		return true
 	}
 	return false
@@ -8996,26 +9456,26 @@ func (e SubscriptionMigrationTime) MarshalGQL(w io.Writer) {
 type SubscriptionPriceSortFields string
 
 const (
-	SubscriptionPriceSortFieldsID           SubscriptionPriceSortFields = "id"
+	SubscriptionPriceSortFieldsBillingModel SubscriptionPriceSortFields = "billingModel"
 	SubscriptionPriceSortFieldsCreatedAt    SubscriptionPriceSortFields = "createdAt"
+	SubscriptionPriceSortFieldsFeatureID    SubscriptionPriceSortFields = "featureId"
+	SubscriptionPriceSortFieldsID           SubscriptionPriceSortFields = "id"
 	SubscriptionPriceSortFieldsUpdatedAt    SubscriptionPriceSortFields = "updatedAt"
 	SubscriptionPriceSortFieldsUsageLimit   SubscriptionPriceSortFields = "usageLimit"
-	SubscriptionPriceSortFieldsFeatureID    SubscriptionPriceSortFields = "featureId"
-	SubscriptionPriceSortFieldsBillingModel SubscriptionPriceSortFields = "billingModel"
 )
 
 var AllSubscriptionPriceSortFields = []SubscriptionPriceSortFields{
-	SubscriptionPriceSortFieldsID,
+	SubscriptionPriceSortFieldsBillingModel,
 	SubscriptionPriceSortFieldsCreatedAt,
+	SubscriptionPriceSortFieldsFeatureID,
+	SubscriptionPriceSortFieldsID,
 	SubscriptionPriceSortFieldsUpdatedAt,
 	SubscriptionPriceSortFieldsUsageLimit,
-	SubscriptionPriceSortFieldsFeatureID,
-	SubscriptionPriceSortFieldsBillingModel,
 }
 
 func (e SubscriptionPriceSortFields) IsValid() bool {
 	switch e {
-	case SubscriptionPriceSortFieldsID, SubscriptionPriceSortFieldsCreatedAt, SubscriptionPriceSortFieldsUpdatedAt, SubscriptionPriceSortFieldsUsageLimit, SubscriptionPriceSortFieldsFeatureID, SubscriptionPriceSortFieldsBillingModel:
+	case SubscriptionPriceSortFieldsBillingModel, SubscriptionPriceSortFieldsCreatedAt, SubscriptionPriceSortFieldsFeatureID, SubscriptionPriceSortFieldsID, SubscriptionPriceSortFieldsUpdatedAt, SubscriptionPriceSortFieldsUsageLimit:
 		return true
 	}
 	return false
@@ -9046,22 +9506,24 @@ func (e SubscriptionPriceSortFields) MarshalGQL(w io.Writer) {
 type SubscriptionScheduleStatus string
 
 const (
-	SubscriptionScheduleStatusScheduled SubscriptionScheduleStatus = "Scheduled"
-	SubscriptionScheduleStatusCanceled  SubscriptionScheduleStatus = "Canceled"
-	SubscriptionScheduleStatusDone      SubscriptionScheduleStatus = "Done"
-	SubscriptionScheduleStatusFailed    SubscriptionScheduleStatus = "Failed"
+	SubscriptionScheduleStatusCanceled       SubscriptionScheduleStatus = "Canceled"
+	SubscriptionScheduleStatusDone           SubscriptionScheduleStatus = "Done"
+	SubscriptionScheduleStatusFailed         SubscriptionScheduleStatus = "Failed"
+	SubscriptionScheduleStatusPendingPayment SubscriptionScheduleStatus = "PendingPayment"
+	SubscriptionScheduleStatusScheduled      SubscriptionScheduleStatus = "Scheduled"
 )
 
 var AllSubscriptionScheduleStatus = []SubscriptionScheduleStatus{
-	SubscriptionScheduleStatusScheduled,
 	SubscriptionScheduleStatusCanceled,
 	SubscriptionScheduleStatusDone,
 	SubscriptionScheduleStatusFailed,
+	SubscriptionScheduleStatusPendingPayment,
+	SubscriptionScheduleStatusScheduled,
 }
 
 func (e SubscriptionScheduleStatus) IsValid() bool {
 	switch e {
-	case SubscriptionScheduleStatusScheduled, SubscriptionScheduleStatusCanceled, SubscriptionScheduleStatusDone, SubscriptionScheduleStatusFailed:
+	case SubscriptionScheduleStatusCanceled, SubscriptionScheduleStatusDone, SubscriptionScheduleStatusFailed, SubscriptionScheduleStatusPendingPayment, SubscriptionScheduleStatusScheduled:
 		return true
 	}
 	return false
@@ -9092,22 +9554,24 @@ func (e SubscriptionScheduleStatus) MarshalGQL(w io.Writer) {
 type SubscriptionScheduleType string
 
 const (
-	SubscriptionScheduleTypeDowngrade       SubscriptionScheduleType = "Downgrade"
+	SubscriptionScheduleTypeAddon           SubscriptionScheduleType = "Addon"
 	SubscriptionScheduleTypeBillingPeriod   SubscriptionScheduleType = "BillingPeriod"
-	SubscriptionScheduleTypeUnitAmount      SubscriptionScheduleType = "UnitAmount"
+	SubscriptionScheduleTypeDowngrade       SubscriptionScheduleType = "Downgrade"
 	SubscriptionScheduleTypeMigrateToLatest SubscriptionScheduleType = "MigrateToLatest"
+	SubscriptionScheduleTypeUnitAmount      SubscriptionScheduleType = "UnitAmount"
 )
 
 var AllSubscriptionScheduleType = []SubscriptionScheduleType{
-	SubscriptionScheduleTypeDowngrade,
+	SubscriptionScheduleTypeAddon,
 	SubscriptionScheduleTypeBillingPeriod,
-	SubscriptionScheduleTypeUnitAmount,
+	SubscriptionScheduleTypeDowngrade,
 	SubscriptionScheduleTypeMigrateToLatest,
+	SubscriptionScheduleTypeUnitAmount,
 }
 
 func (e SubscriptionScheduleType) IsValid() bool {
 	switch e {
-	case SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeUnitAmount, SubscriptionScheduleTypeMigrateToLatest:
+	case SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypeUnitAmount:
 		return true
 	}
 	return false
@@ -9137,20 +9601,20 @@ func (e SubscriptionScheduleType) MarshalGQL(w io.Writer) {
 type SubscriptionStartSetup string
 
 const (
+	SubscriptionStartSetupFreePlan      SubscriptionStartSetup = "FREE_PLAN"
 	SubscriptionStartSetupPlanSelection SubscriptionStartSetup = "PLAN_SELECTION"
 	SubscriptionStartSetupTrialPeriod   SubscriptionStartSetup = "TRIAL_PERIOD"
-	SubscriptionStartSetupFreePlan      SubscriptionStartSetup = "FREE_PLAN"
 )
 
 var AllSubscriptionStartSetup = []SubscriptionStartSetup{
+	SubscriptionStartSetupFreePlan,
 	SubscriptionStartSetupPlanSelection,
 	SubscriptionStartSetupTrialPeriod,
-	SubscriptionStartSetupFreePlan,
 }
 
 func (e SubscriptionStartSetup) IsValid() bool {
 	switch e {
-	case SubscriptionStartSetupPlanSelection, SubscriptionStartSetupTrialPeriod, SubscriptionStartSetupFreePlan:
+	case SubscriptionStartSetupFreePlan, SubscriptionStartSetupPlanSelection, SubscriptionStartSetupTrialPeriod:
 		return true
 	}
 	return false
@@ -9181,26 +9645,26 @@ func (e SubscriptionStartSetup) MarshalGQL(w io.Writer) {
 type SubscriptionStatus string
 
 const (
-	SubscriptionStatusPaymentPending SubscriptionStatus = "PAYMENT_PENDING"
 	SubscriptionStatusActive         SubscriptionStatus = "ACTIVE"
+	SubscriptionStatusCanceled       SubscriptionStatus = "CANCELED"
 	SubscriptionStatusExpired        SubscriptionStatus = "EXPIRED"
 	SubscriptionStatusInTrial        SubscriptionStatus = "IN_TRIAL"
-	SubscriptionStatusCanceled       SubscriptionStatus = "CANCELED"
 	SubscriptionStatusNotStarted     SubscriptionStatus = "NOT_STARTED"
+	SubscriptionStatusPaymentPending SubscriptionStatus = "PAYMENT_PENDING"
 )
 
 var AllSubscriptionStatus = []SubscriptionStatus{
-	SubscriptionStatusPaymentPending,
 	SubscriptionStatusActive,
+	SubscriptionStatusCanceled,
 	SubscriptionStatusExpired,
 	SubscriptionStatusInTrial,
-	SubscriptionStatusCanceled,
 	SubscriptionStatusNotStarted,
+	SubscriptionStatusPaymentPending,
 }
 
 func (e SubscriptionStatus) IsValid() bool {
 	switch e {
-	case SubscriptionStatusPaymentPending, SubscriptionStatusActive, SubscriptionStatusExpired, SubscriptionStatusInTrial, SubscriptionStatusCanceled, SubscriptionStatusNotStarted:
+	case SubscriptionStatusActive, SubscriptionStatusCanceled, SubscriptionStatusExpired, SubscriptionStatusInTrial, SubscriptionStatusNotStarted, SubscriptionStatusPaymentPending:
 		return true
 	}
 	return false
@@ -9231,22 +9695,22 @@ func (e SubscriptionStatus) MarshalGQL(w io.Writer) {
 type SyncStatus string
 
 const (
-	SyncStatusPending        SyncStatus = "PENDING"
 	SyncStatusError          SyncStatus = "ERROR"
-	SyncStatusSuccess        SyncStatus = "SUCCESS"
 	SyncStatusNoSyncRequired SyncStatus = "NO_SYNC_REQUIRED"
+	SyncStatusPending        SyncStatus = "PENDING"
+	SyncStatusSuccess        SyncStatus = "SUCCESS"
 )
 
 var AllSyncStatus = []SyncStatus{
-	SyncStatusPending,
 	SyncStatusError,
-	SyncStatusSuccess,
 	SyncStatusNoSyncRequired,
+	SyncStatusPending,
+	SyncStatusSuccess,
 }
 
 func (e SyncStatus) IsValid() bool {
 	switch e {
-	case SyncStatusPending, SyncStatusError, SyncStatusSuccess, SyncStatusNoSyncRequired:
+	case SyncStatusError, SyncStatusNoSyncRequired, SyncStatusPending, SyncStatusSuccess:
 		return true
 	}
 	return false
@@ -9276,24 +9740,24 @@ func (e SyncStatus) MarshalGQL(w io.Writer) {
 type TaskStatus string
 
 const (
-	TaskStatusPending         TaskStatus = "PENDING"
-	TaskStatusInProgress      TaskStatus = "IN_PROGRESS"
 	TaskStatusCompleted       TaskStatus = "COMPLETED"
-	TaskStatusPartiallyFailed TaskStatus = "PARTIALLY_FAILED"
 	TaskStatusFailed          TaskStatus = "FAILED"
+	TaskStatusInProgress      TaskStatus = "IN_PROGRESS"
+	TaskStatusPartiallyFailed TaskStatus = "PARTIALLY_FAILED"
+	TaskStatusPending         TaskStatus = "PENDING"
 )
 
 var AllTaskStatus = []TaskStatus{
-	TaskStatusPending,
-	TaskStatusInProgress,
 	TaskStatusCompleted,
-	TaskStatusPartiallyFailed,
 	TaskStatusFailed,
+	TaskStatusInProgress,
+	TaskStatusPartiallyFailed,
+	TaskStatusPending,
 }
 
 func (e TaskStatus) IsValid() bool {
 	switch e {
-	case TaskStatusPending, TaskStatusInProgress, TaskStatusCompleted, TaskStatusPartiallyFailed, TaskStatusFailed:
+	case TaskStatusCompleted, TaskStatusFailed, TaskStatusInProgress, TaskStatusPartiallyFailed, TaskStatusPending:
 		return true
 	}
 	return false
@@ -9323,22 +9787,26 @@ func (e TaskStatus) MarshalGQL(w io.Writer) {
 type TaskType string
 
 const (
-	TaskTypeSubscriptionMigration      TaskType = "SUBSCRIPTION_MIGRATION"
-	TaskTypeResyncIntegration          TaskType = "RESYNC_INTEGRATION"
 	TaskTypeImportIntegrationCatalog   TaskType = "IMPORT_INTEGRATION_CATALOG"
 	TaskTypeImportIntegrationCustomers TaskType = "IMPORT_INTEGRATION_CUSTOMERS"
+	TaskTypeImportSubscriptionsBulk    TaskType = "IMPORT_SUBSCRIPTIONS_BULK"
+	TaskTypeRecalculateEntitlements    TaskType = "RECALCULATE_ENTITLEMENTS"
+	TaskTypeResyncIntegration          TaskType = "RESYNC_INTEGRATION"
+	TaskTypeSubscriptionMigration      TaskType = "SUBSCRIPTION_MIGRATION"
 )
 
 var AllTaskType = []TaskType{
-	TaskTypeSubscriptionMigration,
-	TaskTypeResyncIntegration,
 	TaskTypeImportIntegrationCatalog,
 	TaskTypeImportIntegrationCustomers,
+	TaskTypeImportSubscriptionsBulk,
+	TaskTypeRecalculateEntitlements,
+	TaskTypeResyncIntegration,
+	TaskTypeSubscriptionMigration,
 }
 
 func (e TaskType) IsValid() bool {
 	switch e {
-	case TaskTypeSubscriptionMigration, TaskTypeResyncIntegration, TaskTypeImportIntegrationCatalog, TaskTypeImportIntegrationCustomers:
+	case TaskTypeImportIntegrationCatalog, TaskTypeImportIntegrationCustomers, TaskTypeImportSubscriptionsBulk, TaskTypeRecalculateEntitlements, TaskTypeResyncIntegration, TaskTypeSubscriptionMigration:
 		return true
 	}
 	return false
@@ -9362,6 +9830,48 @@ func (e *TaskType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e TaskType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Tiers mode.
+type TiersMode string
+
+const (
+	TiersModeGraduated TiersMode = "GRADUATED"
+	TiersModeVolume    TiersMode = "VOLUME"
+)
+
+var AllTiersMode = []TiersMode{
+	TiersModeGraduated,
+	TiersModeVolume,
+}
+
+func (e TiersMode) IsValid() bool {
+	switch e {
+	case TiersModeGraduated, TiersModeVolume:
+		return true
+	}
+	return false
+}
+
+func (e TiersMode) String() string {
+	return string(e)
+}
+
+func (e *TiersMode) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = TiersMode(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid TiersMode", str)
+	}
+	return nil
+}
+
+func (e TiersMode) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -9410,20 +9920,20 @@ func (e TrialPeriodUnits) MarshalGQL(w io.Writer) {
 type UsageMeasurementSortFields string
 
 const (
-	UsageMeasurementSortFieldsID            UsageMeasurementSortFields = "id"
-	UsageMeasurementSortFieldsEnvironmentID UsageMeasurementSortFields = "environmentId"
 	UsageMeasurementSortFieldsCreatedAt     UsageMeasurementSortFields = "createdAt"
+	UsageMeasurementSortFieldsEnvironmentID UsageMeasurementSortFields = "environmentId"
+	UsageMeasurementSortFieldsID            UsageMeasurementSortFields = "id"
 )
 
 var AllUsageMeasurementSortFields = []UsageMeasurementSortFields{
-	UsageMeasurementSortFieldsID,
-	UsageMeasurementSortFieldsEnvironmentID,
 	UsageMeasurementSortFieldsCreatedAt,
+	UsageMeasurementSortFieldsEnvironmentID,
+	UsageMeasurementSortFieldsID,
 }
 
 func (e UsageMeasurementSortFields) IsValid() bool {
 	switch e {
-	case UsageMeasurementSortFieldsID, UsageMeasurementSortFieldsEnvironmentID, UsageMeasurementSortFieldsCreatedAt:
+	case UsageMeasurementSortFieldsCreatedAt, UsageMeasurementSortFieldsEnvironmentID, UsageMeasurementSortFieldsID:
 		return true
 	}
 	return false
@@ -9494,20 +10004,20 @@ func (e UsageUpdateBehavior) MarshalGQL(w io.Writer) {
 type VendorIdentifier string
 
 const (
-	VendorIdentifierZuora   VendorIdentifier = "ZUORA"
-	VendorIdentifierStripe  VendorIdentifier = "STRIPE"
 	VendorIdentifierHubspot VendorIdentifier = "HUBSPOT"
+	VendorIdentifierStripe  VendorIdentifier = "STRIPE"
+	VendorIdentifierZuora   VendorIdentifier = "ZUORA"
 )
 
 var AllVendorIdentifier = []VendorIdentifier{
-	VendorIdentifierZuora,
-	VendorIdentifierStripe,
 	VendorIdentifierHubspot,
+	VendorIdentifierStripe,
+	VendorIdentifierZuora,
 }
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierZuora, VendorIdentifierStripe, VendorIdentifierHubspot:
+	case VendorIdentifierHubspot, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
@@ -9538,30 +10048,30 @@ func (e VendorIdentifier) MarshalGQL(w io.Writer) {
 type WeeklyAccordingTo string
 
 const (
-	WeeklyAccordingToSubscriptionStart WeeklyAccordingTo = "SubscriptionStart"
-	WeeklyAccordingToEverySunday       WeeklyAccordingTo = "EverySunday"
+	WeeklyAccordingToEveryFriday       WeeklyAccordingTo = "EveryFriday"
 	WeeklyAccordingToEveryMonday       WeeklyAccordingTo = "EveryMonday"
+	WeeklyAccordingToEverySaturday     WeeklyAccordingTo = "EverySaturday"
+	WeeklyAccordingToEverySunday       WeeklyAccordingTo = "EverySunday"
+	WeeklyAccordingToEveryThursday     WeeklyAccordingTo = "EveryThursday"
 	WeeklyAccordingToEveryTuesday      WeeklyAccordingTo = "EveryTuesday"
 	WeeklyAccordingToEveryWednesday    WeeklyAccordingTo = "EveryWednesday"
-	WeeklyAccordingToEveryThursday     WeeklyAccordingTo = "EveryThursday"
-	WeeklyAccordingToEveryFriday       WeeklyAccordingTo = "EveryFriday"
-	WeeklyAccordingToEverySaturday     WeeklyAccordingTo = "EverySaturday"
+	WeeklyAccordingToSubscriptionStart WeeklyAccordingTo = "SubscriptionStart"
 )
 
 var AllWeeklyAccordingTo = []WeeklyAccordingTo{
-	WeeklyAccordingToSubscriptionStart,
-	WeeklyAccordingToEverySunday,
+	WeeklyAccordingToEveryFriday,
 	WeeklyAccordingToEveryMonday,
+	WeeklyAccordingToEverySaturday,
+	WeeklyAccordingToEverySunday,
+	WeeklyAccordingToEveryThursday,
 	WeeklyAccordingToEveryTuesday,
 	WeeklyAccordingToEveryWednesday,
-	WeeklyAccordingToEveryThursday,
-	WeeklyAccordingToEveryFriday,
-	WeeklyAccordingToEverySaturday,
+	WeeklyAccordingToSubscriptionStart,
 }
 
 func (e WeeklyAccordingTo) IsValid() bool {
 	switch e {
-	case WeeklyAccordingToSubscriptionStart, WeeklyAccordingToEverySunday, WeeklyAccordingToEveryMonday, WeeklyAccordingToEveryTuesday, WeeklyAccordingToEveryWednesday, WeeklyAccordingToEveryThursday, WeeklyAccordingToEveryFriday, WeeklyAccordingToEverySaturday:
+	case WeeklyAccordingToEveryFriday, WeeklyAccordingToEveryMonday, WeeklyAccordingToEverySaturday, WeeklyAccordingToEverySunday, WeeklyAccordingToEveryThursday, WeeklyAccordingToEveryTuesday, WeeklyAccordingToEveryWednesday, WeeklyAccordingToSubscriptionStart:
 		return true
 	}
 	return false
@@ -9592,18 +10102,20 @@ func (e WeeklyAccordingTo) MarshalGQL(w io.Writer) {
 type WidgetType string
 
 const (
-	WidgetTypePaywall        WidgetType = "PAYWALL"
+	WidgetTypeCheckout       WidgetType = "CHECKOUT"
 	WidgetTypeCustomerPortal WidgetType = "CUSTOMER_PORTAL"
+	WidgetTypePaywall        WidgetType = "PAYWALL"
 )
 
 var AllWidgetType = []WidgetType{
-	WidgetTypePaywall,
+	WidgetTypeCheckout,
 	WidgetTypeCustomerPortal,
+	WidgetTypePaywall,
 }
 
 func (e WidgetType) IsValid() bool {
 	switch e {
-	case WidgetTypePaywall, WidgetTypeCustomerPortal:
+	case WidgetTypeCheckout, WidgetTypeCustomerPortal, WidgetTypePaywall:
 		return true
 	}
 	return false

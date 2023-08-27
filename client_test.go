@@ -3,26 +3,51 @@ package stigg
 import (
 	"context"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
 func TestClient(t *testing.T) {
 	ctx := context.Background()
-	stiggUrl := "http://localhost:4000/graphql"
-	t.Run("Test client startup", func(t *testing.T) {
-		c := NewStiggClient("$2b$10$GD4f3l9udQYfipImpm1eWrOP7fENFQiiybUyBvckgryVu1j.3Zgq8u:d62b64ac-0ccf-410c-bb2f-05474e2152fe", nil, &stiggUrl)
+	apiUrl := "https://api.stigg.io/graphql"
+	apiKey := os.Getenv("SERVER_API_KEY")
+
+	t.Run("Test NewStiggClient", func(t *testing.T) {
+		c := NewStiggClient("", nil, &apiUrl)
 		assert.NotNil(t, c)
 	})
 
-	t.Run("Test getCustomerByID", func(t *testing.T) {
+	t.Run("Test GetCustomerByID", func(t *testing.T) {
+		client := NewStiggClient(apiKey, nil, &apiUrl)
 
-		client := NewStiggClient("$2b$10$GD43l9udQYfipImpm1eWrOP7fENFQiiybUyBvckgryVu1j.3Zgq8u:d62b64ac-0ccf-410c-bb2f-05474e2152fe", nil, &stiggUrl)
-
-		customerID := "customer-demo-0111"
-
+		customerID := "customer-demo-01"
 		input := GetCustomerByRefIDInput{CustomerID: customerID}
 		customer, err := client.GetCustomerByID(ctx, input)
+
 		assert.Nil(t, err)
-		assert.Equal(t, customerID, customer.GetCustomerByRefID.ID, "Couldn't get customer")
+		assert.Equal(t, customerID, customer.GetCustomerByRefID.RefID, "Couldn't get customer")
+	})
+
+	t.Run("Test ProvisionSubscription", func(t *testing.T) {
+		client := NewStiggClient(apiKey, nil, &apiUrl)
+
+		customerID := "customer-demo-01"
+		billingPeriod := BillingPeriodMonthly
+		unitQuantity := 5.0
+		planID := "plan-revvenu-essentials"
+		input := ProvisionSubscriptionInput{
+			CustomerID:    customerID,
+			PlanID:        planID,
+			BillingPeriod: &billingPeriod,
+			UnitQuantity:  &unitQuantity,
+			CheckoutOptions: &CheckoutOptions{
+				SuccessURL: "https://www.google.com/search?q=success",
+				CancelURL:  "https://www.google.com/search?q=cancel",
+			},
+		}
+		resp, err := client.ProvisionSubscription(ctx, input)
+
+		assert.Nil(t, err)
+		assert.Contains(t, *resp.ProvisionSubscription.CheckoutURL, "checkout.stripe.com", "Invalid checkout URL is missing")
 	})
 }
