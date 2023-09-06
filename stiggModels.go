@@ -353,6 +353,15 @@ type BillableFeatureInput struct {
 	Quantity  float64 `json:"quantity"`
 }
 
+type BillingAddress struct {
+	City       *string `json:"city,omitempty"`
+	Country    *string `json:"country,omitempty"`
+	Line1      *string `json:"line1,omitempty"`
+	Line2      *string `json:"line2,omitempty"`
+	PostalCode *string `json:"postalCode,omitempty"`
+	State      *string `json:"state,omitempty"`
+}
+
 type BillingModelFilterComparison struct {
 	Eq       *BillingModel  `json:"eq,omitempty"`
 	Gt       *BillingModel  `json:"gt,omitempty"`
@@ -4543,8 +4552,9 @@ type SubscriptionAlreadyCanceledOrExpired struct {
 }
 
 type SubscriptionBillingInfo struct {
-	TaxPercentage *float64 `json:"taxPercentage,omitempty"`
-	TaxRateIds    []string `json:"taxRateIds,omitempty"`
+	BillingAddress *BillingAddress `json:"billingAddress,omitempty"`
+	TaxPercentage  *float64        `json:"taxPercentage,omitempty"`
+	TaxRateIds     []string        `json:"taxRateIds,omitempty"`
 }
 
 type SubscriptionCancelReasonFilterComparison struct {
@@ -4849,6 +4859,7 @@ type SubscriptionMustHaveSinglePlanError struct {
 
 type SubscriptionPreview struct {
 	BillingPeriodRange  DateRange                       `json:"billingPeriodRange"`
+	Credits             *SubscriptionPreviewCredits     `json:"credits"`
 	Discount            *SubscriptionPreviewDiscountDto `json:"discount"`
 	HasScheduledUpdates *bool                           `json:"hasScheduledUpdates"`
 	IsPlanDowngrade     *bool                           `json:"isPlanDowngrade"`
@@ -4859,6 +4870,12 @@ type SubscriptionPreview struct {
 	TaxDetails          *SubscriptionPreviewTaxDetails  `json:"taxDetails"`
 	Total               Money                           `json:"total"`
 	TotalExcludingTax   Money                           `json:"totalExcludingTax"`
+}
+
+type SubscriptionPreviewCredits struct {
+	Initial   Money `json:"initial"`
+	Remaining Money `json:"remaining"`
+	Used      Money `json:"used"`
 }
 
 type SubscriptionPreviewDiscountDto struct {
