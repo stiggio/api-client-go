@@ -6,6 +6,7 @@ import (
 	"github.com/Yamashou/gqlgenc/clientv2"
 	"net/http"
 	"time"
+	"./generated"
 )
 
 func NewStiggClient(apiKey string, httpClient *http.Client, baseUrl *string) StiggClient {
