@@ -15,7 +15,7 @@ go get github.com/stiggio/api-client-go
 
 ```go
 apiKey := "XXXXXXXXX"
-client := stigg.NewStiggClient(apiKey, nil, ni; )
+client := stigg.NewStiggClient(apiKey, nil, nil)
 ```
 
 For full usage specification, see our [Go Sdk documentation](https://docs.stigg.io/docs/go-sdk)
