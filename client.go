@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Yamashou/gqlgenc/clientv2"
+	. "github.com/stiggio/api-client-go/generated"
 	"net/http"
 	"time"
 )
