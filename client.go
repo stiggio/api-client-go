@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/Yamashou/gqlgenc/clientv2"
+	"github.com/stiggio/api-client-go/generated"
 	"net/http"
 	"time"
-	"./generated"
 )
 
-func NewStiggClient(apiKey string, httpClient *http.Client, baseUrl *string) StiggClient {
+func NewStiggClient(apiKey string, httpClient *http.Client, baseUrl *string) stigg.StiggClient {
 	if baseUrl == nil {
 		defaultStiggBaseUrl := "https://api.stigg.io/graphql"
 		baseUrl = &defaultStiggBaseUrl
@@ -19,7 +19,7 @@ func NewStiggClient(apiKey string, httpClient *http.Client, baseUrl *string) Sti
 			Timeout: time.Second * 30,
 		}
 	}
-	return NewClient(httpClient, *baseUrl, func(ctx context.Context, req *http.Request, gqlInfo *clientv2.GQLRequestInfo, res interface{}, next clientv2.RequestInterceptorFunc) error {
+	return stigg.NewClient(httpClient, *baseUrl, func(ctx context.Context, req *http.Request, gqlInfo *clientv2.GQLRequestInfo, res interface{}, next clientv2.RequestInterceptorFunc) error {
 		req.Header.Set("x-api-key", fmt.Sprintf(apiKey))
 		req.Header.Set("Cache-Control", "no-cache")
 		return next(ctx, req, gqlInfo, res)

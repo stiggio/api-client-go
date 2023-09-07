@@ -428,7 +428,6 @@ type CheckoutColorPalette struct {
 	BackgroundColor        *string `json:"backgroundColor"`
 	BorderColor            *string `json:"borderColor"`
 	Primary                *string `json:"primary"`
-	SelectionColor         *string `json:"selectionColor"`
 	SummaryBackgroundColor *string `json:"summaryBackgroundColor"`
 	TextColor              *string `json:"textColor"`
 }
@@ -474,7 +473,6 @@ type CheckoutPaletteInput struct {
 	BackgroundColor        *string `json:"backgroundColor,omitempty"`
 	BorderColor            *string `json:"borderColor,omitempty"`
 	Primary                *string `json:"primary,omitempty"`
-	SelectionColor         *string `json:"selectionColor,omitempty"`
 	SummaryBackgroundColor *string `json:"summaryBackgroundColor,omitempty"`
 	TextColor              *string `json:"textColor,omitempty"`
 }
