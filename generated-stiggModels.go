@@ -4560,9 +4560,10 @@ type SubscriptionAlreadyCanceledOrExpired struct {
 }
 
 type SubscriptionBillingInfo struct {
-	BillingAddress *BillingAddress `json:"billingAddress,omitempty"`
-	TaxPercentage  *float64        `json:"taxPercentage,omitempty"`
-	TaxRateIds     []string        `json:"taxRateIds,omitempty"`
+	BillingAddress *BillingAddress        `json:"billingAddress,omitempty"`
+	Metadata       map[string]interface{} `json:"metadata,omitempty"`
+	TaxPercentage  *float64               `json:"taxPercentage,omitempty"`
+	TaxRateIds     []string               `json:"taxRateIds,omitempty"`
 }
 
 type SubscriptionCancelReasonFilterComparison struct {
@@ -5400,6 +5401,7 @@ type UpdateSubscriptionInput struct {
 	Addons                   []*SubscriptionAddonInput             `json:"addons,omitempty"`
 	AwaitPaymentConfirmation *bool                                 `json:"awaitPaymentConfirmation,omitempty"`
 	BillableFeatures         []*BillableFeatureInput               `json:"billableFeatures,omitempty"`
+	BillingInformation       *SubscriptionBillingInfo              `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod                        `json:"billingPeriod,omitempty"`
 	EnvironmentID            *string                               `json:"environmentId,omitempty"`
 	PromotionCode            *string                               `json:"promotionCode,omitempty"`
