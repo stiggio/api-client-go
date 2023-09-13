@@ -234,7 +234,7 @@ type AddonUpdateInput struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	BillingID          *string                `json:"billingId,omitempty"`
 	Description        *string                `json:"description,omitempty"`
-	DisplayName        string                 `json:"displayName"`
+	DisplayName        *string                `json:"displayName,omitempty"`
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets,omitempty"`
 	ID                 string                 `json:"id"`
 	Status             *PackageStatus         `json:"status,omitempty"`
