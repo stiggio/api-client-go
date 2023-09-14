@@ -11,6 +11,8 @@ require (
 	github.com/99designs/gqlgen v0.17.36 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.4 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/vektah/gqlparser/v2 v2.5.8 // indirect
 	golang.org/x/mod v0.12.0 // indirect
