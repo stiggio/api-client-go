@@ -2413,6 +2413,18 @@ type IdentityForbiddenError struct {
 	RequiredIdentityType string `json:"requiredIdentityType"`
 }
 
+type ImmediateSubscriptionPreviewInvoice struct {
+	Credits           *SubscriptionPreviewCredits    `json:"credits"`
+	Discount          *Money                         `json:"discount"`
+	DiscountDetails   *SubscriptionPreviewDiscount   `json:"discountDetails"`
+	Proration         *SubscriptionPreviewProrations `json:"proration"`
+	SubTotal          Money                          `json:"subTotal"`
+	Tax               *Money                         `json:"tax"`
+	TaxDetails        *SubscriptionPreviewTaxDetails `json:"taxDetails"`
+	Total             Money                          `json:"total"`
+	TotalExcludingTax Money                          `json:"totalExcludingTax"`
+}
+
 type ImportAlreadyInProgressError struct {
 	Code              string `json:"code"`
 	IsValidationError bool   `json:"isValidationError"`
@@ -4180,16 +4192,6 @@ type RecalculateEntitlementsResult struct {
 	TaskID string `json:"taskId"`
 }
 
-type RecurringSubscriptionPreview struct {
-	Discount          *Money                         `json:"discount"`
-	DiscountDetails   *SubscriptionPreviewDiscount   `json:"discountDetails"`
-	SubTotal          Money                          `json:"subTotal"`
-	Tax               Money                          `json:"tax"`
-	TaxDetails        *SubscriptionPreviewTaxDetails `json:"taxDetails"`
-	Total             Money                          `json:"total"`
-	TotalExcludingTax Money                          `json:"totalExcludingTax"`
-}
-
 type RemoveBasePlanFromPlanInput struct {
 	// The id of the record.
 	ID string `json:"id"`
@@ -4895,6 +4897,16 @@ type SubscriptionPreviewDiscount struct {
 	Value            float64              `json:"value"`
 }
 
+type SubscriptionPreviewInvoice struct {
+	Discount          *Money                         `json:"discount"`
+	DiscountDetails   *SubscriptionPreviewDiscount   `json:"discountDetails"`
+	SubTotal          Money                          `json:"subTotal"`
+	Tax               *Money                         `json:"tax"`
+	TaxDetails        *SubscriptionPreviewTaxDetails `json:"taxDetails"`
+	Total             Money                          `json:"total"`
+	TotalExcludingTax Money                          `json:"totalExcludingTax"`
+}
+
 type SubscriptionPreviewProrations struct {
 	Credit        Money  `json:"credit"`
 	Debit         Money  `json:"debit"`
@@ -4909,19 +4921,11 @@ type SubscriptionPreviewTaxDetails struct {
 }
 
 type SubscriptionPreviewV2 struct {
-	BillingPeriodRange    DateRange                      `json:"billingPeriodRange"`
-	Credits               *SubscriptionPreviewCredits    `json:"credits"`
-	Discount              *Money                         `json:"discount"`
-	DiscountDetails       *SubscriptionPreviewDiscount   `json:"discountDetails"`
-	HasScheduledUpdates   *bool                          `json:"hasScheduledUpdates"`
-	IsPlanDowngrade       *bool                          `json:"isPlanDowngrade"`
-	Proration             *SubscriptionPreviewProrations `json:"proration"`
-	RecurringSubscription *RecurringSubscriptionPreview  `json:"recurringSubscription"`
-	SubTotal              Money                          `json:"subTotal"`
-	Tax                   *Money                         `json:"tax"`
-	TaxDetails            *SubscriptionPreviewTaxDetails `json:"taxDetails"`
-	Total                 Money                          `json:"total"`
-	TotalExcludingTax     Money                          `json:"totalExcludingTax"`
+	BillingPeriodRange  DateRange                           `json:"billingPeriodRange"`
+	HasScheduledUpdates *bool                               `json:"hasScheduledUpdates"`
+	ImmediateInvoice    ImmediateSubscriptionPreviewInvoice `json:"immediateInvoice"`
+	IsPlanDowngrade     *bool                               `json:"isPlanDowngrade"`
+	RecurringInvoice    *SubscriptionPreviewInvoice         `json:"recurringInvoice"`
 }
 
 type SubscriptionPrice struct {

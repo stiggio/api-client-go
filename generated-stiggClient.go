@@ -436,20 +436,32 @@ type SubscriptionPreviewFragment struct {
 	HasScheduledUpdates *bool                                          "json:\"hasScheduledUpdates\" graphql:\"hasScheduledUpdates\""
 	Credits             *SubscriptionPreviewFragment_Credits           "json:\"credits\" graphql:\"credits\""
 }
+type SubscriptionPreviewInvoiceFragment struct {
+	Total             SubscriptionPreviewInvoiceFragment_Total             "json:\"total\" graphql:\"total\""
+	SubTotal          SubscriptionPreviewInvoiceFragment_SubTotal          "json:\"subTotal\" graphql:\"subTotal\""
+	TotalExcludingTax SubscriptionPreviewInvoiceFragment_TotalExcludingTax "json:\"totalExcludingTax\" graphql:\"totalExcludingTax\""
+	Tax               *SubscriptionPreviewInvoiceFragment_Tax              "json:\"tax\" graphql:\"tax\""
+	Discount          *SubscriptionPreviewInvoiceFragment_Discount         "json:\"discount\" graphql:\"discount\""
+	TaxDetails        *SubscriptionPreviewInvoiceFragment_TaxDetails       "json:\"taxDetails\" graphql:\"taxDetails\""
+	DiscountDetails   *SubscriptionPreviewInvoiceFragment_DiscountDetails  "json:\"discountDetails\" graphql:\"discountDetails\""
+}
+type ImmediateSubscriptionPreviewInvoiceFragment struct {
+	Total             ImmediateSubscriptionPreviewInvoiceFragment_Total             "json:\"total\" graphql:\"total\""
+	SubTotal          ImmediateSubscriptionPreviewInvoiceFragment_SubTotal          "json:\"subTotal\" graphql:\"subTotal\""
+	TotalExcludingTax ImmediateSubscriptionPreviewInvoiceFragment_TotalExcludingTax "json:\"totalExcludingTax\" graphql:\"totalExcludingTax\""
+	Tax               *ImmediateSubscriptionPreviewInvoiceFragment_Tax              "json:\"tax\" graphql:\"tax\""
+	Discount          *ImmediateSubscriptionPreviewInvoiceFragment_Discount         "json:\"discount\" graphql:\"discount\""
+	TaxDetails        *ImmediateSubscriptionPreviewInvoiceFragment_TaxDetails       "json:\"taxDetails\" graphql:\"taxDetails\""
+	DiscountDetails   *ImmediateSubscriptionPreviewInvoiceFragment_DiscountDetails  "json:\"discountDetails\" graphql:\"discountDetails\""
+	Credits           *ImmediateSubscriptionPreviewInvoiceFragment_Credits          "json:\"credits\" graphql:\"credits\""
+	Proration         *ImmediateSubscriptionPreviewInvoiceFragment_Proration        "json:\"proration\" graphql:\"proration\""
+}
 type SubscriptionPreviewV2Fragment struct {
-	Total                 SubscriptionPreviewV2Fragment_Total                  "json:\"total\" graphql:\"total\""
-	SubTotal              SubscriptionPreviewV2Fragment_SubTotal               "json:\"subTotal\" graphql:\"subTotal\""
-	TotalExcludingTax     SubscriptionPreviewV2Fragment_TotalExcludingTax      "json:\"totalExcludingTax\" graphql:\"totalExcludingTax\""
-	Tax                   *SubscriptionPreviewV2Fragment_Tax                   "json:\"tax\" graphql:\"tax\""
-	Discount              *SubscriptionPreviewV2Fragment_Discount              "json:\"discount\" graphql:\"discount\""
-	TaxDetails            *SubscriptionPreviewV2Fragment_TaxDetails            "json:\"taxDetails\" graphql:\"taxDetails\""
-	DiscountDetails       *SubscriptionPreviewV2Fragment_DiscountDetails       "json:\"discountDetails\" graphql:\"discountDetails\""
-	Credits               *SubscriptionPreviewV2Fragment_Credits               "json:\"credits\" graphql:\"credits\""
-	Proration             *SubscriptionPreviewV2Fragment_Proration             "json:\"proration\" graphql:\"proration\""
-	RecurringSubscription *SubscriptionPreviewV2Fragment_RecurringSubscription "json:\"recurringSubscription\" graphql:\"recurringSubscription\""
-	BillingPeriodRange    SubscriptionPreviewV2Fragment_BillingPeriodRange     "json:\"billingPeriodRange\" graphql:\"billingPeriodRange\""
-	IsPlanDowngrade       *bool                                                "json:\"isPlanDowngrade\" graphql:\"isPlanDowngrade\""
-	HasScheduledUpdates   *bool                                                "json:\"hasScheduledUpdates\" graphql:\"hasScheduledUpdates\""
+	ImmediateInvoice    *ImmediateSubscriptionPreviewInvoiceFragment     "json:\"immediateInvoice\" graphql:\"immediateInvoice\""
+	RecurringInvoice    *SubscriptionPreviewInvoiceFragment              "json:\"recurringInvoice\" graphql:\"recurringInvoice\""
+	BillingPeriodRange  SubscriptionPreviewV2Fragment_BillingPeriodRange "json:\"billingPeriodRange\" graphql:\"billingPeriodRange\""
+	IsPlanDowngrade     *bool                                            "json:\"isPlanDowngrade\" graphql:\"isPlanDowngrade\""
+	HasScheduledUpdates *bool                                            "json:\"hasScheduledUpdates\" graphql:\"hasScheduledUpdates\""
 }
 type FeatureFragment struct {
 	FeatureType        FeatureType "json:\"featureType\" graphql:\"featureType\""
@@ -1508,111 +1520,199 @@ type SubscriptionPreviewFragment_Credits struct {
 	Used      SubscriptionPreviewFragment_Credits_Used      "json:\"used\" graphql:\"used\""
 	Remaining SubscriptionPreviewFragment_Credits_Remaining "json:\"remaining\" graphql:\"remaining\""
 }
-type SubscriptionPreviewV2Fragment_Total struct {
+type SubscriptionPreviewInvoiceFragment_Total struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_SubTotal struct {
+type SubscriptionPreviewInvoiceFragment_SubTotal struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_TotalExcludingTax struct {
+type SubscriptionPreviewInvoiceFragment_TotalExcludingTax struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_Tax struct {
+type SubscriptionPreviewInvoiceFragment_Tax struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_Discount struct {
+type SubscriptionPreviewInvoiceFragment_Discount struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_TaxDetails struct {
+type SubscriptionPreviewInvoiceFragment_TaxDetails struct {
 	DisplayName string  "json:\"displayName\" graphql:\"displayName\""
 	Percentage  float64 "json:\"percentage\" graphql:\"percentage\""
 	Inclusive   bool    "json:\"inclusive\" graphql:\"inclusive\""
 }
-type SubscriptionPreviewV2Fragment_DiscountDetails struct {
+type SubscriptionPreviewInvoiceFragment_DiscountDetails struct {
 	Type             DiscountType         "json:\"type\" graphql:\"type\""
 	Value            float64              "json:\"value\" graphql:\"value\""
 	DurationType     DiscountDurationType "json:\"durationType\" graphql:\"durationType\""
 	DurationInMonths *float64             "json:\"durationInMonths\" graphql:\"durationInMonths\""
 }
-type SubscriptionPreviewV2Fragment_Credits_Initial struct {
+type ImmediateSubscriptionPreviewInvoiceFragment_Total struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_Credits_Used struct {
+type ImmediateSubscriptionPreviewInvoiceFragment_SubTotal struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_Credits_Remaining struct {
+type ImmediateSubscriptionPreviewInvoiceFragment_TotalExcludingTax struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_Credits struct {
-	Initial   SubscriptionPreviewV2Fragment_Credits_Initial   "json:\"initial\" graphql:\"initial\""
-	Used      SubscriptionPreviewV2Fragment_Credits_Used      "json:\"used\" graphql:\"used\""
-	Remaining SubscriptionPreviewV2Fragment_Credits_Remaining "json:\"remaining\" graphql:\"remaining\""
-}
-type SubscriptionPreviewV2Fragment_Proration_Credit struct {
+type ImmediateSubscriptionPreviewInvoiceFragment_Tax struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_Proration_Debit struct {
+type ImmediateSubscriptionPreviewInvoiceFragment_Discount struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type SubscriptionPreviewV2Fragment_Proration_NetAmount struct {
-	Amount   float64  "json:\"amount\" graphql:\"amount\""
-	Currency Currency "json:\"currency\" graphql:\"currency\""
-}
-type SubscriptionPreviewV2Fragment_Proration struct {
-	ProrationDate string                                            "json:\"prorationDate\" graphql:\"prorationDate\""
-	Credit        SubscriptionPreviewV2Fragment_Proration_Credit    "json:\"credit\" graphql:\"credit\""
-	Debit         SubscriptionPreviewV2Fragment_Proration_Debit     "json:\"debit\" graphql:\"debit\""
-	NetAmount     SubscriptionPreviewV2Fragment_Proration_NetAmount "json:\"netAmount\" graphql:\"netAmount\""
-}
-type SubscriptionPreviewV2Fragment_RecurringSubscription_SubTotal struct {
-	Amount   float64  "json:\"amount\" graphql:\"amount\""
-	Currency Currency "json:\"currency\" graphql:\"currency\""
-}
-type SubscriptionPreviewV2Fragment_RecurringSubscription_TotalExcludingTax struct {
-	Amount   float64  "json:\"amount\" graphql:\"amount\""
-	Currency Currency "json:\"currency\" graphql:\"currency\""
-}
-type SubscriptionPreviewV2Fragment_RecurringSubscription_Total struct {
-	Amount   float64  "json:\"amount\" graphql:\"amount\""
-	Currency Currency "json:\"currency\" graphql:\"currency\""
-}
-type SubscriptionPreviewV2Fragment_RecurringSubscription_Tax struct {
-	Amount   float64  "json:\"amount\" graphql:\"amount\""
-	Currency Currency "json:\"currency\" graphql:\"currency\""
-}
-type SubscriptionPreviewV2Fragment_RecurringSubscription_Discount struct {
-	Amount   float64  "json:\"amount\" graphql:\"amount\""
-	Currency Currency "json:\"currency\" graphql:\"currency\""
-}
-type SubscriptionPreviewV2Fragment_RecurringSubscription_TaxDetails struct {
+type ImmediateSubscriptionPreviewInvoiceFragment_TaxDetails struct {
 	DisplayName string  "json:\"displayName\" graphql:\"displayName\""
 	Percentage  float64 "json:\"percentage\" graphql:\"percentage\""
 	Inclusive   bool    "json:\"inclusive\" graphql:\"inclusive\""
 }
-type SubscriptionPreviewV2Fragment_RecurringSubscription_DiscountDetails struct {
+type ImmediateSubscriptionPreviewInvoiceFragment_DiscountDetails struct {
 	Type             DiscountType         "json:\"type\" graphql:\"type\""
 	Value            float64              "json:\"value\" graphql:\"value\""
 	DurationType     DiscountDurationType "json:\"durationType\" graphql:\"durationType\""
 	DurationInMonths *float64             "json:\"durationInMonths\" graphql:\"durationInMonths\""
 }
-type SubscriptionPreviewV2Fragment_RecurringSubscription struct {
-	SubTotal          SubscriptionPreviewV2Fragment_RecurringSubscription_SubTotal          "json:\"subTotal\" graphql:\"subTotal\""
-	TotalExcludingTax SubscriptionPreviewV2Fragment_RecurringSubscription_TotalExcludingTax "json:\"totalExcludingTax\" graphql:\"totalExcludingTax\""
-	Total             SubscriptionPreviewV2Fragment_RecurringSubscription_Total             "json:\"total\" graphql:\"total\""
-	Tax               SubscriptionPreviewV2Fragment_RecurringSubscription_Tax               "json:\"tax\" graphql:\"tax\""
-	Discount          *SubscriptionPreviewV2Fragment_RecurringSubscription_Discount         "json:\"discount\" graphql:\"discount\""
-	TaxDetails        *SubscriptionPreviewV2Fragment_RecurringSubscription_TaxDetails       "json:\"taxDetails\" graphql:\"taxDetails\""
-	DiscountDetails   *SubscriptionPreviewV2Fragment_RecurringSubscription_DiscountDetails  "json:\"discountDetails\" graphql:\"discountDetails\""
+type ImmediateSubscriptionPreviewInvoiceFragment_Credits_Initial struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ImmediateSubscriptionPreviewInvoiceFragment_Credits_Used struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ImmediateSubscriptionPreviewInvoiceFragment_Credits_Remaining struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ImmediateSubscriptionPreviewInvoiceFragment_Credits struct {
+	Initial   ImmediateSubscriptionPreviewInvoiceFragment_Credits_Initial   "json:\"initial\" graphql:\"initial\""
+	Used      ImmediateSubscriptionPreviewInvoiceFragment_Credits_Used      "json:\"used\" graphql:\"used\""
+	Remaining ImmediateSubscriptionPreviewInvoiceFragment_Credits_Remaining "json:\"remaining\" graphql:\"remaining\""
+}
+type ImmediateSubscriptionPreviewInvoiceFragment_Proration_Credit struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ImmediateSubscriptionPreviewInvoiceFragment_Proration_Debit struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ImmediateSubscriptionPreviewInvoiceFragment_Proration_NetAmount struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ImmediateSubscriptionPreviewInvoiceFragment_Proration struct {
+	ProrationDate string                                                          "json:\"prorationDate\" graphql:\"prorationDate\""
+	Credit        ImmediateSubscriptionPreviewInvoiceFragment_Proration_Credit    "json:\"credit\" graphql:\"credit\""
+	Debit         ImmediateSubscriptionPreviewInvoiceFragment_Proration_Debit     "json:\"debit\" graphql:\"debit\""
+	NetAmount     ImmediateSubscriptionPreviewInvoiceFragment_Proration_NetAmount "json:\"netAmount\" graphql:\"netAmount\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Total struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_SubTotal struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_TotalExcludingTax struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Tax struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Discount struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_TaxDetails struct {
+	DisplayName string  "json:\"displayName\" graphql:\"displayName\""
+	Percentage  float64 "json:\"percentage\" graphql:\"percentage\""
+	Inclusive   bool    "json:\"inclusive\" graphql:\"inclusive\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_DiscountDetails struct {
+	Type             DiscountType         "json:\"type\" graphql:\"type\""
+	Value            float64              "json:\"value\" graphql:\"value\""
+	DurationType     DiscountDurationType "json:\"durationType\" graphql:\"durationType\""
+	DurationInMonths *float64             "json:\"durationInMonths\" graphql:\"durationInMonths\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Initial struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Used struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Remaining struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits struct {
+	Initial   SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Initial   "json:\"initial\" graphql:\"initial\""
+	Used      SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Used      "json:\"used\" graphql:\"used\""
+	Remaining SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Remaining "json:\"remaining\" graphql:\"remaining\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_Credit struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_Debit struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_NetAmount struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration struct {
+	ProrationDate string                                                                                                         "json:\"prorationDate\" graphql:\"prorationDate\""
+	Credit        SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_Credit    "json:\"credit\" graphql:\"credit\""
+	Debit         SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_Debit     "json:\"debit\" graphql:\"debit\""
+	NetAmount     SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_NetAmount "json:\"netAmount\" graphql:\"netAmount\""
+}
+type SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_Total struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_SubTotal struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_TotalExcludingTax struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_Tax struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_Discount struct {
+	Amount   float64  "json:\"amount\" graphql:\"amount\""
+	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_TaxDetails struct {
+	DisplayName string  "json:\"displayName\" graphql:\"displayName\""
+	Percentage  float64 "json:\"percentage\" graphql:\"percentage\""
+	Inclusive   bool    "json:\"inclusive\" graphql:\"inclusive\""
+}
+type SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_DiscountDetails struct {
+	Type             DiscountType         "json:\"type\" graphql:\"type\""
+	Value            float64              "json:\"value\" graphql:\"value\""
+	DurationType     DiscountDurationType "json:\"durationType\" graphql:\"durationType\""
+	DurationInMonths *float64             "json:\"durationInMonths\" graphql:\"durationInMonths\""
 }
 type SubscriptionPreviewV2Fragment_BillingPeriodRange struct {
 	Start *string "json:\"start\" graphql:\"start\""
@@ -4593,111 +4693,102 @@ type EstimateSubscriptionUpdate_EstimateSubscriptionUpdate_SubscriptionPreviewFr
 	Used      EstimateSubscriptionUpdate_EstimateSubscriptionUpdate_SubscriptionPreviewFragment_Credits_Used      "json:\"used\" graphql:\"used\""
 	Remaining EstimateSubscriptionUpdate_EstimateSubscriptionUpdate_SubscriptionPreviewFragment_Credits_Remaining "json:\"remaining\" graphql:\"remaining\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Total struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Total struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_SubTotal struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_SubTotal struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_TotalExcludingTax struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_TotalExcludingTax struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Tax struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Tax struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Discount struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Discount struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_TaxDetails struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_TaxDetails struct {
 	DisplayName string  "json:\"displayName\" graphql:\"displayName\""
 	Percentage  float64 "json:\"percentage\" graphql:\"percentage\""
 	Inclusive   bool    "json:\"inclusive\" graphql:\"inclusive\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_DiscountDetails struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_DiscountDetails struct {
 	Type             DiscountType         "json:\"type\" graphql:\"type\""
 	Value            float64              "json:\"value\" graphql:\"value\""
 	DurationType     DiscountDurationType "json:\"durationType\" graphql:\"durationType\""
 	DurationInMonths *float64             "json:\"durationInMonths\" graphql:\"durationInMonths\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Credits_Initial struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Initial struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Credits_Used struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Used struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Credits_Remaining struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Remaining struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Credits struct {
-	Initial   PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Credits_Initial   "json:\"initial\" graphql:\"initial\""
-	Used      PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Credits_Used      "json:\"used\" graphql:\"used\""
-	Remaining PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Credits_Remaining "json:\"remaining\" graphql:\"remaining\""
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits struct {
+	Initial   PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Initial   "json:\"initial\" graphql:\"initial\""
+	Used      PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Used      "json:\"used\" graphql:\"used\""
+	Remaining PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Credits_Remaining "json:\"remaining\" graphql:\"remaining\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Proration_Credit struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_Credit struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Proration_Debit struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_Debit struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Proration_NetAmount struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_NetAmount struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Proration struct {
-	ProrationDate string                                                                                    "json:\"prorationDate\" graphql:\"prorationDate\""
-	Credit        PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Proration_Credit    "json:\"credit\" graphql:\"credit\""
-	Debit         PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Proration_Debit     "json:\"debit\" graphql:\"debit\""
-	NetAmount     PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_Proration_NetAmount "json:\"netAmount\" graphql:\"netAmount\""
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration struct {
+	ProrationDate string                                                                                                                                                 "json:\"prorationDate\" graphql:\"prorationDate\""
+	Credit        PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_Credit    "json:\"credit\" graphql:\"credit\""
+	Debit         PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_Debit     "json:\"debit\" graphql:\"debit\""
+	NetAmount     PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_ImmediateInvoice_ImmediateSubscriptionPreviewInvoiceFragment_Proration_NetAmount "json:\"netAmount\" graphql:\"netAmount\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_SubTotal struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_Total struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_TotalExcludingTax struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_SubTotal struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_Total struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_TotalExcludingTax struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_Tax struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_Tax struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_Discount struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_Discount struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_TaxDetails struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_TaxDetails struct {
 	DisplayName string  "json:\"displayName\" graphql:\"displayName\""
 	Percentage  float64 "json:\"percentage\" graphql:\"percentage\""
 	Inclusive   bool    "json:\"inclusive\" graphql:\"inclusive\""
 }
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_DiscountDetails struct {
+type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringInvoice_SubscriptionPreviewInvoiceFragment_DiscountDetails struct {
 	Type             DiscountType         "json:\"type\" graphql:\"type\""
 	Value            float64              "json:\"value\" graphql:\"value\""
 	DurationType     DiscountDurationType "json:\"durationType\" graphql:\"durationType\""
 	DurationInMonths *float64             "json:\"durationInMonths\" graphql:\"durationInMonths\""
-}
-type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription struct {
-	SubTotal          PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_SubTotal          "json:\"subTotal\" graphql:\"subTotal\""
-	TotalExcludingTax PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_TotalExcludingTax "json:\"totalExcludingTax\" graphql:\"totalExcludingTax\""
-	Total             PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_Total             "json:\"total\" graphql:\"total\""
-	Tax               PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_Tax               "json:\"tax\" graphql:\"tax\""
-	Discount          *PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_Discount         "json:\"discount\" graphql:\"discount\""
-	TaxDetails        *PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_TaxDetails       "json:\"taxDetails\" graphql:\"taxDetails\""
-	DiscountDetails   *PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_RecurringSubscription_DiscountDetails  "json:\"discountDetails\" graphql:\"discountDetails\""
 }
 type PreviewSubscription_PreviewSubscription_SubscriptionPreviewV2Fragment_BillingPeriodRange struct {
 	Start *string "json:\"start\" graphql:\"start\""
@@ -4939,59 +5030,19 @@ const GetCustomerByIDDocument = `query GetCustomerById ($input: GetCustomerByRef
 		... CustomerWithSubscriptionsFragment
 	}
 }
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment PlanFragment on Plan {
-	id
+fragment ProductFragment on Product {
 	refId
 	displayName
 	description
-	billingId
-	versionNumber
 	additionalMetaData
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
 	}
 }
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 	subscriptionScheduleType
 	scheduleStatus
 	scheduledExecutionTime
@@ -5029,68 +5080,26 @@ fragment SlimCustomerFragment on Customer {
 	billingId
 	additionalMetaData
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
 	status
-	createdAt
-	updatedAt
-	requiresAction
-	paymentUrl
-	paymentSecret
-	errorMessage
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	resetPeriod
+	endDate
+	isVisible
 	feature {
-		refId
+		featureType
+		meterType
 		featureUnits
 		featureUnitsPlural
 		displayName
 		description
+		refId
+		additionalMetaData
 	}
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	pricingType
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
 	subscriptionScheduleType
 	scheduleStatus
 	scheduledExecutionTime
@@ -5117,6 +5126,83 @@ fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 			newQuantity
 		}
 	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	pricingType
 }
 fragment CustomerFragment on Customer {
 	... SlimCustomerFragment
@@ -5202,24 +5288,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionFutureUpdateData
 	}
 }
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment CustomerWithSubscriptionsFragment on Customer {
-	... CustomerFragment
-	subscriptions {
-		... SubscriptionFragment
-	}
-}
 fragment PriceTierFragment on PriceTier {
 	upTo
 	unitPrice {
@@ -5227,23 +5295,36 @@ fragment PriceTierFragment on PriceTier {
 		currency
 	}
 }
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
 	feature {
-		featureType
-		meterType
+		refId
 		featureUnits
 		featureUnitsPlural
 		displayName
 		description
-		refId
-		additionalMetaData
+	}
+}
+fragment CustomerWithSubscriptionsFragment on Customer {
+	... CustomerFragment
+	subscriptions {
+		... SubscriptionFragment
 	}
 }
 fragment CouponFragment on Coupon {
@@ -5267,6 +5348,16 @@ fragment CouponFragment on Coupon {
 		id
 	}
 }
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	requiresAction
+	paymentUrl
+	paymentSecret
+	errorMessage
+}
 `
 
 func (c *Client) GetCustomerByID(ctx context.Context, input GetCustomerByRefIDInput, interceptors ...clientv2.RequestInterceptor) (*GetCustomerByID, error) {
@@ -5285,6 +5376,194 @@ func (c *Client) GetCustomerByID(ctx context.Context, input GetCustomerByRefIDIn
 const GetActiveSubscriptionsDocument = `query GetActiveSubscriptions ($input: GetActiveSubscriptionsInput!) {
 	getActiveSubscriptions(input: $input) {
 		... SubscriptionFragment
+	}
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... on DowngradeChangeVariables {
+			addonRefIds
+			billingPeriod
+			downgradePlanRefId
+		}
+		... on BillingPeriodChangeVariables {
+			billingPeriod
+		}
+		... on UnitAmountChangeVariables {
+			newUnitAmount
+			featureId
+		}
+		... on AddonChangeVariables {
+			addonRefId
+			newQuantity
+		}
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	requiresAction
+	paymentUrl
+	paymentSecret
+	errorMessage
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	pricingType
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... on DowngradeChangeVariables {
+			addonRefIds
+			billingPeriod
+			downgradePlanRefId
+		}
+		... on BillingPeriodChangeVariables {
+			billingPeriod
+		}
+		... on UnitAmountChangeVariables {
+			newUnitAmount
+			featureId
+		}
+		... on AddonChangeVariables {
+			addonRefId
+			newQuantity
+		}
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -5338,194 +5617,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 	}
 	futureUpdates {
 		... SubscriptionFutureUpdateData
-	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	requiresAction
-	paymentUrl
-	paymentSecret
-	errorMessage
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	pricingType
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
 	}
 }
 `
@@ -5591,26 +5682,88 @@ const GetPaywallDocument = `query GetPaywall ($input: GetPaywallInput!) {
 		... PaywallFragment
 	}
 }
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	type
-	additionalMetaData
-	refId
-	name
-	description
+fragment CustomerFragment on Customer {
+	... SlimCustomerFragment
+	hasPaymentMethod
+	hasActiveSubscription
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodLast4Digits
+	trialedPlans {
+		productId
+		productRefId
+		planRefId
+		planId
+	}
+	experimentInfo {
+		groupType
+		groupName
+		id
+		name
+	}
+	coupon {
+		... CouponFragment
+	}
+	eligibleForTrial {
+		productId
+		productRefId
+		eligible
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
 	createdAt
 	updatedAt
+	requiresAction
+	paymentUrl
+	paymentSecret
+	errorMessage
+}
+fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
+	planId
+	additionalChargesMayApply
+	billingPeriod
+	amount
+	currency
+	billingCountryCode
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
 	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
+	displayName
+	description
+	additionalMetaData
+	entitlements {
+		... PackageEntitlementFragment
 	}
-	customers {
-		id
+	prices {
+		... PriceFragment
 	}
+	pricingType
 }
 fragment PriceTierFragment on PriceTier {
 	upTo
@@ -5618,6 +5771,104 @@ fragment PriceTierFragment on PriceTier {
 		amount
 		currency
 	}
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+	}
+}
+fragment PaywallCurrencyFragment on PaywallCurrency {
+	code
+	symbol
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	billingId
+	additionalMetaData
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -5672,149 +5923,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionFutureUpdateData
 	}
 }
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	pricingType
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment PaywallConfigurationFragment on PaywallConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-	}
-	typography {
-		... TypographyConfigurationFragment
-	}
-	layout {
-		... LayoutConfigurationFragment
-	}
-	customCss
-}
-fragment CustomerFragment on Customer {
-	... SlimCustomerFragment
-	hasPaymentMethod
-	hasActiveSubscription
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodLast4Digits
-	trialedPlans {
-		productId
-		productRefId
-		planRefId
-		planId
-	}
-	experimentInfo {
-		groupType
-		groupName
-		id
-		name
-	}
-	coupon {
-		... CouponFragment
-	}
-	eligibleForTrial {
-		productId
-		productRefId
-		eligible
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	billingId
-	additionalMetaData
-}
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
 fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 	subscriptionScheduleType
 	scheduleStatus
@@ -5866,6 +5974,25 @@ fragment PaywallFragment on Paywall {
 		... PaywallCalculatedPricePointsFragment
 	}
 }
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
 fragment PriceFragment on Price {
 	billingModel
 	billingPeriod
@@ -5889,28 +6016,21 @@ fragment PriceFragment on Price {
 		description
 	}
 }
-fragment PaywallCurrencyFragment on PaywallCurrency {
-	code
-	symbol
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
+fragment PaywallConfigurationFragment on PaywallConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
 	}
-	h2 {
-		... FontVariantFragment
+	typography {
+		... TypographyConfigurationFragment
 	}
-	h3 {
-		... FontVariantFragment
+	layout {
+		... LayoutConfigurationFragment
 	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
+	customCss
 }
 fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
 	alignment
@@ -5918,29 +6038,25 @@ fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
 	planMargin
 	planPadding
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
+fragment CouponFragment on Coupon {
+	id
+	discountValue
+	type
+	additionalMetaData
+	refId
+	name
+	description
 	createdAt
 	updatedAt
-	requiresAction
-	paymentUrl
-	paymentSecret
-	errorMessage
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
+	billingId
+	billingLinkUrl
+	status
+	syncStates {
+		vendorIdentifier
+		status
+	}
+	customers {
+		id
 	}
 }
 fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
@@ -5969,31 +6085,6 @@ fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
 			addonRefId
 			newQuantity
 		}
-	}
-}
-fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
-	planId
-	additionalChargesMayApply
-	billingPeriod
-	amount
-	currency
-	billingCountryCode
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
 	}
 }
 `
@@ -6185,19 +6276,33 @@ const GetCustomerPortalByRefIDDocument = `query GetCustomerPortalByRefId ($input
 		... CustomerPortalFragment
 	}
 }
-fragment CustomerPortalSubscriptionPriceFragment on CustomerPortalSubscriptionPrice {
-	billingPeriod
-	billingModel
-	price {
-		amount
-		currency
-	}
-	feature {
+fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
 		id
 		refId
 		displayName
-		featureUnits
-		featureUnitsPlural
+		pricingType
+	}
+	scheduleVariables {
+		... on DowngradeChangeVariables {
+			addonRefIds
+			billingPeriod
+			downgradePlanRefId
+		}
+		... on BillingPeriodChangeVariables {
+			billingPeriod
+		}
+		... on UnitAmountChangeVariables {
+			newUnitAmount
+			featureId
+		}
+		... on AddonChangeVariables {
+			addonRefId
+			newQuantity
+		}
 	}
 }
 fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotionalEntitlement {
@@ -6208,28 +6313,73 @@ fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotion
 	startDate
 	endDate
 }
-fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
-	email
-	name
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodId
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
+fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
+		iconsColor
+		paywallBackgroundColor
+	}
+	typography {
+		... TypographyConfigurationFragment
+	}
+	customCss
 }
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
+fragment CustomerPortalFragment on CustomerPortal {
+	subscriptions {
+		... CustomerPortalSubscriptionFragment
 	}
-	h2 {
-		... FontVariantFragment
+	entitlements {
+		... CustomerPortalEntitlementFragment
 	}
-	h3 {
-		... FontVariantFragment
+	promotionalEntitlements {
+		... CustomerPortalPromotionalEntitlementFragment
 	}
-	body {
-		... FontVariantFragment
+	billingInformation {
+		... CustomerPortalBillingInformationFragment
 	}
+	showWatermark
+	billingPortalUrl
+	canUpgradeSubscription
+	configuration {
+		... CustomerPortalConfigurationFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+}
+fragment CustomerPortalEntitlementFragment on Entitlement {
+	isGranted
+	usageLimit
+	currentUsage
+	hasUnlimitedUsage
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
 fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
 	subscriptionId
@@ -6281,27 +6431,26 @@ fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
 		... CustomerPortalSubscriptionScheduledUpdateDataFragment
 	}
 }
-fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-		iconsColor
-		paywallBackgroundColor
-	}
-	typography {
-		... TypographyConfigurationFragment
-	}
-	customCss
+fragment CustomerPortalSubscriptionAddonFragment on CustomerPortalAddon {
+	addonId
+	description
+	displayName
+	quantity
 }
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
+fragment CustomerPortalSubscriptionPriceFragment on CustomerPortalSubscriptionPrice {
+	billingPeriod
+	billingModel
+	price {
+		amount
+		currency
+	}
+	feature {
+		id
+		refId
+		displayName
+		featureUnits
+		featureUnitsPlural
+	}
 }
 fragment FeatureFragment on EntitlementFeature {
 	featureType
@@ -6312,85 +6461,27 @@ fragment FeatureFragment on EntitlementFeature {
 	displayName
 	refId
 }
-fragment CustomerPortalEntitlementFragment on Entitlement {
-	isGranted
-	usageLimit
-	currentUsage
-	hasUnlimitedUsage
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
+fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
+	email
+	name
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodId
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
 }
-fragment CustomerPortalSubscriptionAddonFragment on CustomerPortalAddon {
-	addonId
-	description
-	displayName
-	quantity
-}
-fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-		pricingType
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
 	}
-	scheduleVariables {
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
+	h2 {
+		... FontVariantFragment
 	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
+	h3 {
+		... FontVariantFragment
 	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
-}
-fragment CustomerPortalFragment on CustomerPortal {
-	subscriptions {
-		... CustomerPortalSubscriptionFragment
-	}
-	entitlements {
-		... CustomerPortalEntitlementFragment
-	}
-	promotionalEntitlements {
-		... CustomerPortalPromotionalEntitlementFragment
-	}
-	billingInformation {
-		... CustomerPortalBillingInformationFragment
-	}
-	showWatermark
-	billingPortalUrl
-	canUpgradeSubscription
-	configuration {
-		... CustomerPortalConfigurationFragment
-	}
-	resource {
-		... CustomerResourceFragment
+	body {
+		... FontVariantFragment
 	}
 }
 `
@@ -6413,6 +6504,253 @@ const GetCheckoutStateDocument = `query GetCheckoutState ($input: CheckoutStateI
 		... CheckoutStateFragment
 	}
 }
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... on DowngradeChangeVariables {
+			addonRefIds
+			billingPeriod
+			downgradePlanRefId
+		}
+		... on BillingPeriodChangeVariables {
+			billingPeriod
+		}
+		... on UnitAmountChangeVariables {
+			newUnitAmount
+			featureId
+		}
+		... on AddonChangeVariables {
+			addonRefId
+			newQuantity
+		}
+	}
+}
+fragment CheckoutStateFragment on CheckoutState {
+	configuration {
+		... CheckoutConfigurationFragment
+	}
+	setupSecret
+	customer {
+		... CustomerFragment
+	}
+	activeSubscription {
+		... SubscriptionFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+	plan {
+		... PlanFragment
+	}
+	billingIntegration {
+		billingIdentifier
+		credentials {
+			accountId
+			publicKey
+		}
+	}
+}
+fragment CheckoutConfigurationFragment on CheckoutConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		summaryBackgroundColor
+		__typename
+	}
+	typography {
+		... TypographyConfigurationFragment
+		__typename
+	}
+	customCss
+	content {
+		collectPhoneNumber
+	}
+	__typename
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment CustomerFragment on Customer {
+	... SlimCustomerFragment
+	hasPaymentMethod
+	hasActiveSubscription
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodLast4Digits
+	trialedPlans {
+		productId
+		productRefId
+		planRefId
+		planId
+	}
+	experimentInfo {
+		groupType
+		groupName
+		id
+		name
+	}
+	coupon {
+		... CouponFragment
+	}
+	eligibleForTrial {
+		productId
+		productRefId
+		eligible
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+}
+fragment CouponFragment on Coupon {
+	id
+	discountValue
+	type
+	additionalMetaData
+	refId
+	name
+	description
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+	syncStates {
+		vendorIdentifier
+		status
+	}
+	customers {
+		id
+	}
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	billingId
+	additionalMetaData
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
 fragment AddonFragment on Addon {
 	id
 	refId
@@ -6428,15 +6766,20 @@ fragment AddonFragment on Addon {
 	}
 	pricingType
 }
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	billingId
-	additionalMetaData
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -6491,27 +6834,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionFutureUpdateData
 	}
 }
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	type
-	additionalMetaData
-	refId
-	name
-	description
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
-	}
-	customers {
-		id
-	}
-}
 fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	billingId
 	status
@@ -6521,72 +6843,6 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	paymentUrl
 	paymentSecret
 	errorMessage
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment CheckoutStateFragment on CheckoutState {
-	configuration {
-		... CheckoutConfigurationFragment
-	}
-	setupSecret
-	customer {
-		... CustomerFragment
-	}
-	activeSubscription {
-		... SubscriptionFragment
-	}
-	resource {
-		... CustomerResourceFragment
-	}
-	plan {
-		... PlanFragment
-	}
-	billingIntegration {
-		billingIdentifier
-		credentials {
-			accountId
-			publicKey
-		}
-	}
-}
-fragment CheckoutConfigurationFragment on CheckoutConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		summaryBackgroundColor
-		__typename
-	}
-	typography {
-		... TypographyConfigurationFragment
-		__typename
-	}
-	customCss
-	content {
-		collectPhoneNumber
-	}
-	__typename
 }
 fragment PriceTierFragment on PriceTier {
 	upTo
@@ -6603,148 +6859,6 @@ fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	total {
 		amount
 		currency
-	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
-	}
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment CustomerFragment on Customer {
-	... SlimCustomerFragment
-	hasPaymentMethod
-	hasActiveSubscription
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodLast4Digits
-	trialedPlans {
-		productId
-		productRefId
-		planRefId
-		planId
-	}
-	experimentInfo {
-		groupType
-		groupName
-		id
-		name
-	}
-	coupon {
-		... CouponFragment
-	}
-	eligibleForTrial {
-		productId
-		productRefId
-		eligible
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
 	}
 }
 fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
@@ -6775,29 +6889,6 @@ fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 		}
 	}
 }
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
-}
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
 `
 
 func (c *Client) GetCheckoutState(ctx context.Context, input CheckoutStateInput, interceptors ...clientv2.RequestInterceptor) (*GetCheckoutState, error) {
@@ -6822,57 +6913,6 @@ const GetMockPaywallDocument = `query GetMockPaywall ($input: GetPaywallInput!) 
 			... PaywallConfigurationFragment
 		}
 	}
-}
-fragment MockPaywallPriceFragment on PaywallPrice {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-}
-fragment PaywallConfigurationFragment on PaywallConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-	}
-	typography {
-		... TypographyConfigurationFragment
-	}
-	layout {
-		... LayoutConfigurationFragment
-	}
-	customCss
-}
-fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
-	alignment
-	planWidth
-	planMargin
-	planPadding
 }
 fragment MockPaywallPlanFragment on PaywallPlan {
 	refId
@@ -6908,21 +6948,11 @@ fragment MockPaywallPlanFragment on PaywallPlan {
 		... MockPaywallAddonFragment
 	}
 }
-fragment MockPaywallPackageEntitlementFragment on Entitlement {
-	usageLimit
-	hasUnlimitedUsage
-	resetPeriod
-	hiddenFromWidgets
-	displayNameOverride
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
 	}
 }
 fragment MockPaywallAddonFragment on PaywallAddon {
@@ -6954,9 +6984,70 @@ fragment TypographyConfigurationFragment on TypographyConfiguration {
 		... FontVariantFragment
 	}
 }
+fragment MockPaywallPackageEntitlementFragment on Entitlement {
+	usageLimit
+	hasUnlimitedUsage
+	resetPeriod
+	hiddenFromWidgets
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment MockPaywallPriceFragment on PaywallPrice {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+	}
+}
+fragment PaywallConfigurationFragment on PaywallConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
+	}
+	typography {
+		... TypographyConfigurationFragment
+	}
+	layout {
+		... LayoutConfigurationFragment
+	}
+	customCss
+}
 fragment FontVariantFragment on FontVariant {
 	fontSize
 	fontWeight
+}
+fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
+	alignment
+	planWidth
+	planMargin
+	planPadding
 }
 `
 
@@ -7285,32 +7376,6 @@ const ProvisionSubscriptionDocument = `mutation ProvisionSubscription ($input: P
 		}
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
 fragment PriceTierFragment on PriceTier {
 	upTo
 	unitPrice {
@@ -7386,6 +7451,32 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	paymentSecret
 	errorMessage
 }
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
 `
 
 func (c *Client) ProvisionSubscription(ctx context.Context, input ProvisionSubscriptionInput, interceptors ...clientv2.RequestInterceptor) (*ProvisionSubscriptionResponse, error) {
@@ -7418,23 +7509,6 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	paymentSecret
 	errorMessage
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
 fragment ProductFragment on Product {
 	refId
 	displayName
@@ -7464,6 +7538,49 @@ fragment PackageEntitlementFragment on PackageEntitlement {
 		description
 		refId
 		additionalMetaData
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	pricingType
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... on DowngradeChangeVariables {
+			addonRefIds
+			billingPeriod
+			downgradePlanRefId
+		}
+		... on BillingPeriodChangeVariables {
+			billingPeriod
+		}
+		... on UnitAmountChangeVariables {
+			newUnitAmount
+			featureId
+		}
+		... on AddonChangeVariables {
+			addonRefId
+			newQuantity
+		}
 	}
 }
 fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
@@ -7573,6 +7690,23 @@ fragment PriceFragment on Price {
 		description
 	}
 }
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
 fragment PlanFragment on Plan {
 	id
 	refId
@@ -7604,49 +7738,6 @@ fragment PlanFragment on Plan {
 	defaultTrialConfig {
 		duration
 		units
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	pricingType
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
 	}
 }
 `
@@ -7687,6 +7778,16 @@ const UpdateSubscriptionDocument = `mutation UpdateSubscription ($input: UpdateS
 		... SlimSubscriptionFragment
 	}
 }
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	refId
@@ -7774,16 +7875,6 @@ fragment PriceFragment on Price {
 fragment PriceTierFragment on PriceTier {
 	upTo
 	unitPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
 		amount
 		currency
 	}
@@ -7808,49 +7899,6 @@ const CancelSubscriptionDocument = `mutation CancelSubscription ($input: Subscri
 		... SlimSubscriptionFragment
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	refId
@@ -7908,6 +7956,49 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	paymentUrl
 	paymentSecret
 	errorMessage
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
 }
 `
 
@@ -8172,6 +8263,20 @@ const PreviewSubscriptionDocument = `mutation PreviewSubscription ($input: Previ
 	}
 }
 fragment SubscriptionPreviewV2Fragment on SubscriptionPreviewV2 {
+	immediateInvoice {
+		... ImmediateSubscriptionPreviewInvoiceFragment
+	}
+	recurringInvoice {
+		... SubscriptionPreviewInvoiceFragment
+	}
+	billingPeriodRange {
+		start
+		end
+	}
+	isPlanDowngrade
+	hasScheduledUpdates
+}
+fragment ImmediateSubscriptionPreviewInvoiceFragment on ImmediateSubscriptionPreviewInvoice {
 	total {
 		amount
 		currency
@@ -8232,45 +8337,39 @@ fragment SubscriptionPreviewV2Fragment on SubscriptionPreviewV2 {
 			currency
 		}
 	}
-	recurringSubscription {
-		subTotal {
-			amount
-			currency
-		}
-		totalExcludingTax {
-			amount
-			currency
-		}
-		total {
-			amount
-			currency
-		}
-		tax {
-			amount
-			currency
-		}
-		discount {
-			amount
-			currency
-		}
-		taxDetails {
-			displayName
-			percentage
-			inclusive
-		}
-		discountDetails {
-			type
-			value
-			durationType
-			durationInMonths
-		}
+}
+fragment SubscriptionPreviewInvoiceFragment on SubscriptionPreviewInvoice {
+	total {
+		amount
+		currency
 	}
-	billingPeriodRange {
-		start
-		end
+	subTotal {
+		amount
+		currency
 	}
-	isPlanDowngrade
-	hasScheduledUpdates
+	totalExcludingTax {
+		amount
+		currency
+	}
+	tax {
+		amount
+		currency
+	}
+	discount {
+		amount
+		currency
+	}
+	taxDetails {
+		displayName
+		percentage
+		inclusive
+	}
+	discountDetails {
+		type
+		value
+		durationType
+		durationInMonths
+	}
 }
 `
 
@@ -8369,23 +8468,6 @@ const CreateSubscriptionDocument = `mutation CreateSubscription ($input: Subscri
 		... SlimSubscriptionFragment
 	}
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	refId
@@ -8468,6 +8550,23 @@ fragment PriceFragment on Price {
 		featureUnitsPlural
 		displayName
 		description
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
 	}
 }
 `
@@ -8530,6 +8629,32 @@ const TransferSubscriptionDocument = `mutation TransferSubscription ($input: Tra
 		... SlimSubscriptionFragment
 	}
 }
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
 fragment PriceTierFragment on PriceTier {
 	upTo
 	unitPrice {
@@ -8605,32 +8730,6 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	paymentSecret
 	errorMessage
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
 `
 
 func (c *Client) TransferSubscription(ctx context.Context, input TransferSubscriptionInput, interceptors ...clientv2.RequestInterceptor) (*TransferSubscriptionResponse, error) {
@@ -8650,24 +8749,6 @@ const OnEntitlementsUpdatedDocument = `subscription OnEntitlementsUpdated {
 	entitlementsUpdated {
 		... EntitlementsUpdatedPayload
 	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
-}
-fragment FeatureFragment on EntitlementFeature {
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
 }
 fragment EntitlementsUpdatedPayload on EntitlementsUpdated {
 	customerId
@@ -8696,6 +8777,24 @@ fragment EntitlementFragment on Entitlement {
 		... FeatureFragment
 	}
 }
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+}
 `
 
 func (c *Client) OnEntitlementsUpdated(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*OnEntitlementsUpdated, error) {
@@ -8712,26 +8811,6 @@ func (c *Client) OnEntitlementsUpdated(ctx context.Context, interceptors ...clie
 const OnUsageUpdatedDocument = `subscription OnUsageUpdated {
 	usageUpdated {
 		... EntitlementUsageUpdated
-	}
-}
-fragment EntitlementFragment on Entitlement {
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	currentUsage
-	requestedUsage
-	entitlementUpdatedAt
-	usageUpdatedAt
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
 	}
 }
 fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
@@ -8766,6 +8845,26 @@ fragment UsageUpdatedFragment on UsageMeasurementUpdated {
 	featureId
 	currentUsage
 	nextResetDate
+}
+fragment EntitlementFragment on Entitlement {
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	currentUsage
+	requestedUsage
+	entitlementUpdatedAt
+	usageUpdatedAt
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
 }
 `
 
