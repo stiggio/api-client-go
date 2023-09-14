@@ -4910,6 +4910,7 @@ type SubscriptionPreviewInvoice struct {
 type SubscriptionPreviewProrations struct {
 	Credit        Money  `json:"credit"`
 	Debit         Money  `json:"debit"`
+	HasProrations *bool  `json:"hasProrations"`
 	NetAmount     Money  `json:"netAmount"`
 	ProrationDate string `json:"prorationDate"`
 }
