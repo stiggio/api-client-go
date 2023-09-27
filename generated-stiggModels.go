@@ -5269,6 +5269,7 @@ type UpdateCustomerInput struct {
 	EnvironmentID      *string                `json:"environmentId,omitempty"`
 	Name               *string                `json:"name,omitempty"`
 	RefID              *string                `json:"refId,omitempty"`
+	ShouldWaitSync     *bool                  `json:"shouldWaitSync,omitempty"`
 }
 
 type UpdateEntitlementsOrderDto struct {
