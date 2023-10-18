@@ -4566,10 +4566,11 @@ type SubscriptionAlreadyCanceledOrExpired struct {
 }
 
 type SubscriptionBillingInfo struct {
-	BillingAddress *BillingAddress        `json:"billingAddress,omitempty"`
-	Metadata       map[string]interface{} `json:"metadata,omitempty"`
-	TaxPercentage  *float64               `json:"taxPercentage,omitempty"`
-	TaxRateIds     []string               `json:"taxRateIds,omitempty"`
+	BillingAddress          *BillingAddress        `json:"billingAddress,omitempty"`
+	ChargeOnBehalfOfAccount *string                `json:"chargeOnBehalfOfAccount,omitempty"`
+	Metadata                map[string]interface{} `json:"metadata,omitempty"`
+	TaxPercentage           *float64               `json:"taxPercentage,omitempty"`
+	TaxRateIds              []string               `json:"taxRateIds,omitempty"`
 }
 
 type SubscriptionCancelReasonFilterComparison struct {
