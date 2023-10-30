@@ -19,6 +19,7 @@ func NewStiggClient(apiKey string, httpClient *http.Client, baseUrl *string) Sti
 	if httpClient == nil {
 		retryClient := retryablehttp.NewClient()
 		retryClient.RetryMax = RetryCount
+		retryClient.Logger = nil
 
 		httpClient = retryClient.StandardClient()
 		httpClient.Timeout = time.Second * 30
