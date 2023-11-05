@@ -9806,6 +9806,7 @@ func (e SyncStatus) MarshalGQL(w io.Writer) {
 type TaskStatus string
 
 const (
+	TaskStatusCanceled        TaskStatus = "CANCELED"
 	TaskStatusCompleted       TaskStatus = "COMPLETED"
 	TaskStatusFailed          TaskStatus = "FAILED"
 	TaskStatusInProgress      TaskStatus = "IN_PROGRESS"
@@ -9814,6 +9815,7 @@ const (
 )
 
 var AllTaskStatus = []TaskStatus{
+	TaskStatusCanceled,
 	TaskStatusCompleted,
 	TaskStatusFailed,
 	TaskStatusInProgress,
@@ -9823,7 +9825,7 @@ var AllTaskStatus = []TaskStatus{
 
 func (e TaskStatus) IsValid() bool {
 	switch e {
-	case TaskStatusCompleted, TaskStatusFailed, TaskStatusInProgress, TaskStatusPartiallyFailed, TaskStatusPending:
+	case TaskStatusCanceled, TaskStatusCompleted, TaskStatusFailed, TaskStatusInProgress, TaskStatusPartiallyFailed, TaskStatusPending:
 		return true
 	}
 	return false
@@ -9859,6 +9861,7 @@ const (
 	TaskTypeRecalculateEntitlements    TaskType = "RECALCULATE_ENTITLEMENTS"
 	TaskTypeResyncIntegration          TaskType = "RESYNC_INTEGRATION"
 	TaskTypeSubscriptionMigration      TaskType = "SUBSCRIPTION_MIGRATION"
+	TaskTypeSubscriptionMigrationV2    TaskType = "SUBSCRIPTION_MIGRATION_V2"
 )
 
 var AllTaskType = []TaskType{
@@ -9868,11 +9871,12 @@ var AllTaskType = []TaskType{
 	TaskTypeRecalculateEntitlements,
 	TaskTypeResyncIntegration,
 	TaskTypeSubscriptionMigration,
+	TaskTypeSubscriptionMigrationV2,
 }
 
 func (e TaskType) IsValid() bool {
 	switch e {
-	case TaskTypeImportIntegrationCatalog, TaskTypeImportIntegrationCustomers, TaskTypeImportSubscriptionsBulk, TaskTypeRecalculateEntitlements, TaskTypeResyncIntegration, TaskTypeSubscriptionMigration:
+	case TaskTypeImportIntegrationCatalog, TaskTypeImportIntegrationCustomers, TaskTypeImportSubscriptionsBulk, TaskTypeRecalculateEntitlements, TaskTypeResyncIntegration, TaskTypeSubscriptionMigration, TaskTypeSubscriptionMigrationV2:
 		return true
 	}
 	return false
