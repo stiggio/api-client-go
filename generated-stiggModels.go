@@ -1242,6 +1242,7 @@ type CustomerSubscription struct {
 	Addons                    []*SubscriptionAddon            `json:"addons"`
 	BillingID                 *string                         `json:"billingId"`
 	BillingLinkURL            *string                         `json:"billingLinkUrl"`
+	BillingSyncError          *string                         `json:"billingSyncError"`
 	CancelReason              *SubscriptionCancelReason       `json:"cancelReason"`
 	CancellationDate          *string                         `json:"cancellationDate"`
 	Coupon                    *SubscriptionCoupon             `json:"coupon"`
