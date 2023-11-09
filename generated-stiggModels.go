@@ -317,6 +317,11 @@ type ArchiveCustomerInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+type ArchiveEnvironmentInput struct {
+	ID   *string `json:"id,omitempty"`
+	Slug *string `json:"slug,omitempty"`
+}
+
 type ArchivePlanInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	ID            string  `json:"id"`
@@ -5228,6 +5233,11 @@ type UnPublishedPackageError struct {
 type UnarchiveCustomerInput struct {
 	CustomerID    string  `json:"customerId"`
 	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
+type UnarchiveEnvironmentInput struct {
+	ID   *string `json:"id,omitempty"`
+	Slug *string `json:"slug,omitempty"`
 }
 
 type UncompatibleSubscriptionAddonError struct {
