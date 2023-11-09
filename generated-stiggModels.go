@@ -1734,16 +1734,18 @@ type Environment struct {
 	HardenClientAccessEnabled bool                        `json:"hardenClientAccessEnabled"`
 	ID                        string                      `json:"id"`
 	IsSandbox                 bool                        `json:"isSandbox"`
+	PermanentDeletionDate     *string                     `json:"permanentDeletionDate"`
 	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus"`
 	SigningToken              string                      `json:"signingToken"`
 	Slug                      string                      `json:"slug"`
 }
 
 type EnvironmentAggregateGroupBy struct {
-	CreatedAt   *string `json:"createdAt"`
-	DisplayName *string `json:"displayName"`
-	ID          *string `json:"id"`
-	Slug        *string `json:"slug"`
+	CreatedAt             *string `json:"createdAt"`
+	DisplayName           *string `json:"displayName"`
+	ID                    *string `json:"id"`
+	PermanentDeletionDate *string `json:"permanentDeletionDate"`
+	Slug                  *string `json:"slug"`
 }
 
 type EnvironmentConnection struct {
@@ -1754,10 +1756,11 @@ type EnvironmentConnection struct {
 }
 
 type EnvironmentCountAggregate struct {
-	CreatedAt   *int64 `json:"createdAt"`
-	DisplayName *int64 `json:"displayName"`
-	ID          *int64 `json:"id"`
-	Slug        *int64 `json:"slug"`
+	CreatedAt             *int64 `json:"createdAt"`
+	DisplayName           *int64 `json:"displayName"`
+	ID                    *int64 `json:"id"`
+	PermanentDeletionDate *int64 `json:"permanentDeletionDate"`
+	Slug                  *int64 `json:"slug"`
 }
 
 type EnvironmentDeleteResponse struct {
@@ -1768,6 +1771,7 @@ type EnvironmentDeleteResponse struct {
 	HardenClientAccessEnabled *bool                       `json:"hardenClientAccessEnabled"`
 	ID                        *string                     `json:"id"`
 	IsSandbox                 *bool                       `json:"isSandbox"`
+	PermanentDeletionDate     *string                     `json:"permanentDeletionDate"`
 	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus"`
 	SigningToken              *string                     `json:"signingToken"`
 	Slug                      *string                     `json:"slug"`
@@ -1781,12 +1785,13 @@ type EnvironmentEdge struct {
 }
 
 type EnvironmentFilter struct {
-	And         []*EnvironmentFilter   `json:"and,omitempty"`
-	CreatedAt   *DateFieldComparison   `json:"createdAt,omitempty"`
-	DisplayName *StringFieldComparison `json:"displayName,omitempty"`
-	ID          *StringFieldComparison `json:"id,omitempty"`
-	Or          []*EnvironmentFilter   `json:"or,omitempty"`
-	Slug        *StringFieldComparison `json:"slug,omitempty"`
+	And                   []*EnvironmentFilter   `json:"and,omitempty"`
+	CreatedAt             *DateFieldComparison   `json:"createdAt,omitempty"`
+	DisplayName           *StringFieldComparison `json:"displayName,omitempty"`
+	ID                    *StringFieldComparison `json:"id,omitempty"`
+	Or                    []*EnvironmentFilter   `json:"or,omitempty"`
+	PermanentDeletionDate *DateFieldComparison   `json:"permanentDeletionDate,omitempty"`
+	Slug                  *StringFieldComparison `json:"slug,omitempty"`
 }
 
 type EnvironmentInput struct {
@@ -1798,17 +1803,19 @@ type EnvironmentInput struct {
 }
 
 type EnvironmentMaxAggregate struct {
-	CreatedAt   *string `json:"createdAt"`
-	DisplayName *string `json:"displayName"`
-	ID          *string `json:"id"`
-	Slug        *string `json:"slug"`
+	CreatedAt             *string `json:"createdAt"`
+	DisplayName           *string `json:"displayName"`
+	ID                    *string `json:"id"`
+	PermanentDeletionDate *string `json:"permanentDeletionDate"`
+	Slug                  *string `json:"slug"`
 }
 
 type EnvironmentMinAggregate struct {
-	CreatedAt   *string `json:"createdAt"`
-	DisplayName *string `json:"displayName"`
-	ID          *string `json:"id"`
-	Slug        *string `json:"slug"`
+	CreatedAt             *string `json:"createdAt"`
+	DisplayName           *string `json:"displayName"`
+	ID                    *string `json:"id"`
+	PermanentDeletionDate *string `json:"permanentDeletionDate"`
+	Slug                  *string `json:"slug"`
 }
 
 type EnvironmentMissingError struct {
@@ -7183,22 +7190,24 @@ func (e EnvironmentProvisionStatus) MarshalGQL(w io.Writer) {
 type EnvironmentSortFields string
 
 const (
-	EnvironmentSortFieldsCreatedAt   EnvironmentSortFields = "createdAt"
-	EnvironmentSortFieldsDisplayName EnvironmentSortFields = "displayName"
-	EnvironmentSortFieldsID          EnvironmentSortFields = "id"
-	EnvironmentSortFieldsSlug        EnvironmentSortFields = "slug"
+	EnvironmentSortFieldsCreatedAt             EnvironmentSortFields = "createdAt"
+	EnvironmentSortFieldsDisplayName           EnvironmentSortFields = "displayName"
+	EnvironmentSortFieldsID                    EnvironmentSortFields = "id"
+	EnvironmentSortFieldsPermanentDeletionDate EnvironmentSortFields = "permanentDeletionDate"
+	EnvironmentSortFieldsSlug                  EnvironmentSortFields = "slug"
 )
 
 var AllEnvironmentSortFields = []EnvironmentSortFields{
 	EnvironmentSortFieldsCreatedAt,
 	EnvironmentSortFieldsDisplayName,
 	EnvironmentSortFieldsID,
+	EnvironmentSortFieldsPermanentDeletionDate,
 	EnvironmentSortFieldsSlug,
 }
 
 func (e EnvironmentSortFields) IsValid() bool {
 	switch e {
-	case EnvironmentSortFieldsCreatedAt, EnvironmentSortFieldsDisplayName, EnvironmentSortFieldsID, EnvironmentSortFieldsSlug:
+	case EnvironmentSortFieldsCreatedAt, EnvironmentSortFieldsDisplayName, EnvironmentSortFieldsID, EnvironmentSortFieldsPermanentDeletionDate, EnvironmentSortFieldsSlug:
 		return true
 	}
 	return false
