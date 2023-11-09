@@ -5225,6 +5225,11 @@ type UnPublishedPackageError struct {
 	PackageType            string   `json:"packageType"`
 }
 
+type UnarchiveCustomerInput struct {
+	CustomerID    string  `json:"customerId"`
+	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
 type UncompatibleSubscriptionAddonError struct {
 	Code                string   `json:"code"`
 	IsValidationError   bool     `json:"isValidationError"`
