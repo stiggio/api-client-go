@@ -1558,11 +1558,6 @@ type DeleteOneAddonInput struct {
 	ID string `json:"id"`
 }
 
-type DeleteOneEnvironmentInput struct {
-	// The id of the record to delete.
-	ID string `json:"id"`
-}
-
 type DeleteOneHookInput struct {
 	// The id of the record to delete.
 	ID string `json:"id"`
@@ -1761,20 +1756,6 @@ type EnvironmentCountAggregate struct {
 	ID                    *int64 `json:"id"`
 	PermanentDeletionDate *int64 `json:"permanentDeletionDate"`
 	Slug                  *int64 `json:"slug"`
-}
-
-type EnvironmentDeleteResponse struct {
-	Color                     *string                     `json:"color"`
-	CreatedAt                 *string                     `json:"createdAt"`
-	Description               *string                     `json:"description"`
-	DisplayName               *string                     `json:"displayName"`
-	HardenClientAccessEnabled *bool                       `json:"hardenClientAccessEnabled"`
-	ID                        *string                     `json:"id"`
-	IsSandbox                 *bool                       `json:"isSandbox"`
-	PermanentDeletionDate     *string                     `json:"permanentDeletionDate"`
-	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus"`
-	SigningToken              *string                     `json:"signingToken"`
-	Slug                      *string                     `json:"slug"`
 }
 
 type EnvironmentEdge struct {
