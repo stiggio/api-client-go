@@ -4793,6 +4793,7 @@ type SubscriptionMigrationTask struct {
 	EnvironmentID          string        `json:"environmentId"`
 	ID                     string        `json:"id"`
 	InitiatedPackageID     *string       `json:"initiatedPackageId"`
+	MigratedCustomersCount *int64        `json:"migratedCustomersCount"`
 	Packages               []*PackageDto `json:"packages"`
 	Progress               int64         `json:"progress"`
 	StartDate              string        `json:"startDate"`
