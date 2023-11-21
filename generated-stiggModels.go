@@ -2846,6 +2846,11 @@ type MeteringNotAvailableForFeatureTypeError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+type MigrationCompleted struct {
+	AccountID     string `json:"accountId"`
+	EnvironmentID string `json:"environmentId"`
+}
+
 type MockPaywall struct {
 	Configuration *PaywallConfiguration `json:"configuration"`
 	Plans         []*PaywallPlan        `json:"plans"`
