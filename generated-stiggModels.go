@@ -129,15 +129,17 @@ type AddonCountAggregate struct {
 }
 
 type AddonCreateInput struct {
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	DisplayName        string                 `json:"displayName"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets,omitempty"`
-	ProductID          string                 `json:"productId"`
-	RefID              *string                `json:"refId,omitempty"`
-	Status             *PackageStatus         `json:"status,omitempty"`
+	AdditionalMetaData          map[string]interface{} `json:"additionalMetaData,omitempty"`
+	AwsMarketplacePlanDimension *string                `json:"awsMarketplacePlanDimension,omitempty"`
+	BillingID                   *string                `json:"billingId,omitempty"`
+	Description                 *string                `json:"description,omitempty"`
+	DisplayName                 string                 `json:"displayName"`
+	EnvironmentID               *string                `json:"environmentId,omitempty"`
+	HiddenFromWidgets           []WidgetType           `json:"hiddenFromWidgets,omitempty"`
+	PricingType                 *PricingType           `json:"pricingType,omitempty"`
+	ProductID                   string                 `json:"productId"`
+	RefID                       *string                `json:"refId,omitempty"`
+	Status                      *PackageStatus         `json:"status,omitempty"`
 }
 
 type AddonDeleteResponse struct {
@@ -342,6 +344,41 @@ type AttachCustomerPaymentMethodInput struct {
 	PaymentMethodID  string           `json:"paymentMethodId"`
 	RefID            *string          `json:"refId,omitempty"`
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
+}
+
+type AwsDimension struct {
+	Description   string  `json:"description"`
+	Key           string  `json:"key"`
+	Name          string  `json:"name"`
+	StiggPlanID   *string `json:"stiggPlanId"`
+	StiggPlanName *string `json:"stiggPlanName"`
+	Type          string  `json:"type"`
+	Unit          string  `json:"unit"`
+}
+
+type AwsMarketplaceConfigurationInput struct {
+	AwsProductID      string                    `json:"awsProductId"`
+	DimensionsMapping []*DimensionsMappingInput `json:"dimensionsMapping"`
+}
+
+type AwsMarketplaceCredentials struct {
+	AwsRoleArn string `json:"awsRoleArn"`
+}
+
+func (AwsMarketplaceCredentials) IsCredentials() {}
+
+type AwsMarketplaceCredentialsInput struct {
+	AwsRoleArn string `json:"awsRoleArn"`
+}
+
+type AwsProduct struct {
+	Description    string  `json:"description"`
+	LogoURL        *string `json:"logoUrl"`
+	ProductCode    string  `json:"productCode"`
+	ProductID      string  `json:"productId"`
+	StiggProductID *string `json:"stiggProductId"`
+	Title          string  `json:"title"`
+	Visibility     string  `json:"visibility"`
 }
 
 type BaseError struct {
@@ -729,11 +766,12 @@ type CreateHook struct {
 }
 
 type CreateIntegrationInput struct {
-	EnvironmentID      string                   `json:"environmentId"`
-	HubspotCredentials *HubspotCredentialsInput `json:"hubspotCredentials,omitempty"`
-	StripeCredentials  *StripeCredentialsInput  `json:"stripeCredentials,omitempty"`
-	VendorIdentifier   VendorIdentifier         `json:"vendorIdentifier"`
-	ZuoraCredentials   *ZuoraCredentialsInput   `json:"zuoraCredentials,omitempty"`
+	AwsMarketplaceCredentials *AwsMarketplaceCredentialsInput `json:"awsMarketplaceCredentials,omitempty"`
+	EnvironmentID             string                          `json:"environmentId"`
+	HubspotCredentials        *HubspotCredentialsInput        `json:"hubspotCredentials,omitempty"`
+	StripeCredentials         *StripeCredentialsInput         `json:"stripeCredentials,omitempty"`
+	VendorIdentifier          VendorIdentifier                `json:"vendorIdentifier"`
+	ZuoraCredentials          *ZuoraCredentialsInput          `json:"zuoraCredentials,omitempty"`
 }
 
 type CreateManyPackageEntitlementsInput struct {
@@ -950,18 +988,19 @@ type CustomerFilterPromotionalEntitlementFilter struct {
 }
 
 type CustomerInput struct {
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	BillingInformation *CustomerBillingInfo   `json:"billingInformation,omitempty"`
-	CouponRefID        *string                `json:"couponRefId,omitempty"`
-	CreatedAt          *string                `json:"createdAt,omitempty"`
-	CrmID              *string                `json:"crmId,omitempty"`
-	CustomerID         *string                `json:"customerId,omitempty"`
-	Email              *string                `json:"email,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	Name               *string                `json:"name,omitempty"`
-	RefID              *string                `json:"refId,omitempty"`
-	ShouldSyncFree     *bool                  `json:"shouldSyncFree,omitempty"`
+	AdditionalMetaData       map[string]interface{} `json:"additionalMetaData,omitempty"`
+	AwsMarketplaceCustomerID *string                `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *string                `json:"billingId,omitempty"`
+	BillingInformation       *CustomerBillingInfo   `json:"billingInformation,omitempty"`
+	CouponRefID              *string                `json:"couponRefId,omitempty"`
+	CreatedAt                *string                `json:"createdAt,omitempty"`
+	CrmID                    *string                `json:"crmId,omitempty"`
+	CustomerID               *string                `json:"customerId,omitempty"`
+	Email                    *string                `json:"email,omitempty"`
+	EnvironmentID            *string                `json:"environmentId,omitempty"`
+	Name                     *string                `json:"name,omitempty"`
+	RefID                    *string                `json:"refId,omitempty"`
+	ShouldSyncFree           *bool                  `json:"shouldSyncFree,omitempty"`
 }
 
 type CustomerMaxAggregate struct {
@@ -1591,6 +1630,12 @@ type DeleteOneProductInput struct {
 type DeleteOnePromotionalEntitlementInput struct {
 	// The id of the record to delete.
 	ID string `json:"id"`
+}
+
+type DimensionsMappingInput struct {
+	Key       string `json:"key"`
+	PlanName  string `json:"planName"`
+	PlanRefID string `json:"planRefId"`
 }
 
 type DiscardPackageDraftInput struct {
@@ -2250,6 +2295,10 @@ type GetActiveSubscriptionsInput struct {
 	ResourceIds   []string `json:"resourceIds,omitempty"`
 }
 
+type GetAwsExternalIDResult struct {
+	ExternalID string `json:"externalId"`
+}
+
 type GetCustomerByRefIDInput struct {
 	CustomerID    string  `json:"customerId"`
 	EnvironmentID *string `json:"environmentId,omitempty"`
@@ -2711,6 +2760,23 @@ type InvalidMemberDeleteError struct {
 type InvalidSubscriptionStatus struct {
 	Code              string `json:"code"`
 	IsValidationError bool   `json:"isValidationError"`
+}
+
+type ListAwsProductDimensionsDto struct {
+	Dimensions []*AwsDimension `json:"dimensions"`
+}
+
+type ListAwsProductDimensionsInput struct {
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	ProductID     string  `json:"productId"`
+}
+
+type ListAwsProductsInput struct {
+	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
+type ListAwsProductsResult struct {
+	Products []*AwsProduct `json:"products"`
 }
 
 type Member struct {
@@ -3433,16 +3499,18 @@ type PlanCountAggregate struct {
 }
 
 type PlanCreateInput struct {
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	DisplayName        string                 `json:"displayName"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets,omitempty"`
-	ParentPlanID       *string                `json:"parentPlanId,omitempty"`
-	ProductID          string                 `json:"productId"`
-	RefID              *string                `json:"refId,omitempty"`
-	Status             *PackageStatus         `json:"status,omitempty"`
+	AdditionalMetaData          map[string]interface{} `json:"additionalMetaData,omitempty"`
+	AwsMarketplacePlanDimension *string                `json:"awsMarketplacePlanDimension,omitempty"`
+	BillingID                   *string                `json:"billingId,omitempty"`
+	Description                 *string                `json:"description,omitempty"`
+	DisplayName                 string                 `json:"displayName"`
+	EnvironmentID               *string                `json:"environmentId,omitempty"`
+	HiddenFromWidgets           []WidgetType           `json:"hiddenFromWidgets,omitempty"`
+	ParentPlanID                *string                `json:"parentPlanId,omitempty"`
+	PricingType                 *PricingType           `json:"pricingType,omitempty"`
+	ProductID                   string                 `json:"productId"`
+	RefID                       *string                `json:"refId,omitempty"`
+	Status                      *PackageStatus         `json:"status,omitempty"`
 }
 
 type PlanEdge struct {
@@ -3815,12 +3883,14 @@ type ProductCountAggregate struct {
 }
 
 type ProductCreateInput struct {
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
-	Description           *string                `json:"description,omitempty"`
-	DisplayName           *string                `json:"displayName,omitempty"`
-	EnvironmentID         string                 `json:"environmentId"`
-	MultipleSubscriptions *bool                  `json:"multipleSubscriptions,omitempty"`
-	RefID                 string                 `json:"refId"`
+	AdditionalMetaData          map[string]interface{}            `json:"additionalMetaData,omitempty"`
+	AwsMarketplaceConfiguration *AwsMarketplaceConfigurationInput `json:"awsMarketplaceConfiguration,omitempty"`
+	Description                 *string                           `json:"description,omitempty"`
+	DisplayName                 *string                           `json:"displayName,omitempty"`
+	EnvironmentID               string                            `json:"environmentId"`
+	IntegrationType             *ProductIntegrationType           `json:"integrationType,omitempty"`
+	MultipleSubscriptions       *bool                             `json:"multipleSubscriptions,omitempty"`
+	RefID                       string                            `json:"refId"`
 }
 
 type ProductDeleteResponse struct {
@@ -3905,11 +3975,12 @@ type ProductSort struct {
 }
 
 type ProductUpdateInput struct {
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
-	Description           *string                `json:"description,omitempty"`
-	DisplayName           *string                `json:"displayName,omitempty"`
-	MultipleSubscriptions *bool                  `json:"multipleSubscriptions,omitempty"`
-	ProductSettings       *ProductSettingsInput  `json:"productSettings,omitempty"`
+	AdditionalMetaData          map[string]interface{}                  `json:"additionalMetaData,omitempty"`
+	AwsMarketplaceConfiguration *UpdateAwsMarketplaceConfigurationInput `json:"awsMarketplaceConfiguration,omitempty"`
+	Description                 *string                                 `json:"description,omitempty"`
+	DisplayName                 *string                                 `json:"displayName,omitempty"`
+	MultipleSubscriptions       *bool                                   `json:"multipleSubscriptions,omitempty"`
+	ProductSettings             *ProductSettingsInput                   `json:"productSettings,omitempty"`
 }
 
 type PromotionCodeCustomerNotFirstPurchase struct {
@@ -4092,20 +4163,21 @@ type PromotionalEntitlementUpdateInput struct {
 }
 
 type ProvisionCustomerInput struct {
-	AdditionalMetaData    map[string]interface{}              `json:"additionalMetaData,omitempty"`
-	BillingID             *string                             `json:"billingId,omitempty"`
-	BillingInformation    *CustomerBillingInfo                `json:"billingInformation,omitempty"`
-	CouponRefID           *string                             `json:"couponRefId,omitempty"`
-	CreatedAt             *string                             `json:"createdAt,omitempty"`
-	CrmID                 *string                             `json:"crmId,omitempty"`
-	CustomerID            *string                             `json:"customerId,omitempty"`
-	Email                 *string                             `json:"email,omitempty"`
-	EnvironmentID         *string                             `json:"environmentId,omitempty"`
-	ExcludeFromExperiment *bool                               `json:"excludeFromExperiment,omitempty"`
-	Name                  *string                             `json:"name,omitempty"`
-	RefID                 *string                             `json:"refId,omitempty"`
-	ShouldSyncFree        *bool                               `json:"shouldSyncFree,omitempty"`
-	SubscriptionParams    *ProvisionCustomerSubscriptionInput `json:"subscriptionParams,omitempty"`
+	AdditionalMetaData       map[string]interface{}              `json:"additionalMetaData,omitempty"`
+	AwsMarketplaceCustomerID *string                             `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *string                             `json:"billingId,omitempty"`
+	BillingInformation       *CustomerBillingInfo                `json:"billingInformation,omitempty"`
+	CouponRefID              *string                             `json:"couponRefId,omitempty"`
+	CreatedAt                *string                             `json:"createdAt,omitempty"`
+	CrmID                    *string                             `json:"crmId,omitempty"`
+	CustomerID               *string                             `json:"customerId,omitempty"`
+	Email                    *string                             `json:"email,omitempty"`
+	EnvironmentID            *string                             `json:"environmentId,omitempty"`
+	ExcludeFromExperiment    *bool                               `json:"excludeFromExperiment,omitempty"`
+	Name                     *string                             `json:"name,omitempty"`
+	RefID                    *string                             `json:"refId,omitempty"`
+	ShouldSyncFree           *bool                               `json:"shouldSyncFree,omitempty"`
+	SubscriptionParams       *ProvisionCustomerSubscriptionInput `json:"subscriptionParams,omitempty"`
 }
 
 type ProvisionCustomerSubscriptionInput struct {
@@ -5281,6 +5353,10 @@ type UpdateAccountInput struct {
 	Timezone                      *string            `json:"timezone,omitempty"`
 }
 
+type UpdateAwsMarketplaceConfigurationInput struct {
+	DimensionsMapping []*DimensionsMappingInput `json:"dimensionsMapping"`
+}
+
 type UpdateCouponInput struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	Description        *string                `json:"description,omitempty"`
@@ -5290,17 +5366,18 @@ type UpdateCouponInput struct {
 }
 
 type UpdateCustomerInput struct {
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	BillingInformation *CustomerBillingInfo   `json:"billingInformation,omitempty"`
-	CouponRefID        *string                `json:"couponRefId,omitempty"`
-	CrmID              *string                `json:"crmId,omitempty"`
-	CustomerID         *string                `json:"customerId,omitempty"`
-	Email              *string                `json:"email,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	Name               *string                `json:"name,omitempty"`
-	RefID              *string                `json:"refId,omitempty"`
-	ShouldWaitSync     *bool                  `json:"shouldWaitSync,omitempty"`
+	AdditionalMetaData       map[string]interface{} `json:"additionalMetaData,omitempty"`
+	AwsMarketplaceCustomerID *string                `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *string                `json:"billingId,omitempty"`
+	BillingInformation       *CustomerBillingInfo   `json:"billingInformation,omitempty"`
+	CouponRefID              *string                `json:"couponRefId,omitempty"`
+	CrmID                    *string                `json:"crmId,omitempty"`
+	CustomerID               *string                `json:"customerId,omitempty"`
+	Email                    *string                `json:"email,omitempty"`
+	EnvironmentID            *string                `json:"environmentId,omitempty"`
+	Name                     *string                `json:"name,omitempty"`
+	RefID                    *string                `json:"refId,omitempty"`
+	ShouldWaitSync           *bool                  `json:"shouldWaitSync,omitempty"`
 }
 
 type UpdateEntitlementsOrderDto struct {
@@ -7246,6 +7323,7 @@ const (
 	ErrorCodeAddonWithDraftCannotBeDeletedError               ErrorCode = "AddonWithDraftCannotBeDeletedError"
 	ErrorCodeArchivedCouponCantBeApplied                      ErrorCode = "ArchivedCouponCantBeApplied"
 	ErrorCodeAuthCustomerMismatch                             ErrorCode = "AuthCustomerMismatch"
+	ErrorCodeAwsMarketplaceIntegrationError                   ErrorCode = "AwsMarketplaceIntegrationError"
 	ErrorCodeBadUserInput                                     ErrorCode = "BadUserInput"
 	ErrorCodeBillingPeriodMissingError                        ErrorCode = "BillingPeriodMissingError"
 	ErrorCodeCannotArchiveFeatureError                        ErrorCode = "CannotArchiveFeatureError"
@@ -7351,6 +7429,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeAddonWithDraftCannotBeDeletedError,
 	ErrorCodeArchivedCouponCantBeApplied,
 	ErrorCodeAuthCustomerMismatch,
+	ErrorCodeAwsMarketplaceIntegrationError,
 	ErrorCodeBadUserInput,
 	ErrorCodeBillingPeriodMissingError,
 	ErrorCodeCannotArchiveFeatureError,
@@ -7451,7 +7530,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeBadUserInput, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanAlreadyExtended, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeBadUserInput, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanAlreadyExtended, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
 		return true
 	}
 	return false
@@ -8608,7 +8687,7 @@ func (e PriceSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Package pricing type.
+// Pricing Type.
 type PricingType string
 
 const (
@@ -8649,6 +8728,46 @@ func (e *PricingType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e PricingType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The type of the product integration
+type ProductIntegrationType string
+
+const (
+	ProductIntegrationTypeAWSMarketplace ProductIntegrationType = "AWSMarketplace"
+)
+
+var AllProductIntegrationType = []ProductIntegrationType{
+	ProductIntegrationTypeAWSMarketplace,
+}
+
+func (e ProductIntegrationType) IsValid() bool {
+	switch e {
+	case ProductIntegrationTypeAWSMarketplace:
+		return true
+	}
+	return false
+}
+
+func (e ProductIntegrationType) String() string {
+	return string(e)
+}
+
+func (e *ProductIntegrationType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ProductIntegrationType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ProductIntegrationType", str)
+	}
+	return nil
+}
+
+func (e ProductIntegrationType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -10107,12 +10226,14 @@ func (e UsageUpdateBehavior) MarshalGQL(w io.Writer) {
 type VendorIdentifier string
 
 const (
-	VendorIdentifierHubspot VendorIdentifier = "HUBSPOT"
-	VendorIdentifierStripe  VendorIdentifier = "STRIPE"
-	VendorIdentifierZuora   VendorIdentifier = "ZUORA"
+	VendorIdentifierAwsMarketplace VendorIdentifier = "AWS_MARKETPLACE"
+	VendorIdentifierHubspot        VendorIdentifier = "HUBSPOT"
+	VendorIdentifierStripe         VendorIdentifier = "STRIPE"
+	VendorIdentifierZuora          VendorIdentifier = "ZUORA"
 )
 
 var AllVendorIdentifier = []VendorIdentifier{
+	VendorIdentifierAwsMarketplace,
 	VendorIdentifierHubspot,
 	VendorIdentifierStripe,
 	VendorIdentifierZuora,
@@ -10120,7 +10241,7 @@ var AllVendorIdentifier = []VendorIdentifier{
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierHubspot, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAwsMarketplace, VendorIdentifierHubspot, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
