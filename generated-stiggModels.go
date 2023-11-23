@@ -5294,6 +5294,16 @@ type TrialedPlan struct {
 	ProductRefID *string `json:"productRefId"`
 }
 
+type TriggerSubscriptionMigrationInput struct {
+	EnvironmentID string  `json:"environmentId"`
+	RefID         string  `json:"refId"`
+	VersionNumber float64 `json:"versionNumber"`
+}
+
+type TriggerSubscriptionMigrationResult struct {
+	TaskID *string `json:"taskId"`
+}
+
 type TypographyConfiguration struct {
 	Body       *FontVariant `json:"body"`
 	FontFamily *string      `json:"fontFamily"`
