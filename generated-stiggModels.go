@@ -372,13 +372,14 @@ type AwsMarketplaceCredentialsInput struct {
 }
 
 type AwsProduct struct {
-	Description    string  `json:"description"`
-	LogoURL        *string `json:"logoUrl"`
-	ProductCode    string  `json:"productCode"`
-	ProductID      string  `json:"productId"`
-	StiggProductID *string `json:"stiggProductId"`
-	Title          string  `json:"title"`
-	Visibility     string  `json:"visibility"`
+	Description       string  `json:"description"`
+	LogoURL           *string `json:"logoUrl"`
+	ProductCode       string  `json:"productCode"`
+	ProductID         string  `json:"productId"`
+	StiggProductID    *string `json:"stiggProductId"`
+	StiggProductRefID *string `json:"stiggProductRefId"`
+	Title             string  `json:"title"`
+	Visibility        string  `json:"visibility"`
 }
 
 type BaseError struct {
