@@ -3421,35 +3421,36 @@ type PaywallProduct struct {
 }
 
 type Plan struct {
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
-	BasePlan              *Plan                  `json:"basePlan"`
-	BillingID             *string                `json:"billingId"`
-	BillingLinkURL        *string                `json:"billingLinkUrl"`
-	CompatibleAddons      []*Addon               `json:"compatibleAddons"`
-	CreatedAt             *string                `json:"createdAt"`
-	DefaultTrialConfig    *DefaultTrialConfig    `json:"defaultTrialConfig"`
-	Description           *string                `json:"description"`
-	DisplayName           string                 `json:"displayName"`
-	DraftDetails          *PackageDraftDetails   `json:"draftDetails"`
-	DraftSummary          *PackageDraftSummary   `json:"draftSummary"`
-	Entitlements          []*PackageEntitlement  `json:"entitlements"`
-	Environment           Environment            `json:"environment"`
-	EnvironmentID         string                 `json:"environmentId"`
-	HiddenFromWidgets     []WidgetType           `json:"hiddenFromWidgets"`
-	ID                    string                 `json:"id"`
-	InheritedEntitlements []*PackageEntitlement  `json:"inheritedEntitlements"`
-	IsLatest              *bool                  `json:"isLatest"`
-	IsParent              bool                   `json:"isParent"`
-	Prices                []*Price               `json:"prices"`
-	PricingType           *PricingType           `json:"pricingType"`
-	Product               Product                `json:"product"`
-	ProductID             *string                `json:"productId"`
-	RefID                 string                 `json:"refId"`
-	Status                PackageStatus          `json:"status"`
-	SyncStates            []*SyncState           `json:"syncStates"`
-	Type                  string                 `json:"type"`
-	UpdatedAt             *string                `json:"updatedAt"`
-	VersionNumber         int64                  `json:"versionNumber"`
+	AdditionalMetaData          map[string]interface{} `json:"additionalMetaData"`
+	AwsMarketplacePlanDimension *string                `json:"awsMarketplacePlanDimension"`
+	BasePlan                    *Plan                  `json:"basePlan"`
+	BillingID                   *string                `json:"billingId"`
+	BillingLinkURL              *string                `json:"billingLinkUrl"`
+	CompatibleAddons            []*Addon               `json:"compatibleAddons"`
+	CreatedAt                   *string                `json:"createdAt"`
+	DefaultTrialConfig          *DefaultTrialConfig    `json:"defaultTrialConfig"`
+	Description                 *string                `json:"description"`
+	DisplayName                 string                 `json:"displayName"`
+	DraftDetails                *PackageDraftDetails   `json:"draftDetails"`
+	DraftSummary                *PackageDraftSummary   `json:"draftSummary"`
+	Entitlements                []*PackageEntitlement  `json:"entitlements"`
+	Environment                 Environment            `json:"environment"`
+	EnvironmentID               string                 `json:"environmentId"`
+	HiddenFromWidgets           []WidgetType           `json:"hiddenFromWidgets"`
+	ID                          string                 `json:"id"`
+	InheritedEntitlements       []*PackageEntitlement  `json:"inheritedEntitlements"`
+	IsLatest                    *bool                  `json:"isLatest"`
+	IsParent                    bool                   `json:"isParent"`
+	Prices                      []*Price               `json:"prices"`
+	PricingType                 *PricingType           `json:"pricingType"`
+	Product                     Product                `json:"product"`
+	ProductID                   *string                `json:"productId"`
+	RefID                       string                 `json:"refId"`
+	Status                      PackageStatus          `json:"status"`
+	SyncStates                  []*SyncState           `json:"syncStates"`
+	Type                        string                 `json:"type"`
+	UpdatedAt                   *string                `json:"updatedAt"`
+	VersionNumber               int64                  `json:"versionNumber"`
 }
 
 type PlanAggregateGroupBy struct {
@@ -3564,16 +3565,18 @@ type PlanFilterAddonFilter struct {
 }
 
 type PlanFilterProductFilter struct {
-	And              []*PlanFilterProductFilter `json:"and,omitempty"`
-	CreatedAt        *DateFieldComparison       `json:"createdAt,omitempty"`
-	Description      *StringFieldComparison     `json:"description,omitempty"`
-	DisplayName      *StringFieldComparison     `json:"displayName,omitempty"`
-	EnvironmentID    *StringFieldComparison     `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison     `json:"id,omitempty"`
-	IsDefaultProduct *BooleanFieldComparison    `json:"isDefaultProduct,omitempty"`
-	Or               []*PlanFilterProductFilter `json:"or,omitempty"`
-	RefID            *StringFieldComparison     `json:"refId,omitempty"`
-	UpdatedAt        *DateFieldComparison       `json:"updatedAt,omitempty"`
+	And                       []*PlanFilterProductFilter `json:"and,omitempty"`
+	AwsMarketplaceProductCode *StringFieldComparison     `json:"awsMarketplaceProductCode,omitempty"`
+	AwsMarketplaceProductID   *StringFieldComparison     `json:"awsMarketplaceProductId,omitempty"`
+	CreatedAt                 *DateFieldComparison       `json:"createdAt,omitempty"`
+	Description               *StringFieldComparison     `json:"description,omitempty"`
+	DisplayName               *StringFieldComparison     `json:"displayName,omitempty"`
+	EnvironmentID             *StringFieldComparison     `json:"environmentId,omitempty"`
+	ID                        *StringFieldComparison     `json:"id,omitempty"`
+	IsDefaultProduct          *BooleanFieldComparison    `json:"isDefaultProduct,omitempty"`
+	Or                        []*PlanFilterProductFilter `json:"or,omitempty"`
+	RefID                     *StringFieldComparison     `json:"refId,omitempty"`
+	UpdatedAt                 *DateFieldComparison       `json:"updatedAt,omitempty"`
 }
 
 type PlanMaxAggregate struct {
@@ -3837,34 +3840,38 @@ type PricingTypeFilterComparison struct {
 }
 
 type Product struct {
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
-	Addons                []*Addon               `json:"addons"`
-	CreatedAt             string                 `json:"createdAt"`
-	Description           *string                `json:"description"`
-	DisplayName           *string                `json:"displayName"`
-	DowngradePlan         *Plan                  `json:"downgradePlan"`
-	Environment           *Environment           `json:"environment"`
-	EnvironmentID         string                 `json:"environmentId"`
-	HasSubscriptions      bool                   `json:"hasSubscriptions"`
-	ID                    string                 `json:"id"`
-	IsDefaultProduct      bool                   `json:"isDefaultProduct"`
-	MultipleSubscriptions bool                   `json:"multipleSubscriptions"`
-	Plans                 []*Plan                `json:"plans"`
-	ProductSettings       ProductSettings        `json:"productSettings"`
-	RefID                 string                 `json:"refId"`
-	SubscriptionStartPlan *Plan                  `json:"subscriptionStartPlan"`
-	UpdatedAt             string                 `json:"updatedAt"`
+	AdditionalMetaData        map[string]interface{} `json:"additionalMetaData"`
+	Addons                    []*Addon               `json:"addons"`
+	AwsMarketplaceProductCode *string                `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *string                `json:"awsMarketplaceProductId"`
+	CreatedAt                 string                 `json:"createdAt"`
+	Description               *string                `json:"description"`
+	DisplayName               *string                `json:"displayName"`
+	DowngradePlan             *Plan                  `json:"downgradePlan"`
+	Environment               *Environment           `json:"environment"`
+	EnvironmentID             string                 `json:"environmentId"`
+	HasSubscriptions          bool                   `json:"hasSubscriptions"`
+	ID                        string                 `json:"id"`
+	IsDefaultProduct          bool                   `json:"isDefaultProduct"`
+	MultipleSubscriptions     bool                   `json:"multipleSubscriptions"`
+	Plans                     []*Plan                `json:"plans"`
+	ProductSettings           ProductSettings        `json:"productSettings"`
+	RefID                     string                 `json:"refId"`
+	SubscriptionStartPlan     *Plan                  `json:"subscriptionStartPlan"`
+	UpdatedAt                 string                 `json:"updatedAt"`
 }
 
 type ProductAggregateGroupBy struct {
-	CreatedAt        *string `json:"createdAt"`
-	Description      *string `json:"description"`
-	DisplayName      *string `json:"displayName"`
-	EnvironmentID    *string `json:"environmentId"`
-	ID               *string `json:"id"`
-	IsDefaultProduct *bool   `json:"isDefaultProduct"`
-	RefID            *string `json:"refId"`
-	UpdatedAt        *string `json:"updatedAt"`
+	AwsMarketplaceProductCode *string `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *string `json:"awsMarketplaceProductId"`
+	CreatedAt                 *string `json:"createdAt"`
+	Description               *string `json:"description"`
+	DisplayName               *string `json:"displayName"`
+	EnvironmentID             *string `json:"environmentId"`
+	ID                        *string `json:"id"`
+	IsDefaultProduct          *bool   `json:"isDefaultProduct"`
+	RefID                     *string `json:"refId"`
+	UpdatedAt                 *string `json:"updatedAt"`
 }
 
 type ProductConnection struct {
@@ -3877,14 +3884,16 @@ type ProductConnection struct {
 }
 
 type ProductCountAggregate struct {
-	CreatedAt        *int64 `json:"createdAt"`
-	Description      *int64 `json:"description"`
-	DisplayName      *int64 `json:"displayName"`
-	EnvironmentID    *int64 `json:"environmentId"`
-	ID               *int64 `json:"id"`
-	IsDefaultProduct *int64 `json:"isDefaultProduct"`
-	RefID            *int64 `json:"refId"`
-	UpdatedAt        *int64 `json:"updatedAt"`
+	AwsMarketplaceProductCode *int64 `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *int64 `json:"awsMarketplaceProductId"`
+	CreatedAt                 *int64 `json:"createdAt"`
+	Description               *int64 `json:"description"`
+	DisplayName               *int64 `json:"displayName"`
+	EnvironmentID             *int64 `json:"environmentId"`
+	ID                        *int64 `json:"id"`
+	IsDefaultProduct          *int64 `json:"isDefaultProduct"`
+	RefID                     *int64 `json:"refId"`
+	UpdatedAt                 *int64 `json:"updatedAt"`
 }
 
 type ProductCreateInput struct {
@@ -3899,19 +3908,21 @@ type ProductCreateInput struct {
 }
 
 type ProductDeleteResponse struct {
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
-	Addons                []*Addon               `json:"addons"`
-	CreatedAt             *string                `json:"createdAt"`
-	Description           *string                `json:"description"`
-	DisplayName           *string                `json:"displayName"`
-	EnvironmentID         *string                `json:"environmentId"`
-	ID                    *string                `json:"id"`
-	IsDefaultProduct      *bool                  `json:"isDefaultProduct"`
-	MultipleSubscriptions *bool                  `json:"multipleSubscriptions"`
-	Plans                 []*Plan                `json:"plans"`
-	ProductSettings       *ProductSettings       `json:"productSettings"`
-	RefID                 *string                `json:"refId"`
-	UpdatedAt             *string                `json:"updatedAt"`
+	AdditionalMetaData        map[string]interface{} `json:"additionalMetaData"`
+	Addons                    []*Addon               `json:"addons"`
+	AwsMarketplaceProductCode *string                `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *string                `json:"awsMarketplaceProductId"`
+	CreatedAt                 *string                `json:"createdAt"`
+	Description               *string                `json:"description"`
+	DisplayName               *string                `json:"displayName"`
+	EnvironmentID             *string                `json:"environmentId"`
+	ID                        *string                `json:"id"`
+	IsDefaultProduct          *bool                  `json:"isDefaultProduct"`
+	MultipleSubscriptions     *bool                  `json:"multipleSubscriptions"`
+	Plans                     []*Plan                `json:"plans"`
+	ProductSettings           *ProductSettings       `json:"productSettings"`
+	RefID                     *string                `json:"refId"`
+	UpdatedAt                 *string                `json:"updatedAt"`
 }
 
 type ProductEdge struct {
@@ -3922,36 +3933,42 @@ type ProductEdge struct {
 }
 
 type ProductFilter struct {
-	And              []*ProductFilter        `json:"and,omitempty"`
-	CreatedAt        *DateFieldComparison    `json:"createdAt,omitempty"`
-	Description      *StringFieldComparison  `json:"description,omitempty"`
-	DisplayName      *StringFieldComparison  `json:"displayName,omitempty"`
-	EnvironmentID    *StringFieldComparison  `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison  `json:"id,omitempty"`
-	IsDefaultProduct *BooleanFieldComparison `json:"isDefaultProduct,omitempty"`
-	Or               []*ProductFilter        `json:"or,omitempty"`
-	RefID            *StringFieldComparison  `json:"refId,omitempty"`
-	UpdatedAt        *DateFieldComparison    `json:"updatedAt,omitempty"`
+	And                       []*ProductFilter        `json:"and,omitempty"`
+	AwsMarketplaceProductCode *StringFieldComparison  `json:"awsMarketplaceProductCode,omitempty"`
+	AwsMarketplaceProductID   *StringFieldComparison  `json:"awsMarketplaceProductId,omitempty"`
+	CreatedAt                 *DateFieldComparison    `json:"createdAt,omitempty"`
+	Description               *StringFieldComparison  `json:"description,omitempty"`
+	DisplayName               *StringFieldComparison  `json:"displayName,omitempty"`
+	EnvironmentID             *StringFieldComparison  `json:"environmentId,omitempty"`
+	ID                        *StringFieldComparison  `json:"id,omitempty"`
+	IsDefaultProduct          *BooleanFieldComparison `json:"isDefaultProduct,omitempty"`
+	Or                        []*ProductFilter        `json:"or,omitempty"`
+	RefID                     *StringFieldComparison  `json:"refId,omitempty"`
+	UpdatedAt                 *DateFieldComparison    `json:"updatedAt,omitempty"`
 }
 
 type ProductMaxAggregate struct {
-	CreatedAt     *string `json:"createdAt"`
-	Description   *string `json:"description"`
-	DisplayName   *string `json:"displayName"`
-	EnvironmentID *string `json:"environmentId"`
-	ID            *string `json:"id"`
-	RefID         *string `json:"refId"`
-	UpdatedAt     *string `json:"updatedAt"`
+	AwsMarketplaceProductCode *string `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *string `json:"awsMarketplaceProductId"`
+	CreatedAt                 *string `json:"createdAt"`
+	Description               *string `json:"description"`
+	DisplayName               *string `json:"displayName"`
+	EnvironmentID             *string `json:"environmentId"`
+	ID                        *string `json:"id"`
+	RefID                     *string `json:"refId"`
+	UpdatedAt                 *string `json:"updatedAt"`
 }
 
 type ProductMinAggregate struct {
-	CreatedAt     *string `json:"createdAt"`
-	Description   *string `json:"description"`
-	DisplayName   *string `json:"displayName"`
-	EnvironmentID *string `json:"environmentId"`
-	ID            *string `json:"id"`
-	RefID         *string `json:"refId"`
-	UpdatedAt     *string `json:"updatedAt"`
+	AwsMarketplaceProductCode *string `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *string `json:"awsMarketplaceProductId"`
+	CreatedAt                 *string `json:"createdAt"`
+	Description               *string `json:"description"`
+	DisplayName               *string `json:"displayName"`
+	EnvironmentID             *string `json:"environmentId"`
+	ID                        *string `json:"id"`
+	RefID                     *string `json:"refId"`
+	UpdatedAt                 *string `json:"updatedAt"`
 }
 
 type ProductSettings struct {
@@ -7619,6 +7636,7 @@ const (
 	EventLogTypePromotionalEntitlementUpdated                   EventLogType = "PROMOTIONAL_ENTITLEMENT_UPDATED"
 	EventLogTypeRecalculateEntitlementsTriggered                EventLogType = "RECALCULATE_ENTITLEMENTS_TRIGGERED"
 	EventLogTypeResyncIntegrationTriggered                      EventLogType = "RESYNC_INTEGRATION_TRIGGERED"
+	EventLogTypeSubscriptionsMigrated                           EventLogType = "SUBSCRIPTIONS_MIGRATED"
 	EventLogTypeSubscriptionCanceled                            EventLogType = "SUBSCRIPTION_CANCELED"
 	EventLogTypeSubscriptionCreated                             EventLogType = "SUBSCRIPTION_CREATED"
 	EventLogTypeSubscriptionExpired                             EventLogType = "SUBSCRIPTION_EXPIRED"
@@ -7676,6 +7694,7 @@ var AllEventLogType = []EventLogType{
 	EventLogTypePromotionalEntitlementUpdated,
 	EventLogTypeRecalculateEntitlementsTriggered,
 	EventLogTypeResyncIntegrationTriggered,
+	EventLogTypeSubscriptionsMigrated,
 	EventLogTypeSubscriptionCanceled,
 	EventLogTypeSubscriptionCreated,
 	EventLogTypeSubscriptionExpired,
@@ -7691,7 +7710,7 @@ var AllEventLogType = []EventLogType{
 
 func (e EventLogType) IsValid() bool {
 	switch e {
-	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
+	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeSubscriptionsMigrated, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
 		return true
 	}
 	return false
@@ -8789,17 +8808,21 @@ func (e ProductIntegrationType) MarshalGQL(w io.Writer) {
 type ProductSortFields string
 
 const (
-	ProductSortFieldsCreatedAt        ProductSortFields = "createdAt"
-	ProductSortFieldsDescription      ProductSortFields = "description"
-	ProductSortFieldsDisplayName      ProductSortFields = "displayName"
-	ProductSortFieldsEnvironmentID    ProductSortFields = "environmentId"
-	ProductSortFieldsID               ProductSortFields = "id"
-	ProductSortFieldsIsDefaultProduct ProductSortFields = "isDefaultProduct"
-	ProductSortFieldsRefID            ProductSortFields = "refId"
-	ProductSortFieldsUpdatedAt        ProductSortFields = "updatedAt"
+	ProductSortFieldsAwsMarketplaceProductCode ProductSortFields = "awsMarketplaceProductCode"
+	ProductSortFieldsAwsMarketplaceProductID   ProductSortFields = "awsMarketplaceProductId"
+	ProductSortFieldsCreatedAt                 ProductSortFields = "createdAt"
+	ProductSortFieldsDescription               ProductSortFields = "description"
+	ProductSortFieldsDisplayName               ProductSortFields = "displayName"
+	ProductSortFieldsEnvironmentID             ProductSortFields = "environmentId"
+	ProductSortFieldsID                        ProductSortFields = "id"
+	ProductSortFieldsIsDefaultProduct          ProductSortFields = "isDefaultProduct"
+	ProductSortFieldsRefID                     ProductSortFields = "refId"
+	ProductSortFieldsUpdatedAt                 ProductSortFields = "updatedAt"
 )
 
 var AllProductSortFields = []ProductSortFields{
+	ProductSortFieldsAwsMarketplaceProductCode,
+	ProductSortFieldsAwsMarketplaceProductID,
 	ProductSortFieldsCreatedAt,
 	ProductSortFieldsDescription,
 	ProductSortFieldsDisplayName,
@@ -8812,7 +8835,7 @@ var AllProductSortFields = []ProductSortFields{
 
 func (e ProductSortFields) IsValid() bool {
 	switch e {
-	case ProductSortFieldsCreatedAt, ProductSortFieldsDescription, ProductSortFieldsDisplayName, ProductSortFieldsEnvironmentID, ProductSortFieldsID, ProductSortFieldsIsDefaultProduct, ProductSortFieldsRefID, ProductSortFieldsUpdatedAt:
+	case ProductSortFieldsAwsMarketplaceProductCode, ProductSortFieldsAwsMarketplaceProductID, ProductSortFieldsCreatedAt, ProductSortFieldsDescription, ProductSortFieldsDisplayName, ProductSortFieldsEnvironmentID, ProductSortFieldsID, ProductSortFieldsIsDefaultProduct, ProductSortFieldsRefID, ProductSortFieldsUpdatedAt:
 		return true
 	}
 	return false
