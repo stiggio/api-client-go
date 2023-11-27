@@ -4677,6 +4677,7 @@ type SubscriptionBillingInfo struct {
 	BillingAddress          *BillingAddress        `json:"billingAddress,omitempty"`
 	ChargeOnBehalfOfAccount *string                `json:"chargeOnBehalfOfAccount,omitempty"`
 	CouponID                *string                `json:"couponId,omitempty"`
+	IsBackdated             *bool                  `json:"isBackdated,omitempty"`
 	Metadata                map[string]interface{} `json:"metadata,omitempty"`
 	TaxPercentage           *float64               `json:"taxPercentage,omitempty"`
 	TaxRateIds              []string               `json:"taxRateIds,omitempty"`
