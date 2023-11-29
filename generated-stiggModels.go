@@ -828,6 +828,7 @@ type CursorPaging struct {
 
 type Customer struct {
 	AdditionalMetaData                 map[string]interface{}    `json:"additionalMetaData"`
+	AwsMarketplaceCustomerID           *string                   `json:"awsMarketplaceCustomerId"`
 	BillingCurrency                    *Currency                 `json:"billingCurrency"`
 	BillingID                          *string                   `json:"billingId"`
 	BillingLinkURL                     *string                   `json:"billingLinkUrl"`
