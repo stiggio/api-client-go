@@ -858,6 +858,7 @@ type Customer struct {
 	Name                               *string                   `json:"name"`
 	PromotionalEntitlements            []*PromotionalEntitlement `json:"promotionalEntitlements"`
 	RefID                              string                    `json:"refId"`
+	Statistics                         *CustomerStatistics       `json:"statistics"`
 	Subscriptions                      []*CustomerSubscription   `json:"subscriptions"`
 	SyncStates                         []*SyncState              `json:"syncStates"`
 	TotalActivePromotionalEntitlements float64                   `json:"totalActivePromotionalEntitlements"`
@@ -1286,6 +1287,10 @@ type CustomerSort struct {
 	Direction SortDirection      `json:"direction"`
 	Field     CustomerSortFields `json:"field"`
 	Nulls     *SortNulls         `json:"nulls,omitempty"`
+}
+
+type CustomerStatistics struct {
+	ActiveSubscriptionsByPricingType []*SubscriptionPricingTypeStatistics `json:"activeSubscriptionsByPricingType"`
 }
 
 type CustomerSubscription struct {
@@ -5170,6 +5175,11 @@ type SubscriptionPriceSort struct {
 
 type SubscriptionPriceSumAggregate struct {
 	UsageLimit *float64 `json:"usageLimit"`
+}
+
+type SubscriptionPricingTypeStatistics struct {
+	PricingType PricingType `json:"pricingType"`
+	TotalCount  float64     `json:"totalCount"`
 }
 
 type SubscriptionScheduledUpdate struct {
