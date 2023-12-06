@@ -356,11 +356,6 @@ type AwsDimension struct {
 	Unit          string  `json:"unit"`
 }
 
-type AwsMarketplaceConfigurationInput struct {
-	AwsProductID      string                    `json:"awsProductId"`
-	DimensionsMapping []*DimensionsMappingInput `json:"dimensionsMapping"`
-}
-
 type AwsMarketplaceCredentials struct {
 	AwsRoleArn string `json:"awsRoleArn"`
 }
@@ -813,6 +808,19 @@ type CreateOneIntegrationInput struct {
 type CreateOneProductInput struct {
 	// The record to create
 	Product ProductCreateInput `json:"product"`
+}
+
+type CreateOrUpdateAwsMarketplaceProductInput struct {
+	AdditionalMetaData    map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	AwsDimensionsMapping  []*DimensionsMappingInput `json:"awsDimensionsMapping"`
+	AwsProductID          *string                   `json:"awsProductId,omitempty"`
+	Description           *string                   `json:"description,omitempty"`
+	DisplayName           *string                   `json:"displayName,omitempty"`
+	EnvironmentID         *string                   `json:"environmentId,omitempty"`
+	MultipleSubscriptions *bool                     `json:"multipleSubscriptions,omitempty"`
+	ProductID             *string                   `json:"productId,omitempty"`
+	ProductSettings       *ProductSettingsInput     `json:"productSettings,omitempty"`
+	RefID                 *string                   `json:"refId,omitempty"`
 }
 
 type CursorPaging struct {
@@ -3903,14 +3911,12 @@ type ProductCountAggregate struct {
 }
 
 type ProductCreateInput struct {
-	AdditionalMetaData          map[string]interface{}            `json:"additionalMetaData,omitempty"`
-	AwsMarketplaceConfiguration *AwsMarketplaceConfigurationInput `json:"awsMarketplaceConfiguration,omitempty"`
-	Description                 *string                           `json:"description,omitempty"`
-	DisplayName                 *string                           `json:"displayName,omitempty"`
-	EnvironmentID               string                            `json:"environmentId"`
-	IntegrationType             *ProductIntegrationType           `json:"integrationType,omitempty"`
-	MultipleSubscriptions       *bool                             `json:"multipleSubscriptions,omitempty"`
-	RefID                       string                            `json:"refId"`
+	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
+	Description           *string                `json:"description,omitempty"`
+	DisplayName           *string                `json:"displayName,omitempty"`
+	EnvironmentID         string                 `json:"environmentId"`
+	MultipleSubscriptions *bool                  `json:"multipleSubscriptions,omitempty"`
+	RefID                 string                 `json:"refId"`
 }
 
 type ProductDeleteResponse struct {
@@ -4003,12 +4009,11 @@ type ProductSort struct {
 }
 
 type ProductUpdateInput struct {
-	AdditionalMetaData          map[string]interface{}                  `json:"additionalMetaData,omitempty"`
-	AwsMarketplaceConfiguration *UpdateAwsMarketplaceConfigurationInput `json:"awsMarketplaceConfiguration,omitempty"`
-	Description                 *string                                 `json:"description,omitempty"`
-	DisplayName                 *string                                 `json:"displayName,omitempty"`
-	MultipleSubscriptions       *bool                                   `json:"multipleSubscriptions,omitempty"`
-	ProductSettings             *ProductSettingsInput                   `json:"productSettings,omitempty"`
+	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
+	Description           *string                `json:"description,omitempty"`
+	DisplayName           *string                `json:"displayName,omitempty"`
+	MultipleSubscriptions *bool                  `json:"multipleSubscriptions,omitempty"`
+	ProductSettings       *ProductSettingsInput  `json:"productSettings,omitempty"`
 }
 
 type PromotionCodeCustomerNotFirstPurchase struct {
@@ -5395,10 +5400,6 @@ type UpdateAccountInput struct {
 	SubscriptionBillingAnchor     *BillingAnchor     `json:"subscriptionBillingAnchor,omitempty"`
 	SubscriptionProrationBehavior *ProrationBehavior `json:"subscriptionProrationBehavior,omitempty"`
 	Timezone                      *string            `json:"timezone,omitempty"`
-}
-
-type UpdateAwsMarketplaceConfigurationInput struct {
-	DimensionsMapping []*DimensionsMappingInput `json:"dimensionsMapping"`
 }
 
 type UpdateCouponInput struct {
@@ -7368,6 +7369,7 @@ const (
 	ErrorCodeArchivedCouponCantBeApplied                      ErrorCode = "ArchivedCouponCantBeApplied"
 	ErrorCodeAuthCustomerMismatch                             ErrorCode = "AuthCustomerMismatch"
 	ErrorCodeAwsMarketplaceIntegrationError                   ErrorCode = "AwsMarketplaceIntegrationError"
+	ErrorCodeAwsMarketplaceIntegrationValidationError         ErrorCode = "AwsMarketplaceIntegrationValidationError"
 	ErrorCodeBadUserInput                                     ErrorCode = "BadUserInput"
 	ErrorCodeBillingPeriodMissingError                        ErrorCode = "BillingPeriodMissingError"
 	ErrorCodeCannotArchiveFeatureError                        ErrorCode = "CannotArchiveFeatureError"
@@ -7406,6 +7408,7 @@ const (
 	ErrorCodeImportSubscriptionsBulkError                     ErrorCode = "ImportSubscriptionsBulkError"
 	ErrorCodeInitStripePaymentMethodError                     ErrorCode = "InitStripePaymentMethodError"
 	ErrorCodeIntegrationNotFound                              ErrorCode = "IntegrationNotFound"
+	ErrorCodeIntegrationValidationError                       ErrorCode = "IntegrationValidationError"
 	ErrorCodeIntegrityViolation                               ErrorCode = "IntegrityViolation"
 	ErrorCodeInvalidAddressError                              ErrorCode = "InvalidAddressError"
 	ErrorCodeInvalidArgumentError                             ErrorCode = "InvalidArgumentError"
@@ -7474,6 +7477,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeArchivedCouponCantBeApplied,
 	ErrorCodeAuthCustomerMismatch,
 	ErrorCodeAwsMarketplaceIntegrationError,
+	ErrorCodeAwsMarketplaceIntegrationValidationError,
 	ErrorCodeBadUserInput,
 	ErrorCodeBillingPeriodMissingError,
 	ErrorCodeCannotArchiveFeatureError,
@@ -7512,6 +7516,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeImportSubscriptionsBulkError,
 	ErrorCodeInitStripePaymentMethodError,
 	ErrorCodeIntegrationNotFound,
+	ErrorCodeIntegrationValidationError,
 	ErrorCodeIntegrityViolation,
 	ErrorCodeInvalidAddressError,
 	ErrorCodeInvalidArgumentError,
@@ -7574,7 +7579,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeBadUserInput, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanAlreadyExtended, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanAlreadyExtended, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
 		return true
 	}
 	return false
@@ -8774,46 +8779,6 @@ func (e *PricingType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e PricingType) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
-}
-
-// The type of the product integration
-type ProductIntegrationType string
-
-const (
-	ProductIntegrationTypeAWSMarketplace ProductIntegrationType = "AWSMarketplace"
-)
-
-var AllProductIntegrationType = []ProductIntegrationType{
-	ProductIntegrationTypeAWSMarketplace,
-}
-
-func (e ProductIntegrationType) IsValid() bool {
-	switch e {
-	case ProductIntegrationTypeAWSMarketplace:
-		return true
-	}
-	return false
-}
-
-func (e ProductIntegrationType) String() string {
-	return string(e)
-}
-
-func (e *ProductIntegrationType) UnmarshalGQL(v interface{}) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = ProductIntegrationType(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid ProductIntegrationType", str)
-	}
-	return nil
-}
-
-func (e ProductIntegrationType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
