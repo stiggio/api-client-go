@@ -965,27 +965,29 @@ type CustomerFilter struct {
 }
 
 type CustomerFilterCustomerSubscriptionFilter struct {
-	And               []*CustomerFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	BillingID         *StringFieldComparison                      `json:"billingId,omitempty"`
-	CancelReason      *SubscriptionCancelReasonFilterComparison   `json:"cancelReason,omitempty"`
-	CancellationDate  *DateFieldComparison                        `json:"cancellationDate,omitempty"`
-	CreatedAt         *DateFieldComparison                        `json:"createdAt,omitempty"`
-	CrmID             *StringFieldComparison                      `json:"crmId,omitempty"`
-	CrmLinkURL        *StringFieldComparison                      `json:"crmLinkUrl,omitempty"`
-	EffectiveEndDate  *DateFieldComparison                        `json:"effectiveEndDate,omitempty"`
-	EndDate           *DateFieldComparison                        `json:"endDate,omitempty"`
-	EnvironmentID     *StringFieldComparison                      `json:"environmentId,omitempty"`
-	ID                *StringFieldComparison                      `json:"id,omitempty"`
-	OldBillingID      *StringFieldComparison                      `json:"oldBillingId,omitempty"`
-	Or                []*CustomerFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PaymentCollection *PaymentCollectionFilterComparison          `json:"paymentCollection,omitempty"`
-	PricingType       *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
-	RefID             *StringFieldComparison                      `json:"refId,omitempty"`
-	ResourceID        *StringFieldComparison                      `json:"resourceId,omitempty"`
-	StartDate         *DateFieldComparison                        `json:"startDate,omitempty"`
-	Status            *SubscriptionStatusFilterComparison         `json:"status,omitempty"`
-	SubscriptionID    *StringFieldComparison                      `json:"subscriptionId,omitempty"`
-	TrialEndDate      *DateFieldComparison                        `json:"trialEndDate,omitempty"`
+	And                       []*CustomerFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID                 *StringFieldComparison                      `json:"billingId,omitempty"`
+	CancelReason              *SubscriptionCancelReasonFilterComparison   `json:"cancelReason,omitempty"`
+	CancellationDate          *DateFieldComparison                        `json:"cancellationDate,omitempty"`
+	CreatedAt                 *DateFieldComparison                        `json:"createdAt,omitempty"`
+	CrmID                     *StringFieldComparison                      `json:"crmId,omitempty"`
+	CrmLinkURL                *StringFieldComparison                      `json:"crmLinkUrl,omitempty"`
+	CurrentBillingPeriodEnd   *DateFieldComparison                        `json:"currentBillingPeriodEnd,omitempty"`
+	CurrentBillingPeriodStart *DateFieldComparison                        `json:"currentBillingPeriodStart,omitempty"`
+	EffectiveEndDate          *DateFieldComparison                        `json:"effectiveEndDate,omitempty"`
+	EndDate                   *DateFieldComparison                        `json:"endDate,omitempty"`
+	EnvironmentID             *StringFieldComparison                      `json:"environmentId,omitempty"`
+	ID                        *StringFieldComparison                      `json:"id,omitempty"`
+	OldBillingID              *StringFieldComparison                      `json:"oldBillingId,omitempty"`
+	Or                        []*CustomerFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection         *PaymentCollectionFilterComparison          `json:"paymentCollection,omitempty"`
+	PricingType               *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
+	RefID                     *StringFieldComparison                      `json:"refId,omitempty"`
+	ResourceID                *StringFieldComparison                      `json:"resourceId,omitempty"`
+	StartDate                 *DateFieldComparison                        `json:"startDate,omitempty"`
+	Status                    *SubscriptionStatusFilterComparison         `json:"status,omitempty"`
+	SubscriptionID            *StringFieldComparison                      `json:"subscriptionId,omitempty"`
+	TrialEndDate              *DateFieldComparison                        `json:"trialEndDate,omitempty"`
 }
 
 type CustomerFilterPromotionalEntitlementFilter struct {
@@ -1246,27 +1248,29 @@ type CustomerResourceFilterCustomerFilter struct {
 }
 
 type CustomerResourceFilterCustomerSubscriptionFilter struct {
-	And               []*CustomerResourceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	BillingID         *StringFieldComparison                              `json:"billingId,omitempty"`
-	CancelReason      *SubscriptionCancelReasonFilterComparison           `json:"cancelReason,omitempty"`
-	CancellationDate  *DateFieldComparison                                `json:"cancellationDate,omitempty"`
-	CreatedAt         *DateFieldComparison                                `json:"createdAt,omitempty"`
-	CrmID             *StringFieldComparison                              `json:"crmId,omitempty"`
-	CrmLinkURL        *StringFieldComparison                              `json:"crmLinkUrl,omitempty"`
-	EffectiveEndDate  *DateFieldComparison                                `json:"effectiveEndDate,omitempty"`
-	EndDate           *DateFieldComparison                                `json:"endDate,omitempty"`
-	EnvironmentID     *StringFieldComparison                              `json:"environmentId,omitempty"`
-	ID                *StringFieldComparison                              `json:"id,omitempty"`
-	OldBillingID      *StringFieldComparison                              `json:"oldBillingId,omitempty"`
-	Or                []*CustomerResourceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PaymentCollection *PaymentCollectionFilterComparison                  `json:"paymentCollection,omitempty"`
-	PricingType       *PricingTypeFilterComparison                        `json:"pricingType,omitempty"`
-	RefID             *StringFieldComparison                              `json:"refId,omitempty"`
-	ResourceID        *StringFieldComparison                              `json:"resourceId,omitempty"`
-	StartDate         *DateFieldComparison                                `json:"startDate,omitempty"`
-	Status            *SubscriptionStatusFilterComparison                 `json:"status,omitempty"`
-	SubscriptionID    *StringFieldComparison                              `json:"subscriptionId,omitempty"`
-	TrialEndDate      *DateFieldComparison                                `json:"trialEndDate,omitempty"`
+	And                       []*CustomerResourceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID                 *StringFieldComparison                              `json:"billingId,omitempty"`
+	CancelReason              *SubscriptionCancelReasonFilterComparison           `json:"cancelReason,omitempty"`
+	CancellationDate          *DateFieldComparison                                `json:"cancellationDate,omitempty"`
+	CreatedAt                 *DateFieldComparison                                `json:"createdAt,omitempty"`
+	CrmID                     *StringFieldComparison                              `json:"crmId,omitempty"`
+	CrmLinkURL                *StringFieldComparison                              `json:"crmLinkUrl,omitempty"`
+	CurrentBillingPeriodEnd   *DateFieldComparison                                `json:"currentBillingPeriodEnd,omitempty"`
+	CurrentBillingPeriodStart *DateFieldComparison                                `json:"currentBillingPeriodStart,omitempty"`
+	EffectiveEndDate          *DateFieldComparison                                `json:"effectiveEndDate,omitempty"`
+	EndDate                   *DateFieldComparison                                `json:"endDate,omitempty"`
+	EnvironmentID             *StringFieldComparison                              `json:"environmentId,omitempty"`
+	ID                        *StringFieldComparison                              `json:"id,omitempty"`
+	OldBillingID              *StringFieldComparison                              `json:"oldBillingId,omitempty"`
+	Or                        []*CustomerResourceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection         *PaymentCollectionFilterComparison                  `json:"paymentCollection,omitempty"`
+	PricingType               *PricingTypeFilterComparison                        `json:"pricingType,omitempty"`
+	RefID                     *StringFieldComparison                              `json:"refId,omitempty"`
+	ResourceID                *StringFieldComparison                              `json:"resourceId,omitempty"`
+	StartDate                 *DateFieldComparison                                `json:"startDate,omitempty"`
+	Status                    *SubscriptionStatusFilterComparison                 `json:"status,omitempty"`
+	SubscriptionID            *StringFieldComparison                              `json:"subscriptionId,omitempty"`
+	TrialEndDate              *DateFieldComparison                                `json:"trialEndDate,omitempty"`
 }
 
 type CustomerResourceMaxAggregate struct {
@@ -1314,6 +1318,7 @@ type CustomerSubscription struct {
 	CrmID                     *string                         `json:"crmId"`
 	CrmLinkURL                *string                         `json:"crmLinkUrl"`
 	CurrentBillingPeriodEnd   *string                         `json:"currentBillingPeriodEnd"`
+	CurrentBillingPeriodStart *string                         `json:"currentBillingPeriodStart"`
 	Customer                  Customer                        `json:"customer"`
 	EffectiveEndDate          *string                         `json:"effectiveEndDate"`
 	EndDate                   *string                         `json:"endDate"`
@@ -1346,25 +1351,27 @@ type CustomerSubscription struct {
 }
 
 type CustomerSubscriptionAggregateGroupBy struct {
-	BillingID         *string                   `json:"billingId"`
-	CancelReason      *SubscriptionCancelReason `json:"cancelReason"`
-	CancellationDate  *string                   `json:"cancellationDate"`
-	CreatedAt         *string                   `json:"createdAt"`
-	CrmID             *string                   `json:"crmId"`
-	CrmLinkURL        *string                   `json:"crmLinkUrl"`
-	EffectiveEndDate  *string                   `json:"effectiveEndDate"`
-	EndDate           *string                   `json:"endDate"`
-	EnvironmentID     *string                   `json:"environmentId"`
-	ID                *string                   `json:"id"`
-	OldBillingID      *string                   `json:"oldBillingId"`
-	PaymentCollection *PaymentCollection        `json:"paymentCollection"`
-	PricingType       *PricingType              `json:"pricingType"`
-	RefID             *string                   `json:"refId"`
-	ResourceID        *string                   `json:"resourceId"`
-	StartDate         *string                   `json:"startDate"`
-	Status            *SubscriptionStatus       `json:"status"`
-	SubscriptionID    *string                   `json:"subscriptionId"`
-	TrialEndDate      *string                   `json:"trialEndDate"`
+	BillingID                 *string                   `json:"billingId"`
+	CancelReason              *SubscriptionCancelReason `json:"cancelReason"`
+	CancellationDate          *string                   `json:"cancellationDate"`
+	CreatedAt                 *string                   `json:"createdAt"`
+	CrmID                     *string                   `json:"crmId"`
+	CrmLinkURL                *string                   `json:"crmLinkUrl"`
+	CurrentBillingPeriodEnd   *string                   `json:"currentBillingPeriodEnd"`
+	CurrentBillingPeriodStart *string                   `json:"currentBillingPeriodStart"`
+	EffectiveEndDate          *string                   `json:"effectiveEndDate"`
+	EndDate                   *string                   `json:"endDate"`
+	EnvironmentID             *string                   `json:"environmentId"`
+	ID                        *string                   `json:"id"`
+	OldBillingID              *string                   `json:"oldBillingId"`
+	PaymentCollection         *PaymentCollection        `json:"paymentCollection"`
+	PricingType               *PricingType              `json:"pricingType"`
+	RefID                     *string                   `json:"refId"`
+	ResourceID                *string                   `json:"resourceId"`
+	StartDate                 *string                   `json:"startDate"`
+	Status                    *SubscriptionStatus       `json:"status"`
+	SubscriptionID            *string                   `json:"subscriptionId"`
+	TrialEndDate              *string                   `json:"trialEndDate"`
 }
 
 type CustomerSubscriptionConnection struct {
@@ -1377,25 +1384,27 @@ type CustomerSubscriptionConnection struct {
 }
 
 type CustomerSubscriptionCountAggregate struct {
-	BillingID         *int64 `json:"billingId"`
-	CancelReason      *int64 `json:"cancelReason"`
-	CancellationDate  *int64 `json:"cancellationDate"`
-	CreatedAt         *int64 `json:"createdAt"`
-	CrmID             *int64 `json:"crmId"`
-	CrmLinkURL        *int64 `json:"crmLinkUrl"`
-	EffectiveEndDate  *int64 `json:"effectiveEndDate"`
-	EndDate           *int64 `json:"endDate"`
-	EnvironmentID     *int64 `json:"environmentId"`
-	ID                *int64 `json:"id"`
-	OldBillingID      *int64 `json:"oldBillingId"`
-	PaymentCollection *int64 `json:"paymentCollection"`
-	PricingType       *int64 `json:"pricingType"`
-	RefID             *int64 `json:"refId"`
-	ResourceID        *int64 `json:"resourceId"`
-	StartDate         *int64 `json:"startDate"`
-	Status            *int64 `json:"status"`
-	SubscriptionID    *int64 `json:"subscriptionId"`
-	TrialEndDate      *int64 `json:"trialEndDate"`
+	BillingID                 *int64 `json:"billingId"`
+	CancelReason              *int64 `json:"cancelReason"`
+	CancellationDate          *int64 `json:"cancellationDate"`
+	CreatedAt                 *int64 `json:"createdAt"`
+	CrmID                     *int64 `json:"crmId"`
+	CrmLinkURL                *int64 `json:"crmLinkUrl"`
+	CurrentBillingPeriodEnd   *int64 `json:"currentBillingPeriodEnd"`
+	CurrentBillingPeriodStart *int64 `json:"currentBillingPeriodStart"`
+	EffectiveEndDate          *int64 `json:"effectiveEndDate"`
+	EndDate                   *int64 `json:"endDate"`
+	EnvironmentID             *int64 `json:"environmentId"`
+	ID                        *int64 `json:"id"`
+	OldBillingID              *int64 `json:"oldBillingId"`
+	PaymentCollection         *int64 `json:"paymentCollection"`
+	PricingType               *int64 `json:"pricingType"`
+	RefID                     *int64 `json:"refId"`
+	ResourceID                *int64 `json:"resourceId"`
+	StartDate                 *int64 `json:"startDate"`
+	Status                    *int64 `json:"status"`
+	SubscriptionID            *int64 `json:"subscriptionId"`
+	TrialEndDate              *int64 `json:"trialEndDate"`
 }
 
 type CustomerSubscriptionEdge struct {
@@ -1406,33 +1415,35 @@ type CustomerSubscriptionEdge struct {
 }
 
 type CustomerSubscriptionFilter struct {
-	Addons                   *CustomerSubscriptionFilterSubscriptionAddonFilter       `json:"addons,omitempty"`
-	And                      []*CustomerSubscriptionFilter                            `json:"and,omitempty"`
-	BillingID                *StringFieldComparison                                   `json:"billingId,omitempty"`
-	CancelReason             *SubscriptionCancelReasonFilterComparison                `json:"cancelReason,omitempty"`
-	CancellationDate         *DateFieldComparison                                     `json:"cancellationDate,omitempty"`
-	CreatedAt                *DateFieldComparison                                     `json:"createdAt,omitempty"`
-	CrmID                    *StringFieldComparison                                   `json:"crmId,omitempty"`
-	CrmLinkURL               *StringFieldComparison                                   `json:"crmLinkUrl,omitempty"`
-	Customer                 *CustomerSubscriptionFilterCustomerFilter                `json:"customer,omitempty"`
-	EffectiveEndDate         *DateFieldComparison                                     `json:"effectiveEndDate,omitempty"`
-	EndDate                  *DateFieldComparison                                     `json:"endDate,omitempty"`
-	EnvironmentID            *StringFieldComparison                                   `json:"environmentId,omitempty"`
-	ID                       *StringFieldComparison                                   `json:"id,omitempty"`
-	OldBillingID             *StringFieldComparison                                   `json:"oldBillingId,omitempty"`
-	Or                       []*CustomerSubscriptionFilter                            `json:"or,omitempty"`
-	PaymentCollection        *PaymentCollectionFilterComparison                       `json:"paymentCollection,omitempty"`
-	Plan                     *CustomerSubscriptionFilterPlanFilter                    `json:"plan,omitempty"`
-	Prices                   *CustomerSubscriptionFilterSubscriptionPriceFilter       `json:"prices,omitempty"`
-	PricingType              *PricingTypeFilterComparison                             `json:"pricingType,omitempty"`
-	RefID                    *StringFieldComparison                                   `json:"refId,omitempty"`
-	Resource                 *CustomerSubscriptionFilterCustomerResourceFilter        `json:"resource,omitempty"`
-	ResourceID               *StringFieldComparison                                   `json:"resourceId,omitempty"`
-	StartDate                *DateFieldComparison                                     `json:"startDate,omitempty"`
-	Status                   *SubscriptionStatusFilterComparison                      `json:"status,omitempty"`
-	SubscriptionEntitlements *CustomerSubscriptionFilterSubscriptionEntitlementFilter `json:"subscriptionEntitlements,omitempty"`
-	SubscriptionID           *StringFieldComparison                                   `json:"subscriptionId,omitempty"`
-	TrialEndDate             *DateFieldComparison                                     `json:"trialEndDate,omitempty"`
+	Addons                    *CustomerSubscriptionFilterSubscriptionAddonFilter       `json:"addons,omitempty"`
+	And                       []*CustomerSubscriptionFilter                            `json:"and,omitempty"`
+	BillingID                 *StringFieldComparison                                   `json:"billingId,omitempty"`
+	CancelReason              *SubscriptionCancelReasonFilterComparison                `json:"cancelReason,omitempty"`
+	CancellationDate          *DateFieldComparison                                     `json:"cancellationDate,omitempty"`
+	CreatedAt                 *DateFieldComparison                                     `json:"createdAt,omitempty"`
+	CrmID                     *StringFieldComparison                                   `json:"crmId,omitempty"`
+	CrmLinkURL                *StringFieldComparison                                   `json:"crmLinkUrl,omitempty"`
+	CurrentBillingPeriodEnd   *DateFieldComparison                                     `json:"currentBillingPeriodEnd,omitempty"`
+	CurrentBillingPeriodStart *DateFieldComparison                                     `json:"currentBillingPeriodStart,omitempty"`
+	Customer                  *CustomerSubscriptionFilterCustomerFilter                `json:"customer,omitempty"`
+	EffectiveEndDate          *DateFieldComparison                                     `json:"effectiveEndDate,omitempty"`
+	EndDate                   *DateFieldComparison                                     `json:"endDate,omitempty"`
+	EnvironmentID             *StringFieldComparison                                   `json:"environmentId,omitempty"`
+	ID                        *StringFieldComparison                                   `json:"id,omitempty"`
+	OldBillingID              *StringFieldComparison                                   `json:"oldBillingId,omitempty"`
+	Or                        []*CustomerSubscriptionFilter                            `json:"or,omitempty"`
+	PaymentCollection         *PaymentCollectionFilterComparison                       `json:"paymentCollection,omitempty"`
+	Plan                      *CustomerSubscriptionFilterPlanFilter                    `json:"plan,omitempty"`
+	Prices                    *CustomerSubscriptionFilterSubscriptionPriceFilter       `json:"prices,omitempty"`
+	PricingType               *PricingTypeFilterComparison                             `json:"pricingType,omitempty"`
+	RefID                     *StringFieldComparison                                   `json:"refId,omitempty"`
+	Resource                  *CustomerSubscriptionFilterCustomerResourceFilter        `json:"resource,omitempty"`
+	ResourceID                *StringFieldComparison                                   `json:"resourceId,omitempty"`
+	StartDate                 *DateFieldComparison                                     `json:"startDate,omitempty"`
+	Status                    *SubscriptionStatusFilterComparison                      `json:"status,omitempty"`
+	SubscriptionEntitlements  *CustomerSubscriptionFilterSubscriptionEntitlementFilter `json:"subscriptionEntitlements,omitempty"`
+	SubscriptionID            *StringFieldComparison                                   `json:"subscriptionId,omitempty"`
+	TrialEndDate              *DateFieldComparison                                     `json:"trialEndDate,omitempty"`
 }
 
 type CustomerSubscriptionFilterCustomerFilter struct {
@@ -1511,47 +1522,51 @@ type CustomerSubscriptionFilterSubscriptionPriceFilter struct {
 }
 
 type CustomerSubscriptionMaxAggregate struct {
-	BillingID         *string                   `json:"billingId"`
-	CancelReason      *SubscriptionCancelReason `json:"cancelReason"`
-	CancellationDate  *string                   `json:"cancellationDate"`
-	CreatedAt         *string                   `json:"createdAt"`
-	CrmID             *string                   `json:"crmId"`
-	CrmLinkURL        *string                   `json:"crmLinkUrl"`
-	EffectiveEndDate  *string                   `json:"effectiveEndDate"`
-	EndDate           *string                   `json:"endDate"`
-	EnvironmentID     *string                   `json:"environmentId"`
-	ID                *string                   `json:"id"`
-	OldBillingID      *string                   `json:"oldBillingId"`
-	PaymentCollection *PaymentCollection        `json:"paymentCollection"`
-	PricingType       *PricingType              `json:"pricingType"`
-	RefID             *string                   `json:"refId"`
-	ResourceID        *string                   `json:"resourceId"`
-	StartDate         *string                   `json:"startDate"`
-	Status            *SubscriptionStatus       `json:"status"`
-	SubscriptionID    *string                   `json:"subscriptionId"`
-	TrialEndDate      *string                   `json:"trialEndDate"`
+	BillingID                 *string                   `json:"billingId"`
+	CancelReason              *SubscriptionCancelReason `json:"cancelReason"`
+	CancellationDate          *string                   `json:"cancellationDate"`
+	CreatedAt                 *string                   `json:"createdAt"`
+	CrmID                     *string                   `json:"crmId"`
+	CrmLinkURL                *string                   `json:"crmLinkUrl"`
+	CurrentBillingPeriodEnd   *string                   `json:"currentBillingPeriodEnd"`
+	CurrentBillingPeriodStart *string                   `json:"currentBillingPeriodStart"`
+	EffectiveEndDate          *string                   `json:"effectiveEndDate"`
+	EndDate                   *string                   `json:"endDate"`
+	EnvironmentID             *string                   `json:"environmentId"`
+	ID                        *string                   `json:"id"`
+	OldBillingID              *string                   `json:"oldBillingId"`
+	PaymentCollection         *PaymentCollection        `json:"paymentCollection"`
+	PricingType               *PricingType              `json:"pricingType"`
+	RefID                     *string                   `json:"refId"`
+	ResourceID                *string                   `json:"resourceId"`
+	StartDate                 *string                   `json:"startDate"`
+	Status                    *SubscriptionStatus       `json:"status"`
+	SubscriptionID            *string                   `json:"subscriptionId"`
+	TrialEndDate              *string                   `json:"trialEndDate"`
 }
 
 type CustomerSubscriptionMinAggregate struct {
-	BillingID         *string                   `json:"billingId"`
-	CancelReason      *SubscriptionCancelReason `json:"cancelReason"`
-	CancellationDate  *string                   `json:"cancellationDate"`
-	CreatedAt         *string                   `json:"createdAt"`
-	CrmID             *string                   `json:"crmId"`
-	CrmLinkURL        *string                   `json:"crmLinkUrl"`
-	EffectiveEndDate  *string                   `json:"effectiveEndDate"`
-	EndDate           *string                   `json:"endDate"`
-	EnvironmentID     *string                   `json:"environmentId"`
-	ID                *string                   `json:"id"`
-	OldBillingID      *string                   `json:"oldBillingId"`
-	PaymentCollection *PaymentCollection        `json:"paymentCollection"`
-	PricingType       *PricingType              `json:"pricingType"`
-	RefID             *string                   `json:"refId"`
-	ResourceID        *string                   `json:"resourceId"`
-	StartDate         *string                   `json:"startDate"`
-	Status            *SubscriptionStatus       `json:"status"`
-	SubscriptionID    *string                   `json:"subscriptionId"`
-	TrialEndDate      *string                   `json:"trialEndDate"`
+	BillingID                 *string                   `json:"billingId"`
+	CancelReason              *SubscriptionCancelReason `json:"cancelReason"`
+	CancellationDate          *string                   `json:"cancellationDate"`
+	CreatedAt                 *string                   `json:"createdAt"`
+	CrmID                     *string                   `json:"crmId"`
+	CrmLinkURL                *string                   `json:"crmLinkUrl"`
+	CurrentBillingPeriodEnd   *string                   `json:"currentBillingPeriodEnd"`
+	CurrentBillingPeriodStart *string                   `json:"currentBillingPeriodStart"`
+	EffectiveEndDate          *string                   `json:"effectiveEndDate"`
+	EndDate                   *string                   `json:"endDate"`
+	EnvironmentID             *string                   `json:"environmentId"`
+	ID                        *string                   `json:"id"`
+	OldBillingID              *string                   `json:"oldBillingId"`
+	PaymentCollection         *PaymentCollection        `json:"paymentCollection"`
+	PricingType               *PricingType              `json:"pricingType"`
+	RefID                     *string                   `json:"refId"`
+	ResourceID                *string                   `json:"resourceId"`
+	StartDate                 *string                   `json:"startDate"`
+	Status                    *SubscriptionStatus       `json:"status"`
+	SubscriptionID            *string                   `json:"subscriptionId"`
+	TrialEndDate              *string                   `json:"trialEndDate"`
 }
 
 type CustomerSubscriptionSort struct {
@@ -4623,27 +4638,29 @@ type SubscriptionAddonFilterAddonFilter struct {
 }
 
 type SubscriptionAddonFilterCustomerSubscriptionFilter struct {
-	And               []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	BillingID         *StringFieldComparison                               `json:"billingId,omitempty"`
-	CancelReason      *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
-	CancellationDate  *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
-	CreatedAt         *DateFieldComparison                                 `json:"createdAt,omitempty"`
-	CrmID             *StringFieldComparison                               `json:"crmId,omitempty"`
-	CrmLinkURL        *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
-	EffectiveEndDate  *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
-	EndDate           *DateFieldComparison                                 `json:"endDate,omitempty"`
-	EnvironmentID     *StringFieldComparison                               `json:"environmentId,omitempty"`
-	ID                *StringFieldComparison                               `json:"id,omitempty"`
-	OldBillingID      *StringFieldComparison                               `json:"oldBillingId,omitempty"`
-	Or                []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PaymentCollection *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
-	PricingType       *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
-	RefID             *StringFieldComparison                               `json:"refId,omitempty"`
-	ResourceID        *StringFieldComparison                               `json:"resourceId,omitempty"`
-	StartDate         *DateFieldComparison                                 `json:"startDate,omitempty"`
-	Status            *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
-	SubscriptionID    *StringFieldComparison                               `json:"subscriptionId,omitempty"`
-	TrialEndDate      *DateFieldComparison                                 `json:"trialEndDate,omitempty"`
+	And                       []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID                 *StringFieldComparison                               `json:"billingId,omitempty"`
+	CancelReason              *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
+	CancellationDate          *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
+	CreatedAt                 *DateFieldComparison                                 `json:"createdAt,omitempty"`
+	CrmID                     *StringFieldComparison                               `json:"crmId,omitempty"`
+	CrmLinkURL                *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
+	CurrentBillingPeriodEnd   *DateFieldComparison                                 `json:"currentBillingPeriodEnd,omitempty"`
+	CurrentBillingPeriodStart *DateFieldComparison                                 `json:"currentBillingPeriodStart,omitempty"`
+	EffectiveEndDate          *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
+	EndDate                   *DateFieldComparison                                 `json:"endDate,omitempty"`
+	EnvironmentID             *StringFieldComparison                               `json:"environmentId,omitempty"`
+	ID                        *StringFieldComparison                               `json:"id,omitempty"`
+	OldBillingID              *StringFieldComparison                               `json:"oldBillingId,omitempty"`
+	Or                        []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection         *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
+	PricingType               *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
+	RefID                     *StringFieldComparison                               `json:"refId,omitempty"`
+	ResourceID                *StringFieldComparison                               `json:"resourceId,omitempty"`
+	StartDate                 *DateFieldComparison                                 `json:"startDate,omitempty"`
+	Status                    *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
+	SubscriptionID            *StringFieldComparison                               `json:"subscriptionId,omitempty"`
+	TrialEndDate              *DateFieldComparison                                 `json:"trialEndDate,omitempty"`
 }
 
 type SubscriptionAddonFilterPriceFilter struct {
@@ -4797,27 +4814,29 @@ type SubscriptionEntitlementFilter struct {
 }
 
 type SubscriptionEntitlementFilterCustomerSubscriptionFilter struct {
-	And               []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	BillingID         *StringFieldComparison                                     `json:"billingId,omitempty"`
-	CancelReason      *SubscriptionCancelReasonFilterComparison                  `json:"cancelReason,omitempty"`
-	CancellationDate  *DateFieldComparison                                       `json:"cancellationDate,omitempty"`
-	CreatedAt         *DateFieldComparison                                       `json:"createdAt,omitempty"`
-	CrmID             *StringFieldComparison                                     `json:"crmId,omitempty"`
-	CrmLinkURL        *StringFieldComparison                                     `json:"crmLinkUrl,omitempty"`
-	EffectiveEndDate  *DateFieldComparison                                       `json:"effectiveEndDate,omitempty"`
-	EndDate           *DateFieldComparison                                       `json:"endDate,omitempty"`
-	EnvironmentID     *StringFieldComparison                                     `json:"environmentId,omitempty"`
-	ID                *StringFieldComparison                                     `json:"id,omitempty"`
-	OldBillingID      *StringFieldComparison                                     `json:"oldBillingId,omitempty"`
-	Or                []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PaymentCollection *PaymentCollectionFilterComparison                         `json:"paymentCollection,omitempty"`
-	PricingType       *PricingTypeFilterComparison                               `json:"pricingType,omitempty"`
-	RefID             *StringFieldComparison                                     `json:"refId,omitempty"`
-	ResourceID        *StringFieldComparison                                     `json:"resourceId,omitempty"`
-	StartDate         *DateFieldComparison                                       `json:"startDate,omitempty"`
-	Status            *SubscriptionStatusFilterComparison                        `json:"status,omitempty"`
-	SubscriptionID    *StringFieldComparison                                     `json:"subscriptionId,omitempty"`
-	TrialEndDate      *DateFieldComparison                                       `json:"trialEndDate,omitempty"`
+	And                       []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID                 *StringFieldComparison                                     `json:"billingId,omitempty"`
+	CancelReason              *SubscriptionCancelReasonFilterComparison                  `json:"cancelReason,omitempty"`
+	CancellationDate          *DateFieldComparison                                       `json:"cancellationDate,omitempty"`
+	CreatedAt                 *DateFieldComparison                                       `json:"createdAt,omitempty"`
+	CrmID                     *StringFieldComparison                                     `json:"crmId,omitempty"`
+	CrmLinkURL                *StringFieldComparison                                     `json:"crmLinkUrl,omitempty"`
+	CurrentBillingPeriodEnd   *DateFieldComparison                                       `json:"currentBillingPeriodEnd,omitempty"`
+	CurrentBillingPeriodStart *DateFieldComparison                                       `json:"currentBillingPeriodStart,omitempty"`
+	EffectiveEndDate          *DateFieldComparison                                       `json:"effectiveEndDate,omitempty"`
+	EndDate                   *DateFieldComparison                                       `json:"endDate,omitempty"`
+	EnvironmentID             *StringFieldComparison                                     `json:"environmentId,omitempty"`
+	ID                        *StringFieldComparison                                     `json:"id,omitempty"`
+	OldBillingID              *StringFieldComparison                                     `json:"oldBillingId,omitempty"`
+	Or                        []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection         *PaymentCollectionFilterComparison                         `json:"paymentCollection,omitempty"`
+	PricingType               *PricingTypeFilterComparison                               `json:"pricingType,omitempty"`
+	RefID                     *StringFieldComparison                                     `json:"refId,omitempty"`
+	ResourceID                *StringFieldComparison                                     `json:"resourceId,omitempty"`
+	StartDate                 *DateFieldComparison                                       `json:"startDate,omitempty"`
+	Status                    *SubscriptionStatusFilterComparison                        `json:"status,omitempty"`
+	SubscriptionID            *StringFieldComparison                                     `json:"subscriptionId,omitempty"`
+	TrialEndDate              *DateFieldComparison                                       `json:"trialEndDate,omitempty"`
 }
 
 type SubscriptionEntitlementFilterFeatureFilter struct {
@@ -5119,27 +5138,29 @@ type SubscriptionPriceFilter struct {
 }
 
 type SubscriptionPriceFilterCustomerSubscriptionFilter struct {
-	And               []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
-	BillingID         *StringFieldComparison                               `json:"billingId,omitempty"`
-	CancelReason      *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
-	CancellationDate  *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
-	CreatedAt         *DateFieldComparison                                 `json:"createdAt,omitempty"`
-	CrmID             *StringFieldComparison                               `json:"crmId,omitempty"`
-	CrmLinkURL        *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
-	EffectiveEndDate  *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
-	EndDate           *DateFieldComparison                                 `json:"endDate,omitempty"`
-	EnvironmentID     *StringFieldComparison                               `json:"environmentId,omitempty"`
-	ID                *StringFieldComparison                               `json:"id,omitempty"`
-	OldBillingID      *StringFieldComparison                               `json:"oldBillingId,omitempty"`
-	Or                []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PaymentCollection *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
-	PricingType       *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
-	RefID             *StringFieldComparison                               `json:"refId,omitempty"`
-	ResourceID        *StringFieldComparison                               `json:"resourceId,omitempty"`
-	StartDate         *DateFieldComparison                                 `json:"startDate,omitempty"`
-	Status            *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
-	SubscriptionID    *StringFieldComparison                               `json:"subscriptionId,omitempty"`
-	TrialEndDate      *DateFieldComparison                                 `json:"trialEndDate,omitempty"`
+	And                       []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingID                 *StringFieldComparison                               `json:"billingId,omitempty"`
+	CancelReason              *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
+	CancellationDate          *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
+	CreatedAt                 *DateFieldComparison                                 `json:"createdAt,omitempty"`
+	CrmID                     *StringFieldComparison                               `json:"crmId,omitempty"`
+	CrmLinkURL                *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
+	CurrentBillingPeriodEnd   *DateFieldComparison                                 `json:"currentBillingPeriodEnd,omitempty"`
+	CurrentBillingPeriodStart *DateFieldComparison                                 `json:"currentBillingPeriodStart,omitempty"`
+	EffectiveEndDate          *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
+	EndDate                   *DateFieldComparison                                 `json:"endDate,omitempty"`
+	EnvironmentID             *StringFieldComparison                               `json:"environmentId,omitempty"`
+	ID                        *StringFieldComparison                               `json:"id,omitempty"`
+	OldBillingID              *StringFieldComparison                               `json:"oldBillingId,omitempty"`
+	Or                        []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PaymentCollection         *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
+	PricingType               *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
+	RefID                     *StringFieldComparison                               `json:"refId,omitempty"`
+	ResourceID                *StringFieldComparison                               `json:"resourceId,omitempty"`
+	StartDate                 *DateFieldComparison                                 `json:"startDate,omitempty"`
+	Status                    *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
+	SubscriptionID            *StringFieldComparison                               `json:"subscriptionId,omitempty"`
+	TrialEndDate              *DateFieldComparison                                 `json:"trialEndDate,omitempty"`
 }
 
 type SubscriptionPriceFilterPriceFilter struct {
@@ -6978,25 +6999,27 @@ func (e CustomerSortFields) MarshalGQL(w io.Writer) {
 type CustomerSubscriptionSortFields string
 
 const (
-	CustomerSubscriptionSortFieldsBillingID         CustomerSubscriptionSortFields = "billingId"
-	CustomerSubscriptionSortFieldsCancelReason      CustomerSubscriptionSortFields = "cancelReason"
-	CustomerSubscriptionSortFieldsCancellationDate  CustomerSubscriptionSortFields = "cancellationDate"
-	CustomerSubscriptionSortFieldsCreatedAt         CustomerSubscriptionSortFields = "createdAt"
-	CustomerSubscriptionSortFieldsCrmID             CustomerSubscriptionSortFields = "crmId"
-	CustomerSubscriptionSortFieldsCrmLinkURL        CustomerSubscriptionSortFields = "crmLinkUrl"
-	CustomerSubscriptionSortFieldsEffectiveEndDate  CustomerSubscriptionSortFields = "effectiveEndDate"
-	CustomerSubscriptionSortFieldsEndDate           CustomerSubscriptionSortFields = "endDate"
-	CustomerSubscriptionSortFieldsEnvironmentID     CustomerSubscriptionSortFields = "environmentId"
-	CustomerSubscriptionSortFieldsID                CustomerSubscriptionSortFields = "id"
-	CustomerSubscriptionSortFieldsOldBillingID      CustomerSubscriptionSortFields = "oldBillingId"
-	CustomerSubscriptionSortFieldsPaymentCollection CustomerSubscriptionSortFields = "paymentCollection"
-	CustomerSubscriptionSortFieldsPricingType       CustomerSubscriptionSortFields = "pricingType"
-	CustomerSubscriptionSortFieldsRefID             CustomerSubscriptionSortFields = "refId"
-	CustomerSubscriptionSortFieldsResourceID        CustomerSubscriptionSortFields = "resourceId"
-	CustomerSubscriptionSortFieldsStartDate         CustomerSubscriptionSortFields = "startDate"
-	CustomerSubscriptionSortFieldsStatus            CustomerSubscriptionSortFields = "status"
-	CustomerSubscriptionSortFieldsSubscriptionID    CustomerSubscriptionSortFields = "subscriptionId"
-	CustomerSubscriptionSortFieldsTrialEndDate      CustomerSubscriptionSortFields = "trialEndDate"
+	CustomerSubscriptionSortFieldsBillingID                 CustomerSubscriptionSortFields = "billingId"
+	CustomerSubscriptionSortFieldsCancelReason              CustomerSubscriptionSortFields = "cancelReason"
+	CustomerSubscriptionSortFieldsCancellationDate          CustomerSubscriptionSortFields = "cancellationDate"
+	CustomerSubscriptionSortFieldsCreatedAt                 CustomerSubscriptionSortFields = "createdAt"
+	CustomerSubscriptionSortFieldsCrmID                     CustomerSubscriptionSortFields = "crmId"
+	CustomerSubscriptionSortFieldsCrmLinkURL                CustomerSubscriptionSortFields = "crmLinkUrl"
+	CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd   CustomerSubscriptionSortFields = "currentBillingPeriodEnd"
+	CustomerSubscriptionSortFieldsCurrentBillingPeriodStart CustomerSubscriptionSortFields = "currentBillingPeriodStart"
+	CustomerSubscriptionSortFieldsEffectiveEndDate          CustomerSubscriptionSortFields = "effectiveEndDate"
+	CustomerSubscriptionSortFieldsEndDate                   CustomerSubscriptionSortFields = "endDate"
+	CustomerSubscriptionSortFieldsEnvironmentID             CustomerSubscriptionSortFields = "environmentId"
+	CustomerSubscriptionSortFieldsID                        CustomerSubscriptionSortFields = "id"
+	CustomerSubscriptionSortFieldsOldBillingID              CustomerSubscriptionSortFields = "oldBillingId"
+	CustomerSubscriptionSortFieldsPaymentCollection         CustomerSubscriptionSortFields = "paymentCollection"
+	CustomerSubscriptionSortFieldsPricingType               CustomerSubscriptionSortFields = "pricingType"
+	CustomerSubscriptionSortFieldsRefID                     CustomerSubscriptionSortFields = "refId"
+	CustomerSubscriptionSortFieldsResourceID                CustomerSubscriptionSortFields = "resourceId"
+	CustomerSubscriptionSortFieldsStartDate                 CustomerSubscriptionSortFields = "startDate"
+	CustomerSubscriptionSortFieldsStatus                    CustomerSubscriptionSortFields = "status"
+	CustomerSubscriptionSortFieldsSubscriptionID            CustomerSubscriptionSortFields = "subscriptionId"
+	CustomerSubscriptionSortFieldsTrialEndDate              CustomerSubscriptionSortFields = "trialEndDate"
 )
 
 var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
@@ -7006,6 +7029,8 @@ var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
 	CustomerSubscriptionSortFieldsCreatedAt,
 	CustomerSubscriptionSortFieldsCrmID,
 	CustomerSubscriptionSortFieldsCrmLinkURL,
+	CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd,
+	CustomerSubscriptionSortFieldsCurrentBillingPeriodStart,
 	CustomerSubscriptionSortFieldsEffectiveEndDate,
 	CustomerSubscriptionSortFieldsEndDate,
 	CustomerSubscriptionSortFieldsEnvironmentID,
@@ -7023,7 +7048,7 @@ var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
 
 func (e CustomerSubscriptionSortFields) IsValid() bool {
 	switch e {
-	case CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
+	case CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd, CustomerSubscriptionSortFieldsCurrentBillingPeriodStart, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
 		return true
 	}
 	return false
