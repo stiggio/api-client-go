@@ -1688,12 +1688,11 @@ type DowngradeChangeVariables struct {
 func (DowngradeChangeVariables) IsScheduleVariables() {}
 
 type DuplicateProductInput struct {
-	BillingDisplayName *string `json:"billingDisplayName,omitempty"`
-	Description        *string `json:"description,omitempty"`
-	DisplayName        *string `json:"displayName,omitempty"`
-	EnvironmentID      string  `json:"environmentId"`
-	RefID              string  `json:"refId"`
-	SourceProductID    string  `json:"sourceProductId"`
+	Description     *string `json:"description,omitempty"`
+	DisplayName     *string `json:"displayName,omitempty"`
+	EnvironmentID   string  `json:"environmentId"`
+	RefID           string  `json:"refId"`
+	SourceProductID string  `json:"sourceProductId"`
 }
 
 type DuplicatedEntityNotAllowedError struct {
