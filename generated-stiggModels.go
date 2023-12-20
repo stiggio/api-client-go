@@ -2997,7 +2997,8 @@ type NumberFieldComparisonBetween struct {
 }
 
 type PackageAlreadyPublishedError struct {
-	Code string `json:"code"`
+	Code              string `json:"code"`
+	IsValidationError bool   `json:"isValidationError"`
 }
 
 type PackageChanges struct {
@@ -5394,6 +5395,7 @@ type TypographyConfigurationInput struct {
 
 type UnPublishedPackageError struct {
 	Code                   string   `json:"code"`
+	IsValidationError      bool     `json:"isValidationError"`
 	NonPublishedPackageIds []string `json:"nonPublishedPackageIds"`
 	PackageType            string   `json:"packageType"`
 }
@@ -7408,6 +7410,7 @@ const (
 	ErrorCodeAddonHasToHavePriceError                         ErrorCode = "AddonHasToHavePriceError"
 	ErrorCodeAddonNotFound                                    ErrorCode = "AddonNotFound"
 	ErrorCodeAddonWithDraftCannotBeDeletedError               ErrorCode = "AddonWithDraftCannotBeDeletedError"
+	ErrorCodeAmountTooLarge                                   ErrorCode = "AmountTooLarge"
 	ErrorCodeArchivedCouponCantBeApplied                      ErrorCode = "ArchivedCouponCantBeApplied"
 	ErrorCodeAuthCustomerMismatch                             ErrorCode = "AuthCustomerMismatch"
 	ErrorCodeAwsMarketplaceIntegrationError                   ErrorCode = "AwsMarketplaceIntegrationError"
@@ -7473,7 +7476,6 @@ const (
 	ErrorCodePackageAlreadyPublished                          ErrorCode = "PackageAlreadyPublished"
 	ErrorCodePackagePricingTypeNotSet                         ErrorCode = "PackagePricingTypeNotSet"
 	ErrorCodePaymentMethodNotFoundError                       ErrorCode = "PaymentMethodNotFoundError"
-	ErrorCodePlanAlreadyExtended                              ErrorCode = "PlanAlreadyExtended"
 	ErrorCodePlanCannotBePublishWhenBasePlanIsDraft           ErrorCode = "PlanCannotBePublishWhenBasePlanIsDraft"
 	ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft    ErrorCode = "PlanCannotBePublishWhenCompatibleAddonIsDraft"
 	ErrorCodePlanIsUsedAsDefaultStartPlan                     ErrorCode = "PlanIsUsedAsDefaultStartPlan"
@@ -7517,6 +7519,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeAddonHasToHavePriceError,
 	ErrorCodeAddonNotFound,
 	ErrorCodeAddonWithDraftCannotBeDeletedError,
+	ErrorCodeAmountTooLarge,
 	ErrorCodeArchivedCouponCantBeApplied,
 	ErrorCodeAuthCustomerMismatch,
 	ErrorCodeAwsMarketplaceIntegrationError,
@@ -7582,7 +7585,6 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodePackageAlreadyPublished,
 	ErrorCodePackagePricingTypeNotSet,
 	ErrorCodePaymentMethodNotFoundError,
-	ErrorCodePlanAlreadyExtended,
 	ErrorCodePlanCannotBePublishWhenBasePlanIsDraft,
 	ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft,
 	ErrorCodePlanIsUsedAsDefaultStartPlan,
@@ -7623,7 +7625,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanAlreadyExtended, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
 		return true
 	}
 	return false
