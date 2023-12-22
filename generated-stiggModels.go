@@ -2801,6 +2801,14 @@ type InvalidSubscriptionStatus struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+type InvoiceLine struct {
+	Amount      float64 `json:"amount"`
+	Currency    string  `json:"currency"`
+	Description *string `json:"description"`
+	Proration   bool    `json:"proration"`
+	Quantity    *int64  `json:"quantity"`
+}
+
 type ListAwsProductDimensionsDto struct {
 	Dimensions []*AwsDimension `json:"dimensions"`
 }
@@ -4928,14 +4936,26 @@ type SubscriptionInput struct {
 }
 
 type SubscriptionInvoice struct {
-	BillingID      string                    `json:"billingId"`
-	CreatedAt      string                    `json:"createdAt"`
-	ErrorMessage   *string                   `json:"errorMessage"`
-	PaymentSecret  *string                   `json:"paymentSecret"`
-	PaymentURL     *string                   `json:"paymentUrl"`
-	RequiresAction bool                      `json:"requiresAction"`
-	Status         SubscriptionInvoiceStatus `json:"status"`
-	UpdatedAt      string                    `json:"updatedAt"`
+	AmountDue            *float64                  `json:"amountDue"`
+	AppliedBalance       *float64                  `json:"appliedBalance"`
+	BillingID            string                    `json:"billingId"`
+	CreatedAt            string                    `json:"createdAt"`
+	Currency             *string                   `json:"currency"`
+	EndingBalance        *float64                  `json:"endingBalance"`
+	ErrorMessage         *string                   `json:"errorMessage"`
+	Lines                []*InvoiceLine            `json:"lines"`
+	PaymentSecret        *string                   `json:"paymentSecret"`
+	PaymentURL           *string                   `json:"paymentUrl"`
+	PDFURL               *string                   `json:"pdfUrl"`
+	RequiresAction       bool                      `json:"requiresAction"`
+	StartingBalance      *float64                  `json:"startingBalance"`
+	Status               SubscriptionInvoiceStatus `json:"status"`
+	SubTotal             *float64                  `json:"subTotal"`
+	SubTotalExcludingTax *float64                  `json:"subTotalExcludingTax"`
+	Tax                  *float64                  `json:"tax"`
+	Total                *float64                  `json:"total"`
+	TotalExcludingTax    *float64                  `json:"totalExcludingTax"`
+	UpdatedAt            string                    `json:"updatedAt"`
 }
 
 type SubscriptionMigrationInput struct {
