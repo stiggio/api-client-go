@@ -5642,6 +5642,7 @@ type UsageEvent struct {
 	Dimensions map[string]interface{} `json:"dimensions"`
 	EventName  string                 `json:"eventName"`
 	ID         string                 `json:"id"`
+	ResourceID *string                `json:"resourceId"`
 	Timestamp  string                 `json:"timestamp"`
 }
 
