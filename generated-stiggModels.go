@@ -287,6 +287,7 @@ type APIKeySort struct {
 }
 
 type ApplySubscription struct {
+	Entitlements []*Entitlement        `json:"entitlements"`
 	Subscription *CustomerSubscription `json:"subscription"`
 }
 
@@ -4323,6 +4324,7 @@ type ProvisionSubscriptionInput struct {
 type ProvisionSubscriptionResult struct {
 	CheckoutBillingID *string                     `json:"checkoutBillingId"`
 	CheckoutURL       *string                     `json:"checkoutUrl"`
+	Entitlements      []*Entitlement              `json:"entitlements"`
 	ID                string                      `json:"id"`
 	IsScheduled       *bool                       `json:"isScheduled"`
 	Status            ProvisionSubscriptionStatus `json:"status"`
@@ -4331,6 +4333,7 @@ type ProvisionSubscriptionResult struct {
 
 type ProvisionedCustomer struct {
 	Customer                     Customer                     `json:"customer"`
+	Entitlements                 []*Entitlement               `json:"entitlements"`
 	Subscription                 *CustomerSubscription        `json:"subscription"`
 	SubscriptionDecisionStrategy SubscriptionDecisionStrategy `json:"subscriptionDecisionStrategy"`
 	SubscriptionStrategyDecision SubscriptionDecisionStrategy `json:"subscriptionStrategyDecision"`
