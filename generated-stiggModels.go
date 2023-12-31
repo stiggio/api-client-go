@@ -1755,6 +1755,7 @@ type EntitlementCheckResult struct {
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type EntitlementFeature struct {
@@ -2374,6 +2375,7 @@ type GrantPromotionalEntitlementInput struct {
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type GrantPromotionalEntitlementsInput struct {
@@ -3225,6 +3227,7 @@ type PackageEntitlementInput struct {
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type PackageEntitlementMaxAggregate struct {
@@ -3260,6 +3263,7 @@ type PackageEntitlementUpdateInput struct {
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type PackagePrice struct {
@@ -4176,6 +4180,7 @@ type PromotionalEntitlementInput struct {
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type PromotionalEntitlementMaxAggregate struct {
@@ -4877,6 +4882,7 @@ type SubscriptionEntitlementInput struct {
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type SubscriptionEntitlementMaxAggregate struct {
@@ -5617,6 +5623,7 @@ type UpdateSubscriptionEntitlementInput struct {
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type UpdateSubscriptionInput struct {
@@ -5688,6 +5695,7 @@ type UsageHistoryInput struct {
 	ResourceRefID                   *string                        `json:"resourceRefId,omitempty"`
 	StartDate                       string                         `json:"startDate"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type UsageMeasurement struct {
@@ -5891,6 +5899,16 @@ type WidgetConfigurationUpdateInput struct {
 	CustomerPortalConfiguration *CustomerPortalConfigurationInput `json:"customerPortalConfiguration,omitempty"`
 	EnvironmentID               *string                           `json:"environmentId,omitempty"`
 	PaywallConfiguration        *PaywallConfigurationInput        `json:"paywallConfiguration,omitempty"`
+}
+
+type YearlyResetPeriodConfig struct {
+	YearlyAccordingTo *YearlyAccordingTo `json:"yearlyAccordingTo"`
+}
+
+func (YearlyResetPeriodConfig) IsResetPeriodConfiguration() {}
+
+type YearlyResetPeriodConfigInput struct {
+	AccordingTo YearlyAccordingTo `json:"accordingTo"`
 }
 
 type ZuoraCredentials struct {
@@ -7254,6 +7272,7 @@ const (
 	EntitlementResetPeriodHour  EntitlementResetPeriod = "HOUR"
 	EntitlementResetPeriodMonth EntitlementResetPeriod = "MONTH"
 	EntitlementResetPeriodWeek  EntitlementResetPeriod = "WEEK"
+	EntitlementResetPeriodYear  EntitlementResetPeriod = "YEAR"
 )
 
 var AllEntitlementResetPeriod = []EntitlementResetPeriod{
@@ -7261,11 +7280,12 @@ var AllEntitlementResetPeriod = []EntitlementResetPeriod{
 	EntitlementResetPeriodHour,
 	EntitlementResetPeriodMonth,
 	EntitlementResetPeriodWeek,
+	EntitlementResetPeriodYear,
 }
 
 func (e EntitlementResetPeriod) IsValid() bool {
 	switch e {
-	case EntitlementResetPeriodDay, EntitlementResetPeriodHour, EntitlementResetPeriodMonth, EntitlementResetPeriodWeek:
+	case EntitlementResetPeriodDay, EntitlementResetPeriodHour, EntitlementResetPeriodMonth, EntitlementResetPeriodWeek, EntitlementResetPeriodYear:
 		return true
 	}
 	return false
@@ -8414,7 +8434,7 @@ func (e MeterType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Montly reset period according to configuration
+// Monthly reset period according to configuration
 type MonthlyAccordingTo string
 
 const (
@@ -10452,6 +10472,46 @@ func (e *WidgetType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e WidgetType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Yearly reset period according to configuration
+type YearlyAccordingTo string
+
+const (
+	YearlyAccordingToSubscriptionStart YearlyAccordingTo = "SubscriptionStart"
+)
+
+var AllYearlyAccordingTo = []YearlyAccordingTo{
+	YearlyAccordingToSubscriptionStart,
+}
+
+func (e YearlyAccordingTo) IsValid() bool {
+	switch e {
+	case YearlyAccordingToSubscriptionStart:
+		return true
+	}
+	return false
+}
+
+func (e YearlyAccordingTo) String() string {
+	return string(e)
+}
+
+func (e *YearlyAccordingTo) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = YearlyAccordingTo(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid YearlyAccordingTo", str)
+	}
+	return nil
+}
+
+func (e YearlyAccordingTo) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
