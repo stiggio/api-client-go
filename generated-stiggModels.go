@@ -4401,6 +4401,20 @@ type RemoveExperimentFromCustomerSubscriptionInput struct {
 	RelationID string `json:"relationId"`
 }
 
+type ReportUsageBaseInput struct {
+	CreatedAt      *string              `json:"createdAt,omitempty"`
+	CustomerID     string               `json:"customerId"`
+	FeatureID      string               `json:"featureId"`
+	ResourceID     *string              `json:"resourceId,omitempty"`
+	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
+	Value          float64              `json:"value"`
+}
+
+type ReportUsageBulkInput struct {
+	EnvironmentID *string                 `json:"environmentId,omitempty"`
+	Usages        []*ReportUsageBaseInput `json:"usages"`
+}
+
 type ReportUsageInput struct {
 	CreatedAt      *string              `json:"createdAt,omitempty"`
 	CustomerID     string               `json:"customerId"`
