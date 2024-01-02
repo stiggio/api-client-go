@@ -5856,6 +5856,7 @@ type UsageMeasurementWithCurrentUsage struct {
 	FeatureID     string   `json:"featureId"`
 	ID            string   `json:"id"`
 	NextResetDate *string  `json:"nextResetDate"`
+	ResourceID    *string  `json:"resourceId"`
 	Timestamp     string   `json:"timestamp"`
 	Value         float64  `json:"value"`
 }
