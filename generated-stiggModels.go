@@ -4349,10 +4349,9 @@ type PublishPackageResult struct {
 }
 
 type RecalculateEntitlementsInput struct {
-	CustomerIds           []string `json:"customerIds,omitempty"`
-	EnvironmentID         string   `json:"environmentId"`
-	ForAllCustomers       *bool    `json:"forAllCustomers,omitempty"`
-	LastCalculationBefore *string  `json:"lastCalculationBefore,omitempty"`
+	CustomerIds     []string `json:"customerIds,omitempty"`
+	EnvironmentID   string   `json:"environmentId"`
+	ForAllCustomers *bool    `json:"forAllCustomers,omitempty"`
 }
 
 type RecalculateEntitlementsResult struct {
@@ -10132,19 +10131,21 @@ func (e TaskStatus) MarshalGQL(w io.Writer) {
 type TaskType string
 
 const (
-	TaskTypeImportIntegrationCatalog   TaskType = "IMPORT_INTEGRATION_CATALOG"
-	TaskTypeImportIntegrationCustomers TaskType = "IMPORT_INTEGRATION_CUSTOMERS"
-	TaskTypeImportSubscriptionsBulk    TaskType = "IMPORT_SUBSCRIPTIONS_BULK"
-	TaskTypeRecalculateEntitlements    TaskType = "RECALCULATE_ENTITLEMENTS"
-	TaskTypeResyncIntegration          TaskType = "RESYNC_INTEGRATION"
-	TaskTypeSubscriptionMigration      TaskType = "SUBSCRIPTION_MIGRATION"
-	TaskTypeSubscriptionMigrationV2    TaskType = "SUBSCRIPTION_MIGRATION_V2"
+	TaskTypeImportIntegrationCatalog     TaskType = "IMPORT_INTEGRATION_CATALOG"
+	TaskTypeImportIntegrationCustomers   TaskType = "IMPORT_INTEGRATION_CUSTOMERS"
+	TaskTypeImportSubscriptionsBulk      TaskType = "IMPORT_SUBSCRIPTIONS_BULK"
+	TaskTypeRecalculateBatchEntitlements TaskType = "RECALCULATE_BATCH_ENTITLEMENTS"
+	TaskTypeRecalculateEntitlements      TaskType = "RECALCULATE_ENTITLEMENTS"
+	TaskTypeResyncIntegration            TaskType = "RESYNC_INTEGRATION"
+	TaskTypeSubscriptionMigration        TaskType = "SUBSCRIPTION_MIGRATION"
+	TaskTypeSubscriptionMigrationV2      TaskType = "SUBSCRIPTION_MIGRATION_V2"
 )
 
 var AllTaskType = []TaskType{
 	TaskTypeImportIntegrationCatalog,
 	TaskTypeImportIntegrationCustomers,
 	TaskTypeImportSubscriptionsBulk,
+	TaskTypeRecalculateBatchEntitlements,
 	TaskTypeRecalculateEntitlements,
 	TaskTypeResyncIntegration,
 	TaskTypeSubscriptionMigration,
@@ -10153,7 +10154,7 @@ var AllTaskType = []TaskType{
 
 func (e TaskType) IsValid() bool {
 	switch e {
-	case TaskTypeImportIntegrationCatalog, TaskTypeImportIntegrationCustomers, TaskTypeImportSubscriptionsBulk, TaskTypeRecalculateEntitlements, TaskTypeResyncIntegration, TaskTypeSubscriptionMigration, TaskTypeSubscriptionMigrationV2:
+	case TaskTypeImportIntegrationCatalog, TaskTypeImportIntegrationCustomers, TaskTypeImportSubscriptionsBulk, TaskTypeRecalculateBatchEntitlements, TaskTypeRecalculateEntitlements, TaskTypeResyncIntegration, TaskTypeSubscriptionMigration, TaskTypeSubscriptionMigrationV2:
 		return true
 	}
 	return false
