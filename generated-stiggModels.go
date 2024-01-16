@@ -3880,13 +3880,13 @@ type PriceSort struct {
 }
 
 type PriceTier struct {
-	UnitPrice Money   `json:"unitPrice"`
-	UpTo      float64 `json:"upTo"`
+	UnitPrice Money    `json:"unitPrice"`
+	UpTo      *float64 `json:"upTo"`
 }
 
 type PriceTierInput struct {
 	UnitPrice MoneyInputDto `json:"unitPrice"`
-	UpTo      float64       `json:"upTo"`
+	UpTo      *float64      `json:"upTo,omitempty"`
 }
 
 type PricingModelCreateInput struct {
