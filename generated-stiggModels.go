@@ -3308,11 +3308,12 @@ type PackagePriceChange struct {
 }
 
 type PackagePricingInput struct {
-	EnvironmentID string                     `json:"environmentId"`
-	PackageID     string                     `json:"packageId"`
-	PricingModel  *PricingModelCreateInput   `json:"pricingModel,omitempty"`
-	PricingModels []*PricingModelCreateInput `json:"pricingModels,omitempty"`
-	PricingType   PricingType                `json:"pricingType"`
+	EnvironmentID       string                     `json:"environmentId"`
+	PackageID           string                     `json:"packageId"`
+	PricingModel        *PricingModelCreateInput   `json:"pricingModel,omitempty"`
+	PricingModels       []*PricingModelCreateInput `json:"pricingModels,omitempty"`
+	PricingType         PricingType                `json:"pricingType"`
+	SkipPatchVolumeBulk *bool                      `json:"skipPatchVolumeBulk,omitempty"`
 }
 
 type PackagePricingTypeNotSetError struct {
@@ -3880,13 +3881,15 @@ type PriceSort struct {
 }
 
 type PriceTier struct {
-	UnitPrice Money    `json:"unitPrice"`
+	FlatPrice *Money   `json:"flatPrice"`
+	UnitPrice *Money   `json:"unitPrice"`
 	UpTo      *float64 `json:"upTo"`
 }
 
 type PriceTierInput struct {
-	UnitPrice MoneyInputDto `json:"unitPrice"`
-	UpTo      *float64      `json:"upTo,omitempty"`
+	FlatPrice *MoneyInputDto `json:"flatPrice,omitempty"`
+	UnitPrice *MoneyInputDto `json:"unitPrice,omitempty"`
+	UpTo      *float64       `json:"upTo,omitempty"`
 }
 
 type PricingModelCreateInput struct {
