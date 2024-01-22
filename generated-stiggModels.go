@@ -10235,20 +10235,18 @@ func (e TaskType) MarshalGQL(w io.Writer) {
 type TiersMode string
 
 const (
-	TiersModeGraduated     TiersMode = "GRADUATED"
-	TiersModeVolume        TiersMode = "VOLUME"
-	TiersModeVolumePerUnit TiersMode = "VOLUME_PER_UNIT"
+	TiersModeGraduated TiersMode = "GRADUATED"
+	TiersModeVolume    TiersMode = "VOLUME"
 )
 
 var AllTiersMode = []TiersMode{
 	TiersModeGraduated,
 	TiersModeVolume,
-	TiersModeVolumePerUnit,
 }
 
 func (e TiersMode) IsValid() bool {
 	switch e {
-	case TiersModeGraduated, TiersModeVolume, TiersModeVolumePerUnit:
+	case TiersModeGraduated, TiersModeVolume:
 		return true
 	}
 	return false
