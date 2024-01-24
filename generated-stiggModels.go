@@ -2370,6 +2370,7 @@ type GetPaywallInput struct {
 	CustomerID              *string     `json:"customerId,omitempty"`
 	EnvironmentID           *string     `json:"environmentId,omitempty"`
 	FetchAllCountriesPrices *bool       `json:"fetchAllCountriesPrices,omitempty"`
+	IncludeHiddenPlans      *bool       `json:"includeHiddenPlans,omitempty"`
 	ProductID               *string     `json:"productId,omitempty"`
 	ResourceID              *string     `json:"resourceId,omitempty"`
 }
