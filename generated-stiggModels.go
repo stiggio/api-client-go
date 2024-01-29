@@ -64,6 +64,7 @@ type Addon struct {
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
 	ID                 string                 `json:"id"`
 	IsLatest           *bool                  `json:"isLatest"`
+	OveragePrices      []*Price               `json:"overagePrices"`
 	Prices             []*Price               `json:"prices"`
 	PricingType        *PricingType           `json:"pricingType"`
 	Product            *Product               `json:"product"`
@@ -156,6 +157,7 @@ type AddonDeleteResponse struct {
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
 	ID                 *string                `json:"id"`
 	IsLatest           *bool                  `json:"isLatest"`
+	OveragePrices      []*Price               `json:"overagePrices"`
 	Prices             []*Price               `json:"prices"`
 	PricingType        *PricingType           `json:"pricingType"`
 	ProductID          *string                `json:"productId"`
@@ -3039,6 +3041,28 @@ type NumberFieldComparisonBetween struct {
 	Upper float64 `json:"upper"`
 }
 
+type OverageEntitlementCreateInput struct {
+	Description                     *string                        `json:"description,omitempty"`
+	DisplayNameOverride             *string                        `json:"displayNameOverride,omitempty"`
+	FeatureID                       string                         `json:"featureId"`
+	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
+	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
+	IsCustom                        *bool                          `json:"isCustom,omitempty"`
+	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	Order                           *float64                       `json:"order,omitempty"`
+	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
+	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+}
+
+type OveragePricingModelCreateInput struct {
+	BillingModel BillingModel                   `json:"billingModel"`
+	Entitlement  *OverageEntitlementCreateInput `json:"entitlement,omitempty"`
+	FeatureID    *string                        `json:"featureId,omitempty"`
+	PricePeriods []*PricePeriodInput            `json:"pricePeriods"`
+}
+
 type PackageAlreadyPublishedError struct {
 	Code              string `json:"code"`
 	IsValidationError bool   `json:"isValidationError"`
@@ -3072,6 +3096,7 @@ type PackageDto struct {
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
 	ID                 string                 `json:"id"`
 	IsLatest           *bool                  `json:"isLatest"`
+	OveragePrices      []*Price               `json:"overagePrices"`
 	Prices             []*Price               `json:"prices"`
 	PricingType        *PricingType           `json:"pricingType"`
 	ProductID          *string                `json:"productId"`
@@ -3310,12 +3335,13 @@ type PackagePriceChange struct {
 }
 
 type PackagePricingInput struct {
-	EnvironmentID       string                     `json:"environmentId"`
-	PackageID           string                     `json:"packageId"`
-	PricingModel        *PricingModelCreateInput   `json:"pricingModel,omitempty"`
-	PricingModels       []*PricingModelCreateInput `json:"pricingModels,omitempty"`
-	PricingType         PricingType                `json:"pricingType"`
-	SkipPatchVolumeBulk *bool                      `json:"skipPatchVolumeBulk,omitempty"`
+	EnvironmentID        string                            `json:"environmentId"`
+	OveragePricingModels []*OveragePricingModelCreateInput `json:"overagePricingModels,omitempty"`
+	PackageID            string                            `json:"packageId"`
+	PricingModel         *PricingModelCreateInput          `json:"pricingModel,omitempty"`
+	PricingModels        []*PricingModelCreateInput        `json:"pricingModels,omitempty"`
+	PricingType          PricingType                       `json:"pricingType"`
+	SkipPatchVolumeBulk  *bool                             `json:"skipPatchVolumeBulk,omitempty"`
 }
 
 type PackagePricingTypeNotSetError struct {
@@ -3526,6 +3552,7 @@ type Plan struct {
 	InheritedEntitlements       []*PackageEntitlement  `json:"inheritedEntitlements"`
 	IsLatest                    *bool                  `json:"isLatest"`
 	IsParent                    bool                   `json:"isParent"`
+	OveragePrices               []*Price               `json:"overagePrices"`
 	Prices                      []*Price               `json:"prices"`
 	PricingType                 *PricingType           `json:"pricingType"`
 	Product                     Product                `json:"product"`
