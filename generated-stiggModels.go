@@ -735,6 +735,7 @@ type CreateEnvironment struct {
 	ID                        *string                     `json:"id,omitempty"`
 	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
 	Slug                      *string                     `json:"slug,omitempty"`
+	Type                      *EnvironmentType            `json:"type,omitempty"`
 }
 
 type CreateEnvironmentOptions struct {
@@ -7505,6 +7506,50 @@ func (e *EnvironmentSortFields) UnmarshalGQL(v interface{}) error {
 }
 
 func (e EnvironmentSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// EnvironmentType.
+type EnvironmentType string
+
+const (
+	EnvironmentTypeDevelopment EnvironmentType = "DEVELOPMENT"
+	EnvironmentTypeProduction  EnvironmentType = "PRODUCTION"
+	EnvironmentTypeSandbox     EnvironmentType = "SANDBOX"
+)
+
+var AllEnvironmentType = []EnvironmentType{
+	EnvironmentTypeDevelopment,
+	EnvironmentTypeProduction,
+	EnvironmentTypeSandbox,
+}
+
+func (e EnvironmentType) IsValid() bool {
+	switch e {
+	case EnvironmentTypeDevelopment, EnvironmentTypeProduction, EnvironmentTypeSandbox:
+		return true
+	}
+	return false
+}
+
+func (e EnvironmentType) String() string {
+	return string(e)
+}
+
+func (e *EnvironmentType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EnvironmentType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EnvironmentType", str)
+	}
+	return nil
+}
+
+func (e EnvironmentType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
