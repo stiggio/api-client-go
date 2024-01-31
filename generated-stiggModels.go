@@ -1743,6 +1743,7 @@ type Entitlement struct {
 	DisplayNameOverride      *string                  `json:"displayNameOverride"`
 	EntitlementUpdatedAt     *string                  `json:"entitlementUpdatedAt"`
 	Feature                  *EntitlementFeature      `json:"feature"`
+	HasSoftLimit             bool                     `json:"hasSoftLimit"`
 	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
 	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
 	IsGranted                bool                     `json:"isGranted"`
@@ -1820,6 +1821,7 @@ type EntitlementWithSummary struct {
 	DisplayNameOverride      *string                  `json:"displayNameOverride"`
 	EntitlementUpdatedAt     *string                  `json:"entitlementUpdatedAt"`
 	Feature                  *EntitlementFeature      `json:"feature"`
+	HasSoftLimit             bool                     `json:"hasSoftLimit"`
 	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
 	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
 	IsGranted                bool                     `json:"isGranted"`
@@ -3846,6 +3848,7 @@ type PriceEntitlement struct {
 	Description              *string                  `json:"description"`
 	Feature                  Feature                  `json:"feature"`
 	FeatureID                string                   `json:"featureId"`
+	HasSoftLimit             bool                     `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
 	Package                  PackageDto               `json:"package"`
 	PackageID                string                   `json:"packageId"`
@@ -4166,6 +4169,7 @@ type PromotionalEntitlement struct {
 	EnvironmentID            string                       `json:"environmentId"`
 	Feature                  Feature                      `json:"feature"`
 	FeatureID                string                       `json:"featureId"`
+	HasSoftLimit             bool                         `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                        `json:"hasUnlimitedUsage"`
 	ID                       string                       `json:"id"`
 	IsVisible                bool                         `json:"isVisible"`
@@ -4211,6 +4215,7 @@ type PromotionalEntitlementDeleteResponse struct {
 	EndDate                  *string                       `json:"endDate"`
 	EnvironmentID            *string                       `json:"environmentId"`
 	FeatureID                *string                       `json:"featureId"`
+	HasSoftLimit             *bool                         `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                         `json:"hasUnlimitedUsage"`
 	ID                       *string                       `json:"id"`
 	IsVisible                *bool                         `json:"isVisible"`
