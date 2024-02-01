@@ -2864,6 +2864,7 @@ type Member struct {
 	Account                Account      `json:"account"`
 	CreatedAt              *string      `json:"createdAt"`
 	CubejsToken            *string      `json:"cubejsToken"`
+	CustomerToken          *string      `json:"customerToken"`
 	Email                  string       `json:"email"`
 	HideGettingStartedPage *bool        `json:"hideGettingStartedPage"`
 	ID                     string       `json:"id"`
