@@ -1858,6 +1858,7 @@ type Environment struct {
 	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus"`
 	SigningToken              string                      `json:"signingToken"`
 	Slug                      string                      `json:"slug"`
+	Type                      EnvironmentType             `json:"type"`
 }
 
 type EnvironmentAggregateGroupBy struct {
