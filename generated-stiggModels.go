@@ -1710,6 +1710,12 @@ type DumpEnvironmentForMergeComparison struct {
 	PreMergeDump  map[string]interface{} `json:"preMergeDump"`
 }
 
+// Input type for dumpEnvironmentProductCatalog mutation.
+type DumpEnvironmentProductCatalogInput struct {
+	// The slug of the environment to dump.
+	EnvironmentSlug string `json:"environmentSlug"`
+}
+
 type DuplicateProductInput struct {
 	Description     *string `json:"description,omitempty"`
 	DisplayName     *string `json:"displayName,omitempty"`
@@ -2950,8 +2956,10 @@ type MergeEnvironmentInput struct {
 	DestinationEnvironmentSlug *string `json:"destinationEnvironmentSlug,omitempty"`
 	// How to migrate customers to newer plan version of updated plans. Default is not to migrate existing customers.
 	MigrationType *PublishMigrationType `json:"migrationType,omitempty"`
-	// The slug of the environment to copy from.
-	SourceEnvironmentSlug string `json:"sourceEnvironmentSlug"`
+	// The slug of the environment to copy from. If missing `sourceTemplate` will be used.
+	SourceEnvironmentSlug *string `json:"sourceEnvironmentSlug,omitempty"`
+	// The product catalog template to apply. Only relevant when `sourceEnvironmentSlug` is not passed.
+	SourceTemplate map[string]interface{} `json:"sourceTemplate,omitempty"`
 }
 
 type Meter struct {
@@ -4003,6 +4011,10 @@ type ProductAggregateGroupBy struct {
 	IsDefaultProduct          *bool   `json:"isDefaultProduct"`
 	RefID                     *string `json:"refId"`
 	UpdatedAt                 *string `json:"updatedAt"`
+}
+
+type ProductCatalogDump struct {
+	Dump map[string]interface{} `json:"dump"`
 }
 
 type ProductConnection struct {
