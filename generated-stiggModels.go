@@ -3365,7 +3365,6 @@ type PackagePricingInput struct {
 	PricingModel         *PricingModelCreateInput          `json:"pricingModel,omitempty"`
 	PricingModels        []*PricingModelCreateInput        `json:"pricingModels,omitempty"`
 	PricingType          PricingType                       `json:"pricingType"`
-	SkipPatchVolumeBulk  *bool                             `json:"skipPatchVolumeBulk,omitempty"`
 }
 
 type PackagePricingTypeNotSetError struct {
