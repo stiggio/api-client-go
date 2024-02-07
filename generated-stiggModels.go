@@ -1149,6 +1149,7 @@ type CustomerPortalPromotionalEntitlement struct {
 	Description       *string                      `json:"description"`
 	DisplayName       string                       `json:"displayName"`
 	EndDate           *string                      `json:"endDate"`
+	HasSoftLimit      *bool                        `json:"hasSoftLimit"`
 	HasUnlimitedUsage *bool                        `json:"hasUnlimitedUsage"`
 	Period            PromotionalEntitlementPeriod `json:"period"`
 	StartDate         string                       `json:"startDate"`
@@ -1776,6 +1777,7 @@ type EntitlementCheckResult struct {
 	AccessDeniedReason              *AccessDeniedReason            `json:"accessDeniedReason,omitempty"`
 	CurrentUsage                    *float64                       `json:"currentUsage,omitempty"`
 	HasAccess                       bool                           `json:"hasAccess"`
+	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
 	NextResetDate                   *string                        `json:"nextResetDate,omitempty"`
@@ -3179,6 +3181,7 @@ type PackageEntitlement struct {
 	EnvironmentID            string                   `json:"environmentId"`
 	Feature                  Feature                  `json:"feature"`
 	FeatureID                string                   `json:"featureId"`
+	HasSoftLimit             bool                     `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
 	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
 	ID                       string                   `json:"id"`
@@ -3230,6 +3233,7 @@ type PackageEntitlementDeleteResponse struct {
 	DisplayNameOverride      *string                  `json:"displayNameOverride"`
 	EnvironmentID            *string                  `json:"environmentId"`
 	FeatureID                *string                  `json:"featureId"`
+	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
 	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
 	ID                       *string                  `json:"id"`
@@ -4886,6 +4890,7 @@ type SubscriptionEntitlement struct {
 	EnvironmentID            string                   `json:"environmentId"`
 	Feature                  Feature                  `json:"feature"`
 	FeatureID                string                   `json:"featureId"`
+	HasSoftLimit             bool                     `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
 	ID                       string                   `json:"id"`
 	Meter                    *Meter                   `json:"meter"`
