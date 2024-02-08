@@ -1521,6 +1521,7 @@ type CustomerSubscriptionFilterSubscriptionPriceFilter struct {
 	BillingModel *BillingModelFilterComparison                        `json:"billingModel,omitempty"`
 	CreatedAt    *DateFieldComparison                                 `json:"createdAt,omitempty"`
 	FeatureID    *StringFieldComparison                               `json:"featureId,omitempty"`
+	HasSoftLimit *BooleanFieldComparison                              `json:"hasSoftLimit,omitempty"`
 	ID           *StringFieldComparison                               `json:"id,omitempty"`
 	Or           []*CustomerSubscriptionFilterSubscriptionPriceFilter `json:"or,omitempty"`
 	UpdatedAt    *DateFieldComparison                                 `json:"updatedAt,omitempty"`
@@ -1750,7 +1751,7 @@ type Entitlement struct {
 	DisplayNameOverride      *string                  `json:"displayNameOverride"`
 	EntitlementUpdatedAt     *string                  `json:"entitlementUpdatedAt"`
 	Feature                  *EntitlementFeature      `json:"feature"`
-	HasSoftLimit             bool                     `json:"hasSoftLimit"`
+	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
 	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
 	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
 	IsGranted                bool                     `json:"isGranted"`
@@ -1829,7 +1830,7 @@ type EntitlementWithSummary struct {
 	DisplayNameOverride      *string                  `json:"displayNameOverride"`
 	EntitlementUpdatedAt     *string                  `json:"entitlementUpdatedAt"`
 	Feature                  *EntitlementFeature      `json:"feature"`
-	HasSoftLimit             bool                     `json:"hasSoftLimit"`
+	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
 	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
 	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
 	IsGranted                bool                     `json:"isGranted"`
@@ -3181,7 +3182,7 @@ type PackageEntitlement struct {
 	EnvironmentID            string                   `json:"environmentId"`
 	Feature                  Feature                  `json:"feature"`
 	FeatureID                string                   `json:"featureId"`
-	HasSoftLimit             bool                     `json:"hasSoftLimit"`
+	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
 	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
 	ID                       string                   `json:"id"`
@@ -3861,7 +3862,7 @@ type PriceEntitlement struct {
 	Description              *string                  `json:"description"`
 	Feature                  Feature                  `json:"feature"`
 	FeatureID                string                   `json:"featureId"`
-	HasSoftLimit             bool                     `json:"hasSoftLimit"`
+	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
 	Package                  PackageDto               `json:"package"`
 	PackageID                string                   `json:"packageId"`
@@ -4186,7 +4187,7 @@ type PromotionalEntitlement struct {
 	EnvironmentID            string                       `json:"environmentId"`
 	Feature                  Feature                      `json:"feature"`
 	FeatureID                string                       `json:"featureId"`
-	HasSoftLimit             bool                         `json:"hasSoftLimit"`
+	HasSoftLimit             *bool                        `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                        `json:"hasUnlimitedUsage"`
 	ID                       string                       `json:"id"`
 	IsVisible                bool                         `json:"isVisible"`
@@ -4890,7 +4891,7 @@ type SubscriptionEntitlement struct {
 	EnvironmentID            string                   `json:"environmentId"`
 	Feature                  Feature                  `json:"feature"`
 	FeatureID                string                   `json:"featureId"`
-	HasSoftLimit             bool                     `json:"hasSoftLimit"`
+	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
 	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
 	ID                       string                   `json:"id"`
 	Meter                    *Meter                   `json:"meter"`
@@ -5232,6 +5233,7 @@ type SubscriptionPrice struct {
 	BillingModel *BillingModel        `json:"billingModel"`
 	CreatedAt    *string              `json:"createdAt"`
 	FeatureID    *string              `json:"featureId"`
+	HasSoftLimit *bool                `json:"hasSoftLimit"`
 	ID           string               `json:"id"`
 	Price        *Price               `json:"price"`
 	Subscription CustomerSubscription `json:"subscription"`
@@ -5243,6 +5245,7 @@ type SubscriptionPriceAggregateGroupBy struct {
 	BillingModel *BillingModel `json:"billingModel"`
 	CreatedAt    *string       `json:"createdAt"`
 	FeatureID    *string       `json:"featureId"`
+	HasSoftLimit *bool         `json:"hasSoftLimit"`
 	ID           *string       `json:"id"`
 	UpdatedAt    *string       `json:"updatedAt"`
 	UsageLimit   *float64      `json:"usageLimit"`
@@ -5256,6 +5259,7 @@ type SubscriptionPriceCountAggregate struct {
 	BillingModel *int64 `json:"billingModel"`
 	CreatedAt    *int64 `json:"createdAt"`
 	FeatureID    *int64 `json:"featureId"`
+	HasSoftLimit *int64 `json:"hasSoftLimit"`
 	ID           *int64 `json:"id"`
 	UpdatedAt    *int64 `json:"updatedAt"`
 	UsageLimit   *int64 `json:"usageLimit"`
@@ -5273,6 +5277,7 @@ type SubscriptionPriceFilter struct {
 	BillingModel *BillingModelFilterComparison                      `json:"billingModel,omitempty"`
 	CreatedAt    *DateFieldComparison                               `json:"createdAt,omitempty"`
 	FeatureID    *StringFieldComparison                             `json:"featureId,omitempty"`
+	HasSoftLimit *BooleanFieldComparison                            `json:"hasSoftLimit,omitempty"`
 	ID           *StringFieldComparison                             `json:"id,omitempty"`
 	Or           []*SubscriptionPriceFilter                         `json:"or,omitempty"`
 	Price        *SubscriptionPriceFilterPriceFilter                `json:"price,omitempty"`
@@ -9965,6 +9970,7 @@ const (
 	SubscriptionPriceSortFieldsBillingModel SubscriptionPriceSortFields = "billingModel"
 	SubscriptionPriceSortFieldsCreatedAt    SubscriptionPriceSortFields = "createdAt"
 	SubscriptionPriceSortFieldsFeatureID    SubscriptionPriceSortFields = "featureId"
+	SubscriptionPriceSortFieldsHasSoftLimit SubscriptionPriceSortFields = "hasSoftLimit"
 	SubscriptionPriceSortFieldsID           SubscriptionPriceSortFields = "id"
 	SubscriptionPriceSortFieldsUpdatedAt    SubscriptionPriceSortFields = "updatedAt"
 	SubscriptionPriceSortFieldsUsageLimit   SubscriptionPriceSortFields = "usageLimit"
@@ -9974,6 +9980,7 @@ var AllSubscriptionPriceSortFields = []SubscriptionPriceSortFields{
 	SubscriptionPriceSortFieldsBillingModel,
 	SubscriptionPriceSortFieldsCreatedAt,
 	SubscriptionPriceSortFieldsFeatureID,
+	SubscriptionPriceSortFieldsHasSoftLimit,
 	SubscriptionPriceSortFieldsID,
 	SubscriptionPriceSortFieldsUpdatedAt,
 	SubscriptionPriceSortFieldsUsageLimit,
@@ -9981,7 +9988,7 @@ var AllSubscriptionPriceSortFields = []SubscriptionPriceSortFields{
 
 func (e SubscriptionPriceSortFields) IsValid() bool {
 	switch e {
-	case SubscriptionPriceSortFieldsBillingModel, SubscriptionPriceSortFieldsCreatedAt, SubscriptionPriceSortFieldsFeatureID, SubscriptionPriceSortFieldsID, SubscriptionPriceSortFieldsUpdatedAt, SubscriptionPriceSortFieldsUsageLimit:
+	case SubscriptionPriceSortFieldsBillingModel, SubscriptionPriceSortFieldsCreatedAt, SubscriptionPriceSortFieldsFeatureID, SubscriptionPriceSortFieldsHasSoftLimit, SubscriptionPriceSortFieldsID, SubscriptionPriceSortFieldsUpdatedAt, SubscriptionPriceSortFieldsUsageLimit:
 		return true
 	}
 	return false
