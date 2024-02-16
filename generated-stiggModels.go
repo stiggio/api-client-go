@@ -770,6 +770,7 @@ type CreateIntegrationInput struct {
 	AwsMarketplaceCredentials *AwsMarketplaceCredentialsInput `json:"awsMarketplaceCredentials,omitempty"`
 	EnvironmentID             string                          `json:"environmentId"`
 	HubspotCredentials        *HubspotCredentialsInput        `json:"hubspotCredentials,omitempty"`
+	SnowflakeCredentials      *SnowflakeCredentialsInput      `json:"snowflakeCredentials,omitempty"`
 	StripeCredentials         *StripeCredentialsInput         `json:"stripeCredentials,omitempty"`
 	VendorIdentifier          VendorIdentifier                `json:"vendorIdentifier"`
 	ZuoraCredentials          *ZuoraCredentialsInput          `json:"zuoraCredentials,omitempty"`
@@ -4581,6 +4582,29 @@ type SetExperimentOnCustomerSubscriptionInput struct {
 	ID string `json:"id"`
 	// The id of relation.
 	RelationID string `json:"relationId"`
+}
+
+type SnowflakeCredentials struct {
+	AirbyteConnectionID  *string `json:"airbyteConnectionId"`
+	AirbyteDestinationID *string `json:"airbyteDestinationId"`
+	Database             string  `json:"database"`
+	Host                 string  `json:"host"`
+	Role                 string  `json:"role"`
+	SchemaName           string  `json:"schemaName"`
+	Username             string  `json:"username"`
+	Warehouse            string  `json:"warehouse"`
+}
+
+func (SnowflakeCredentials) IsCredentials() {}
+
+type SnowflakeCredentialsInput struct {
+	Database   string `json:"database"`
+	Host       string `json:"host"`
+	Password   string `json:"password"`
+	Role       string `json:"role"`
+	SchemaName string `json:"schemaName"`
+	Username   string `json:"username"`
+	Warehouse  string `json:"warehouse"`
 }
 
 type StartExperimentInput struct {
@@ -10525,6 +10549,7 @@ type VendorIdentifier string
 const (
 	VendorIdentifierAwsMarketplace VendorIdentifier = "AWS_MARKETPLACE"
 	VendorIdentifierHubspot        VendorIdentifier = "HUBSPOT"
+	VendorIdentifierSnowflake      VendorIdentifier = "SNOWFLAKE"
 	VendorIdentifierStripe         VendorIdentifier = "STRIPE"
 	VendorIdentifierZuora          VendorIdentifier = "ZUORA"
 )
@@ -10532,13 +10557,14 @@ const (
 var AllVendorIdentifier = []VendorIdentifier{
 	VendorIdentifierAwsMarketplace,
 	VendorIdentifierHubspot,
+	VendorIdentifierSnowflake,
 	VendorIdentifierStripe,
 	VendorIdentifierZuora,
 }
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierAwsMarketplace, VendorIdentifierHubspot, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAwsMarketplace, VendorIdentifierHubspot, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
