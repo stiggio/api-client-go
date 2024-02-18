@@ -2958,6 +2958,8 @@ type MergeEnvironmentInput struct {
 	DestinationEnvironmentName *string `json:"destinationEnvironmentName,omitempty"`
 	// The slug of the environment to merge into. Not passing this will create a new environment and requires passing `destinationEnvironmentName`.
 	DestinationEnvironmentSlug *string `json:"destinationEnvironmentSlug,omitempty"`
+	// The type of the new environment. only relevant when `destinationEnvironmentSlug` is not passed.
+	DestinationEnvironmentType *EnvironmentType `json:"destinationEnvironmentType,omitempty"`
 	// How to migrate customers to newer plan version of updated plans. Default is not to migrate existing customers.
 	MigrationType *PublishMigrationType `json:"migrationType,omitempty"`
 	// The slug of the environment to copy from. If missing `sourceTemplate` will be used.
