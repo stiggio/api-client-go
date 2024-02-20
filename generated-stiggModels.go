@@ -410,6 +410,23 @@ type BillingAddress struct {
 	State      *string `json:"state,omitempty"`
 }
 
+type BillingCadenceFilterComparison struct {
+	Eq       *BillingCadence  `json:"eq,omitempty"`
+	Gt       *BillingCadence  `json:"gt,omitempty"`
+	Gte      *BillingCadence  `json:"gte,omitempty"`
+	ILike    *BillingCadence  `json:"iLike,omitempty"`
+	In       []BillingCadence `json:"in,omitempty"`
+	Is       *bool            `json:"is,omitempty"`
+	IsNot    *bool            `json:"isNot,omitempty"`
+	Like     *BillingCadence  `json:"like,omitempty"`
+	Lt       *BillingCadence  `json:"lt,omitempty"`
+	Lte      *BillingCadence  `json:"lte,omitempty"`
+	Neq      *BillingCadence  `json:"neq,omitempty"`
+	NotILike *BillingCadence  `json:"notILike,omitempty"`
+	NotIn    []BillingCadence `json:"notIn,omitempty"`
+	NotLike  *BillingCadence  `json:"notLike,omitempty"`
+}
+
 type BillingModelFilterComparison struct {
 	Eq       *BillingModel  `json:"eq,omitempty"`
 	Gt       *BillingModel  `json:"gt,omitempty"`
@@ -3086,10 +3103,11 @@ type OverageEntitlementCreateInput struct {
 }
 
 type OveragePricingModelCreateInput struct {
-	BillingModel BillingModel                   `json:"billingModel"`
-	Entitlement  *OverageEntitlementCreateInput `json:"entitlement,omitempty"`
-	FeatureID    *string                        `json:"featureId,omitempty"`
-	PricePeriods []*PricePeriodInput            `json:"pricePeriods"`
+	BillingCadence *BillingCadence                `json:"billingCadence,omitempty"`
+	BillingModel   BillingModel                   `json:"billingModel"`
+	Entitlement    *OverageEntitlementCreateInput `json:"entitlement,omitempty"`
+	FeatureID      *string                        `json:"featureId,omitempty"`
+	PricePeriods   []*PricePeriodInput            `json:"pricePeriods"`
 }
 
 type PackageAlreadyPublishedError struct {
@@ -3796,62 +3814,66 @@ type PreviewSubscriptionInput struct {
 }
 
 type Price struct {
-	BillingCountryCode  *string       `json:"billingCountryCode"`
-	BillingID           *string       `json:"billingId"`
-	BillingModel        BillingModel  `json:"billingModel"`
-	BillingPeriod       BillingPeriod `json:"billingPeriod"`
-	CreatedAt           *string       `json:"createdAt"`
-	CrmID               *string       `json:"crmId"`
-	CrmLinkURL          *string       `json:"crmLinkUrl"`
-	Feature             *Feature      `json:"feature"`
-	FeatureID           *string       `json:"featureId"`
-	ID                  string        `json:"id"`
-	MaxUnitQuantity     *float64      `json:"maxUnitQuantity"`
-	MinUnitQuantity     *float64      `json:"minUnitQuantity"`
-	Package             PackageDto    `json:"package"`
-	PackageID           *string       `json:"packageId"`
-	Price               *Money        `json:"price"`
-	Tiers               []*PriceTier  `json:"tiers"`
-	TiersMode           *TiersMode    `json:"tiersMode"`
-	UsedInSubscriptions *bool         `json:"usedInSubscriptions"`
-}
-
-type PriceAggregateGroupBy struct {
-	BillingID     *string        `json:"billingId"`
-	BillingModel  *BillingModel  `json:"billingModel"`
-	BillingPeriod *BillingPeriod `json:"billingPeriod"`
-	CreatedAt     *string        `json:"createdAt"`
-	ID            *string        `json:"id"`
-	TiersMode     *TiersMode     `json:"tiersMode"`
-}
-
-type PriceCountAggregate struct {
-	BillingID     *int64 `json:"billingId"`
-	BillingModel  *int64 `json:"billingModel"`
-	BillingPeriod *int64 `json:"billingPeriod"`
-	CreatedAt     *int64 `json:"createdAt"`
-	ID            *int64 `json:"id"`
-	TiersMode     *int64 `json:"tiersMode"`
-}
-
-type PriceDeleteResponse struct {
+	BillingCadence      BillingCadence `json:"billingCadence"`
 	BillingCountryCode  *string        `json:"billingCountryCode"`
 	BillingID           *string        `json:"billingId"`
-	BillingModel        *BillingModel  `json:"billingModel"`
-	BillingPeriod       *BillingPeriod `json:"billingPeriod"`
+	BillingModel        BillingModel   `json:"billingModel"`
+	BillingPeriod       BillingPeriod  `json:"billingPeriod"`
 	CreatedAt           *string        `json:"createdAt"`
 	CrmID               *string        `json:"crmId"`
 	CrmLinkURL          *string        `json:"crmLinkUrl"`
 	Feature             *Feature       `json:"feature"`
 	FeatureID           *string        `json:"featureId"`
-	ID                  *string        `json:"id"`
+	ID                  string         `json:"id"`
 	MaxUnitQuantity     *float64       `json:"maxUnitQuantity"`
 	MinUnitQuantity     *float64       `json:"minUnitQuantity"`
+	Package             PackageDto     `json:"package"`
 	PackageID           *string        `json:"packageId"`
 	Price               *Money         `json:"price"`
 	Tiers               []*PriceTier   `json:"tiers"`
 	TiersMode           *TiersMode     `json:"tiersMode"`
 	UsedInSubscriptions *bool          `json:"usedInSubscriptions"`
+}
+
+type PriceAggregateGroupBy struct {
+	BillingCadence *BillingCadence `json:"billingCadence"`
+	BillingID      *string         `json:"billingId"`
+	BillingModel   *BillingModel   `json:"billingModel"`
+	BillingPeriod  *BillingPeriod  `json:"billingPeriod"`
+	CreatedAt      *string         `json:"createdAt"`
+	ID             *string         `json:"id"`
+	TiersMode      *TiersMode      `json:"tiersMode"`
+}
+
+type PriceCountAggregate struct {
+	BillingCadence *int64 `json:"billingCadence"`
+	BillingID      *int64 `json:"billingId"`
+	BillingModel   *int64 `json:"billingModel"`
+	BillingPeriod  *int64 `json:"billingPeriod"`
+	CreatedAt      *int64 `json:"createdAt"`
+	ID             *int64 `json:"id"`
+	TiersMode      *int64 `json:"tiersMode"`
+}
+
+type PriceDeleteResponse struct {
+	BillingCadence      *BillingCadence `json:"billingCadence"`
+	BillingCountryCode  *string         `json:"billingCountryCode"`
+	BillingID           *string         `json:"billingId"`
+	BillingModel        *BillingModel   `json:"billingModel"`
+	BillingPeriod       *BillingPeriod  `json:"billingPeriod"`
+	CreatedAt           *string         `json:"createdAt"`
+	CrmID               *string         `json:"crmId"`
+	CrmLinkURL          *string         `json:"crmLinkUrl"`
+	Feature             *Feature        `json:"feature"`
+	FeatureID           *string         `json:"featureId"`
+	ID                  *string         `json:"id"`
+	MaxUnitQuantity     *float64        `json:"maxUnitQuantity"`
+	MinUnitQuantity     *float64        `json:"minUnitQuantity"`
+	PackageID           *string         `json:"packageId"`
+	Price               *Money          `json:"price"`
+	Tiers               []*PriceTier    `json:"tiers"`
+	TiersMode           *TiersMode      `json:"tiersMode"`
+	UsedInSubscriptions *bool           `json:"usedInSubscriptions"`
 }
 
 type PriceEdge struct {
@@ -3876,15 +3898,16 @@ type PriceEntitlement struct {
 }
 
 type PriceFilter struct {
-	And           []*PriceFilter                 `json:"and,omitempty"`
-	BillingID     *StringFieldComparison         `json:"billingId,omitempty"`
-	BillingModel  *BillingModelFilterComparison  `json:"billingModel,omitempty"`
-	BillingPeriod *BillingPeriodFilterComparison `json:"billingPeriod,omitempty"`
-	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
-	Or            []*PriceFilter                 `json:"or,omitempty"`
-	Package       *PriceFilterPackageDTOFilter   `json:"package,omitempty"`
-	TiersMode     *TiersModeFilterComparison     `json:"tiersMode,omitempty"`
+	And            []*PriceFilter                  `json:"and,omitempty"`
+	BillingCadence *BillingCadenceFilterComparison `json:"billingCadence,omitempty"`
+	BillingID      *StringFieldComparison          `json:"billingId,omitempty"`
+	BillingModel   *BillingModelFilterComparison   `json:"billingModel,omitempty"`
+	BillingPeriod  *BillingPeriodFilterComparison  `json:"billingPeriod,omitempty"`
+	CreatedAt      *DateFieldComparison            `json:"createdAt,omitempty"`
+	ID             *StringFieldComparison          `json:"id,omitempty"`
+	Or             []*PriceFilter                  `json:"or,omitempty"`
+	Package        *PriceFilterPackageDTOFilter    `json:"package,omitempty"`
+	TiersMode      *TiersModeFilterComparison      `json:"tiersMode,omitempty"`
 }
 
 type PriceFilterPackageDTOFilter struct {
@@ -3906,21 +3929,23 @@ type PriceFilterPackageDTOFilter struct {
 }
 
 type PriceMaxAggregate struct {
-	BillingID     *string        `json:"billingId"`
-	BillingModel  *BillingModel  `json:"billingModel"`
-	BillingPeriod *BillingPeriod `json:"billingPeriod"`
-	CreatedAt     *string        `json:"createdAt"`
-	ID            *string        `json:"id"`
-	TiersMode     *TiersMode     `json:"tiersMode"`
+	BillingCadence *BillingCadence `json:"billingCadence"`
+	BillingID      *string         `json:"billingId"`
+	BillingModel   *BillingModel   `json:"billingModel"`
+	BillingPeriod  *BillingPeriod  `json:"billingPeriod"`
+	CreatedAt      *string         `json:"createdAt"`
+	ID             *string         `json:"id"`
+	TiersMode      *TiersMode      `json:"tiersMode"`
 }
 
 type PriceMinAggregate struct {
-	BillingID     *string        `json:"billingId"`
-	BillingModel  *BillingModel  `json:"billingModel"`
-	BillingPeriod *BillingPeriod `json:"billingPeriod"`
-	CreatedAt     *string        `json:"createdAt"`
-	ID            *string        `json:"id"`
-	TiersMode     *TiersMode     `json:"tiersMode"`
+	BillingCadence *BillingCadence `json:"billingCadence"`
+	BillingID      *string         `json:"billingId"`
+	BillingModel   *BillingModel   `json:"billingModel"`
+	BillingPeriod  *BillingPeriod  `json:"billingPeriod"`
+	CreatedAt      *string         `json:"createdAt"`
+	ID             *string         `json:"id"`
+	TiersMode      *TiersMode      `json:"tiersMode"`
 }
 
 type PriceNotFoundError struct {
@@ -3954,6 +3979,7 @@ type PriceTierInput struct {
 }
 
 type PricingModelCreateInput struct {
+	BillingCadence  *BillingCadence     `json:"billingCadence,omitempty"`
 	BillingModel    BillingModel        `json:"billingModel"`
 	FeatureID       *string             `json:"featureId,omitempty"`
 	MaxUnitQuantity *float64            `json:"maxUnitQuantity,omitempty"`
@@ -4820,14 +4846,15 @@ type SubscriptionAddonFilterCustomerSubscriptionFilter struct {
 }
 
 type SubscriptionAddonFilterPriceFilter struct {
-	And           []*SubscriptionAddonFilterPriceFilter `json:"and,omitempty"`
-	BillingID     *StringFieldComparison                `json:"billingId,omitempty"`
-	BillingModel  *BillingModelFilterComparison         `json:"billingModel,omitempty"`
-	BillingPeriod *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
-	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
-	ID            *StringFieldComparison                `json:"id,omitempty"`
-	Or            []*SubscriptionAddonFilterPriceFilter `json:"or,omitempty"`
-	TiersMode     *TiersModeFilterComparison            `json:"tiersMode,omitempty"`
+	And            []*SubscriptionAddonFilterPriceFilter `json:"and,omitempty"`
+	BillingCadence *BillingCadenceFilterComparison       `json:"billingCadence,omitempty"`
+	BillingID      *StringFieldComparison                `json:"billingId,omitempty"`
+	BillingModel   *BillingModelFilterComparison         `json:"billingModel,omitempty"`
+	BillingPeriod  *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
+	CreatedAt      *DateFieldComparison                  `json:"createdAt,omitempty"`
+	ID             *StringFieldComparison                `json:"id,omitempty"`
+	Or             []*SubscriptionAddonFilterPriceFilter `json:"or,omitempty"`
+	TiersMode      *TiersModeFilterComparison            `json:"tiersMode,omitempty"`
 }
 
 type SubscriptionAddonInput struct {
@@ -5339,14 +5366,15 @@ type SubscriptionPriceFilterCustomerSubscriptionFilter struct {
 }
 
 type SubscriptionPriceFilterPriceFilter struct {
-	And           []*SubscriptionPriceFilterPriceFilter `json:"and,omitempty"`
-	BillingID     *StringFieldComparison                `json:"billingId,omitempty"`
-	BillingModel  *BillingModelFilterComparison         `json:"billingModel,omitempty"`
-	BillingPeriod *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
-	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
-	ID            *StringFieldComparison                `json:"id,omitempty"`
-	Or            []*SubscriptionPriceFilterPriceFilter `json:"or,omitempty"`
-	TiersMode     *TiersModeFilterComparison            `json:"tiersMode,omitempty"`
+	And            []*SubscriptionPriceFilterPriceFilter `json:"and,omitempty"`
+	BillingCadence *BillingCadenceFilterComparison       `json:"billingCadence,omitempty"`
+	BillingID      *StringFieldComparison                `json:"billingId,omitempty"`
+	BillingModel   *BillingModelFilterComparison         `json:"billingModel,omitempty"`
+	BillingPeriod  *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
+	CreatedAt      *DateFieldComparison                  `json:"createdAt,omitempty"`
+	ID             *StringFieldComparison                `json:"id,omitempty"`
+	Or             []*SubscriptionPriceFilterPriceFilter `json:"or,omitempty"`
+	TiersMode      *TiersModeFilterComparison            `json:"tiersMode,omitempty"`
 }
 
 type SubscriptionPriceMaxAggregate struct {
@@ -6459,6 +6487,48 @@ func (e *BillingAnchor) UnmarshalGQL(v interface{}) error {
 }
 
 func (e BillingAnchor) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Billing Cadence.
+type BillingCadence string
+
+const (
+	BillingCadenceOneOff    BillingCadence = "ONE_OFF"
+	BillingCadenceRecurring BillingCadence = "RECURRING"
+)
+
+var AllBillingCadence = []BillingCadence{
+	BillingCadenceOneOff,
+	BillingCadenceRecurring,
+}
+
+func (e BillingCadence) IsValid() bool {
+	switch e {
+	case BillingCadenceOneOff, BillingCadenceRecurring:
+		return true
+	}
+	return false
+}
+
+func (e BillingCadence) String() string {
+	return string(e)
+}
+
+func (e *BillingCadence) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = BillingCadence(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid BillingCadence", str)
+	}
+	return nil
+}
+
+func (e BillingCadence) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -8996,15 +9066,17 @@ func (e PlanSortFields) MarshalGQL(w io.Writer) {
 type PriceSortFields string
 
 const (
-	PriceSortFieldsBillingID     PriceSortFields = "billingId"
-	PriceSortFieldsBillingModel  PriceSortFields = "billingModel"
-	PriceSortFieldsBillingPeriod PriceSortFields = "billingPeriod"
-	PriceSortFieldsCreatedAt     PriceSortFields = "createdAt"
-	PriceSortFieldsID            PriceSortFields = "id"
-	PriceSortFieldsTiersMode     PriceSortFields = "tiersMode"
+	PriceSortFieldsBillingCadence PriceSortFields = "billingCadence"
+	PriceSortFieldsBillingID      PriceSortFields = "billingId"
+	PriceSortFieldsBillingModel   PriceSortFields = "billingModel"
+	PriceSortFieldsBillingPeriod  PriceSortFields = "billingPeriod"
+	PriceSortFieldsCreatedAt      PriceSortFields = "createdAt"
+	PriceSortFieldsID             PriceSortFields = "id"
+	PriceSortFieldsTiersMode      PriceSortFields = "tiersMode"
 )
 
 var AllPriceSortFields = []PriceSortFields{
+	PriceSortFieldsBillingCadence,
 	PriceSortFieldsBillingID,
 	PriceSortFieldsBillingModel,
 	PriceSortFieldsBillingPeriod,
@@ -9015,7 +9087,7 @@ var AllPriceSortFields = []PriceSortFields{
 
 func (e PriceSortFields) IsValid() bool {
 	switch e {
-	case PriceSortFieldsBillingID, PriceSortFieldsBillingModel, PriceSortFieldsBillingPeriod, PriceSortFieldsCreatedAt, PriceSortFieldsID, PriceSortFieldsTiersMode:
+	case PriceSortFieldsBillingCadence, PriceSortFieldsBillingID, PriceSortFieldsBillingModel, PriceSortFieldsBillingPeriod, PriceSortFieldsCreatedAt, PriceSortFieldsID, PriceSortFieldsTiersMode:
 		return true
 	}
 	return false
