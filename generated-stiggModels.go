@@ -3091,6 +3091,7 @@ type OverageEntitlementCreateInput struct {
 	Description                     *string                        `json:"description,omitempty"`
 	DisplayNameOverride             *string                        `json:"displayNameOverride,omitempty"`
 	FeatureID                       string                         `json:"featureId"`
+	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
 	IsCustom                        *bool                          `json:"isCustom,omitempty"`
@@ -3325,6 +3326,7 @@ type PackageEntitlementInput struct {
 	DisplayNameOverride             *string                        `json:"displayNameOverride,omitempty"`
 	EnvironmentID                   string                         `json:"environmentId"`
 	FeatureID                       string                         `json:"featureId"`
+	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
 	IsCustom                        *bool                          `json:"isCustom,omitempty"`
@@ -3362,6 +3364,7 @@ type PackageEntitlementSort struct {
 type PackageEntitlementUpdateInput struct {
 	Description                     *string                        `json:"description,omitempty"`
 	DisplayNameOverride             *string                        `json:"displayNameOverride,omitempty"`
+	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
 	IsCustom                        *bool                          `json:"isCustom,omitempty"`
@@ -4299,6 +4302,7 @@ type PromotionalEntitlementInput struct {
 	EndDate                         *string                        `json:"endDate,omitempty"`
 	EnvironmentID                   string                         `json:"environmentId"`
 	FeatureID                       string                         `json:"featureId"`
+	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	IsVisible                       bool                           `json:"isVisible"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
@@ -4351,6 +4355,7 @@ type PromotionalEntitlementStatusFilterComparison struct {
 type PromotionalEntitlementUpdateInput struct {
 	Description                     *string                        `json:"description,omitempty"`
 	EndDate                         *string                        `json:"endDate,omitempty"`
+	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	IsVisible                       bool                           `json:"isVisible"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
@@ -5787,6 +5792,7 @@ type UpdatePackageEntitlementOrderItemInput struct {
 
 type UpdateSubscriptionEntitlementInput struct {
 	FeatureID                       *string                        `json:"featureId,omitempty"`
+	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	ID                              *string                        `json:"id,omitempty"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
