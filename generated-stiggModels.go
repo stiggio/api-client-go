@@ -2426,6 +2426,7 @@ type GetWidgetConfigurationInput struct {
 type GrantPromotionalEntitlementInput struct {
 	CustomEndDate                   *string                        `json:"customEndDate,omitempty"`
 	FeatureID                       string                         `json:"featureId"`
+	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	IsVisible                       *bool                          `json:"isVisible,omitempty"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
@@ -5047,6 +5048,7 @@ type SubscriptionEntitlementFilterFeatureFilter struct {
 type SubscriptionEntitlementInput struct {
 	Description                     *string                        `json:"description,omitempty"`
 	FeatureID                       string                         `json:"featureId"`
+	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
 	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
