@@ -306,6 +306,7 @@ type ApplySubscriptionInput struct {
 	PlanID                     string                           `json:"planId"`
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	ResourceID                 *string                          `json:"resourceId,omitempty"`
+	ScheduleStrategy           *ScheduleStrategy                `json:"scheduleStrategy,omitempty"`
 	SkipTrial                  *bool                            `json:"skipTrial,omitempty"`
 	StartDate                  *string                          `json:"startDate,omitempty"`
 	SubscriptionEntitlements   []*SubscriptionEntitlementInput  `json:"subscriptionEntitlements,omitempty"`
@@ -3638,6 +3639,16 @@ type PlanAvgAggregate struct {
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
+type PlanChangeVariables struct {
+	AddonRefIds      *string            `json:"addonRefIds"`
+	BillableFeatures []*BillableFeature `json:"billableFeatures"`
+	BillingPeriod    *BillingPeriod     `json:"billingPeriod"`
+	ChangeType       PlanChangeType     `json:"changeType"`
+	PlanRefID        string             `json:"planRefId"`
+}
+
+func (PlanChangeVariables) IsScheduleVariables() {}
+
 type PlanCompatibleAddonChange struct {
 	After      *Addon      `json:"after"`
 	Before     *Addon      `json:"before"`
@@ -3813,6 +3824,7 @@ type PreviewSubscriptionInput struct {
 	PlanID             string                    `json:"planId"`
 	PromotionCode      *string                   `json:"promotionCode,omitempty"`
 	ResourceID         *string                   `json:"resourceId,omitempty"`
+	ScheduleStrategy   *ScheduleStrategy         `json:"scheduleStrategy,omitempty"`
 	StartDate          *string                   `json:"startDate,omitempty"`
 	UnitQuantity       *float64                  `json:"unitQuantity,omitempty"`
 }
@@ -4426,6 +4438,7 @@ type ProvisionSubscription struct {
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	RefID                      *string                          `json:"refId,omitempty"`
 	ResourceID                 *string                          `json:"resourceId,omitempty"`
+	ScheduleStrategy           *ScheduleStrategy                `json:"scheduleStrategy,omitempty"`
 	SkipTrial                  *bool                            `json:"skipTrial,omitempty"`
 	StartDate                  *string                          `json:"startDate,omitempty"`
 	SubscriptionEntitlements   []*SubscriptionEntitlementInput  `json:"subscriptionEntitlements,omitempty"`
@@ -4450,6 +4463,7 @@ type ProvisionSubscriptionInput struct {
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	RefID                      *string                          `json:"refId,omitempty"`
 	ResourceID                 *string                          `json:"resourceId,omitempty"`
+	ScheduleStrategy           *ScheduleStrategy                `json:"scheduleStrategy,omitempty"`
 	SkipTrial                  *bool                            `json:"skipTrial,omitempty"`
 	StartDate                  *string                          `json:"startDate,omitempty"`
 	SubscriptionEntitlements   []*SubscriptionEntitlementInput  `json:"subscriptionEntitlements,omitempty"`
@@ -5110,6 +5124,7 @@ type SubscriptionInput struct {
 	PromotionCode             *string                         `json:"promotionCode,omitempty"`
 	RefID                     *string                         `json:"refId,omitempty"`
 	ResourceID                *string                         `json:"resourceId,omitempty"`
+	ScheduleStrategy          *ScheduleStrategy               `json:"scheduleStrategy,omitempty"`
 	StartDate                 *string                         `json:"startDate,omitempty"`
 	SubscriptionEntitlements  []*SubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
 	SubscriptionID            *string                         `json:"subscriptionId,omitempty"`
@@ -5814,6 +5829,7 @@ type UpdateSubscriptionInput struct {
 	EnvironmentID            *string                               `json:"environmentId,omitempty"`
 	PromotionCode            *string                               `json:"promotionCode,omitempty"`
 	RefID                    *string                               `json:"refId,omitempty"`
+	ScheduleStrategy         *ScheduleStrategy                     `json:"scheduleStrategy,omitempty"`
 	SubscriptionEntitlements []*UpdateSubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
 	SubscriptionID           *string                               `json:"subscriptionId,omitempty"`
 	TrialEndDate             *string                               `json:"trialEndDate,omitempty"`
@@ -7738,6 +7754,7 @@ const (
 	ErrorCodeAwsMarketplaceIntegrationError                   ErrorCode = "AwsMarketplaceIntegrationError"
 	ErrorCodeAwsMarketplaceIntegrationValidationError         ErrorCode = "AwsMarketplaceIntegrationValidationError"
 	ErrorCodeBadUserInput                                     ErrorCode = "BadUserInput"
+	ErrorCodeBillingIntegrationMissing                        ErrorCode = "BillingIntegrationMissing"
 	ErrorCodeBillingPeriodMissingError                        ErrorCode = "BillingPeriodMissingError"
 	ErrorCodeCannotArchiveFeatureError                        ErrorCode = "CannotArchiveFeatureError"
 	ErrorCodeCannotDeleteCustomerError                        ErrorCode = "CannotDeleteCustomerError"
@@ -7852,6 +7869,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeAwsMarketplaceIntegrationError,
 	ErrorCodeAwsMarketplaceIntegrationValidationError,
 	ErrorCodeBadUserInput,
+	ErrorCodeBillingIntegrationMissing,
 	ErrorCodeBillingPeriodMissingError,
 	ErrorCodeCannotArchiveFeatureError,
 	ErrorCodeCannotDeleteCustomerError,
@@ -7957,7 +7975,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
 		return true
 	}
 	return false
@@ -9010,6 +9028,53 @@ func (e PaymentMethodType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Type of the change between two plans of the same subscription
+type PlanChangeType string
+
+const (
+	// Subscription downgrade to lower plan
+	PlanChangeTypeDowngrade PlanChangeType = "DOWNGRADE"
+	// Subscription remains on the same plan
+	PlanChangeTypeNone PlanChangeType = "NONE"
+	// Subscription upgrade to higher plan
+	PlanChangeTypeUpgrade PlanChangeType = "UPGRADE"
+)
+
+var AllPlanChangeType = []PlanChangeType{
+	PlanChangeTypeDowngrade,
+	PlanChangeTypeNone,
+	PlanChangeTypeUpgrade,
+}
+
+func (e PlanChangeType) IsValid() bool {
+	switch e {
+	case PlanChangeTypeDowngrade, PlanChangeTypeNone, PlanChangeTypeUpgrade:
+		return true
+	}
+	return false
+}
+
+func (e PlanChangeType) String() string {
+	return string(e)
+}
+
+func (e *PlanChangeType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = PlanChangeType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid PlanChangeType", str)
+	}
+	return nil
+}
+
+func (e PlanChangeType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type PlanSortFields string
 
 const (
@@ -9488,6 +9553,53 @@ func (e *PublishMigrationType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e PublishMigrationType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Options for when a change for a paid subscription should take effect
+type ScheduleStrategy string
+
+const (
+	// Schedule the change to the end of the billing month (for subscriptions whose billing period is larger then month)
+	ScheduleStrategyEndOfBillingMonth ScheduleStrategy = "END_OF_BILLING_MONTH"
+	// Schedule the change to the end of the billing period
+	ScheduleStrategyEndOfBillingPeriod ScheduleStrategy = "END_OF_BILLING_PERIOD"
+	// Apply the change immediately
+	ScheduleStrategyImmediate ScheduleStrategy = "IMMEDIATE"
+)
+
+var AllScheduleStrategy = []ScheduleStrategy{
+	ScheduleStrategyEndOfBillingMonth,
+	ScheduleStrategyEndOfBillingPeriod,
+	ScheduleStrategyImmediate,
+}
+
+func (e ScheduleStrategy) IsValid() bool {
+	switch e {
+	case ScheduleStrategyEndOfBillingMonth, ScheduleStrategyEndOfBillingPeriod, ScheduleStrategyImmediate:
+		return true
+	}
+	return false
+}
+
+func (e ScheduleStrategy) String() string {
+	return string(e)
+}
+
+func (e *ScheduleStrategy) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ScheduleStrategy(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ScheduleStrategy", str)
+	}
+	return nil
+}
+
+func (e ScheduleStrategy) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -10179,6 +10291,7 @@ const (
 	SubscriptionScheduleTypeBillingPeriod   SubscriptionScheduleType = "BillingPeriod"
 	SubscriptionScheduleTypeDowngrade       SubscriptionScheduleType = "Downgrade"
 	SubscriptionScheduleTypeMigrateToLatest SubscriptionScheduleType = "MigrateToLatest"
+	SubscriptionScheduleTypePlan            SubscriptionScheduleType = "Plan"
 	SubscriptionScheduleTypeUnitAmount      SubscriptionScheduleType = "UnitAmount"
 )
 
@@ -10187,12 +10300,13 @@ var AllSubscriptionScheduleType = []SubscriptionScheduleType{
 	SubscriptionScheduleTypeBillingPeriod,
 	SubscriptionScheduleTypeDowngrade,
 	SubscriptionScheduleTypeMigrateToLatest,
+	SubscriptionScheduleTypePlan,
 	SubscriptionScheduleTypeUnitAmount,
 }
 
 func (e SubscriptionScheduleType) IsValid() bool {
 	switch e {
-	case SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypeUnitAmount:
+	case SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypeUnitAmount:
 		return true
 	}
 	return false
