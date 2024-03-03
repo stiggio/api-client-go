@@ -5753,9 +5753,11 @@ type UpdateHook struct {
 }
 
 type UpdateIntegrationInput struct {
-	StripeCredentials *StripeCredentialsInput `json:"stripeCredentials,omitempty"`
-	VendorIdentifier  VendorIdentifier        `json:"vendorIdentifier"`
-	ZuoraCredentials  *ZuoraCredentialsInput  `json:"zuoraCredentials,omitempty"`
+	// Salesforce integration configuration
+	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
+	StripeCredentials     *StripeCredentialsInput     `json:"stripeCredentials,omitempty"`
+	VendorIdentifier      VendorIdentifier            `json:"vendorIdentifier"`
+	ZuoraCredentials      *ZuoraCredentialsInput      `json:"zuoraCredentials,omitempty"`
 }
 
 type UpdateOneEnvironmentInput struct {
