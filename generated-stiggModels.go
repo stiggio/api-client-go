@@ -788,6 +788,7 @@ type CreateIntegrationInput struct {
 	AwsMarketplaceCredentials *AwsMarketplaceCredentialsInput `json:"awsMarketplaceCredentials,omitempty"`
 	EnvironmentID             string                          `json:"environmentId"`
 	HubspotCredentials        *HubspotCredentialsInput        `json:"hubspotCredentials,omitempty"`
+	SalesforceCredentials     *SalesforceCredentialsInput     `json:"salesforceCredentials,omitempty"`
 	SnowflakeCredentials      *SnowflakeCredentialsInput      `json:"snowflakeCredentials,omitempty"`
 	StripeCredentials         *StripeCredentialsInput         `json:"stripeCredentials,omitempty"`
 	VendorIdentifier          VendorIdentifier                `json:"vendorIdentifier"`
@@ -4585,6 +4586,16 @@ type RevokePromotionalEntitlementInput struct {
 	FeatureID     string  `json:"featureId"`
 }
 
+type SalesforceCredentials struct {
+	Domain *string `json:"domain"`
+}
+
+func (SalesforceCredentials) IsCredentials() {}
+
+type SalesforceCredentialsInput struct {
+	Domain *string `json:"domain,omitempty"`
+}
+
 type SdkConfiguration struct {
 	IsWidgetWatermarkEnabled *bool   `json:"isWidgetWatermarkEnabled"`
 	SentryDsn                *string `json:"sentryDsn"`
@@ -6435,18 +6446,20 @@ func (e APIKeySortFields) MarshalGQL(w io.Writer) {
 type APIKeyType string
 
 const (
-	APIKeyTypeClient APIKeyType = "CLIENT"
-	APIKeyTypeServer APIKeyType = "SERVER"
+	APIKeyTypeClient     APIKeyType = "CLIENT"
+	APIKeyTypeSalesforce APIKeyType = "SALESFORCE"
+	APIKeyTypeServer     APIKeyType = "SERVER"
 )
 
 var AllAPIKeyType = []APIKeyType{
 	APIKeyTypeClient,
+	APIKeyTypeSalesforce,
 	APIKeyTypeServer,
 }
 
 func (e APIKeyType) IsValid() bool {
 	switch e {
-	case APIKeyTypeClient, APIKeyTypeServer:
+	case APIKeyTypeClient, APIKeyTypeSalesforce, APIKeyTypeServer:
 		return true
 	}
 	return false
@@ -10747,6 +10760,7 @@ type VendorIdentifier string
 const (
 	VendorIdentifierAwsMarketplace VendorIdentifier = "AWS_MARKETPLACE"
 	VendorIdentifierHubspot        VendorIdentifier = "HUBSPOT"
+	VendorIdentifierSalesforce     VendorIdentifier = "SALESFORCE"
 	VendorIdentifierSnowflake      VendorIdentifier = "SNOWFLAKE"
 	VendorIdentifierStripe         VendorIdentifier = "STRIPE"
 	VendorIdentifierZuora          VendorIdentifier = "ZUORA"
@@ -10755,6 +10769,7 @@ const (
 var AllVendorIdentifier = []VendorIdentifier{
 	VendorIdentifierAwsMarketplace,
 	VendorIdentifierHubspot,
+	VendorIdentifierSalesforce,
 	VendorIdentifierSnowflake,
 	VendorIdentifierStripe,
 	VendorIdentifierZuora,
@@ -10762,7 +10777,7 @@ var AllVendorIdentifier = []VendorIdentifier{
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierAwsMarketplace, VendorIdentifierHubspot, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAwsMarketplace, VendorIdentifierHubspot, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
