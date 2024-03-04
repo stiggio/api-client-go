@@ -5605,6 +5605,12 @@ type TrialedPlan struct {
 	ProductRefID *string `json:"productRefId"`
 }
 
+// Input for triggering the subscription billing month ends soon webhook
+type TriggerSubscriptionBillingMonthEndsSoonWebhookInput struct {
+	// The subscription reference id to trigger the webhook for
+	SubscriptionID string `json:"subscriptionId"`
+}
+
 type TriggerSubscriptionMigrationInput struct {
 	EnvironmentID string  `json:"environmentId"`
 	RefID         string  `json:"refId"`
