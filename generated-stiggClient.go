@@ -349,18 +349,18 @@ type SlimSubscriptionFragment struct {
 	Customer                SlimSubscriptionFragment_Customer        "json:\"customer\" graphql:\"customer\""
 }
 type SubscriptionScheduledUpdateData struct {
-	SubscriptionScheduleType SubscriptionScheduleType                           "json:\"subscriptionScheduleType\" graphql:\"subscriptionScheduleType\""
-	ScheduleStatus           SubscriptionScheduleStatus                         "json:\"scheduleStatus\" graphql:\"scheduleStatus\""
-	ScheduledExecutionTime   string                                             "json:\"scheduledExecutionTime\" graphql:\"scheduledExecutionTime\""
-	TargetPackage            *SubscriptionScheduledUpdateData_TargetPackage     "json:\"targetPackage\" graphql:\"targetPackage\""
-	ScheduleVariables        *SubscriptionScheduledUpdateData_ScheduleVariables "json:\"scheduleVariables\" graphql:\"scheduleVariables\""
+	SubscriptionScheduleType SubscriptionScheduleType                       "json:\"subscriptionScheduleType\" graphql:\"subscriptionScheduleType\""
+	ScheduleStatus           SubscriptionScheduleStatus                     "json:\"scheduleStatus\" graphql:\"scheduleStatus\""
+	ScheduledExecutionTime   string                                         "json:\"scheduledExecutionTime\" graphql:\"scheduledExecutionTime\""
+	TargetPackage            *SubscriptionScheduledUpdateData_TargetPackage "json:\"targetPackage\" graphql:\"targetPackage\""
+	ScheduleVariables        *ScheduleVariablesFragment                     "json:\"scheduleVariables\" graphql:\"scheduleVariables\""
 }
 type SubscriptionFutureUpdateData struct {
-	SubscriptionScheduleType SubscriptionScheduleType                        "json:\"subscriptionScheduleType\" graphql:\"subscriptionScheduleType\""
-	ScheduleStatus           SubscriptionScheduleStatus                      "json:\"scheduleStatus\" graphql:\"scheduleStatus\""
-	ScheduledExecutionTime   string                                          "json:\"scheduledExecutionTime\" graphql:\"scheduledExecutionTime\""
-	TargetPackage            *SubscriptionFutureUpdateData_TargetPackage     "json:\"targetPackage\" graphql:\"targetPackage\""
-	ScheduleVariables        *SubscriptionFutureUpdateData_ScheduleVariables "json:\"scheduleVariables\" graphql:\"scheduleVariables\""
+	SubscriptionScheduleType SubscriptionScheduleType                    "json:\"subscriptionScheduleType\" graphql:\"subscriptionScheduleType\""
+	ScheduleStatus           SubscriptionScheduleStatus                  "json:\"scheduleStatus\" graphql:\"scheduleStatus\""
+	ScheduledExecutionTime   string                                      "json:\"scheduledExecutionTime\" graphql:\"scheduledExecutionTime\""
+	TargetPackage            *SubscriptionFutureUpdateData_TargetPackage "json:\"targetPackage\" graphql:\"targetPackage\""
+	ScheduleVariables        *ScheduleVariablesFragment                  "json:\"scheduleVariables\" graphql:\"scheduleVariables\""
 }
 type SubscriptionInvoiceFragment struct {
 	BillingID      string                    "json:\"billingId\" graphql:\"billingId\""
@@ -661,11 +661,11 @@ type CustomerPortalSubscriptionAddonFragment struct {
 	Quantity    int64   "json:\"quantity\" graphql:\"quantity\""
 }
 type CustomerPortalSubscriptionScheduledUpdateDataFragment struct {
-	SubscriptionScheduleType SubscriptionScheduleType                                                 "json:\"subscriptionScheduleType\" graphql:\"subscriptionScheduleType\""
-	ScheduleStatus           SubscriptionScheduleStatus                                               "json:\"scheduleStatus\" graphql:\"scheduleStatus\""
-	ScheduledExecutionTime   string                                                                   "json:\"scheduledExecutionTime\" graphql:\"scheduledExecutionTime\""
-	TargetPackage            *CustomerPortalSubscriptionScheduledUpdateDataFragment_TargetPackage     "json:\"targetPackage\" graphql:\"targetPackage\""
-	ScheduleVariables        *CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables "json:\"scheduleVariables\" graphql:\"scheduleVariables\""
+	SubscriptionScheduleType SubscriptionScheduleType                                             "json:\"subscriptionScheduleType\" graphql:\"subscriptionScheduleType\""
+	ScheduleStatus           SubscriptionScheduleStatus                                           "json:\"scheduleStatus\" graphql:\"scheduleStatus\""
+	ScheduledExecutionTime   string                                                               "json:\"scheduledExecutionTime\" graphql:\"scheduledExecutionTime\""
+	TargetPackage            *CustomerPortalSubscriptionScheduledUpdateDataFragment_TargetPackage "json:\"targetPackage\" graphql:\"targetPackage\""
+	ScheduleVariables        *ScheduleVariablesFragment                                           "json:\"scheduleVariables\" graphql:\"scheduleVariables\""
 }
 type CustomerPortalEntitlementFragment struct {
 	IsGranted                bool                              "json:\"isGranted\" graphql:\"isGranted\""
@@ -789,6 +789,14 @@ type ReportUsageFragment struct {
 	CurrentUsage  *float64 "json:\"currentUsage\" graphql:\"currentUsage\""
 	NextResetDate *string  "json:\"nextResetDate\" graphql:\"nextResetDate\""
 	Timestamp     string   "json:\"timestamp\" graphql:\"timestamp\""
+}
+type ScheduleVariablesFragment struct {
+	Typename                     *string                                                "json:\"__typename\" graphql:\"__typename\""
+	PlanChangeVariables          ScheduleVariablesFragment_PlanChangeVariables          "graphql:\"... on PlanChangeVariables\""
+	DowngradeChangeVariables     ScheduleVariablesFragment_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
+	BillingPeriodChangeVariables ScheduleVariablesFragment_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
+	UnitAmountChangeVariables    ScheduleVariablesFragment_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
+	AddonChangeVariables         ScheduleVariablesFragment_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type CouponFragment_SyncStates struct {
 	VendorIdentifier VendorIdentifier "json:\"vendorIdentifier\" graphql:\"vendorIdentifier\""
@@ -1088,56 +1096,90 @@ type SubscriptionScheduledUpdateData_TargetPackage struct {
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                              "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                      "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                      "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                   "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                           "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                        "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                           "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                   "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                   "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                        "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                     "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type SubscriptionFragment_ExperimentInfo struct {
 	Name      string              "json:\"name\" graphql:\"name\""
@@ -1355,56 +1397,90 @@ type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_Targe
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                    "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                            "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                            "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                 "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                              "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                              "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                      "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                      "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                   "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                           "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                        "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type PromotionalEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
@@ -1700,56 +1776,90 @@ type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Schedu
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                    "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                            "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                            "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                 "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                              "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                              "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                      "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                      "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                   "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                           "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                        "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type CustomerStatisticsFragment_Statistics_ActiveSubscriptionsByPricingType struct {
 	PricingType PricingType "json:\"pricingType\" graphql:\"pricingType\""
@@ -2162,28 +2272,45 @@ type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Sch
 	DisplayName string       "json:\"displayName\" graphql:\"displayName\""
 	PricingType *PricingType "json:\"pricingType\" graphql:\"pricingType\""
 }
-type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_BillingPeriodChangeVariables struct {
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                                             "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                                                     "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                                                     "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                                                  "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                                          "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_UnitAmountChangeVariables struct {
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_AddonChangeVariables struct {
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                                                       "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type CustomerPortalFragment_Entitlements_CustomerPortalEntitlementFragment_ResetPeriodConfiguration_ResetPeriodConfigurationFragment_MonthlyResetPeriodConfig struct {
 	MonthlyAccordingTo *MonthlyAccordingTo "json:\"monthlyAccordingTo\" graphql:\"monthlyAccordingTo\""
@@ -2469,56 +2596,90 @@ type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpda
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                             "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                     "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                     "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                  "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                          "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                       "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                       "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                               "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                               "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                            "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                    "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                 "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type CheckoutStateFragment_Plan_PlanFragment_Product_ProductFragment_ProductSettings_DowngradePlan struct {
 	RefID       string "json:\"refId\" graphql:\"refId\""
@@ -2744,28 +2905,45 @@ type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscript
 	DisplayName string       "json:\"displayName\" graphql:\"displayName\""
 	PricingType *PricingType "json:\"pricingType\" graphql:\"pricingType\""
 }
-type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_BillingPeriodChangeVariables struct {
+type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                        "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                             "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                     "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_UnitAmountChangeVariables struct {
+type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_AddonChangeVariables struct {
+type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                  "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type CustomerPortalSubscriptionScheduledUpdateDataFragment_TargetPackage struct {
 	ID          string       "json:\"id\" graphql:\"id\""
@@ -2773,28 +2951,45 @@ type CustomerPortalSubscriptionScheduledUpdateDataFragment_TargetPackage struct 
 	DisplayName string       "json:\"displayName\" graphql:\"displayName\""
 	PricingType *PricingType "json:\"pricingType\" graphql:\"pricingType\""
 }
-type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_BillingPeriodChangeVariables struct {
+type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                    "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                            "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                            "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                 "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_UnitAmountChangeVariables struct {
+type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_AddonChangeVariables struct {
+type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables struct {
-	Typename                     *string                                                                                              "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type CustomerPortalEntitlementFragment_ResetPeriodConfiguration_ResetPeriodConfigurationFragment_MonthlyResetPeriodConfig struct {
 	MonthlyAccordingTo *MonthlyAccordingTo "json:\"monthlyAccordingTo\" graphql:\"monthlyAccordingTo\""
@@ -3323,56 +3518,90 @@ type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_S
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                        "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                             "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                     "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                  "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                  "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                          "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                          "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                       "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                               "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                            "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type PaywallFragment_PaywallCalculatedPricePoints_PaywallCalculatedPricePointsFragment_Feature struct {
 	RefID              string  "json:\"refId\" graphql:\"refId\""
@@ -3661,56 +3890,90 @@ type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdate
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                           "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                   "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                   "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                        "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                     "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                     "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                             "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                             "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                          "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                  "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                               "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type ApplySubscriptionFragment_Entitlements_EntitlementFragment_ResetPeriodConfiguration_ResetPeriodConfigurationFragment_MonthlyResetPeriodConfig struct {
 	MonthlyAccordingTo *MonthlyAccordingTo "json:\"monthlyAccordingTo\" graphql:\"monthlyAccordingTo\""
@@ -3776,6 +4039,46 @@ type ProvisionSubscriptionFragment_Entitlements_EntitlementFragment_ResetPeriodC
 }
 type ProvisionSubscriptionFragment_Entitlements_EntitlementFragment_ResetPeriodConfiguration_ResetPeriodConfigurationFragment_WeeklyResetPeriodConfig struct {
 	WeeklyAccordingTo *WeeklyAccordingTo "json:\"weeklyAccordingTo\" graphql:\"weeklyAccordingTo\""
+}
+type ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                            "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                    "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                    "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                 "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                         "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
+	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
+}
+type ScheduleVariablesFragment_UnitAmountChangeVariables struct {
+	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
+	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
+}
+type ScheduleVariablesFragment_AddonChangeVariables struct {
+	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
 }
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_CustomerFragment_TrialedPlans struct {
 	ProductID    *string "json:\"productId\" graphql:\"productId\""
@@ -4027,56 +4330,90 @@ type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscr
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                                                       "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                                                               "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                                                               "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                                                            "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                                                    "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                                                                 "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                                                 "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                                                         "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                                                         "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                                                      "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                                              "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                                                           "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type GetCustomerStatistics_GetCustomerByRefID_CustomerStatisticsFragment_Statistics_ActiveSubscriptionsByPricingType struct {
 	PricingType PricingType "json:\"pricingType\" graphql:\"pricingType\""
@@ -4301,56 +4638,90 @@ type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Schedule
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                  "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                          "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                          "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                       "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                               "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                            "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                            "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                    "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                    "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                 "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                         "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                      "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type GetCoupons_Coupons_Edges_Node_CouponFragment_SyncStates struct {
 	VendorIdentifier VendorIdentifier "json:\"vendorIdentifier\" graphql:\"vendorIdentifier\""
@@ -4743,56 +5114,90 @@ type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                           "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                                   "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                                   "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                                "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                        "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                                     "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                     "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                             "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                             "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                          "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                  "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                               "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type GetPaywall_Paywall_PaywallFragment_PaywallCalculatedPricePoints_PaywallCalculatedPricePointsFragment_Feature struct {
 	RefID              string  "json:\"refId\" graphql:\"refId\""
@@ -4886,28 +5291,45 @@ type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscription
 	DisplayName string       "json:\"displayName\" graphql:\"displayName\""
 	PricingType *PricingType "json:\"pricingType\" graphql:\"pricingType\""
 }
-type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_BillingPeriodChangeVariables struct {
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                                                                                     "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                                                                                             "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                                                                                             "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                                                                                          "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                                                                                  "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_UnitAmountChangeVariables struct {
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_AddonChangeVariables struct {
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                                                                                               "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_ScheduledUpdates_CustomerPortalSubscriptionScheduledUpdateDataFragment_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Entitlements_CustomerPortalEntitlementFragment_ResetPeriodConfiguration_ResetPeriodConfigurationFragment_MonthlyResetPeriodConfig struct {
 	MonthlyAccordingTo *MonthlyAccordingTo "json:\"monthlyAccordingTo\" graphql:\"monthlyAccordingTo\""
@@ -5193,56 +5615,90 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_Sub
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                                            "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                                                    "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                                                    "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                                                 "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                                         "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                                                      "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                                      "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                                              "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                                              "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                                           "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                                   "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                                                "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_Product_ProductFragment_ProductSettings_DowngradePlan struct {
 	RefID       string "json:\"refId\" graphql:\"refId\""
@@ -5816,56 +6272,90 @@ type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                                               "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                                                       "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                                                       "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                                                    "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                                            "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                                                         "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_ScheduledUpdates_SubscriptionScheduledUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_TargetPackage struct {
 	ID          string "json:\"id\" graphql:\"id\""
 	RefID       string "json:\"refId\" graphql:\"refId\""
 	DisplayName string "json:\"displayName\" graphql:\"displayName\""
 }
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables struct {
-	AddonRefIds        *string        "json:\"addonRefIds\" graphql:\"addonRefIds\""
-	BillingPeriod      *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	DowngradePlanRefID string         "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
 }
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables struct {
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables struct {
+	PlanRefID        string                                                                                                                                                                                                                         "json:\"planRefId\" graphql:\"planRefId\""
+	ChangeType       PlanChangeType                                                                                                                                                                                                                 "json:\"changeType\" graphql:\"changeType\""
+	BillingPeriod    *BillingPeriod                                                                                                                                                                                                                 "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures []*ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons           []*ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_PlanChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures struct {
+	FeatureID string  "json:\"featureId\" graphql:\"featureId\""
+	Quantity  float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons struct {
+	AddonRefID string  "json:\"addonRefId\" graphql:\"addonRefId\""
+	Quantity   float64 "json:\"quantity\" graphql:\"quantity\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables struct {
+	DowngradePlanRefID string                                                                                                                                                                                                                              "json:\"downgradePlanRefId\" graphql:\"downgradePlanRefId\""
+	BillingPeriod      *BillingPeriod                                                                                                                                                                                                                      "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillableFeatures   []*ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_BillableFeatures "json:\"billableFeatures\" graphql:\"billableFeatures\""
+	Addons             []*ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_DowngradeChangeVariables_Addons           "json:\"addons\" graphql:\"addons\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_BillingPeriodChangeVariables struct {
 	BillingPeriod *BillingPeriod "json:\"billingPeriod\" graphql:\"billingPeriod\""
 }
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables struct {
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_UnitAmountChangeVariables struct {
 	NewUnitAmount *float64 "json:\"newUnitAmount\" graphql:\"newUnitAmount\""
 	FeatureID     *string  "json:\"featureId\" graphql:\"featureId\""
 }
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables struct {
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_ScheduleVariablesFragment_AddonChangeVariables struct {
 	AddonRefID  string  "json:\"addonRefId\" graphql:\"addonRefId\""
 	NewQuantity float64 "json:\"newQuantity\" graphql:\"newQuantity\""
-}
-type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables struct {
-	Typename                     *string                                                                                                                                                                                   "json:\"__typename\" graphql:\"__typename\""
-	DowngradeChangeVariables     ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_DowngradeChangeVariables     "graphql:\"... on DowngradeChangeVariables\""
-	BillingPeriodChangeVariables ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_BillingPeriodChangeVariables "graphql:\"... on BillingPeriodChangeVariables\""
-	UnitAmountChangeVariables    ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_UnitAmountChangeVariables    "graphql:\"... on UnitAmountChangeVariables\""
-	AddonChangeVariables         ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_FutureUpdates_SubscriptionFutureUpdateData_ScheduleVariables_AddonChangeVariables         "graphql:\"... on AddonChangeVariables\""
 }
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Entitlements_EntitlementFragment_ResetPeriodConfiguration_ResetPeriodConfigurationFragment_MonthlyResetPeriodConfig struct {
 	MonthlyAccordingTo *MonthlyAccordingTo "json:\"monthlyAccordingTo\" graphql:\"monthlyAccordingTo\""
@@ -6554,60 +7044,17 @@ const GetCustomerByIDDocument = `query GetCustomerById ($input: GetCustomerByRef
 		... CustomerWithSubscriptionsFragment
 	}
 }
-fragment PlanFragment on Plan {
+fragment SlimCustomerFragment on Customer {
 	id
+	name
+	email
+	createdAt
+	updatedAt
 	refId
-	displayName
-	description
+	customerId
 	billingId
-	versionNumber
 	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment CustomerWithSubscriptionsFragment on Customer {
-	... CustomerFragment
-	subscriptions {
-		... SubscriptionFragment
-	}
+	awsMarketplaceCustomerId
 }
 fragment CouponFragment on Coupon {
 	id
@@ -6630,56 +7077,59 @@ fragment CouponFragment on Coupon {
 		id
 	}
 }
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
+	status
+	createdAt
+	updatedAt
+	requiresAction
+	paymentUrl
+	paymentSecret
+	errorMessage
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
 	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
 	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+}
+fragment CustomerWithSubscriptionsFragment on Customer {
+	... CustomerFragment
+	subscriptions {
+		... SubscriptionFragment
 	}
 }
 fragment CustomerFragment on Customer {
@@ -6713,27 +7163,16 @@ fragment CustomerFragment on Customer {
 		... PromotionalEntitlementFragment
 	}
 }
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	requiresAction
-	paymentUrl
-	paymentSecret
-	errorMessage
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
 }
 fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	subTotal {
@@ -6745,8 +7184,72 @@ fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 		currency
 	}
 }
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
 fragment CustomerResourceFragment on CustomerResource {
 	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
 }
 fragment AddonFragment on Addon {
 	id
@@ -6776,52 +7279,27 @@ fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
 		displayName
 	}
 	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
+		... ScheduleVariablesFragment
 	}
 }
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
 		displayName
-	}
-	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
+		description
+		refId
+		additionalMetaData
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -6879,47 +7357,66 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionFutureUpdateData
 	}
 }
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
 	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
 	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
+	basePlan {
 		refId
-		featureUnits
-		featureUnitsPlural
 		displayName
-		description
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
 	}
 }
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
 		refId
-		additionalMetaData
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
 	}
 }
 `
@@ -6970,28 +7467,116 @@ const GetActiveSubscriptionsDocument = `query GetActiveSubscriptions ($input: Ge
 		... SubscriptionFragment
 	}
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	requiresAction
-	paymentUrl
-	paymentSecret
-	errorMessage
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
 }
 fragment CustomerResourceFragment on CustomerResource {
 	resourceId
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
 		amount
 		currency
 	}
-	flatPrice {
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
 		amount
 		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
 	}
 }
 fragment PlanFragment on Plan {
@@ -7031,24 +7616,6 @@ fragment PlanFragment on Plan {
 		units
 	}
 }
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-}
 fragment OveragePriceFragment on Price {
 	billingModel
 	billingPeriod
@@ -7070,33 +7637,43 @@ fragment OveragePriceFragment on Price {
 		description
 	}
 }
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
 			featureId
+			quantity
 		}
-		... on AddonChangeVariables {
+		addons {
 			addonRefId
-			newQuantity
+			quantity
 		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -7154,98 +7731,25 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionFutureUpdateData
 	}
 }
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
+	status
+	createdAt
+	updatedAt
+	requiresAction
+	paymentUrl
+	paymentSecret
+	errorMessage
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
 		amount
 		currency
 	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
+	flatPrice {
 		amount
 		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
 	}
 }
 `
@@ -7311,6 +7815,354 @@ const GetPaywallDocument = `query GetPaywall ($input: GetPaywallInput!) {
 		... PaywallFragment
 	}
 }
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
+	alignment
+	planWidth
+	planMargin
+	planPadding
+}
+fragment CouponFragment on Coupon {
+	id
+	discountValue
+	type
+	additionalMetaData
+	refId
+	name
+	description
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+	syncStates {
+		vendorIdentifier
+		status
+	}
+	customers {
+		id
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	requiresAction
+	paymentUrl
+	paymentSecret
+	errorMessage
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
+	planId
+	additionalChargesMayApply
+	billingPeriod
+	amount
+	currency
+	billingCountryCode
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment PaywallFragment on Paywall {
+	plans {
+		... PlanFragment
+	}
+	currency {
+		... PaywallCurrencyFragment
+	}
+	configuration {
+		... PaywallConfigurationFragment
+	}
+	customer {
+		... CustomerFragment
+	}
+	activeSubscriptions {
+		... SubscriptionFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+	paywallCalculatedPricePoints {
+		... PaywallCalculatedPricePointsFragment
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment PaywallConfigurationFragment on PaywallConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
+	}
+	typography {
+		... TypographyConfigurationFragment
+	}
+	layout {
+		... LayoutConfigurationFragment
+	}
+	customCss
+}
+fragment CustomerFragment on Customer {
+	... SlimCustomerFragment
+	hasPaymentMethod
+	hasActiveSubscription
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodLast4Digits
+	trialedPlans {
+		productId
+		productRefId
+		planRefId
+		planId
+	}
+	experimentInfo {
+		groupType
+		groupName
+		id
+		name
+	}
+	coupon {
+		... CouponFragment
+	}
+	eligibleForTrial {
+		productId
+		productRefId
+		eligible
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+	}
+}
 fragment OveragePriceFragment on Price {
 	billingModel
 	billingPeriod
@@ -7332,47 +8184,32 @@ fragment OveragePriceFragment on Price {
 		description
 	}
 }
+fragment PaywallCurrencyFragment on PaywallCurrency {
+	code
+	symbol
+}
 fragment FontVariantFragment on FontVariant {
 	fontSize
 	fontWeight
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
 		displayName
-	}
-	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
+		description
+		refId
+		additionalMetaData
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -7428,332 +8265,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 	}
 	futureUpdates {
 		... SubscriptionFutureUpdateData
-	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	requiresAction
-	paymentUrl
-	paymentSecret
-	errorMessage
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment PaywallCurrencyFragment on PaywallCurrency {
-	code
-	symbol
-}
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	type
-	additionalMetaData
-	refId
-	name
-	description
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
-	}
-	customers {
-		id
-	}
-}
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PaywallConfigurationFragment on PaywallConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-	}
-	typography {
-		... TypographyConfigurationFragment
-	}
-	layout {
-		... LayoutConfigurationFragment
-	}
-	customCss
-}
-fragment CustomerFragment on Customer {
-	... SlimCustomerFragment
-	hasPaymentMethod
-	hasActiveSubscription
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodLast4Digits
-	trialedPlans {
-		productId
-		productRefId
-		planRefId
-		planId
-	}
-	experimentInfo {
-		groupType
-		groupName
-		id
-		name
-	}
-	coupon {
-		... CouponFragment
-	}
-	eligibleForTrial {
-		productId
-		productRefId
-		eligible
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
-	alignment
-	planWidth
-	planMargin
-	planPadding
-}
-fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
-	planId
-	additionalChargesMayApply
-	billingPeriod
-	amount
-	currency
-	billingCountryCode
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PaywallFragment on Paywall {
-	plans {
-		... PlanFragment
-	}
-	currency {
-		... PaywallCurrencyFragment
-	}
-	configuration {
-		... PaywallConfigurationFragment
-	}
-	customer {
-		... CustomerFragment
-	}
-	activeSubscriptions {
-		... SubscriptionFragment
-	}
-	resource {
-		... CustomerResourceFragment
-	}
-	paywallCalculatedPricePoints {
-		... PaywallCalculatedPricePointsFragment
-	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
 	}
 }
 `
@@ -7951,20 +8462,144 @@ const GetCustomerPortalByRefIDDocument = `query GetCustomerPortalByRefId ($input
 		... CustomerPortalFragment
 	}
 }
-fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-		iconsColor
-		paywallBackgroundColor
+fragment CustomerPortalEntitlementFragment on Entitlement {
+	isGranted
+	usageLimit
+	currentUsage
+	hasUnlimitedUsage
+	hasSoftLimit
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
 	}
-	typography {
-		... TypographyConfigurationFragment
+	feature {
+		... FeatureFragment
 	}
-	customCss
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotionalEntitlement {
+	displayName
+	hasUnlimitedUsage
+	hasSoftLimit
+	usageLimit
+	period
+	startDate
+	endDate
+}
+fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
+	email
+	name
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodId
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment CustomerPortalFragment on CustomerPortal {
+	subscriptions {
+		... CustomerPortalSubscriptionFragment
+	}
+	entitlements {
+		... CustomerPortalEntitlementFragment
+	}
+	promotionalEntitlements {
+		... CustomerPortalPromotionalEntitlementFragment
+	}
+	billingInformation {
+		... CustomerPortalBillingInformationFragment
+	}
+	showWatermark
+	billingPortalUrl
+	canUpgradeSubscription
+	configuration {
+		... CustomerPortalConfigurationFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+}
+fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+		pricingType
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
 }
 fragment CustomerPortalSubscriptionPriceFragment on CustomerPortalSubscriptionPrice {
 	billingPeriod
@@ -7987,17 +8622,30 @@ fragment CustomerPortalSubscriptionAddonFragment on CustomerPortalAddon {
 	displayName
 	quantity
 }
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+fragment FeatureFragment on EntitlementFeature {
 	__typename
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
+fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
+		iconsColor
+		paywallBackgroundColor
+	}
+	typography {
+		... TypographyConfigurationFragment
+	}
+	customCss
 }
 fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
 	subscriptionId
@@ -8049,120 +8697,6 @@ fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
 		... CustomerPortalSubscriptionScheduledUpdateDataFragment
 	}
 }
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-}
-fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
-	email
-	name
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodId
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-}
-fragment CustomerPortalFragment on CustomerPortal {
-	subscriptions {
-		... CustomerPortalSubscriptionFragment
-	}
-	entitlements {
-		... CustomerPortalEntitlementFragment
-	}
-	promotionalEntitlements {
-		... CustomerPortalPromotionalEntitlementFragment
-	}
-	billingInformation {
-		... CustomerPortalBillingInformationFragment
-	}
-	showWatermark
-	billingPortalUrl
-	canUpgradeSubscription
-	configuration {
-		... CustomerPortalConfigurationFragment
-	}
-	resource {
-		... CustomerResourceFragment
-	}
-}
-fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-		pricingType
-	}
-	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
-	}
-}
-fragment CustomerPortalEntitlementFragment on Entitlement {
-	isGranted
-	usageLimit
-	currentUsage
-	hasUnlimitedUsage
-	hasSoftLimit
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotionalEntitlement {
-	displayName
-	hasUnlimitedUsage
-	hasSoftLimit
-	usageLimit
-	period
-	startDate
-	endDate
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
-}
 `
 
 func (c *Client) GetCustomerPortalByRefID(ctx context.Context, input CustomerPortalInput, interceptors ...clientv2.RequestInterceptor) (*GetCustomerPortalByRefID, error) {
@@ -8183,6 +8717,32 @@ const GetCheckoutStateDocument = `query GetCheckoutState ($input: CheckoutStateI
 		... CheckoutStateFragment
 	}
 }
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
 fragment TypographyConfigurationFragment on TypographyConfiguration {
 	fontFamily
 	h1 {
@@ -8196,27 +8756,6 @@ fragment TypographyConfigurationFragment on TypographyConfiguration {
 	}
 	body {
 		... FontVariantFragment
-	}
-}
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	type
-	additionalMetaData
-	refId
-	name
-	description
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
-	}
-	customers {
-		id
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -8274,40 +8813,27 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionFutureUpdateData
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
 		amount
 		currency
 	}
-	flatPrice {
-		amount
-		currency
+	tiersMode
+	tiers {
+		... PriceTierFragment
 	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
 	}
 }
 fragment OveragePriceFragment on Price {
@@ -8331,27 +8857,82 @@ fragment OveragePriceFragment on Price {
 		description
 	}
 }
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
+fragment CheckoutStateFragment on CheckoutState {
+	configuration {
+		... CheckoutConfigurationFragment
+	}
+	setupSecret
+	customer {
+		... CustomerFragment
+	}
+	activeSubscription {
+		... SubscriptionFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+	plan {
+		... PlanFragment
+	}
+	billingIntegration {
+		billingIdentifier
+		credentials {
+			accountId
+			publicKey
+		}
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
 	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	endDate
+	isVisible
 	feature {
-		refId
+		featureType
+		meterType
 		featureUnits
 		featureUnitsPlural
 		displayName
 		description
+		refId
+		additionalMetaData
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
 	}
 }
 fragment PlanFragment on Plan {
@@ -8409,6 +8990,70 @@ fragment PackageEntitlementFragment on PackageEntitlement {
 		description
 		refId
 		additionalMetaData
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	requiresAction
+	paymentUrl
+	paymentSecret
+	errorMessage
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
 	}
 }
 fragment AddonFragment on Addon {
@@ -8483,129 +9128,25 @@ fragment CustomerFragment on Customer {
 		... PromotionalEntitlementFragment
 	}
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	requiresAction
-	paymentUrl
-	paymentSecret
-	errorMessage
-}
-fragment CheckoutStateFragment on CheckoutState {
-	configuration {
-		... CheckoutConfigurationFragment
-	}
-	setupSecret
-	customer {
-		... CustomerFragment
-	}
-	activeSubscription {
-		... SubscriptionFragment
-	}
-	resource {
-		... CustomerResourceFragment
-	}
-	plan {
-		... PlanFragment
-	}
-	billingIntegration {
-		billingIdentifier
-		credentials {
-			accountId
-			publicKey
-		}
-	}
-}
-fragment SlimCustomerFragment on Customer {
+fragment CouponFragment on Coupon {
 	id
+	discountValue
+	type
+	additionalMetaData
+	refId
 	name
-	email
+	description
 	createdAt
 	updatedAt
-	refId
-	customerId
 	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	billingLinkUrl
 	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
+	syncStates {
+		vendorIdentifier
+		status
 	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
+	customers {
 		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
 	}
 }
 `
@@ -8631,6 +9172,46 @@ const GetMockPaywallDocument = `query GetMockPaywall ($input: GetPaywallInput!) 
 		configuration {
 			... PaywallConfigurationFragment
 		}
+	}
+}
+fragment MockPaywallPackageEntitlementFragment on Entitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	hiddenFromWidgets
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment MockPaywallPriceFragment on PaywallPrice {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
 	}
 }
 fragment MockPaywallAddonFragment on PaywallAddon {
@@ -8663,59 +9244,11 @@ fragment PaywallConfigurationFragment on PaywallConfiguration {
 	}
 	customCss
 }
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
 fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
 	alignment
 	planWidth
 	planMargin
 	planPadding
-}
-fragment MockPaywallPackageEntitlementFragment on Entitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	hiddenFromWidgets
-	displayNameOverride
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
 }
 fragment MockPaywallPlanFragment on PaywallPlan {
 	refId
@@ -8751,27 +9284,35 @@ fragment MockPaywallPlanFragment on PaywallPlan {
 		... MockPaywallAddonFragment
 	}
 }
-fragment MockPaywallPriceFragment on PaywallPrice {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
 		amount
 		currency
 	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
+	flatPrice {
+		amount
+		currency
 	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
 	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
 }
 `
 
@@ -8822,29 +9363,6 @@ const ProvisionCustomerDocument = `mutation ProvisionCustomer ($input: Provision
 		... ProvisionCustomerFragment
 	}
 }
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
 fragment PriceTierFragment on PriceTier {
 	upTo
 	unitPrice {
@@ -8856,17 +9374,47 @@ fragment PriceTierFragment on PriceTier {
 		currency
 	}
 }
-fragment ProvisionCustomerFragment on ProvisionedCustomer {
-	customer {
-		... SlimCustomerFragment
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
 	}
-	subscriptionDecisionStrategy
-	subscription {
-		... SlimSubscriptionFragment
+	total {
+		amount
+		currency
 	}
-	entitlements {
-		... EntitlementFragment
+}
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	entitlementUpdatedAt
+	usageUpdatedAt
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
 	}
+	feature {
+		... FeatureFragment
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
 }
 fragment SlimCustomerFragment on Customer {
 	id
@@ -8929,19 +9477,6 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		refId
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-}
 fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	billingId
 	status
@@ -8952,36 +9487,42 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	paymentSecret
 	errorMessage
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment ProvisionCustomerFragment on ProvisionedCustomer {
+	customer {
+		... SlimCustomerFragment
 	}
-	total {
-		amount
-		currency
+	subscriptionDecisionStrategy
+	subscription {
+		... SlimSubscriptionFragment
+	}
+	entitlements {
+		... EntitlementFragment
 	}
 }
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	entitlementUpdatedAt
-	usageUpdatedAt
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
 	}
 	feature {
-		... FeatureFragment
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
 	}
 }
 fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
@@ -9187,6 +9728,115 @@ const ProvisionSubscriptionDocument = `mutation ProvisionSubscription ($input: P
 		... ProvisionSubscriptionFragment
 	}
 }
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	entitlementUpdatedAt
+	usageUpdatedAt
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	requiresAction
+	paymentUrl
+	paymentSecret
+	errorMessage
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment ProvisionSubscriptionFragment on ProvisionSubscriptionResult {
+	status
+	checkoutUrl
+	checkoutBillingId
+	subscription {
+		... SlimSubscriptionFragment
+	}
+	entitlements {
+		... EntitlementFragment
+	}
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	refId
@@ -9236,115 +9886,6 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		refId
 	}
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	requiresAction
-	paymentUrl
-	paymentSecret
-	errorMessage
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	entitlementUpdatedAt
-	usageUpdatedAt
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-}
-fragment ProvisionSubscriptionFragment on ProvisionSubscriptionResult {
-	status
-	checkoutUrl
-	checkoutBillingId
-	subscription {
-		... SlimSubscriptionFragment
-	}
-	entitlements {
-		... EntitlementFragment
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
-}
 `
 
 func (c *Client) ProvisionSubscription(ctx context.Context, input ProvisionSubscriptionInput, interceptors ...clientv2.RequestInterceptor) (*ProvisionSubscriptionResponse, error) {
@@ -9365,44 +9906,52 @@ const ApplySubscriptionDocument = `mutation ApplySubscription ($input: ApplySubs
 		... ApplySubscriptionFragment
 	}
 }
-fragment ApplySubscriptionFragment on ApplySubscription {
-	subscription {
-		... SubscriptionFragment
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
 	}
 	entitlements {
-		... EntitlementFragment
+		... PackageEntitlementFragment
 	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
+	inheritedEntitlements {
+		... PackageEntitlementFragment
 	}
-	total {
-		amount
-		currency
+	compatibleAddons {
+		... AddonFragment
 	}
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	entitlementUpdatedAt
-	usageUpdatedAt
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
+	prices {
+		... PriceFragment
 	}
-	feature {
-		... FeatureFragment
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
 	}
 }
 fragment FeatureFragment on EntitlementFeature {
@@ -9414,105 +9963,6 @@ fragment FeatureFragment on EntitlementFeature {
 	description
 	displayName
 	refId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -9569,28 +10019,40 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionFutureUpdateData
 	}
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
 	}
-	flatPrice {
-		amount
-		currency
+	scheduleVariables {
+		... ScheduleVariablesFragment
 	}
 }
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
 	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	requiresAction
+	paymentUrl
+	paymentSecret
+	errorMessage
 }
 fragment OveragePriceFragment on Price {
 	billingModel
@@ -9613,7 +10075,116 @@ fragment OveragePriceFragment on Price {
 		description
 	}
 }
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+}
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	entitlementUpdatedAt
+	usageUpdatedAt
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
+fragment ApplySubscriptionFragment on ApplySubscription {
+	subscription {
+		... SubscriptionFragment
+	}
+	entitlements {
+		... EntitlementFragment
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 	subscriptionScheduleType
 	scheduleStatus
 	scheduledExecutionTime
@@ -9623,73 +10194,50 @@ fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
 		displayName
 	}
 	scheduleVariables {
-		__typename
-		... on DowngradeChangeVariables {
-			addonRefIds
-			billingPeriod
-			downgradePlanRefId
-		}
-		... on BillingPeriodChangeVariables {
-			billingPeriod
-		}
-		... on UnitAmountChangeVariables {
-			newUnitAmount
-			featureId
-		}
-		... on AddonChangeVariables {
-			addonRefId
-			newQuantity
-		}
+		... ScheduleVariablesFragment
 	}
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
 	billingId
-	status
-	createdAt
-	updatedAt
-	requiresAction
-	paymentUrl
-	paymentSecret
-	errorMessage
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
 	}
-	basePlan {
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
 		refId
+		featureUnits
+		featureUnitsPlural
 		displayName
+		description
 	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
 	}
 }
 `
@@ -9856,6 +10404,16 @@ const CancelSubscriptionDocument = `mutation CancelSubscription ($input: Subscri
 		... SlimSubscriptionFragment
 	}
 }
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	refId
@@ -9948,16 +10506,6 @@ fragment PriceTierFragment on PriceTier {
 		currency
 	}
 	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
 		amount
 		currency
 	}
@@ -10466,6 +11014,53 @@ const CreateSubscriptionDocument = `mutation CreateSubscription ($input: Subscri
 		... SlimSubscriptionFragment
 	}
 }
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	refId
@@ -10524,53 +11119,6 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	paymentUrl
 	paymentSecret
 	errorMessage
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
 }
 `
 
@@ -10790,15 +11338,6 @@ const OnEntitlementsUpdatedDocument = `subscription OnEntitlementsUpdated {
 		... EntitlementsUpdatedPayload
 	}
 }
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
-}
 fragment FeatureFragment on EntitlementFeature {
 	__typename
 	featureType
@@ -10838,6 +11377,15 @@ fragment EntitlementFragment on Entitlement {
 		... FeatureFragment
 	}
 }
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
 `
 
 func (c *Client) OnEntitlementsUpdated(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*OnEntitlementsUpdated, error) {
@@ -10854,6 +11402,28 @@ func (c *Client) OnEntitlementsUpdated(ctx context.Context, interceptors ...clie
 const OnUsageUpdatedDocument = `subscription OnUsageUpdated {
 	usageUpdated {
 		... EntitlementUsageUpdated
+	}
+}
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	entitlementUpdatedAt
+	usageUpdatedAt
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
 	}
 }
 fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
@@ -10889,28 +11459,6 @@ fragment UsageUpdatedFragment on UsageMeasurementUpdated {
 	featureId
 	currentUsage
 	nextResetDate
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	entitlementUpdatedAt
-	usageUpdatedAt
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
 }
 `
 

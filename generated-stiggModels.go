@@ -1712,6 +1712,7 @@ type DoesFeatureExist struct {
 
 type DowngradeChangeVariables struct {
 	AddonRefIds        *string            `json:"addonRefIds"`
+	Addons             []*PlanChangeAddon `json:"addons"`
 	BillableFeatures   []*BillableFeature `json:"billableFeatures"`
 	BillingPeriod      *BillingPeriod     `json:"billingPeriod"`
 	DowngradePlanRefID string             `json:"downgradePlanRefId"`
@@ -3640,8 +3641,13 @@ type PlanAvgAggregate struct {
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
+type PlanChangeAddon struct {
+	AddonRefID string  `json:"addonRefId"`
+	Quantity   float64 `json:"quantity"`
+}
+
 type PlanChangeVariables struct {
-	AddonRefIds      *string            `json:"addonRefIds"`
+	Addons           []*PlanChangeAddon `json:"addons"`
 	BillableFeatures []*BillableFeature `json:"billableFeatures"`
 	BillingPeriod    *BillingPeriod     `json:"billingPeriod"`
 	ChangeType       PlanChangeType     `json:"changeType"`
