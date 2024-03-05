@@ -4171,6 +4171,7 @@ type ProductMinAggregate struct {
 type ProductSettings struct {
 	DowngradePlan                *Plan                        `json:"downgradePlan"`
 	DowngradePlanID              *string                      `json:"downgradePlanId"`
+	ProrateAtEndOfBillingPeriod  *bool                        `json:"prorateAtEndOfBillingPeriod"`
 	SubscriptionCancellationTime SubscriptionCancellationTime `json:"subscriptionCancellationTime"`
 	SubscriptionEndSetup         SubscriptionEndSetup         `json:"subscriptionEndSetup"`
 	SubscriptionStartPlan        *Plan                        `json:"subscriptionStartPlan"`
@@ -4181,6 +4182,7 @@ type ProductSettings struct {
 type ProductSettingsInput struct {
 	DowngradeAtEndOfBillingPeriod *string                      `json:"downgradeAtEndOfBillingPeriod,omitempty"`
 	DowngradePlanID               *string                      `json:"downgradePlanId,omitempty"`
+	ProrateAtEndOfBillingPeriod   *bool                        `json:"prorateAtEndOfBillingPeriod,omitempty"`
 	SubscriptionCancellationTime  SubscriptionCancellationTime `json:"subscriptionCancellationTime"`
 	SubscriptionEndSetup          SubscriptionEndSetup         `json:"subscriptionEndSetup"`
 	SubscriptionStartPlanID       *string                      `json:"subscriptionStartPlanId,omitempty"`
