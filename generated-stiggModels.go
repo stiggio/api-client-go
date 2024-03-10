@@ -306,6 +306,7 @@ type ApplySubscriptionInput struct {
 	PlanID                     string                           `json:"planId"`
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	ResourceID                 *string                          `json:"resourceId,omitempty"`
+	SalesforceID               *string                          `json:"salesforceId,omitempty"`
 	ScheduleStrategy           *ScheduleStrategy                `json:"scheduleStrategy,omitempty"`
 	SkipTrial                  *bool                            `json:"skipTrial,omitempty"`
 	StartDate                  *string                          `json:"startDate,omitempty"`
@@ -891,6 +892,7 @@ type Customer struct {
 	Name                               *string                   `json:"name"`
 	PromotionalEntitlements            []*PromotionalEntitlement `json:"promotionalEntitlements"`
 	RefID                              string                    `json:"refId"`
+	SalesforceID                       *string                   `json:"salesforceId"`
 	Statistics                         *CustomerStatistics       `json:"statistics"`
 	Subscriptions                      []*CustomerSubscription   `json:"subscriptions"`
 	SyncStates                         []*SyncState              `json:"syncStates"`
@@ -1038,6 +1040,7 @@ type CustomerInput struct {
 	EnvironmentID            *string                `json:"environmentId,omitempty"`
 	Name                     *string                `json:"name,omitempty"`
 	RefID                    *string                `json:"refId,omitempty"`
+	SalesforceID             *string                `json:"salesforceId,omitempty"`
 	ShouldSyncFree           *bool                  `json:"shouldSyncFree,omitempty"`
 }
 
@@ -1365,6 +1368,7 @@ type CustomerSubscription struct {
 	RefID                     string                          `json:"refId"`
 	Resource                  *CustomerResource               `json:"resource"`
 	ResourceID                *string                         `json:"resourceId"`
+	SalesforceID              *string                         `json:"salesforceId"`
 	ScheduledUpdates          []*SubscriptionScheduledUpdate  `json:"scheduledUpdates"`
 	StartDate                 string                          `json:"startDate"`
 	Status                    SubscriptionStatus              `json:"status"`
@@ -4401,6 +4405,7 @@ type ProvisionCustomerInput struct {
 	ExcludeFromExperiment    *bool                               `json:"excludeFromExperiment,omitempty"`
 	Name                     *string                             `json:"name,omitempty"`
 	RefID                    *string                             `json:"refId,omitempty"`
+	SalesforceID             *string                             `json:"salesforceId,omitempty"`
 	ShouldSyncFree           *bool                               `json:"shouldSyncFree,omitempty"`
 	SubscriptionParams       *ProvisionCustomerSubscriptionInput `json:"subscriptionParams,omitempty"`
 }
@@ -4419,6 +4424,7 @@ type ProvisionCustomerSubscriptionInput struct {
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	RefID                      *string                          `json:"refId,omitempty"`
 	ResourceID                 *string                          `json:"resourceId,omitempty"`
+	SalesforceID               *string                          `json:"salesforceId,omitempty"`
 	StartDate                  *string                          `json:"startDate,omitempty"`
 	SubscriptionEntitlements   []*SubscriptionEntitlementInput  `json:"subscriptionEntitlements,omitempty"`
 	SubscriptionID             *string                          `json:"subscriptionId,omitempty"`
@@ -4447,6 +4453,7 @@ type ProvisionSubscription struct {
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	RefID                      *string                          `json:"refId,omitempty"`
 	ResourceID                 *string                          `json:"resourceId,omitempty"`
+	SalesforceID               *string                          `json:"salesforceId,omitempty"`
 	ScheduleStrategy           *ScheduleStrategy                `json:"scheduleStrategy,omitempty"`
 	SkipTrial                  *bool                            `json:"skipTrial,omitempty"`
 	StartDate                  *string                          `json:"startDate,omitempty"`
@@ -4472,6 +4479,7 @@ type ProvisionSubscriptionInput struct {
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	RefID                      *string                          `json:"refId,omitempty"`
 	ResourceID                 *string                          `json:"resourceId,omitempty"`
+	SalesforceID               *string                          `json:"salesforceId,omitempty"`
 	ScheduleStrategy           *ScheduleStrategy                `json:"scheduleStrategy,omitempty"`
 	SkipTrial                  *bool                            `json:"skipTrial,omitempty"`
 	StartDate                  *string                          `json:"startDate,omitempty"`
@@ -5143,6 +5151,7 @@ type SubscriptionInput struct {
 	PromotionCode             *string                         `json:"promotionCode,omitempty"`
 	RefID                     *string                         `json:"refId,omitempty"`
 	ResourceID                *string                         `json:"resourceId,omitempty"`
+	SalesforceID              *string                         `json:"salesforceId,omitempty"`
 	ScheduleStrategy          *ScheduleStrategy               `json:"scheduleStrategy,omitempty"`
 	StartDate                 *string                         `json:"startDate,omitempty"`
 	SubscriptionEntitlements  []*SubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
@@ -5708,6 +5717,7 @@ type UpdateCustomerInput struct {
 	EnvironmentID            *string                `json:"environmentId,omitempty"`
 	Name                     *string                `json:"name,omitempty"`
 	RefID                    *string                `json:"refId,omitempty"`
+	SalesforceID             *string                `json:"salesforceId,omitempty"`
 	ShouldWaitSync           *bool                  `json:"shouldWaitSync,omitempty"`
 }
 
