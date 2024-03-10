@@ -64,6 +64,7 @@ type Addon struct {
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
 	ID                 string                 `json:"id"`
 	IsLatest           *bool                  `json:"isLatest"`
+	MaxQuantity        *float64               `json:"maxQuantity"`
 	OveragePrices      []*Price               `json:"overagePrices"`
 	Prices             []*Price               `json:"prices"`
 	PricingType        *PricingType           `json:"pricingType"`
@@ -85,6 +86,7 @@ type AddonAggregateGroupBy struct {
 	EnvironmentID *string        `json:"environmentId"`
 	ID            *string        `json:"id"`
 	IsLatest      *bool          `json:"isLatest"`
+	MaxQuantity   *float64       `json:"maxQuantity"`
 	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
 	RefID         *string        `json:"refId"`
@@ -94,6 +96,7 @@ type AddonAggregateGroupBy struct {
 }
 
 type AddonAvgAggregate struct {
+	MaxQuantity   *float64 `json:"maxQuantity"`
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
@@ -121,6 +124,7 @@ type AddonCountAggregate struct {
 	EnvironmentID *int64 `json:"environmentId"`
 	ID            *int64 `json:"id"`
 	IsLatest      *int64 `json:"isLatest"`
+	MaxQuantity   *int64 `json:"maxQuantity"`
 	PricingType   *int64 `json:"pricingType"`
 	ProductID     *int64 `json:"productId"`
 	RefID         *int64 `json:"refId"`
@@ -137,10 +141,12 @@ type AddonCreateInput struct {
 	DisplayName                 string                 `json:"displayName"`
 	EnvironmentID               *string                `json:"environmentId,omitempty"`
 	HiddenFromWidgets           []WidgetType           `json:"hiddenFromWidgets,omitempty"`
-	PricingType                 *PricingType           `json:"pricingType,omitempty"`
-	ProductID                   string                 `json:"productId"`
-	RefID                       *string                `json:"refId,omitempty"`
-	Status                      *PackageStatus         `json:"status,omitempty"`
+	// The maximum quantity of this addon that can be added to a subscription
+	MaxQuantity *float64       `json:"maxQuantity,omitempty"`
+	PricingType *PricingType   `json:"pricingType,omitempty"`
+	ProductID   string         `json:"productId"`
+	RefID       *string        `json:"refId,omitempty"`
+	Status      *PackageStatus `json:"status,omitempty"`
 }
 
 type AddonDeleteResponse struct {
@@ -157,16 +163,18 @@ type AddonDeleteResponse struct {
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
 	ID                 *string                `json:"id"`
 	IsLatest           *bool                  `json:"isLatest"`
-	OveragePrices      []*Price               `json:"overagePrices"`
-	Prices             []*Price               `json:"prices"`
-	PricingType        *PricingType           `json:"pricingType"`
-	ProductID          *string                `json:"productId"`
-	RefID              *string                `json:"refId"`
-	Status             *PackageStatus         `json:"status"`
-	SyncStates         []*SyncState           `json:"syncStates"`
-	Type               *string                `json:"type"`
-	UpdatedAt          *string                `json:"updatedAt"`
-	VersionNumber      *int64                 `json:"versionNumber"`
+	// The maximum quantity of this addon that can be added to a subscription
+	MaxQuantity   *float64       `json:"maxQuantity"`
+	OveragePrices []*Price       `json:"overagePrices"`
+	Prices        []*Price       `json:"prices"`
+	PricingType   *PricingType   `json:"pricingType"`
+	ProductID     *string        `json:"productId"`
+	RefID         *string        `json:"refId"`
+	Status        *PackageStatus `json:"status"`
+	SyncStates    []*SyncState   `json:"syncStates"`
+	Type          *string        `json:"type"`
+	UpdatedAt     *string        `json:"updatedAt"`
+	VersionNumber *int64         `json:"versionNumber"`
 }
 
 type AddonEdge struct {
@@ -185,6 +193,7 @@ type AddonFilter struct {
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
 	ID            *StringFieldComparison         `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	MaxQuantity   *NumberFieldComparison         `json:"maxQuantity,omitempty"`
 	Or            []*AddonFilter                 `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
 	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
@@ -201,6 +210,7 @@ type AddonMaxAggregate struct {
 	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
 	ID            *string        `json:"id"`
+	MaxQuantity   *float64       `json:"maxQuantity"`
 	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
 	RefID         *string        `json:"refId"`
@@ -216,6 +226,7 @@ type AddonMinAggregate struct {
 	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
 	ID            *string        `json:"id"`
+	MaxQuantity   *float64       `json:"maxQuantity"`
 	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
 	RefID         *string        `json:"refId"`
@@ -231,6 +242,7 @@ type AddonSort struct {
 }
 
 type AddonSumAggregate struct {
+	MaxQuantity   *float64 `json:"maxQuantity"`
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
@@ -241,7 +253,9 @@ type AddonUpdateInput struct {
 	DisplayName        *string                `json:"displayName,omitempty"`
 	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets,omitempty"`
 	ID                 string                 `json:"id"`
-	Status             *PackageStatus         `json:"status,omitempty"`
+	// The maximum quantity of this addon that can be added to a subscription
+	MaxQuantity *float64       `json:"maxQuantity,omitempty"`
+	Status      *PackageStatus `json:"status,omitempty"`
 }
 
 type Address struct {
@@ -3742,6 +3756,7 @@ type PlanFilterAddonFilter struct {
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
 	ID            *StringFieldComparison         `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	MaxQuantity   *NumberFieldComparison         `json:"maxQuantity,omitempty"`
 	Or            []*PlanFilterAddonFilter       `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
 	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
@@ -4857,6 +4872,7 @@ type SubscriptionAddonFilterAddonFilter struct {
 	EnvironmentID *StringFieldComparison                `json:"environmentId,omitempty"`
 	ID            *StringFieldComparison                `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison               `json:"isLatest,omitempty"`
+	MaxQuantity   *NumberFieldComparison                `json:"maxQuantity,omitempty"`
 	Or            []*SubscriptionAddonFilterAddonFilter `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison          `json:"pricingType,omitempty"`
 	ProductID     *StringFieldComparison                `json:"productId,omitempty"`
@@ -6283,6 +6299,7 @@ const (
 	AddonSortFieldsEnvironmentID AddonSortFields = "environmentId"
 	AddonSortFieldsID            AddonSortFields = "id"
 	AddonSortFieldsIsLatest      AddonSortFields = "isLatest"
+	AddonSortFieldsMaxQuantity   AddonSortFields = "maxQuantity"
 	AddonSortFieldsPricingType   AddonSortFields = "pricingType"
 	AddonSortFieldsProductID     AddonSortFields = "productId"
 	AddonSortFieldsRefID         AddonSortFields = "refId"
@@ -6299,6 +6316,7 @@ var AllAddonSortFields = []AddonSortFields{
 	AddonSortFieldsEnvironmentID,
 	AddonSortFieldsID,
 	AddonSortFieldsIsLatest,
+	AddonSortFieldsMaxQuantity,
 	AddonSortFieldsPricingType,
 	AddonSortFieldsProductID,
 	AddonSortFieldsRefID,
@@ -6309,7 +6327,7 @@ var AllAddonSortFields = []AddonSortFields{
 
 func (e AddonSortFields) IsValid() bool {
 	switch e {
-	case AddonSortFieldsBillingID, AddonSortFieldsCreatedAt, AddonSortFieldsDescription, AddonSortFieldsDisplayName, AddonSortFieldsEnvironmentID, AddonSortFieldsID, AddonSortFieldsIsLatest, AddonSortFieldsPricingType, AddonSortFieldsProductID, AddonSortFieldsRefID, AddonSortFieldsStatus, AddonSortFieldsUpdatedAt, AddonSortFieldsVersionNumber:
+	case AddonSortFieldsBillingID, AddonSortFieldsCreatedAt, AddonSortFieldsDescription, AddonSortFieldsDisplayName, AddonSortFieldsEnvironmentID, AddonSortFieldsID, AddonSortFieldsIsLatest, AddonSortFieldsMaxQuantity, AddonSortFieldsPricingType, AddonSortFieldsProductID, AddonSortFieldsRefID, AddonSortFieldsStatus, AddonSortFieldsUpdatedAt, AddonSortFieldsVersionNumber:
 		return true
 	}
 	return false
@@ -7783,9 +7801,11 @@ func (e EnvironmentType) MarshalGQL(w io.Writer) {
 type ErrorCode string
 
 const (
-	ErrorCodeAccountNotFoundError                          ErrorCode = "AccountNotFoundError"
-	ErrorCodeAddonHasToHavePriceError                      ErrorCode = "AddonHasToHavePriceError"
-	ErrorCodeAddonNotFound                                 ErrorCode = "AddonNotFound"
+	ErrorCodeAccountNotFoundError     ErrorCode = "AccountNotFoundError"
+	ErrorCodeAddonHasToHavePriceError ErrorCode = "AddonHasToHavePriceError"
+	ErrorCodeAddonNotFound            ErrorCode = "AddonNotFound"
+	// Addon quantity exceeds limit error
+	ErrorCodeAddonQuantityExceedsLimitError                ErrorCode = "AddonQuantityExceedsLimitError"
 	ErrorCodeAddonWithDraftCannotBeDeletedError            ErrorCode = "AddonWithDraftCannotBeDeletedError"
 	ErrorCodeAmountTooLarge                                ErrorCode = "AmountTooLarge"
 	ErrorCodeArchivedCouponCantBeApplied                   ErrorCode = "ArchivedCouponCantBeApplied"
@@ -7903,6 +7923,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeAccountNotFoundError,
 	ErrorCodeAddonHasToHavePriceError,
 	ErrorCodeAddonNotFound,
+	ErrorCodeAddonQuantityExceedsLimitError,
 	ErrorCodeAddonWithDraftCannotBeDeletedError,
 	ErrorCodeAmountTooLarge,
 	ErrorCodeArchivedCouponCantBeApplied,
@@ -8017,7 +8038,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
 		return true
 	}
 	return false
