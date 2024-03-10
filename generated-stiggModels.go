@@ -863,6 +863,26 @@ type CreateOrUpdateAwsMarketplaceProductInput struct {
 	RefID                 *string                   `json:"refId,omitempty"`
 }
 
+// The input type for creating an package group
+type CreatePackageGroup struct {
+	// The display name of the package group
+	DisplayName string `json:"displayName"`
+	// The environment id to create the package group in
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The id of the package group
+	PackageGroupID string `json:"packageGroupId"`
+	// The status of the package group
+	Status *PackageStatus `json:"status,omitempty"`
+}
+
+// The input type for creating a draft for an existing package group
+type CreatePackageGroupDraft struct {
+	// The environment id to create the package group draft in
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The id of the package group
+	PackageGroupID string `json:"packageGroupId"`
+}
+
 type CursorPaging struct {
 	// Paginate after opaque cursor
 	After *string `json:"after,omitempty"`
@@ -2429,6 +2449,16 @@ type GetPackageByRefIDInput struct {
 	VersionNumber *float64 `json:"versionNumber,omitempty"`
 }
 
+// The input type for getting an package group
+type GetPackageGroup struct {
+	// The environment id to get the package group in
+	EnvironmentID string `json:"environmentId"`
+	// The id of the package group
+	PackageGroupID string `json:"packageGroupId"`
+	// The version number of the package group
+	VersionNumber *float64 `json:"versionNumber,omitempty"`
+}
+
 type GetPaywallInput struct {
 	BillingCountryCode      *string     `json:"billingCountryCode,omitempty"`
 	Context                 *WidgetType `json:"context,omitempty"`
@@ -3396,6 +3426,149 @@ type PackageEntitlementUpdateInput struct {
 	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+}
+
+// Package group
+type PackageGroup struct {
+	Addons []*Addon `json:"addons"`
+	// The date the package group was created
+	CreatedAt string `json:"createdAt"`
+	// The display name of the package group
+	DisplayName string `json:"displayName"`
+	// The environment id of the package group in
+	EnvironmentID string `json:"environmentId"`
+	// Indicates if this is the latest version of the package group
+	IsLatest bool `json:"isLatest"`
+	// The id of the package group
+	PackageGroupID string `json:"packageGroupId"`
+	// The status of the package group
+	Status PackageGroupStatus `json:"status"`
+	// The date the package group was last updated
+	UpdatedAt string `json:"updatedAt"`
+	// The version number of the package group
+	VersionNumber int64 `json:"versionNumber"`
+}
+
+type PackageGroupAggregateGroupBy struct {
+	CreatedAt      *string             `json:"createdAt"`
+	DisplayName    *string             `json:"displayName"`
+	EnvironmentID  *string             `json:"environmentId"`
+	IsLatest       *bool               `json:"isLatest"`
+	PackageGroupID *string             `json:"packageGroupId"`
+	Status         *PackageGroupStatus `json:"status"`
+	UpdatedAt      *string             `json:"updatedAt"`
+	VersionNumber  *int64              `json:"versionNumber"`
+}
+
+type PackageGroupAvgAggregate struct {
+	VersionNumber *float64 `json:"versionNumber"`
+}
+
+type PackageGroupConnection struct {
+	// Array of edges.
+	Edges []*PackageGroupEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
+	// Fetch total count of records
+	TotalCount int64 `json:"totalCount"`
+}
+
+type PackageGroupCountAggregate struct {
+	CreatedAt      *int64 `json:"createdAt"`
+	DisplayName    *int64 `json:"displayName"`
+	EnvironmentID  *int64 `json:"environmentId"`
+	IsLatest       *int64 `json:"isLatest"`
+	PackageGroupID *int64 `json:"packageGroupId"`
+	Status         *int64 `json:"status"`
+	UpdatedAt      *int64 `json:"updatedAt"`
+	VersionNumber  *int64 `json:"versionNumber"`
+}
+
+type PackageGroupEdge struct {
+	// Cursor for this node.
+	Cursor string `json:"cursor"`
+	// The node containing the PackageGroup
+	Node PackageGroup `json:"node"`
+}
+
+type PackageGroupFilter struct {
+	Addons         *PackageGroupFilterAddonFilter      `json:"addons,omitempty"`
+	And            []*PackageGroupFilter               `json:"and,omitempty"`
+	CreatedAt      *DateFieldComparison                `json:"createdAt,omitempty"`
+	DisplayName    *StringFieldComparison              `json:"displayName,omitempty"`
+	EnvironmentID  *StringFieldComparison              `json:"environmentId,omitempty"`
+	IsLatest       *BooleanFieldComparison             `json:"isLatest,omitempty"`
+	Or             []*PackageGroupFilter               `json:"or,omitempty"`
+	PackageGroupID *StringFieldComparison              `json:"packageGroupId,omitempty"`
+	Status         *PackageGroupStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt      *DateFieldComparison                `json:"updatedAt,omitempty"`
+	VersionNumber  *IntFieldComparison                 `json:"versionNumber,omitempty"`
+}
+
+type PackageGroupFilterAddonFilter struct {
+	And           []*PackageGroupFilterAddonFilter `json:"and,omitempty"`
+	BillingID     *StringFieldComparison           `json:"billingId,omitempty"`
+	CreatedAt     *DateFieldComparison             `json:"createdAt,omitempty"`
+	Description   *StringFieldComparison           `json:"description,omitempty"`
+	DisplayName   *StringFieldComparison           `json:"displayName,omitempty"`
+	EnvironmentID *StringFieldComparison           `json:"environmentId,omitempty"`
+	ID            *StringFieldComparison           `json:"id,omitempty"`
+	IsLatest      *BooleanFieldComparison          `json:"isLatest,omitempty"`
+	MaxQuantity   *NumberFieldComparison           `json:"maxQuantity,omitempty"`
+	Or            []*PackageGroupFilterAddonFilter `json:"or,omitempty"`
+	PricingType   *PricingTypeFilterComparison     `json:"pricingType,omitempty"`
+	ProductID     *StringFieldComparison           `json:"productId,omitempty"`
+	RefID         *StringFieldComparison           `json:"refId,omitempty"`
+	Status        *PackageStatusFilterComparison   `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison             `json:"updatedAt,omitempty"`
+	VersionNumber *IntFieldComparison              `json:"versionNumber,omitempty"`
+}
+
+type PackageGroupMaxAggregate struct {
+	CreatedAt      *string             `json:"createdAt"`
+	DisplayName    *string             `json:"displayName"`
+	EnvironmentID  *string             `json:"environmentId"`
+	PackageGroupID *string             `json:"packageGroupId"`
+	Status         *PackageGroupStatus `json:"status"`
+	UpdatedAt      *string             `json:"updatedAt"`
+	VersionNumber  *int64              `json:"versionNumber"`
+}
+
+type PackageGroupMinAggregate struct {
+	CreatedAt      *string             `json:"createdAt"`
+	DisplayName    *string             `json:"displayName"`
+	EnvironmentID  *string             `json:"environmentId"`
+	PackageGroupID *string             `json:"packageGroupId"`
+	Status         *PackageGroupStatus `json:"status"`
+	UpdatedAt      *string             `json:"updatedAt"`
+	VersionNumber  *int64              `json:"versionNumber"`
+}
+
+type PackageGroupSort struct {
+	Direction SortDirection          `json:"direction"`
+	Field     PackageGroupSortFields `json:"field"`
+	Nulls     *SortNulls             `json:"nulls,omitempty"`
+}
+
+type PackageGroupStatusFilterComparison struct {
+	Eq       *PackageGroupStatus  `json:"eq,omitempty"`
+	Gt       *PackageGroupStatus  `json:"gt,omitempty"`
+	Gte      *PackageGroupStatus  `json:"gte,omitempty"`
+	ILike    *PackageGroupStatus  `json:"iLike,omitempty"`
+	In       []PackageGroupStatus `json:"in,omitempty"`
+	Is       *bool                `json:"is,omitempty"`
+	IsNot    *bool                `json:"isNot,omitempty"`
+	Like     *PackageGroupStatus  `json:"like,omitempty"`
+	Lt       *PackageGroupStatus  `json:"lt,omitempty"`
+	Lte      *PackageGroupStatus  `json:"lte,omitempty"`
+	Neq      *PackageGroupStatus  `json:"neq,omitempty"`
+	NotILike *PackageGroupStatus  `json:"notILike,omitempty"`
+	NotIn    []PackageGroupStatus `json:"notIn,omitempty"`
+	NotLike  *PackageGroupStatus  `json:"notLike,omitempty"`
+}
+
+type PackageGroupSumAggregate struct {
+	VersionNumber *float64 `json:"versionNumber"`
 }
 
 type PackagePrice struct {
@@ -4522,6 +4695,14 @@ type ProvisionedCustomer struct {
 	SubscriptionStrategyDecision SubscriptionDecisionStrategy `json:"subscriptionStrategyDecision"`
 }
 
+// The input type for publishing an package group
+type PublishPackageGroup struct {
+	// The environment id to publish the package group in
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The id of the package group
+	PackageGroupID string `json:"packageGroupId"`
+}
+
 type PublishPackageResult struct {
 	TaskID *string `json:"taskId"`
 }
@@ -4672,6 +4853,16 @@ type SetExperimentOnCustomerSubscriptionInput struct {
 	ID string `json:"id"`
 	// The id of relation.
 	RelationID string `json:"relationId"`
+}
+
+// The input type for setting the addons of an package group
+type SetPackageGroupAddons struct {
+	// The addons to set on the package group
+	Addons []string `json:"addons"`
+	// The environment id to set the addons of the package group in
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The id of the package group
+	PackageGroupID string `json:"packageGroupId"`
 }
 
 type SnowflakeCredentials struct {
@@ -7878,6 +8069,7 @@ const (
 	ErrorCodeNoProductsAvailable                              ErrorCode = "NoProductsAvailable"
 	ErrorCodeOperationNotAllowedDuringInProgressExperiment    ErrorCode = "OperationNotAllowedDuringInProgressExperiment"
 	ErrorCodePackageAlreadyPublished                          ErrorCode = "PackageAlreadyPublished"
+	ErrorCodePackageGroupNotFound                             ErrorCode = "PackageGroupNotFound"
 	ErrorCodePackagePricingTypeNotSet                         ErrorCode = "PackagePricingTypeNotSet"
 	ErrorCodePaymentMethodNotFoundError                       ErrorCode = "PaymentMethodNotFoundError"
 	ErrorCodePlanCannotBePublishWhenBasePlanIsDraft           ErrorCode = "PlanCannotBePublishWhenBasePlanIsDraft"
@@ -7995,6 +8187,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeNoProductsAvailable,
 	ErrorCodeOperationNotAllowedDuringInProgressExperiment,
 	ErrorCodePackageAlreadyPublished,
+	ErrorCodePackageGroupNotFound,
 	ErrorCodePackagePricingTypeNotSet,
 	ErrorCodePaymentMethodNotFoundError,
 	ErrorCodePlanCannotBePublishWhenBasePlanIsDraft,
@@ -8038,7 +8231,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCheckoutOptionsMissing, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerHasNoPaymentMethod, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier:
 		return true
 	}
 	return false
@@ -8958,6 +9151,106 @@ func (e *PackageEntitlementSortFields) UnmarshalGQL(v interface{}) error {
 }
 
 func (e PackageEntitlementSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type PackageGroupSortFields string
+
+const (
+	PackageGroupSortFieldsCreatedAt      PackageGroupSortFields = "createdAt"
+	PackageGroupSortFieldsDisplayName    PackageGroupSortFields = "displayName"
+	PackageGroupSortFieldsEnvironmentID  PackageGroupSortFields = "environmentId"
+	PackageGroupSortFieldsIsLatest       PackageGroupSortFields = "isLatest"
+	PackageGroupSortFieldsPackageGroupID PackageGroupSortFields = "packageGroupId"
+	PackageGroupSortFieldsStatus         PackageGroupSortFields = "status"
+	PackageGroupSortFieldsUpdatedAt      PackageGroupSortFields = "updatedAt"
+	PackageGroupSortFieldsVersionNumber  PackageGroupSortFields = "versionNumber"
+)
+
+var AllPackageGroupSortFields = []PackageGroupSortFields{
+	PackageGroupSortFieldsCreatedAt,
+	PackageGroupSortFieldsDisplayName,
+	PackageGroupSortFieldsEnvironmentID,
+	PackageGroupSortFieldsIsLatest,
+	PackageGroupSortFieldsPackageGroupID,
+	PackageGroupSortFieldsStatus,
+	PackageGroupSortFieldsUpdatedAt,
+	PackageGroupSortFieldsVersionNumber,
+}
+
+func (e PackageGroupSortFields) IsValid() bool {
+	switch e {
+	case PackageGroupSortFieldsCreatedAt, PackageGroupSortFieldsDisplayName, PackageGroupSortFieldsEnvironmentID, PackageGroupSortFieldsIsLatest, PackageGroupSortFieldsPackageGroupID, PackageGroupSortFieldsStatus, PackageGroupSortFieldsUpdatedAt, PackageGroupSortFieldsVersionNumber:
+		return true
+	}
+	return false
+}
+
+func (e PackageGroupSortFields) String() string {
+	return string(e)
+}
+
+func (e *PackageGroupSortFields) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = PackageGroupSortFields(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid PackageGroupSortFields", str)
+	}
+	return nil
+}
+
+func (e PackageGroupSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Package group status.
+type PackageGroupStatus string
+
+const (
+	// The package group is archived.
+	PackageGroupStatusArchived PackageGroupStatus = "ARCHIVED"
+	// The package group is a draft.
+	PackageGroupStatusDraft PackageGroupStatus = "DRAFT"
+	// The package group is published.
+	PackageGroupStatusPublished PackageGroupStatus = "PUBLISHED"
+)
+
+var AllPackageGroupStatus = []PackageGroupStatus{
+	PackageGroupStatusArchived,
+	PackageGroupStatusDraft,
+	PackageGroupStatusPublished,
+}
+
+func (e PackageGroupStatus) IsValid() bool {
+	switch e {
+	case PackageGroupStatusArchived, PackageGroupStatusDraft, PackageGroupStatusPublished:
+		return true
+	}
+	return false
+}
+
+func (e PackageGroupStatus) String() string {
+	return string(e)
+}
+
+func (e *PackageGroupStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = PackageGroupStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid PackageGroupStatus", str)
+	}
+	return nil
+}
+
+func (e PackageGroupStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
