@@ -4708,13 +4708,21 @@ type PublishPackageResult struct {
 }
 
 type RecalculateEntitlementsInput struct {
-	CustomerIds     []string `json:"customerIds,omitempty"`
-	EnvironmentID   string   `json:"environmentId"`
-	ForAllCustomers *bool    `json:"forAllCustomers,omitempty"`
+	CustomerIds        []string                                        `json:"customerIds,omitempty"`
+	EnvironmentID      string                                          `json:"environmentId"`
+	ForAllCustomers    *bool                                           `json:"forAllCustomers,omitempty"`
+	SideEffectsOptions *RecalculateEntitlementsSideEffectsOptionsInput `json:"sideEffectsOptions,omitempty"`
 }
 
 type RecalculateEntitlementsResult struct {
 	TaskID string `json:"taskId"`
+}
+
+type RecalculateEntitlementsSideEffectsOptionsInput struct {
+	SkipPublishToSubscribers *bool `json:"skipPublishToSubscribers,omitempty"`
+	SkipWriteToCache         *bool `json:"skipWriteToCache,omitempty"`
+	SkipWriteToDataCatalog   *bool `json:"skipWriteToDataCatalog,omitempty"`
+	SkipWriteToEventLog      *bool `json:"skipWriteToEventLog,omitempty"`
 }
 
 type RemoveBasePlanFromPlanInput struct {
