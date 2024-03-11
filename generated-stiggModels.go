@@ -4029,25 +4029,27 @@ type PreviewSubscriptionInput struct {
 }
 
 type Price struct {
-	BillingCadence      BillingCadence `json:"billingCadence"`
-	BillingCountryCode  *string        `json:"billingCountryCode"`
-	BillingID           *string        `json:"billingId"`
-	BillingModel        BillingModel   `json:"billingModel"`
-	BillingPeriod       BillingPeriod  `json:"billingPeriod"`
-	CreatedAt           *string        `json:"createdAt"`
-	CrmID               *string        `json:"crmId"`
-	CrmLinkURL          *string        `json:"crmLinkUrl"`
-	Feature             *Feature       `json:"feature"`
-	FeatureID           *string        `json:"featureId"`
-	ID                  string         `json:"id"`
-	MaxUnitQuantity     *float64       `json:"maxUnitQuantity"`
-	MinUnitQuantity     *float64       `json:"minUnitQuantity"`
-	Package             PackageDto     `json:"package"`
-	PackageID           *string        `json:"packageId"`
-	Price               *Money         `json:"price"`
-	Tiers               []*PriceTier   `json:"tiers"`
-	TiersMode           *TiersMode     `json:"tiersMode"`
-	UsedInSubscriptions *bool          `json:"usedInSubscriptions"`
+	BillingCadence     BillingCadence `json:"billingCadence"`
+	BillingCountryCode *string        `json:"billingCountryCode"`
+	BillingID          *string        `json:"billingId"`
+	BillingModel       BillingModel   `json:"billingModel"`
+	BillingPeriod      BillingPeriod  `json:"billingPeriod"`
+	// The number of units per block. Defaults to 1 unit.
+	BlockSize           *float64     `json:"blockSize"`
+	CreatedAt           *string      `json:"createdAt"`
+	CrmID               *string      `json:"crmId"`
+	CrmLinkURL          *string      `json:"crmLinkUrl"`
+	Feature             *Feature     `json:"feature"`
+	FeatureID           *string      `json:"featureId"`
+	ID                  string       `json:"id"`
+	MaxUnitQuantity     *float64     `json:"maxUnitQuantity"`
+	MinUnitQuantity     *float64     `json:"minUnitQuantity"`
+	Package             PackageDto   `json:"package"`
+	PackageID           *string      `json:"packageId"`
+	Price               *Money       `json:"price"`
+	Tiers               []*PriceTier `json:"tiers"`
+	TiersMode           *TiersMode   `json:"tiersMode"`
+	UsedInSubscriptions *bool        `json:"usedInSubscriptions"`
 }
 
 type PriceAggregateGroupBy struct {
@@ -4071,24 +4073,26 @@ type PriceCountAggregate struct {
 }
 
 type PriceDeleteResponse struct {
-	BillingCadence      *BillingCadence `json:"billingCadence"`
-	BillingCountryCode  *string         `json:"billingCountryCode"`
-	BillingID           *string         `json:"billingId"`
-	BillingModel        *BillingModel   `json:"billingModel"`
-	BillingPeriod       *BillingPeriod  `json:"billingPeriod"`
-	CreatedAt           *string         `json:"createdAt"`
-	CrmID               *string         `json:"crmId"`
-	CrmLinkURL          *string         `json:"crmLinkUrl"`
-	Feature             *Feature        `json:"feature"`
-	FeatureID           *string         `json:"featureId"`
-	ID                  *string         `json:"id"`
-	MaxUnitQuantity     *float64        `json:"maxUnitQuantity"`
-	MinUnitQuantity     *float64        `json:"minUnitQuantity"`
-	PackageID           *string         `json:"packageId"`
-	Price               *Money          `json:"price"`
-	Tiers               []*PriceTier    `json:"tiers"`
-	TiersMode           *TiersMode      `json:"tiersMode"`
-	UsedInSubscriptions *bool           `json:"usedInSubscriptions"`
+	BillingCadence     *BillingCadence `json:"billingCadence"`
+	BillingCountryCode *string         `json:"billingCountryCode"`
+	BillingID          *string         `json:"billingId"`
+	BillingModel       *BillingModel   `json:"billingModel"`
+	BillingPeriod      *BillingPeriod  `json:"billingPeriod"`
+	// The number of units per block. Defaults to 1 unit.
+	BlockSize           *float64     `json:"blockSize"`
+	CreatedAt           *string      `json:"createdAt"`
+	CrmID               *string      `json:"crmId"`
+	CrmLinkURL          *string      `json:"crmLinkUrl"`
+	Feature             *Feature     `json:"feature"`
+	FeatureID           *string      `json:"featureId"`
+	ID                  *string      `json:"id"`
+	MaxUnitQuantity     *float64     `json:"maxUnitQuantity"`
+	MinUnitQuantity     *float64     `json:"minUnitQuantity"`
+	PackageID           *string      `json:"packageId"`
+	Price               *Money       `json:"price"`
+	Tiers               []*PriceTier `json:"tiers"`
+	TiersMode           *TiersMode   `json:"tiersMode"`
+	UsedInSubscriptions *bool        `json:"usedInSubscriptions"`
 }
 
 type PriceEdge struct {
@@ -4169,10 +4173,12 @@ type PriceNotFoundError struct {
 }
 
 type PricePeriodInput struct {
-	BillingCountryCode *string           `json:"billingCountryCode,omitempty"`
-	BillingPeriod      BillingPeriod     `json:"billingPeriod"`
-	Price              *MoneyInputDto    `json:"price,omitempty"`
-	Tiers              []*PriceTierInput `json:"tiers,omitempty"`
+	BillingCountryCode *string       `json:"billingCountryCode,omitempty"`
+	BillingPeriod      BillingPeriod `json:"billingPeriod"`
+	// The number of units per block. Defaults to 1 unit.
+	BlockSize *float64          `json:"blockSize,omitempty"`
+	Price     *MoneyInputDto    `json:"price,omitempty"`
+	Tiers     []*PriceTierInput `json:"tiers,omitempty"`
 }
 
 type PriceSort struct {
