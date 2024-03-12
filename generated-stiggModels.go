@@ -62,7 +62,7 @@ type Addon struct {
 	Environment        Environment            `json:"environment"`
 	EnvironmentID      string                 `json:"environmentId"`
 	// Indicates if the addon has subscriptions
-	HasSubscriptions  *bool        `json:"hasSubscriptions"`
+	HasSubscriptions  bool         `json:"hasSubscriptions"`
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
 	ID                string       `json:"id"`
 	IsLatest          *bool        `json:"isLatest"`
