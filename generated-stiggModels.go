@@ -61,21 +61,24 @@ type Addon struct {
 	Entitlements       []*PackageEntitlement  `json:"entitlements"`
 	Environment        Environment            `json:"environment"`
 	EnvironmentID      string                 `json:"environmentId"`
-	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
-	ID                 string                 `json:"id"`
-	IsLatest           *bool                  `json:"isLatest"`
-	MaxQuantity        *float64               `json:"maxQuantity"`
-	OveragePrices      []*Price               `json:"overagePrices"`
-	Prices             []*Price               `json:"prices"`
-	PricingType        *PricingType           `json:"pricingType"`
-	Product            *Product               `json:"product"`
-	ProductID          *string                `json:"productId"`
-	RefID              string                 `json:"refId"`
-	Status             PackageStatus          `json:"status"`
-	SyncStates         []*SyncState           `json:"syncStates"`
-	Type               string                 `json:"type"`
-	UpdatedAt          *string                `json:"updatedAt"`
-	VersionNumber      int64                  `json:"versionNumber"`
+	// Indicates if the addon has subscriptions
+	HasSubscriptions  *bool        `json:"hasSubscriptions"`
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
+	ID                string       `json:"id"`
+	IsLatest          *bool        `json:"isLatest"`
+	// The maximum quantity of the addon
+	MaxQuantity   *float64      `json:"maxQuantity"`
+	OveragePrices []*Price      `json:"overagePrices"`
+	Prices        []*Price      `json:"prices"`
+	PricingType   *PricingType  `json:"pricingType"`
+	Product       *Product      `json:"product"`
+	ProductID     *string       `json:"productId"`
+	RefID         string        `json:"refId"`
+	Status        PackageStatus `json:"status"`
+	SyncStates    []*SyncState  `json:"syncStates"`
+	Type          string        `json:"type"`
+	UpdatedAt     *string       `json:"updatedAt"`
+	VersionNumber int64         `json:"versionNumber"`
 }
 
 type AddonAggregateGroupBy struct {
