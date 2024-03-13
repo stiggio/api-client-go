@@ -5858,6 +5858,16 @@ type TriggerSubscriptionMigrationResult struct {
 	TaskID *string `json:"taskId"`
 }
 
+// Input for triggering usage sync
+type TriggerSubscriptionUsageSyncInput struct {
+	// The customer id to trigger usage sync for
+	CustomerID string `json:"customerId"`
+	// The environment id to trigger usage sync for
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The resource id to trigger usage sync for
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
 type TypographyConfiguration struct {
 	Body       *FontVariant `json:"body"`
 	FontFamily *string      `json:"fontFamily"`
