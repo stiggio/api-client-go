@@ -3180,10 +3180,12 @@ type PackageChanges struct {
 	DisplayName        *StringChangeDto             `json:"displayName"`
 	Entitlements       []*PackageEntitlementChange  `json:"entitlements"`
 	HiddenFromWidgets  *HiddenFromWidgetsChange     `json:"hiddenFromWidgets"`
-	OveragePrices      []*PackagePriceChange        `json:"overagePrices"`
-	Prices             []*PackagePriceChange        `json:"prices"`
-	PricingType        *PricingTypeChange           `json:"pricingType"`
-	TotalChanges       int64                        `json:"totalChanges"`
+	// Max quantity for an addon
+	MaxQuantity   *StringChangeDto      `json:"maxQuantity"`
+	OveragePrices []*PackagePriceChange `json:"overagePrices"`
+	Prices        []*PackagePriceChange `json:"prices"`
+	PricingType   *PricingTypeChange    `json:"pricingType"`
+	TotalChanges  int64                 `json:"totalChanges"`
 }
 
 type PackageDto struct {
