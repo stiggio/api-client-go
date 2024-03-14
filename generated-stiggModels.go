@@ -2033,6 +2033,17 @@ type EstimateSubscriptionUpdateInput struct {
 	UnitQuantity     *float64                  `json:"unitQuantity,omitempty"`
 }
 
+type EventListItem struct {
+	Customer       *Customer              `json:"customer"`
+	CustomerID     string                 `json:"customerId"`
+	Dimensions     map[string]interface{} `json:"dimensions"`
+	EventName      string                 `json:"eventName"`
+	ID             string                 `json:"id"`
+	IdempotencyKey string                 `json:"idempotencyKey"`
+	ResourceID     *string                `json:"resourceId"`
+	Timestamp      string                 `json:"timestamp"`
+}
+
 type EventLog struct {
 	Description      *string      `json:"description"`
 	Environment      *Environment `json:"environment"`
@@ -2076,6 +2087,15 @@ type EventsFields struct {
 type EventsFieldsInput struct {
 	EnvironmentID string                        `json:"environmentId"`
 	Filters       []*MeterFilterDefinitionInput `json:"filters,omitempty"`
+}
+
+type EventsList struct {
+	Events []*EventListItem `json:"events"`
+}
+
+type EventsListInput struct {
+	CustomerID    *string `json:"customerId,omitempty"`
+	EnvironmentID string  `json:"environmentId"`
 }
 
 type Experiment struct {
