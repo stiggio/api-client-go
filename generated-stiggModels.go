@@ -868,12 +868,15 @@ type CreateOrUpdateAwsMarketplaceProductInput struct {
 
 // The input type for creating an package group
 type CreatePackageGroup struct {
+	// The description of the package group
+	Description *string `json:"description,omitempty"`
 	// The display name of the package group
 	DisplayName string `json:"displayName"`
 	// The environment id to create the package group in
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The id of the package group
 	PackageGroupID string `json:"packageGroupId"`
+	ProductID      string `json:"productId"`
 	// The status of the package group
 	Status *PackageStatus `json:"status,omitempty"`
 }
@@ -3458,6 +3461,8 @@ type PackageGroup struct {
 	Addons []*Addon `json:"addons"`
 	// The date the package group was created
 	CreatedAt string `json:"createdAt"`
+	// The description of the package group
+	Description *string `json:"description"`
 	// The display name of the package group
 	DisplayName string `json:"displayName"`
 	// The environment id of the package group in
@@ -3465,7 +3470,8 @@ type PackageGroup struct {
 	// Indicates if this is the latest version of the package group
 	IsLatest bool `json:"isLatest"`
 	// The id of the package group
-	PackageGroupID string `json:"packageGroupId"`
+	PackageGroupID string  `json:"packageGroupId"`
+	Product        Product `json:"product"`
 	// The status of the package group
 	Status PackageGroupStatus `json:"status"`
 	// The date the package group was last updated
@@ -3525,6 +3531,7 @@ type PackageGroupFilter struct {
 	IsLatest       *BooleanFieldComparison             `json:"isLatest,omitempty"`
 	Or             []*PackageGroupFilter               `json:"or,omitempty"`
 	PackageGroupID *StringFieldComparison              `json:"packageGroupId,omitempty"`
+	Product        *PackageGroupFilterProductFilter    `json:"product,omitempty"`
 	Status         *PackageGroupStatusFilterComparison `json:"status,omitempty"`
 	UpdatedAt      *DateFieldComparison                `json:"updatedAt,omitempty"`
 	VersionNumber  *IntFieldComparison                 `json:"versionNumber,omitempty"`
@@ -3547,6 +3554,21 @@ type PackageGroupFilterAddonFilter struct {
 	Status        *PackageStatusFilterComparison   `json:"status,omitempty"`
 	UpdatedAt     *DateFieldComparison             `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison              `json:"versionNumber,omitempty"`
+}
+
+type PackageGroupFilterProductFilter struct {
+	And                       []*PackageGroupFilterProductFilter `json:"and,omitempty"`
+	AwsMarketplaceProductCode *StringFieldComparison             `json:"awsMarketplaceProductCode,omitempty"`
+	AwsMarketplaceProductID   *StringFieldComparison             `json:"awsMarketplaceProductId,omitempty"`
+	CreatedAt                 *DateFieldComparison               `json:"createdAt,omitempty"`
+	Description               *StringFieldComparison             `json:"description,omitempty"`
+	DisplayName               *StringFieldComparison             `json:"displayName,omitempty"`
+	EnvironmentID             *StringFieldComparison             `json:"environmentId,omitempty"`
+	ID                        *StringFieldComparison             `json:"id,omitempty"`
+	IsDefaultProduct          *BooleanFieldComparison            `json:"isDefaultProduct,omitempty"`
+	Or                        []*PackageGroupFilterProductFilter `json:"or,omitempty"`
+	RefID                     *StringFieldComparison             `json:"refId,omitempty"`
+	UpdatedAt                 *DateFieldComparison               `json:"updatedAt,omitempty"`
 }
 
 type PackageGroupMaxAggregate struct {
