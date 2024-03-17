@@ -876,7 +876,8 @@ type CreatePackageGroup struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The id of the package group
 	PackageGroupID string `json:"packageGroupId"`
-	ProductID      string `json:"productId"`
+	// The id of the product
+	ProductID string `json:"productId"`
 	// The status of the package group
 	Status *PackageStatus `json:"status,omitempty"`
 }
@@ -3832,6 +3833,7 @@ type Plan struct {
 	BillingID                   *string                `json:"billingId"`
 	BillingLinkURL              *string                `json:"billingLinkUrl"`
 	CompatibleAddons            []*Addon               `json:"compatibleAddons"`
+	CompatiblePackageGroups     []*PackageGroup        `json:"compatiblePackageGroups"`
 	CreatedAt                   *string                `json:"createdAt"`
 	DefaultTrialConfig          *DefaultTrialConfig    `json:"defaultTrialConfig"`
 	Description                 *string                `json:"description"`
@@ -3948,23 +3950,24 @@ type PlanEdge struct {
 }
 
 type PlanFilter struct {
-	And              []*PlanFilter                  `json:"and,omitempty"`
-	BillingID        *StringFieldComparison         `json:"billingId,omitempty"`
-	CompatibleAddons *PlanFilterAddonFilter         `json:"compatibleAddons,omitempty"`
-	CreatedAt        *DateFieldComparison           `json:"createdAt,omitempty"`
-	Description      *StringFieldComparison         `json:"description,omitempty"`
-	DisplayName      *StringFieldComparison         `json:"displayName,omitempty"`
-	EnvironmentID    *StringFieldComparison         `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison         `json:"id,omitempty"`
-	IsLatest         *BooleanFieldComparison        `json:"isLatest,omitempty"`
-	Or               []*PlanFilter                  `json:"or,omitempty"`
-	PricingType      *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
-	Product          *PlanFilterProductFilter       `json:"product,omitempty"`
-	ProductID        *StringFieldComparison         `json:"productId,omitempty"`
-	RefID            *StringFieldComparison         `json:"refId,omitempty"`
-	Status           *PackageStatusFilterComparison `json:"status,omitempty"`
-	UpdatedAt        *DateFieldComparison           `json:"updatedAt,omitempty"`
-	VersionNumber    *IntFieldComparison            `json:"versionNumber,omitempty"`
+	And                     []*PlanFilter                  `json:"and,omitempty"`
+	BillingID               *StringFieldComparison         `json:"billingId,omitempty"`
+	CompatibleAddons        *PlanFilterAddonFilter         `json:"compatibleAddons,omitempty"`
+	CompatiblePackageGroups *PlanFilterPackageGroupFilter  `json:"compatiblePackageGroups,omitempty"`
+	CreatedAt               *DateFieldComparison           `json:"createdAt,omitempty"`
+	Description             *StringFieldComparison         `json:"description,omitempty"`
+	DisplayName             *StringFieldComparison         `json:"displayName,omitempty"`
+	EnvironmentID           *StringFieldComparison         `json:"environmentId,omitempty"`
+	ID                      *StringFieldComparison         `json:"id,omitempty"`
+	IsLatest                *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	Or                      []*PlanFilter                  `json:"or,omitempty"`
+	PricingType             *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
+	Product                 *PlanFilterProductFilter       `json:"product,omitempty"`
+	ProductID               *StringFieldComparison         `json:"productId,omitempty"`
+	RefID                   *StringFieldComparison         `json:"refId,omitempty"`
+	Status                  *PackageStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt               *DateFieldComparison           `json:"updatedAt,omitempty"`
+	VersionNumber           *IntFieldComparison            `json:"versionNumber,omitempty"`
 }
 
 type PlanFilterAddonFilter struct {
@@ -3984,6 +3987,19 @@ type PlanFilterAddonFilter struct {
 	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
 	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison            `json:"versionNumber,omitempty"`
+}
+
+type PlanFilterPackageGroupFilter struct {
+	And            []*PlanFilterPackageGroupFilter     `json:"and,omitempty"`
+	CreatedAt      *DateFieldComparison                `json:"createdAt,omitempty"`
+	DisplayName    *StringFieldComparison              `json:"displayName,omitempty"`
+	EnvironmentID  *StringFieldComparison              `json:"environmentId,omitempty"`
+	IsLatest       *BooleanFieldComparison             `json:"isLatest,omitempty"`
+	Or             []*PlanFilterPackageGroupFilter     `json:"or,omitempty"`
+	PackageGroupID *StringFieldComparison              `json:"packageGroupId,omitempty"`
+	Status         *PackageGroupStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt      *DateFieldComparison                `json:"updatedAt,omitempty"`
+	VersionNumber  *IntFieldComparison                 `json:"versionNumber,omitempty"`
 }
 
 type PlanFilterProductFilter struct {
@@ -4924,6 +4940,16 @@ type SetPackageGroupAddons struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The id of the package group
 	PackageGroupID string `json:"packageGroupId"`
+}
+
+// Set plan compatible package groups input
+type SetPlanCompatiblePackageGroups struct {
+	// The environment id
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The id of the plan
+	ID string `json:"id"`
+	// The package group ids
+	PackageGroupIds []string `json:"packageGroupIds"`
 }
 
 type SnowflakeCredentials struct {
