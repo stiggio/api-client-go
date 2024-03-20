@@ -878,16 +878,6 @@ type CreatePackageGroup struct {
 	PackageGroupID string `json:"packageGroupId"`
 	// The id of the product
 	ProductID string `json:"productId"`
-	// The status of the package group
-	Status *PackageStatus `json:"status,omitempty"`
-}
-
-// The input type for creating a draft for an existing package group
-type CreatePackageGroupDraft struct {
-	// The environment id to create the package group draft in
-	EnvironmentID *string `json:"environmentId,omitempty"`
-	// The id of the package group
-	PackageGroupID string `json:"packageGroupId"`
 }
 
 type CursorPaging struct {
@@ -3473,6 +3463,7 @@ type PackageGroup struct {
 	// The id of the package group
 	PackageGroupID string  `json:"packageGroupId"`
 	Product        Product `json:"product"`
+	ProductID      *string `json:"productId"`
 	// The status of the package group
 	Status PackageGroupStatus `json:"status"`
 	// The date the package group was last updated
@@ -3487,6 +3478,7 @@ type PackageGroupAggregateGroupBy struct {
 	EnvironmentID  *string             `json:"environmentId"`
 	IsLatest       *bool               `json:"isLatest"`
 	PackageGroupID *string             `json:"packageGroupId"`
+	ProductID      *string             `json:"productId"`
 	Status         *PackageGroupStatus `json:"status"`
 	UpdatedAt      *string             `json:"updatedAt"`
 	VersionNumber  *int64              `json:"versionNumber"`
@@ -3511,6 +3503,7 @@ type PackageGroupCountAggregate struct {
 	EnvironmentID  *int64 `json:"environmentId"`
 	IsLatest       *int64 `json:"isLatest"`
 	PackageGroupID *int64 `json:"packageGroupId"`
+	ProductID      *int64 `json:"productId"`
 	Status         *int64 `json:"status"`
 	UpdatedAt      *int64 `json:"updatedAt"`
 	VersionNumber  *int64 `json:"versionNumber"`
@@ -3533,6 +3526,7 @@ type PackageGroupFilter struct {
 	Or             []*PackageGroupFilter               `json:"or,omitempty"`
 	PackageGroupID *StringFieldComparison              `json:"packageGroupId,omitempty"`
 	Product        *PackageGroupFilterProductFilter    `json:"product,omitempty"`
+	ProductID      *StringFieldComparison              `json:"productId,omitempty"`
 	Status         *PackageGroupStatusFilterComparison `json:"status,omitempty"`
 	UpdatedAt      *DateFieldComparison                `json:"updatedAt,omitempty"`
 	VersionNumber  *IntFieldComparison                 `json:"versionNumber,omitempty"`
@@ -3577,6 +3571,7 @@ type PackageGroupMaxAggregate struct {
 	DisplayName    *string             `json:"displayName"`
 	EnvironmentID  *string             `json:"environmentId"`
 	PackageGroupID *string             `json:"packageGroupId"`
+	ProductID      *string             `json:"productId"`
 	Status         *PackageGroupStatus `json:"status"`
 	UpdatedAt      *string             `json:"updatedAt"`
 	VersionNumber  *int64              `json:"versionNumber"`
@@ -3587,6 +3582,7 @@ type PackageGroupMinAggregate struct {
 	DisplayName    *string             `json:"displayName"`
 	EnvironmentID  *string             `json:"environmentId"`
 	PackageGroupID *string             `json:"packageGroupId"`
+	ProductID      *string             `json:"productId"`
 	Status         *PackageGroupStatus `json:"status"`
 	UpdatedAt      *string             `json:"updatedAt"`
 	VersionNumber  *int64              `json:"versionNumber"`
@@ -3997,6 +3993,7 @@ type PlanFilterPackageGroupFilter struct {
 	IsLatest       *BooleanFieldComparison             `json:"isLatest,omitempty"`
 	Or             []*PlanFilterPackageGroupFilter     `json:"or,omitempty"`
 	PackageGroupID *StringFieldComparison              `json:"packageGroupId,omitempty"`
+	ProductID      *StringFieldComparison              `json:"productId,omitempty"`
 	Status         *PackageGroupStatusFilterComparison `json:"status,omitempty"`
 	UpdatedAt      *DateFieldComparison                `json:"updatedAt,omitempty"`
 	VersionNumber  *IntFieldComparison                 `json:"versionNumber,omitempty"`
@@ -4762,14 +4759,6 @@ type ProvisionedCustomer struct {
 	Subscription                 *CustomerSubscription        `json:"subscription"`
 	SubscriptionDecisionStrategy SubscriptionDecisionStrategy `json:"subscriptionDecisionStrategy"`
 	SubscriptionStrategyDecision SubscriptionDecisionStrategy `json:"subscriptionStrategyDecision"`
-}
-
-// The input type for publishing an package group
-type PublishPackageGroup struct {
-	// The environment id to publish the package group in
-	EnvironmentID *string `json:"environmentId,omitempty"`
-	// The id of the package group
-	PackageGroupID string `json:"packageGroupId"`
 }
 
 type PublishPackageResult struct {
@@ -9259,6 +9248,7 @@ const (
 	PackageGroupSortFieldsEnvironmentID  PackageGroupSortFields = "environmentId"
 	PackageGroupSortFieldsIsLatest       PackageGroupSortFields = "isLatest"
 	PackageGroupSortFieldsPackageGroupID PackageGroupSortFields = "packageGroupId"
+	PackageGroupSortFieldsProductID      PackageGroupSortFields = "productId"
 	PackageGroupSortFieldsStatus         PackageGroupSortFields = "status"
 	PackageGroupSortFieldsUpdatedAt      PackageGroupSortFields = "updatedAt"
 	PackageGroupSortFieldsVersionNumber  PackageGroupSortFields = "versionNumber"
@@ -9270,6 +9260,7 @@ var AllPackageGroupSortFields = []PackageGroupSortFields{
 	PackageGroupSortFieldsEnvironmentID,
 	PackageGroupSortFieldsIsLatest,
 	PackageGroupSortFieldsPackageGroupID,
+	PackageGroupSortFieldsProductID,
 	PackageGroupSortFieldsStatus,
 	PackageGroupSortFieldsUpdatedAt,
 	PackageGroupSortFieldsVersionNumber,
@@ -9277,7 +9268,7 @@ var AllPackageGroupSortFields = []PackageGroupSortFields{
 
 func (e PackageGroupSortFields) IsValid() bool {
 	switch e {
-	case PackageGroupSortFieldsCreatedAt, PackageGroupSortFieldsDisplayName, PackageGroupSortFieldsEnvironmentID, PackageGroupSortFieldsIsLatest, PackageGroupSortFieldsPackageGroupID, PackageGroupSortFieldsStatus, PackageGroupSortFieldsUpdatedAt, PackageGroupSortFieldsVersionNumber:
+	case PackageGroupSortFieldsCreatedAt, PackageGroupSortFieldsDisplayName, PackageGroupSortFieldsEnvironmentID, PackageGroupSortFieldsIsLatest, PackageGroupSortFieldsPackageGroupID, PackageGroupSortFieldsProductID, PackageGroupSortFieldsStatus, PackageGroupSortFieldsUpdatedAt, PackageGroupSortFieldsVersionNumber:
 		return true
 	}
 	return false
