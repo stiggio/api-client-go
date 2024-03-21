@@ -352,6 +352,14 @@ type ArchiveFeatureInput struct {
 	ID            string  `json:"id"`
 }
 
+// The input type for archiving package group
+type ArchivePackageGroup struct {
+	// The environment id to get the package group in
+	EnvironmentID string `json:"environmentId"`
+	// The id of the package group
+	PackageGroupID string `json:"packageGroupId"`
+}
+
 type ArchivePlanInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	ID            string  `json:"id"`
