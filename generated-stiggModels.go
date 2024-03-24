@@ -1802,6 +1802,18 @@ type EditAllowedOnDraftPackageOnlyError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// The input type for editing package group details
+type EditPackageGroupDetailsInput struct {
+	// The description of the package group
+	Description *string `json:"description,omitempty"`
+	// The display name of the package group
+	DisplayName string `json:"displayName"`
+	// The environment id of the package group to be edited
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The id of the package group
+	PackageGroupID string `json:"packageGroupId"`
+}
+
 type EligibleForTrial struct {
 	Eligible     bool    `json:"eligible"`
 	ProductID    *string `json:"productId"`
