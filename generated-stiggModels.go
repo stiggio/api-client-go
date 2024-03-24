@@ -54,13 +54,15 @@ type Addon struct {
 	BillingID          *string                `json:"billingId"`
 	BillingLinkURL     *string                `json:"billingLinkUrl"`
 	CreatedAt          *string                `json:"createdAt"`
-	Description        *string                `json:"description"`
-	DisplayName        string                 `json:"displayName"`
-	DraftDetails       *PackageDraftDetails   `json:"draftDetails"`
-	DraftSummary       *PackageDraftSummary   `json:"draftSummary"`
-	Entitlements       []*PackageEntitlement  `json:"entitlements"`
-	Environment        Environment            `json:"environment"`
-	EnvironmentID      string                 `json:"environmentId"`
+	// List of addon ids this addon is dependant on
+	Dependencies  []*Addon              `json:"dependencies"`
+	Description   *string               `json:"description"`
+	DisplayName   string                `json:"displayName"`
+	DraftDetails  *PackageDraftDetails  `json:"draftDetails"`
+	DraftSummary  *PackageDraftSummary  `json:"draftSummary"`
+	Entitlements  []*PackageEntitlement `json:"entitlements"`
+	Environment   Environment           `json:"environment"`
+	EnvironmentID string                `json:"environmentId"`
 	// Indicates if the addon has subscriptions
 	HasSubscriptions  bool         `json:"hasSubscriptions"`
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
@@ -140,10 +142,12 @@ type AddonCreateInput struct {
 	AdditionalMetaData          map[string]interface{} `json:"additionalMetaData,omitempty"`
 	AwsMarketplacePlanDimension *string                `json:"awsMarketplacePlanDimension,omitempty"`
 	BillingID                   *string                `json:"billingId,omitempty"`
-	Description                 *string                `json:"description,omitempty"`
-	DisplayName                 string                 `json:"displayName"`
-	EnvironmentID               *string                `json:"environmentId,omitempty"`
-	HiddenFromWidgets           []WidgetType           `json:"hiddenFromWidgets,omitempty"`
+	// List of addon ids this addon should be dependant on
+	Dependencies      []string     `json:"dependencies,omitempty"`
+	Description       *string      `json:"description,omitempty"`
+	DisplayName       string       `json:"displayName"`
+	EnvironmentID     *string      `json:"environmentId,omitempty"`
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
 	// The maximum quantity of this addon that can be added to a subscription
 	MaxQuantity *float64       `json:"maxQuantity,omitempty"`
 	PricingType *PricingType   `json:"pricingType,omitempty"`
@@ -157,15 +161,17 @@ type AddonDeleteResponse struct {
 	BillingID          *string                `json:"billingId"`
 	BillingLinkURL     *string                `json:"billingLinkUrl"`
 	CreatedAt          *string                `json:"createdAt"`
-	Description        *string                `json:"description"`
-	DisplayName        *string                `json:"displayName"`
-	DraftDetails       *PackageDraftDetails   `json:"draftDetails"`
-	DraftSummary       *PackageDraftSummary   `json:"draftSummary"`
-	Entitlements       []*PackageEntitlement  `json:"entitlements"`
-	EnvironmentID      *string                `json:"environmentId"`
-	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
-	ID                 *string                `json:"id"`
-	IsLatest           *bool                  `json:"isLatest"`
+	// List of addons this addon is dependant on
+	Dependencies      []*Addon              `json:"dependencies"`
+	Description       *string               `json:"description"`
+	DisplayName       *string               `json:"displayName"`
+	DraftDetails      *PackageDraftDetails  `json:"draftDetails"`
+	DraftSummary      *PackageDraftSummary  `json:"draftSummary"`
+	Entitlements      []*PackageEntitlement `json:"entitlements"`
+	EnvironmentID     *string               `json:"environmentId"`
+	HiddenFromWidgets []WidgetType          `json:"hiddenFromWidgets"`
+	ID                *string               `json:"id"`
+	IsLatest          *bool                 `json:"isLatest"`
 	// The maximum quantity of this addon that can be added to a subscription
 	MaxQuantity   *float64       `json:"maxQuantity"`
 	OveragePrices []*Price       `json:"overagePrices"`
@@ -252,10 +258,12 @@ type AddonSumAggregate struct {
 type AddonUpdateInput struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	BillingID          *string                `json:"billingId,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	DisplayName        *string                `json:"displayName,omitempty"`
-	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets,omitempty"`
-	ID                 string                 `json:"id"`
+	// List of addon ids this addon should be dependant on
+	Dependencies      []string     `json:"dependencies,omitempty"`
+	Description       *string      `json:"description,omitempty"`
+	DisplayName       *string      `json:"displayName,omitempty"`
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	ID                string       `json:"id"`
 	// The maximum quantity of this addon that can be added to a subscription
 	MaxQuantity *float64       `json:"maxQuantity,omitempty"`
 	Status      *PackageStatus `json:"status,omitempty"`
