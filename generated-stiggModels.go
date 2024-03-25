@@ -91,7 +91,6 @@ type AddonAggregateGroupBy struct {
 	EnvironmentID *string        `json:"environmentId"`
 	ID            *string        `json:"id"`
 	IsLatest      *bool          `json:"isLatest"`
-	MaxQuantity   *float64       `json:"maxQuantity"`
 	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
 	RefID         *string        `json:"refId"`
@@ -101,7 +100,6 @@ type AddonAggregateGroupBy struct {
 }
 
 type AddonAvgAggregate struct {
-	MaxQuantity   *float64 `json:"maxQuantity"`
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
@@ -129,7 +127,6 @@ type AddonCountAggregate struct {
 	EnvironmentID *int64 `json:"environmentId"`
 	ID            *int64 `json:"id"`
 	IsLatest      *int64 `json:"isLatest"`
-	MaxQuantity   *int64 `json:"maxQuantity"`
 	PricingType   *int64 `json:"pricingType"`
 	ProductID     *int64 `json:"productId"`
 	RefID         *int64 `json:"refId"`
@@ -202,7 +199,6 @@ type AddonFilter struct {
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
 	ID            *StringFieldComparison         `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
-	MaxQuantity   *NumberFieldComparison         `json:"maxQuantity,omitempty"`
 	Or            []*AddonFilter                 `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
 	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
@@ -219,7 +215,6 @@ type AddonMaxAggregate struct {
 	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
 	ID            *string        `json:"id"`
-	MaxQuantity   *float64       `json:"maxQuantity"`
 	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
 	RefID         *string        `json:"refId"`
@@ -235,7 +230,6 @@ type AddonMinAggregate struct {
 	DisplayName   *string        `json:"displayName"`
 	EnvironmentID *string        `json:"environmentId"`
 	ID            *string        `json:"id"`
-	MaxQuantity   *float64       `json:"maxQuantity"`
 	PricingType   *PricingType   `json:"pricingType"`
 	ProductID     *string        `json:"productId"`
 	RefID         *string        `json:"refId"`
@@ -251,7 +245,6 @@ type AddonSort struct {
 }
 
 type AddonSumAggregate struct {
-	MaxQuantity   *float64 `json:"maxQuantity"`
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
@@ -3569,7 +3562,6 @@ type PackageGroupFilterAddonFilter struct {
 	EnvironmentID *StringFieldComparison           `json:"environmentId,omitempty"`
 	ID            *StringFieldComparison           `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison          `json:"isLatest,omitempty"`
-	MaxQuantity   *NumberFieldComparison           `json:"maxQuantity,omitempty"`
 	Or            []*PackageGroupFilterAddonFilter `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison     `json:"pricingType,omitempty"`
 	ProductID     *StringFieldComparison           `json:"productId,omitempty"`
@@ -4003,7 +3995,6 @@ type PlanFilterAddonFilter struct {
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
 	ID            *StringFieldComparison         `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
-	MaxQuantity   *NumberFieldComparison         `json:"maxQuantity,omitempty"`
 	Or            []*PlanFilterAddonFilter       `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
 	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
@@ -5167,7 +5158,6 @@ type SubscriptionAddonFilterAddonFilter struct {
 	EnvironmentID *StringFieldComparison                `json:"environmentId,omitempty"`
 	ID            *StringFieldComparison                `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison               `json:"isLatest,omitempty"`
-	MaxQuantity   *NumberFieldComparison                `json:"maxQuantity,omitempty"`
 	Or            []*SubscriptionAddonFilterAddonFilter `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison          `json:"pricingType,omitempty"`
 	ProductID     *StringFieldComparison                `json:"productId,omitempty"`
@@ -6606,7 +6596,6 @@ const (
 	AddonSortFieldsEnvironmentID AddonSortFields = "environmentId"
 	AddonSortFieldsID            AddonSortFields = "id"
 	AddonSortFieldsIsLatest      AddonSortFields = "isLatest"
-	AddonSortFieldsMaxQuantity   AddonSortFields = "maxQuantity"
 	AddonSortFieldsPricingType   AddonSortFields = "pricingType"
 	AddonSortFieldsProductID     AddonSortFields = "productId"
 	AddonSortFieldsRefID         AddonSortFields = "refId"
@@ -6623,7 +6612,6 @@ var AllAddonSortFields = []AddonSortFields{
 	AddonSortFieldsEnvironmentID,
 	AddonSortFieldsID,
 	AddonSortFieldsIsLatest,
-	AddonSortFieldsMaxQuantity,
 	AddonSortFieldsPricingType,
 	AddonSortFieldsProductID,
 	AddonSortFieldsRefID,
@@ -6634,7 +6622,7 @@ var AllAddonSortFields = []AddonSortFields{
 
 func (e AddonSortFields) IsValid() bool {
 	switch e {
-	case AddonSortFieldsBillingID, AddonSortFieldsCreatedAt, AddonSortFieldsDescription, AddonSortFieldsDisplayName, AddonSortFieldsEnvironmentID, AddonSortFieldsID, AddonSortFieldsIsLatest, AddonSortFieldsMaxQuantity, AddonSortFieldsPricingType, AddonSortFieldsProductID, AddonSortFieldsRefID, AddonSortFieldsStatus, AddonSortFieldsUpdatedAt, AddonSortFieldsVersionNumber:
+	case AddonSortFieldsBillingID, AddonSortFieldsCreatedAt, AddonSortFieldsDescription, AddonSortFieldsDisplayName, AddonSortFieldsEnvironmentID, AddonSortFieldsID, AddonSortFieldsIsLatest, AddonSortFieldsPricingType, AddonSortFieldsProductID, AddonSortFieldsRefID, AddonSortFieldsStatus, AddonSortFieldsUpdatedAt, AddonSortFieldsVersionNumber:
 		return true
 	}
 	return false
