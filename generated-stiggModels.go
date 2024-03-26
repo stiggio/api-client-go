@@ -183,6 +183,16 @@ type AddonDeleteResponse struct {
 	VersionNumber *int64         `json:"versionNumber"`
 }
 
+// Addon dependency changed
+type AddonDependencyChange struct {
+	// Addon after change
+	After *Addon `json:"after"`
+	// Addon before change
+	Before *Addon `json:"before"`
+	// Type of change
+	ChangeType *ChangeType `json:"changeType"`
+}
+
 type AddonEdge struct {
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
@@ -3211,10 +3221,12 @@ type PackageChanges struct {
 	BasePlan           *BasePlanChange              `json:"basePlan"`
 	CompatibleAddons   []*PlanCompatibleAddonChange `json:"compatibleAddons"`
 	DefaultTrialConfig *DefaultTrialConfigChange    `json:"defaultTrialConfig"`
-	Description        *StringChangeDto             `json:"description"`
-	DisplayName        *StringChangeDto             `json:"displayName"`
-	Entitlements       []*PackageEntitlementChange  `json:"entitlements"`
-	HiddenFromWidgets  *HiddenFromWidgetsChange     `json:"hiddenFromWidgets"`
+	// Addon dependencies
+	Dependencies      []*AddonDependencyChange    `json:"dependencies"`
+	Description       *StringChangeDto            `json:"description"`
+	DisplayName       *StringChangeDto            `json:"displayName"`
+	Entitlements      []*PackageEntitlementChange `json:"entitlements"`
+	HiddenFromWidgets *HiddenFromWidgetsChange    `json:"hiddenFromWidgets"`
 	// Max quantity for an addon
 	MaxQuantity   *StringChangeDto      `json:"maxQuantity"`
 	OveragePrices []*PackagePriceChange `json:"overagePrices"`
