@@ -3220,7 +3220,9 @@ type PackageChanges struct {
 	AdditionalMetaData *AdditionalMetaDataChange    `json:"additionalMetaData"`
 	BasePlan           *BasePlanChange              `json:"basePlan"`
 	CompatibleAddons   []*PlanCompatibleAddonChange `json:"compatibleAddons"`
-	DefaultTrialConfig *DefaultTrialConfigChange    `json:"defaultTrialConfig"`
+	// Package groups
+	CompatiblePackageGroups []*PlanCompatiblePackageGroupChange `json:"compatiblePackageGroups"`
+	DefaultTrialConfig      *DefaultTrialConfigChange           `json:"defaultTrialConfig"`
 	// Addon dependencies
 	Dependencies      []*AddonDependencyChange    `json:"dependencies"`
 	Description       *StringChangeDto            `json:"description"`
@@ -3927,6 +3929,16 @@ func (PlanChangeVariables) IsScheduleVariables() {}
 type PlanCompatibleAddonChange struct {
 	After      *Addon      `json:"after"`
 	Before     *Addon      `json:"before"`
+	ChangeType *ChangeType `json:"changeType"`
+}
+
+// Package group changed
+type PlanCompatiblePackageGroupChange struct {
+	// Package group after change
+	After *PackageGroup `json:"after"`
+	// Package group before change
+	Before *PackageGroup `json:"before"`
+	// Type of change
 	ChangeType *ChangeType `json:"changeType"`
 }
 
