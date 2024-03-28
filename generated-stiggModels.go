@@ -3167,6 +3167,12 @@ type MonthlyResetPeriodConfigInput struct {
 	AccordingTo MonthlyAccordingTo `json:"accordingTo"`
 }
 
+type NumberChange struct {
+	After      *float64    `json:"after"`
+	Before     *float64    `json:"before"`
+	ChangeType *ChangeType `json:"changeType"`
+}
+
 type NumberFieldComparison struct {
 	Between    *NumberFieldComparisonBetween `json:"between,omitempty"`
 	Eq         *float64                      `json:"eq,omitempty"`
@@ -3230,7 +3236,7 @@ type PackageChanges struct {
 	Entitlements      []*PackageEntitlementChange `json:"entitlements"`
 	HiddenFromWidgets *HiddenFromWidgetsChange    `json:"hiddenFromWidgets"`
 	// Max quantity for an addon
-	MaxQuantity   *StringChangeDto      `json:"maxQuantity"`
+	MaxQuantity   *NumberChange         `json:"maxQuantity"`
 	OveragePrices []*PackagePriceChange `json:"overagePrices"`
 	Prices        []*PackagePriceChange `json:"prices"`
 	PricingType   *PricingTypeChange    `json:"pricingType"`
