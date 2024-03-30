@@ -3940,7 +3940,7 @@ type PlanCompatiblePackageGroupChange struct {
 
 // Plan compatible package group options
 type PlanCompatiblePackageGroupOptions struct {
-	// Number of required items from package group
+	// Number of required items from packageGroup
 	MinItems *float64 `json:"minItems"`
 }
 
@@ -3957,8 +3957,9 @@ type PlanCompatiblePackageGroups struct {
 	// The environment id of the package group in
 	EnvironmentID string `json:"environmentId"`
 	// Indicates if this is the latest version of the package group
-	IsLatest bool                              `json:"isLatest"`
-	Options  PlanCompatiblePackageGroupOptions `json:"options"`
+	IsLatest bool `json:"isLatest"`
+	// Plan compatible package group options
+	Options PlanCompatiblePackageGroupOptions `json:"options"`
 	// The id of the package group
 	PackageGroupID string  `json:"packageGroupId"`
 	Product        Product `json:"product"`
