@@ -3737,6 +3737,7 @@ type PaywallAddon struct {
 	Description        *string                `json:"description"`
 	DisplayName        string                 `json:"displayName"`
 	Entitlements       []*Entitlement         `json:"entitlements"`
+	MaxQuantity        *float64               `json:"maxQuantity"`
 	Prices             []*PaywallPrice        `json:"prices"`
 	PricingType        *PricingType           `json:"pricingType"`
 	RefID              string                 `json:"refId"`
@@ -3796,20 +3797,28 @@ type PaywallLayoutConfigurationInput struct {
 	PlanWidth   *float64   `json:"planWidth,omitempty"`
 }
 
+type PaywallPackageGroup struct {
+	CompatibleAddons []*PaywallAddon `json:"compatibleAddons"`
+	Description      *string         `json:"description"`
+	DisplayName      string          `json:"displayName"`
+	PackageGroupID   string          `json:"packageGroupId"`
+}
+
 type PaywallPlan struct {
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData"`
-	BasePlan              *PaywallBasePlan       `json:"basePlan"`
-	BillingID             *string                `json:"billingId"`
-	CompatibleAddons      []*PaywallAddon        `json:"compatibleAddons"`
-	DefaultTrialConfig    *DefaultTrialConfig    `json:"defaultTrialConfig"`
-	Description           *string                `json:"description"`
-	DisplayName           string                 `json:"displayName"`
-	Entitlements          []*Entitlement         `json:"entitlements"`
-	InheritedEntitlements []*Entitlement         `json:"inheritedEntitlements"`
-	Prices                []*PaywallPrice        `json:"prices"`
-	PricingType           *PricingType           `json:"pricingType"`
-	Product               PaywallProduct         `json:"product"`
-	RefID                 string                 `json:"refId"`
+	AdditionalMetaData      map[string]interface{} `json:"additionalMetaData"`
+	BasePlan                *PaywallBasePlan       `json:"basePlan"`
+	BillingID               *string                `json:"billingId"`
+	CompatibleAddons        []*PaywallAddon        `json:"compatibleAddons"`
+	CompatiblePackageGroups []*PaywallPackageGroup `json:"compatiblePackageGroups"`
+	DefaultTrialConfig      *DefaultTrialConfig    `json:"defaultTrialConfig"`
+	Description             *string                `json:"description"`
+	DisplayName             string                 `json:"displayName"`
+	Entitlements            []*Entitlement         `json:"entitlements"`
+	InheritedEntitlements   []*Entitlement         `json:"inheritedEntitlements"`
+	Prices                  []*PaywallPrice        `json:"prices"`
+	PricingType             *PricingType           `json:"pricingType"`
+	Product                 PaywallProduct         `json:"product"`
+	RefID                   string                 `json:"refId"`
 }
 
 type PaywallPrice struct {
