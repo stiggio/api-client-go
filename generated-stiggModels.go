@@ -3946,7 +3946,9 @@ type PlanCompatiblePackageGroupChange struct {
 
 // Plan compatible package group options
 type PlanCompatiblePackageGroupOptions struct {
-	// Number of required items from packageGroup
+	// Number of free items from package group
+	FreeItems *float64 `json:"freeItems"`
+	// Number of required items from package group
 	MinItems *float64 `json:"minItems"`
 }
 
@@ -5005,6 +5007,8 @@ type SetPlanCompatiblePackageGroup struct {
 
 // Set plan compatible package group options input
 type SetPlanCompatiblePackageGroupOptions struct {
+	// Number of free items from packageGroup
+	FreeItems *float64 `json:"freeItems,omitempty"`
 	// Number of required items from packageGroup
 	MinItems *float64 `json:"minItems,omitempty"`
 }
