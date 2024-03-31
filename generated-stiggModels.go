@@ -3734,9 +3734,11 @@ type Paywall struct {
 type PaywallAddon struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	BillingID          *string                `json:"billingId"`
-	Description        *string                `json:"description"`
-	DisplayName        string                 `json:"displayName"`
-	Entitlements       []*Entitlement         `json:"entitlements"`
+	// List of addons this addon is dependant on
+	Dependencies []*PaywallAddon `json:"dependencies"`
+	Description  *string         `json:"description"`
+	DisplayName  string          `json:"displayName"`
+	Entitlements []*Entitlement  `json:"entitlements"`
 	// The maximum quantity of this addon that can be added to a subscription
 	MaxQuantity *float64        `json:"maxQuantity"`
 	Prices      []*PaywallPrice `json:"prices"`
@@ -3798,33 +3800,43 @@ type PaywallLayoutConfigurationInput struct {
 	PlanWidth   *float64   `json:"planWidth,omitempty"`
 }
 
-type PaywallPackageGroup struct {
-	// Included addons in the package group
-	CompatibleAddons []*PaywallAddon `json:"compatibleAddons"`
-	// The description of the package group
-	Description *string `json:"description"`
-	// The display name of the package group
-	DisplayName string `json:"displayName"`
-	// The id of the package group
-	PackageGroupID string `json:"packageGroupId"`
-}
-
 type PaywallPlan struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	BasePlan           *PaywallBasePlan       `json:"basePlan"`
 	BillingID          *string                `json:"billingId"`
 	CompatibleAddons   []*PaywallAddon        `json:"compatibleAddons"`
 	// Plan's compatible package groups
-	CompatiblePackageGroups []*PaywallPackageGroup `json:"compatiblePackageGroups"`
-	DefaultTrialConfig      *DefaultTrialConfig    `json:"defaultTrialConfig"`
-	Description             *string                `json:"description"`
-	DisplayName             string                 `json:"displayName"`
-	Entitlements            []*Entitlement         `json:"entitlements"`
-	InheritedEntitlements   []*Entitlement         `json:"inheritedEntitlements"`
-	Prices                  []*PaywallPrice        `json:"prices"`
-	PricingType             *PricingType           `json:"pricingType"`
-	Product                 PaywallProduct         `json:"product"`
-	RefID                   string                 `json:"refId"`
+	CompatiblePackageGroups []*PaywallPlanCompatiblePackageGroup `json:"compatiblePackageGroups"`
+	DefaultTrialConfig      *DefaultTrialConfig                  `json:"defaultTrialConfig"`
+	Description             *string                              `json:"description"`
+	DisplayName             string                               `json:"displayName"`
+	Entitlements            []*Entitlement                       `json:"entitlements"`
+	InheritedEntitlements   []*Entitlement                       `json:"inheritedEntitlements"`
+	Prices                  []*PaywallPrice                      `json:"prices"`
+	PricingType             *PricingType                         `json:"pricingType"`
+	Product                 PaywallProduct                       `json:"product"`
+	RefID                   string                               `json:"refId"`
+}
+
+type PaywallPlanCompatiblePackageGroup struct {
+	// Included addons in the package group
+	Addons []*PaywallAddon `json:"addons"`
+	// The description of the package group
+	Description *string `json:"description"`
+	// The display name of the package group
+	DisplayName string `json:"displayName"`
+	// Plan compatible package group options
+	Options PaywallPlanCompatiblePackageGroupOptions `json:"options"`
+	// The id of the package group
+	PackageGroupID string `json:"packageGroupId"`
+}
+
+// Plan compatible package group options
+type PaywallPlanCompatiblePackageGroupOptions struct {
+	// Number of free items from package group
+	FreeItems *float64 `json:"freeItems"`
+	// Number of required items from packageGroup
+	MinItems *float64 `json:"minItems"`
 }
 
 type PaywallPrice struct {
