@@ -3840,17 +3840,19 @@ type PaywallPlanCompatiblePackageGroupOptions struct {
 }
 
 type PaywallPrice struct {
-	BillingCountryCode *string             `json:"billingCountryCode"`
-	BillingID          *string             `json:"billingId"`
-	BillingModel       BillingModel        `json:"billingModel"`
-	BillingPeriod      BillingPeriod       `json:"billingPeriod"`
-	Feature            *EntitlementFeature `json:"feature"`
-	FeatureID          *string             `json:"featureId"`
-	MaxUnitQuantity    *float64            `json:"maxUnitQuantity"`
-	MinUnitQuantity    *float64            `json:"minUnitQuantity"`
-	Price              *Money              `json:"price"`
-	Tiers              []*PriceTier        `json:"tiers"`
-	TiersMode          *TiersMode          `json:"tiersMode"`
+	BillingCountryCode *string       `json:"billingCountryCode"`
+	BillingID          *string       `json:"billingId"`
+	BillingModel       BillingModel  `json:"billingModel"`
+	BillingPeriod      BillingPeriod `json:"billingPeriod"`
+	// The number of units per block. Defaults to 1 unit.
+	BlockSize       *float64            `json:"blockSize"`
+	Feature         *EntitlementFeature `json:"feature"`
+	FeatureID       *string             `json:"featureId"`
+	MaxUnitQuantity *float64            `json:"maxUnitQuantity"`
+	MinUnitQuantity *float64            `json:"minUnitQuantity"`
+	Price           *Money              `json:"price"`
+	Tiers           []*PriceTier        `json:"tiers"`
+	TiersMode       *TiersMode          `json:"tiersMode"`
 }
 
 type PaywallPricePoint struct {
