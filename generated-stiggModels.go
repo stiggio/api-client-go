@@ -1405,6 +1405,7 @@ type CustomerSubscription struct {
 	EnvironmentID             string                          `json:"environmentId"`
 	Experiment                *Experiment                     `json:"experiment"`
 	ExperimentInfo            *ExperimentInfo                 `json:"experimentInfo"`
+	FreeItems                 []*FreeSubscriptionItem         `json:"freeItems"`
 	FutureUpdates             []*SubscriptionFutureUpdate     `json:"futureUpdates"`
 	ID                        string                          `json:"id"`
 	IsCustomPriceSubscription *bool                           `json:"isCustomPriceSubscription"`
@@ -2473,6 +2474,14 @@ type FontVariant struct {
 type FontVariantInput struct {
 	FontSize   *float64    `json:"fontSize,omitempty"`
 	FontWeight *FontWeight `json:"fontWeight,omitempty"`
+}
+
+// Free subscription item
+type FreeSubscriptionItem struct {
+	// The add-on id
+	AddonID string `json:"addonId"`
+	// The quantity of free items
+	Quantity float64 `json:"quantity"`
 }
 
 type GetActiveSubscriptionsInput struct {
@@ -5705,7 +5714,9 @@ type SubscriptionPreviewTaxDetails struct {
 }
 
 type SubscriptionPreviewV2 struct {
-	BillingPeriodRange  DateRange                           `json:"billingPeriodRange"`
+	BillingPeriodRange DateRange `json:"billingPeriodRange"`
+	// Free items of the subscription
+	FreeItems           []*FreeSubscriptionItem             `json:"freeItems"`
 	HasScheduledUpdates *bool                               `json:"hasScheduledUpdates"`
 	ImmediateInvoice    ImmediateSubscriptionPreviewInvoice `json:"immediateInvoice"`
 	IsPlanDowngrade     *bool                               `json:"isPlanDowngrade"`
