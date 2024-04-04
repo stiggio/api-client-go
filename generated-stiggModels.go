@@ -5955,7 +5955,6 @@ type TestHookInput struct {
 }
 
 type TestHookResult struct {
-	ResponsePayload    string   `json:"responsePayload"`
 	ResponseStatusCode *float64 `json:"responseStatusCode"`
 	ResponseStatusText *string  `json:"responseStatusText"`
 	ResponseSuccess    bool     `json:"responseSuccess"`
