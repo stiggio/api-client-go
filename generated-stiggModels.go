@@ -2551,6 +2551,16 @@ type GrantPromotionalEntitlementsInput struct {
 	PromotionalEntitlements []*GrantPromotionalEntitlementInput `json:"promotionalEntitlements"`
 }
 
+type GroupInfo struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+type GroupUsageHistory struct {
+	GroupInfo         []*GroupInfo             `json:"groupInfo"`
+	UsageMeasurements []*UsageMeasurementPoint `json:"usageMeasurements"`
+}
+
 type HiddenFromWidgetsChange struct {
 	After      []WidgetType `json:"after"`
 	Before     []WidgetType `json:"before"`
@@ -6312,6 +6322,7 @@ type UsageEventsReportInput struct {
 
 type UsageHistory struct {
 	EndDate           *string                  `json:"endDate"`
+	Groups            []*GroupUsageHistory     `json:"groups"`
 	StartDate         string                   `json:"startDate"`
 	UsageMeasurements []*UsageMeasurementPoint `json:"usageMeasurements"`
 }
@@ -6321,6 +6332,7 @@ type UsageHistoryInput struct {
 	EndDate                         *string                        `json:"endDate,omitempty"`
 	EnvironmentID                   *string                        `json:"environmentId,omitempty"`
 	FeatureRefID                    string                         `json:"featureRefId"`
+	GroupBy                         []string                       `json:"groupBy,omitempty"`
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
 	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
 	ResourceRefID                   *string                        `json:"resourceRefId,omitempty"`
