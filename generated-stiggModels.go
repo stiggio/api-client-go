@@ -2111,8 +2111,13 @@ type EventsFields struct {
 }
 
 type EventsFieldsInput struct {
+	CustomerID    *string                       `json:"customerId,omitempty"`
 	EnvironmentID string                        `json:"environmentId"`
 	Filters       []*MeterFilterDefinitionInput `json:"filters,omitempty"`
+	MeterID       *string                       `json:"meterId,omitempty"`
+	ResourceID    *string                       `json:"resourceId,omitempty"`
+	// Omit fields that have more than this number of unique values.
+	UniqueValuesLimit *float64 `json:"uniqueValuesLimit,omitempty"`
 }
 
 type EventsList struct {
