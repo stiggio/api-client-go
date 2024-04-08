@@ -522,6 +522,30 @@ type CannotDeleteFeatureError struct {
 	RefID             string `json:"refId"`
 }
 
+// Input for triggering an immediate overage charge for a subscription
+type ChargeSubscriptionOverages struct {
+	// The ID of the invoice in the billing integration. If null then no invoice was created
+	InvoiceBillingID *string `json:"invoiceBillingId"`
+	// An array of the overages which were charged
+	OveragesCharged []*OverageCharged `json:"overagesCharged"`
+	// The date from which the usage was calculated to
+	PeriodEnd string `json:"periodEnd"`
+	// The date from which the usage was calculated from
+	PeriodStart string `json:"periodStart"`
+	// The subscription reference id for which the overage was charged
+	SubscriptionID string `json:"subscriptionId"`
+}
+
+// Input for triggering an immediate overage charge for a subscription
+type ChargeSubscriptionOveragesInput struct {
+	// The id of the subscriptions environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The subscription reference id to charge overage for
+	SubscriptionID string `json:"subscriptionId"`
+	// The end date until which to calculate the overage
+	UntilDate *string `json:"untilDate,omitempty"`
+}
+
 type CheckoutBillingIntegration struct {
 	BillingIdentifier BillingVendorIdentifier `json:"billingIdentifier"`
 	Credentials       CheckoutCredentials     `json:"credentials"`
@@ -3215,6 +3239,14 @@ type NumberFieldComparison struct {
 type NumberFieldComparisonBetween struct {
 	Lower float64 `json:"lower"`
 	Upper float64 `json:"upper"`
+}
+
+// An object representing the overage charged
+type OverageCharged struct {
+	// The eid of the feature
+	FeatureID string `json:"featureId"`
+	// The amount of units charged for overage usage
+	OverageAmount float64 `json:"overageAmount"`
 }
 
 type OverageEntitlementCreateInput struct {
@@ -8539,6 +8571,7 @@ const (
 	EventLogTypeSubscriptionTrialExpired                        EventLogType = "SUBSCRIPTION_TRIAL_EXPIRED"
 	EventLogTypeSubscriptionTrialStarted                        EventLogType = "SUBSCRIPTION_TRIAL_STARTED"
 	EventLogTypeSubscriptionUpdated                             EventLogType = "SUBSCRIPTION_UPDATED"
+	EventLogTypeSubscriptionUsageChargeTriggered                EventLogType = "SUBSCRIPTION_USAGE_CHARGE_TRIGGERED"
 	EventLogTypeSubscriptionUsageUpdated                        EventLogType = "SUBSCRIPTION_USAGE_UPDATED"
 	EventLogTypeSyncFailed                                      EventLogType = "SYNC_FAILED"
 	EventLogTypeWidgetConfigurationUpdated                      EventLogType = "WIDGET_CONFIGURATION_UPDATED"
@@ -8603,6 +8636,7 @@ var AllEventLogType = []EventLogType{
 	EventLogTypeSubscriptionTrialExpired,
 	EventLogTypeSubscriptionTrialStarted,
 	EventLogTypeSubscriptionUpdated,
+	EventLogTypeSubscriptionUsageChargeTriggered,
 	EventLogTypeSubscriptionUsageUpdated,
 	EventLogTypeSyncFailed,
 	EventLogTypeWidgetConfigurationUpdated,
@@ -8610,7 +8644,7 @@ var AllEventLogType = []EventLogType{
 
 func (e EventLogType) IsValid() bool {
 	switch e {
-	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIDoggoResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEntitlementUsageExceeded, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackageGroupCreated, EventLogTypePackageGroupUpdated, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeSubscriptionsMigrated, EventLogTypeSubscriptionsMigrationTriggered, EventLogTypeSubscriptionBillingMonthEndsSoon, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
+	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIDoggoResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEntitlementUsageExceeded, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackageGroupCreated, EventLogTypePackageGroupUpdated, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeSubscriptionsMigrated, EventLogTypeSubscriptionsMigrationTriggered, EventLogTypeSubscriptionBillingMonthEndsSoon, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageChargeTriggered, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
 		return true
 	}
 	return false
