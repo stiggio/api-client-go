@@ -3244,7 +3244,7 @@ type NumberFieldComparisonBetween struct {
 // An object representing the overage charged
 type OverageCharged struct {
 	// The eid of the feature
-	FeatureID string `json:"featureId"`
+	FeatureID *string `json:"featureId"`
 	// The amount of units charged for overage usage
 	OverageAmount float64 `json:"overageAmount"`
 }
