@@ -69,18 +69,19 @@ type Addon struct {
 	ID                string       `json:"id"`
 	IsLatest          *bool        `json:"isLatest"`
 	// The maximum quantity of the addon
-	MaxQuantity   *float64      `json:"maxQuantity"`
-	OveragePrices []*Price      `json:"overagePrices"`
-	Prices        []*Price      `json:"prices"`
-	PricingType   *PricingType  `json:"pricingType"`
-	Product       *Product      `json:"product"`
-	ProductID     *string       `json:"productId"`
-	RefID         string        `json:"refId"`
-	Status        PackageStatus `json:"status"`
-	SyncStates    []*SyncState  `json:"syncStates"`
-	Type          string        `json:"type"`
-	UpdatedAt     *string       `json:"updatedAt"`
-	VersionNumber int64         `json:"versionNumber"`
+	MaxQuantity          *float64              `json:"maxQuantity"`
+	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
+	OveragePrices        []*Price              `json:"overagePrices"`
+	Prices               []*Price              `json:"prices"`
+	PricingType          *PricingType          `json:"pricingType"`
+	Product              *Product              `json:"product"`
+	ProductID            *string               `json:"productId"`
+	RefID                string                `json:"refId"`
+	Status               PackageStatus         `json:"status"`
+	SyncStates           []*SyncState          `json:"syncStates"`
+	Type                 string                `json:"type"`
+	UpdatedAt            *string               `json:"updatedAt"`
+	VersionNumber        int64                 `json:"versionNumber"`
 }
 
 type AddonAggregateGroupBy struct {
@@ -170,17 +171,18 @@ type AddonDeleteResponse struct {
 	ID                *string               `json:"id"`
 	IsLatest          *bool                 `json:"isLatest"`
 	// The maximum quantity of this addon that can be added to a subscription
-	MaxQuantity   *float64       `json:"maxQuantity"`
-	OveragePrices []*Price       `json:"overagePrices"`
-	Prices        []*Price       `json:"prices"`
-	PricingType   *PricingType   `json:"pricingType"`
-	ProductID     *string        `json:"productId"`
-	RefID         *string        `json:"refId"`
-	Status        *PackageStatus `json:"status"`
-	SyncStates    []*SyncState   `json:"syncStates"`
-	Type          *string        `json:"type"`
-	UpdatedAt     *string        `json:"updatedAt"`
-	VersionNumber *int64         `json:"versionNumber"`
+	MaxQuantity          *float64              `json:"maxQuantity"`
+	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
+	OveragePrices        []*Price              `json:"overagePrices"`
+	Prices               []*Price              `json:"prices"`
+	PricingType          *PricingType          `json:"pricingType"`
+	ProductID            *string               `json:"productId"`
+	RefID                *string               `json:"refId"`
+	Status               *PackageStatus        `json:"status"`
+	SyncStates           []*SyncState          `json:"syncStates"`
+	Type                 *string               `json:"type"`
+	UpdatedAt            *string               `json:"updatedAt"`
+	VersionNumber        *int64                `json:"versionNumber"`
 }
 
 // Addon dependency changed
@@ -3300,29 +3302,30 @@ type PackageChanges struct {
 }
 
 type PackageDto struct {
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	BillingID          *string                `json:"billingId"`
-	BillingLinkURL     *string                `json:"billingLinkUrl"`
-	CreatedAt          *string                `json:"createdAt"`
-	Description        *string                `json:"description"`
-	DisplayName        string                 `json:"displayName"`
-	DraftDetails       *PackageDraftDetails   `json:"draftDetails"`
-	DraftSummary       *PackageDraftSummary   `json:"draftSummary"`
-	Entitlements       []*PackageEntitlement  `json:"entitlements"`
-	EnvironmentID      string                 `json:"environmentId"`
-	HiddenFromWidgets  []WidgetType           `json:"hiddenFromWidgets"`
-	ID                 string                 `json:"id"`
-	IsLatest           *bool                  `json:"isLatest"`
-	OveragePrices      []*Price               `json:"overagePrices"`
-	Prices             []*Price               `json:"prices"`
-	PricingType        *PricingType           `json:"pricingType"`
-	ProductID          *string                `json:"productId"`
-	RefID              string                 `json:"refId"`
-	Status             PackageStatus          `json:"status"`
-	SyncStates         []*SyncState           `json:"syncStates"`
-	Type               string                 `json:"type"`
-	UpdatedAt          *string                `json:"updatedAt"`
-	VersionNumber      int64                  `json:"versionNumber"`
+	AdditionalMetaData   map[string]interface{} `json:"additionalMetaData"`
+	BillingID            *string                `json:"billingId"`
+	BillingLinkURL       *string                `json:"billingLinkUrl"`
+	CreatedAt            *string                `json:"createdAt"`
+	Description          *string                `json:"description"`
+	DisplayName          string                 `json:"displayName"`
+	DraftDetails         *PackageDraftDetails   `json:"draftDetails"`
+	DraftSummary         *PackageDraftSummary   `json:"draftSummary"`
+	Entitlements         []*PackageEntitlement  `json:"entitlements"`
+	EnvironmentID        string                 `json:"environmentId"`
+	HiddenFromWidgets    []WidgetType           `json:"hiddenFromWidgets"`
+	ID                   string                 `json:"id"`
+	IsLatest             *bool                  `json:"isLatest"`
+	OverageBillingPeriod *OverageBillingPeriod  `json:"overageBillingPeriod"`
+	OveragePrices        []*Price               `json:"overagePrices"`
+	Prices               []*Price               `json:"prices"`
+	PricingType          *PricingType           `json:"pricingType"`
+	ProductID            *string                `json:"productId"`
+	RefID                string                 `json:"refId"`
+	Status               PackageStatus          `json:"status"`
+	SyncStates           []*SyncState           `json:"syncStates"`
+	Type                 string                 `json:"type"`
+	UpdatedAt            *string                `json:"updatedAt"`
+	VersionNumber        int64                  `json:"versionNumber"`
 }
 
 type PackageDTOFilter struct {
@@ -3705,6 +3708,7 @@ type PackagePriceChange struct {
 
 type PackagePricingInput struct {
 	EnvironmentID        string                            `json:"environmentId"`
+	OverageBillingPeriod *OverageBillingPeriod             `json:"overageBillingPeriod,omitempty"`
 	OveragePricingModels []*OveragePricingModelCreateInput `json:"overagePricingModels,omitempty"`
 	PackageID            string                            `json:"packageId"`
 	PricingModel         *PricingModelCreateInput          `json:"pricingModel,omitempty"`
@@ -3950,6 +3954,7 @@ type Plan struct {
 	InheritedEntitlements       []*PackageEntitlement          `json:"inheritedEntitlements"`
 	IsLatest                    *bool                          `json:"isLatest"`
 	IsParent                    bool                           `json:"isParent"`
+	OverageBillingPeriod        *OverageBillingPeriod          `json:"overageBillingPeriod"`
 	OveragePrices               []*Price                       `json:"overagePrices"`
 	Prices                      []*Price                       `json:"prices"`
 	PricingType                 *PricingType                   `json:"pricingType"`
@@ -9298,6 +9303,48 @@ func (e *MonthlyAccordingTo) UnmarshalGQL(v interface{}) error {
 }
 
 func (e MonthlyAccordingTo) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Configures when the overage charge is billed.
+type OverageBillingPeriod string
+
+const (
+	OverageBillingPeriodMonthly               OverageBillingPeriod = "MONTHLY"
+	OverageBillingPeriodOnSubscriptionRenewal OverageBillingPeriod = "ON_SUBSCRIPTION_RENEWAL"
+)
+
+var AllOverageBillingPeriod = []OverageBillingPeriod{
+	OverageBillingPeriodMonthly,
+	OverageBillingPeriodOnSubscriptionRenewal,
+}
+
+func (e OverageBillingPeriod) IsValid() bool {
+	switch e {
+	case OverageBillingPeriodMonthly, OverageBillingPeriodOnSubscriptionRenewal:
+		return true
+	}
+	return false
+}
+
+func (e OverageBillingPeriod) String() string {
+	return string(e)
+}
+
+func (e *OverageBillingPeriod) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = OverageBillingPeriod(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid OverageBillingPeriod", str)
+	}
+	return nil
+}
+
+func (e OverageBillingPeriod) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
