@@ -324,16 +324,18 @@ type ApplySubscription struct {
 }
 
 type ApplySubscriptionInput struct {
-	AdditionalMetaData         map[string]interface{}           `json:"additionalMetaData,omitempty"`
-	Addons                     []*SubscriptionAddonInput        `json:"addons,omitempty"`
-	BillableFeatures           []*BillableFeatureInput          `json:"billableFeatures,omitempty"`
-	BillingCountryCode         *string                          `json:"billingCountryCode,omitempty"`
-	BillingID                  *string                          `json:"billingId,omitempty"`
-	BillingInformation         *SubscriptionBillingInfo         `json:"billingInformation,omitempty"`
-	BillingPeriod              *BillingPeriod                   `json:"billingPeriod,omitempty"`
-	CustomerID                 string                           `json:"customerId"`
-	PaymentMethodID            *string                          `json:"paymentMethodId,omitempty"`
-	PlanID                     string                           `json:"planId"`
+	AdditionalMetaData map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	Addons             []*SubscriptionAddonInput `json:"addons,omitempty"`
+	BillableFeatures   []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingCountryCode *string                   `json:"billingCountryCode,omitempty"`
+	BillingID          *string                   `json:"billingId,omitempty"`
+	BillingInformation *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CustomerID         string                    `json:"customerId"`
+	PaymentMethodID    *string                   `json:"paymentMethodId,omitempty"`
+	PlanID             string                    `json:"planId"`
+	// Override the price of the subscription
+	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	ResourceID                 *string                          `json:"resourceId,omitempty"`
 	SalesforceID               *string                          `json:"salesforceId,omitempty"`
@@ -4236,13 +4238,15 @@ type Price struct {
 	BillingModel       BillingModel   `json:"billingModel"`
 	BillingPeriod      BillingPeriod  `json:"billingPeriod"`
 	// The number of units per block. Defaults to 1 unit.
-	BlockSize           *float64     `json:"blockSize"`
-	CreatedAt           *string      `json:"createdAt"`
-	CrmID               *string      `json:"crmId"`
-	CrmLinkURL          *string      `json:"crmLinkUrl"`
-	Feature             *Feature     `json:"feature"`
-	FeatureID           *string      `json:"featureId"`
-	ID                  string       `json:"id"`
+	BlockSize  *float64 `json:"blockSize"`
+	CreatedAt  *string  `json:"createdAt"`
+	CrmID      *string  `json:"crmId"`
+	CrmLinkURL *string  `json:"crmLinkUrl"`
+	Feature    *Feature `json:"feature"`
+	FeatureID  *string  `json:"featureId"`
+	ID         string   `json:"id"`
+	// Indication whether the subscription price is an override price
+	IsOverridePrice     bool         `json:"isOverridePrice"`
 	MaxUnitQuantity     *float64     `json:"maxUnitQuantity"`
 	MinUnitQuantity     *float64     `json:"minUnitQuantity"`
 	Package             PackageDto   `json:"package"`
@@ -4371,6 +4375,15 @@ type PriceMinAggregate struct {
 type PriceNotFoundError struct {
 	Code              string `json:"code"`
 	IsValidationError bool   `json:"isValidationError"`
+}
+
+type PriceOverrideInput struct {
+	// The number of units per block. Defaults to 1 unit.
+	BlockSize *float64 `json:"blockSize,omitempty"`
+	// The corresponding feature id of the price
+	FeatureID string            `json:"featureId"`
+	Price     *MoneyInputDto    `json:"price,omitempty"`
+	Tiers     []*PriceTierInput `json:"tiers,omitempty"`
 }
 
 type PricePeriodInput struct {
@@ -4806,15 +4819,17 @@ type ProvisionCustomerInput struct {
 }
 
 type ProvisionCustomerSubscriptionInput struct {
-	AdditionalMetaData         map[string]interface{}           `json:"additionalMetaData,omitempty"`
-	Addons                     []*SubscriptionAddonInput        `json:"addons,omitempty"`
-	AwaitPaymentConfirmation   *bool                            `json:"awaitPaymentConfirmation,omitempty"`
-	BillableFeatures           []*BillableFeatureInput          `json:"billableFeatures,omitempty"`
-	BillingCountryCode         *string                          `json:"billingCountryCode,omitempty"`
-	BillingID                  *string                          `json:"billingId,omitempty"`
-	BillingInformation         *SubscriptionBillingInfo         `json:"billingInformation,omitempty"`
-	BillingPeriod              *BillingPeriod                   `json:"billingPeriod,omitempty"`
-	PlanID                     string                           `json:"planId"`
+	AdditionalMetaData       map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	Addons                   []*SubscriptionAddonInput `json:"addons,omitempty"`
+	AwaitPaymentConfirmation *bool                     `json:"awaitPaymentConfirmation,omitempty"`
+	BillableFeatures         []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingCountryCode       *string                   `json:"billingCountryCode,omitempty"`
+	BillingID                *string                   `json:"billingId,omitempty"`
+	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
+	PlanID                   string                    `json:"planId"`
+	// Override the price of the subscription
+	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	RefID                      *string                          `json:"refId,omitempty"`
@@ -4833,17 +4848,19 @@ type ProvisionSandboxInput struct {
 }
 
 type ProvisionSubscription struct {
-	AdditionalMetaData         map[string]interface{}           `json:"additionalMetaData,omitempty"`
-	Addons                     []*SubscriptionAddonInput        `json:"addons,omitempty"`
-	AwaitPaymentConfirmation   *bool                            `json:"awaitPaymentConfirmation,omitempty"`
-	BillableFeatures           []*BillableFeatureInput          `json:"billableFeatures,omitempty"`
-	BillingCountryCode         *string                          `json:"billingCountryCode,omitempty"`
-	BillingID                  *string                          `json:"billingId,omitempty"`
-	BillingInformation         *SubscriptionBillingInfo         `json:"billingInformation,omitempty"`
-	BillingPeriod              *BillingPeriod                   `json:"billingPeriod,omitempty"`
-	CheckoutOptions            *CheckoutOptions                 `json:"checkoutOptions,omitempty"`
-	CustomerID                 string                           `json:"customerId"`
-	PlanID                     string                           `json:"planId"`
+	AdditionalMetaData       map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	Addons                   []*SubscriptionAddonInput `json:"addons,omitempty"`
+	AwaitPaymentConfirmation *bool                     `json:"awaitPaymentConfirmation,omitempty"`
+	BillableFeatures         []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingCountryCode       *string                   `json:"billingCountryCode,omitempty"`
+	BillingID                *string                   `json:"billingId,omitempty"`
+	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CheckoutOptions          *CheckoutOptions          `json:"checkoutOptions,omitempty"`
+	CustomerID               string                    `json:"customerId"`
+	PlanID                   string                    `json:"planId"`
+	// Override the price of the subscription
+	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	RefID                      *string                          `json:"refId,omitempty"`
@@ -4859,17 +4876,19 @@ type ProvisionSubscription struct {
 }
 
 type ProvisionSubscriptionInput struct {
-	AdditionalMetaData         map[string]interface{}           `json:"additionalMetaData,omitempty"`
-	Addons                     []*SubscriptionAddonInput        `json:"addons,omitempty"`
-	AwaitPaymentConfirmation   *bool                            `json:"awaitPaymentConfirmation,omitempty"`
-	BillableFeatures           []*BillableFeatureInput          `json:"billableFeatures,omitempty"`
-	BillingCountryCode         *string                          `json:"billingCountryCode,omitempty"`
-	BillingID                  *string                          `json:"billingId,omitempty"`
-	BillingInformation         *SubscriptionBillingInfo         `json:"billingInformation,omitempty"`
-	BillingPeriod              *BillingPeriod                   `json:"billingPeriod,omitempty"`
-	CheckoutOptions            *CheckoutOptions                 `json:"checkoutOptions,omitempty"`
-	CustomerID                 string                           `json:"customerId"`
-	PlanID                     string                           `json:"planId"`
+	AdditionalMetaData       map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	Addons                   []*SubscriptionAddonInput `json:"addons,omitempty"`
+	AwaitPaymentConfirmation *bool                     `json:"awaitPaymentConfirmation,omitempty"`
+	BillableFeatures         []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingCountryCode       *string                   `json:"billingCountryCode,omitempty"`
+	BillingID                *string                   `json:"billingId,omitempty"`
+	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CheckoutOptions          *CheckoutOptions          `json:"checkoutOptions,omitempty"`
+	CustomerID               string                    `json:"customerId"`
+	PlanID                   string                    `json:"planId"`
+	// Override the price of the subscription
+	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
 	RefID                      *string                          `json:"refId,omitempty"`
@@ -5572,32 +5591,34 @@ type SubscriptionFutureUpdate struct {
 }
 
 type SubscriptionInput struct {
-	AdditionalMetaData        map[string]interface{}          `json:"additionalMetaData,omitempty"`
-	Addons                    []*SubscriptionAddonInput       `json:"addons,omitempty"`
-	AwaitPaymentConfirmation  *bool                           `json:"awaitPaymentConfirmation,omitempty"`
-	BillableFeatures          []*BillableFeatureInput         `json:"billableFeatures,omitempty"`
-	BillingCountryCode        *string                         `json:"billingCountryCode,omitempty"`
-	BillingID                 *string                         `json:"billingId,omitempty"`
-	BillingInformation        *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
-	BillingPeriod             *BillingPeriod                  `json:"billingPeriod,omitempty"`
-	CrmID                     *string                         `json:"crmId,omitempty"`
-	CustomerID                string                          `json:"customerId"`
-	EndDate                   *string                         `json:"endDate,omitempty"`
-	EnvironmentID             *string                         `json:"environmentId,omitempty"`
-	IsCustomPriceSubscription *bool                           `json:"isCustomPriceSubscription,omitempty"`
-	IsOverridingTrialConfig   *bool                           `json:"isOverridingTrialConfig,omitempty"`
-	IsTrial                   *bool                           `json:"isTrial,omitempty"`
-	PlanID                    string                          `json:"planId"`
-	PriceUnitAmount           *float64                        `json:"priceUnitAmount,omitempty"`
-	PromotionCode             *string                         `json:"promotionCode,omitempty"`
-	RefID                     *string                         `json:"refId,omitempty"`
-	ResourceID                *string                         `json:"resourceId,omitempty"`
-	SalesforceID              *string                         `json:"salesforceId,omitempty"`
-	ScheduleStrategy          *ScheduleStrategy               `json:"scheduleStrategy,omitempty"`
-	StartDate                 *string                         `json:"startDate,omitempty"`
-	SubscriptionEntitlements  []*SubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
-	SubscriptionID            *string                         `json:"subscriptionId,omitempty"`
-	UnitQuantity              *float64                        `json:"unitQuantity,omitempty"`
+	AdditionalMetaData        map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	Addons                    []*SubscriptionAddonInput `json:"addons,omitempty"`
+	AwaitPaymentConfirmation  *bool                     `json:"awaitPaymentConfirmation,omitempty"`
+	BillableFeatures          []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingCountryCode        *string                   `json:"billingCountryCode,omitempty"`
+	BillingID                 *string                   `json:"billingId,omitempty"`
+	BillingInformation        *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod             *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CrmID                     *string                   `json:"crmId,omitempty"`
+	CustomerID                string                    `json:"customerId"`
+	EndDate                   *string                   `json:"endDate,omitempty"`
+	EnvironmentID             *string                   `json:"environmentId,omitempty"`
+	IsCustomPriceSubscription *bool                     `json:"isCustomPriceSubscription,omitempty"`
+	IsOverridingTrialConfig   *bool                     `json:"isOverridingTrialConfig,omitempty"`
+	IsTrial                   *bool                     `json:"isTrial,omitempty"`
+	PlanID                    string                    `json:"planId"`
+	// Override the price of the subscription
+	PriceOverrides           []*PriceOverrideInput           `json:"priceOverrides,omitempty"`
+	PriceUnitAmount          *float64                        `json:"priceUnitAmount,omitempty"`
+	PromotionCode            *string                         `json:"promotionCode,omitempty"`
+	RefID                    *string                         `json:"refId,omitempty"`
+	ResourceID               *string                         `json:"resourceId,omitempty"`
+	SalesforceID             *string                         `json:"salesforceId,omitempty"`
+	ScheduleStrategy         *ScheduleStrategy               `json:"scheduleStrategy,omitempty"`
+	StartDate                *string                         `json:"startDate,omitempty"`
+	SubscriptionEntitlements []*SubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
+	SubscriptionID           *string                         `json:"subscriptionId,omitempty"`
+	UnitQuantity             *float64                        `json:"unitQuantity,omitempty"`
 }
 
 type SubscriptionInvoice struct {
@@ -6309,13 +6330,15 @@ type UpdateSubscriptionEntitlementInput struct {
 }
 
 type UpdateSubscriptionInput struct {
-	AdditionalMetaData       map[string]interface{}                `json:"additionalMetaData,omitempty"`
-	Addons                   []*SubscriptionAddonInput             `json:"addons,omitempty"`
-	AwaitPaymentConfirmation *bool                                 `json:"awaitPaymentConfirmation,omitempty"`
-	BillableFeatures         []*BillableFeatureInput               `json:"billableFeatures,omitempty"`
-	BillingInformation       *SubscriptionBillingInfo              `json:"billingInformation,omitempty"`
-	BillingPeriod            *BillingPeriod                        `json:"billingPeriod,omitempty"`
-	EnvironmentID            *string                               `json:"environmentId,omitempty"`
+	AdditionalMetaData       map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	Addons                   []*SubscriptionAddonInput `json:"addons,omitempty"`
+	AwaitPaymentConfirmation *bool                     `json:"awaitPaymentConfirmation,omitempty"`
+	BillableFeatures         []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
+	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
+	EnvironmentID            *string                   `json:"environmentId,omitempty"`
+	// Override the price of the subscription
+	PriceOverrides           []*PriceOverrideInput                 `json:"priceOverrides,omitempty"`
 	PromotionCode            *string                               `json:"promotionCode,omitempty"`
 	RefID                    *string                               `json:"refId,omitempty"`
 	ScheduleStrategy         *ScheduleStrategy                     `json:"scheduleStrategy,omitempty"`
