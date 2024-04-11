@@ -331,11 +331,11 @@ type ApplySubscriptionInput struct {
 	BillingID          *string                   `json:"billingId,omitempty"`
 	BillingInformation *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
 	BillingPeriod      *BillingPeriod            `json:"billingPeriod,omitempty"`
-	// Budget cap configuration
-	BudgetCapConfiguration *BudgetCapConfigurationInput `json:"budgetCapConfiguration,omitempty"`
-	CustomerID             string                       `json:"customerId"`
-	PaymentMethodID        *string                      `json:"paymentMethodId,omitempty"`
-	PlanID                 string                       `json:"planId"`
+	// Budget configuration
+	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
+	CustomerID      string                    `json:"customerId"`
+	PaymentMethodID *string                   `json:"paymentMethodId,omitempty"`
+	PlanID          string                    `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
@@ -516,17 +516,17 @@ type BooleanFieldComparison struct {
 	IsNot *bool `json:"isNot,omitempty"`
 }
 
-// Budget cap configuration
-type BudgetCapConfiguration struct {
-	// Indicates the behavior of the budget cap when the limit is exceeded. If true, the limit is a soft limit, if false, the limit is a hard limit. Default is false.
+// Budget configuration
+type BudgetConfiguration struct {
+	// Indicates the behavior of the budget when the limit is exceeded. If true, the limit is a soft limit, if false, the limit is a hard limit. Default is false.
 	HasSoftLimit bool `json:"hasSoftLimit"`
 	// The maximum spending limit
 	Limit float64 `json:"limit"`
 }
 
-// Budget cap configuration input
-type BudgetCapConfigurationInput struct {
-	// Indicates the behavior of the budget cap when the limit is exceeded. If true, the limit is a soft limit, if false, the limit is a hard limit. Default is false.
+// Budget configuration input
+type BudgetConfigurationInput struct {
+	// Indicates the behavior of the budget when the limit is exceeded. If true, the limit is a soft limit, if false, the limit is a hard limit. Default is false.
 	HasSoftLimit bool `json:"hasSoftLimit"`
 	// The maximum spending limit
 	Limit float64 `json:"limit"`
@@ -1436,10 +1436,10 @@ type CustomerSubscription struct {
 	BillingID          *string                `json:"billingId"`
 	BillingLinkURL     *string                `json:"billingLinkUrl"`
 	BillingSyncError   *string                `json:"billingSyncError"`
-	// Budget cap configuration
-	BudgetCapConfiguration *BudgetCapConfiguration `json:"budgetCapConfiguration"`
-	// Indicates if the budget cap has been exceeded
-	BudgetCapExceeded         *bool                           `json:"budgetCapExceeded"`
+	// Budget configuration
+	Budget *BudgetConfiguration `json:"budget"`
+	// Indicates if the budget has been exceeded
+	BudgetExceeded            *bool                           `json:"budgetExceeded"`
 	CancelReason              *SubscriptionCancelReason       `json:"cancelReason"`
 	CancellationDate          *string                         `json:"cancellationDate"`
 	Coupon                    *SubscriptionCoupon             `json:"coupon"`
@@ -4849,9 +4849,9 @@ type ProvisionCustomerSubscriptionInput struct {
 	BillingID                *string                   `json:"billingId,omitempty"`
 	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
-	// Budget cap configuration
-	BudgetCapConfiguration *BudgetCapConfigurationInput `json:"budgetCapConfiguration,omitempty"`
-	PlanID                 string                       `json:"planId"`
+	// Budget configuration
+	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
+	PlanID string                    `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
@@ -4880,11 +4880,11 @@ type ProvisionSubscription struct {
 	BillingID                *string                   `json:"billingId,omitempty"`
 	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
-	// Budget cap configuration
-	BudgetCapConfiguration *BudgetCapConfigurationInput `json:"budgetCapConfiguration,omitempty"`
-	CheckoutOptions        *CheckoutOptions             `json:"checkoutOptions,omitempty"`
-	CustomerID             string                       `json:"customerId"`
-	PlanID                 string                       `json:"planId"`
+	// Budget configuration
+	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
+	CheckoutOptions *CheckoutOptions          `json:"checkoutOptions,omitempty"`
+	CustomerID      string                    `json:"customerId"`
+	PlanID          string                    `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
@@ -4910,11 +4910,11 @@ type ProvisionSubscriptionInput struct {
 	BillingID                *string                   `json:"billingId,omitempty"`
 	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
-	// Budget cap configuration
-	BudgetCapConfiguration *BudgetCapConfigurationInput `json:"budgetCapConfiguration,omitempty"`
-	CheckoutOptions        *CheckoutOptions             `json:"checkoutOptions,omitempty"`
-	CustomerID             string                       `json:"customerId"`
-	PlanID                 string                       `json:"planId"`
+	// Budget configuration
+	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
+	CheckoutOptions *CheckoutOptions          `json:"checkoutOptions,omitempty"`
+	CustomerID      string                    `json:"customerId"`
+	PlanID          string                    `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
@@ -5627,16 +5627,16 @@ type SubscriptionInput struct {
 	BillingID                *string                   `json:"billingId,omitempty"`
 	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
-	// Budget cap configuration
-	BudgetCapConfiguration    *BudgetCapConfigurationInput `json:"budgetCapConfiguration,omitempty"`
-	CrmID                     *string                      `json:"crmId,omitempty"`
-	CustomerID                string                       `json:"customerId"`
-	EndDate                   *string                      `json:"endDate,omitempty"`
-	EnvironmentID             *string                      `json:"environmentId,omitempty"`
-	IsCustomPriceSubscription *bool                        `json:"isCustomPriceSubscription,omitempty"`
-	IsOverridingTrialConfig   *bool                        `json:"isOverridingTrialConfig,omitempty"`
-	IsTrial                   *bool                        `json:"isTrial,omitempty"`
-	PlanID                    string                       `json:"planId"`
+	// Budget configuration
+	Budget                    *BudgetConfigurationInput `json:"budget,omitempty"`
+	CrmID                     *string                   `json:"crmId,omitempty"`
+	CustomerID                string                    `json:"customerId"`
+	EndDate                   *string                   `json:"endDate,omitempty"`
+	EnvironmentID             *string                   `json:"environmentId,omitempty"`
+	IsCustomPriceSubscription *bool                     `json:"isCustomPriceSubscription,omitempty"`
+	IsOverridingTrialConfig   *bool                     `json:"isOverridingTrialConfig,omitempty"`
+	IsTrial                   *bool                     `json:"isTrial,omitempty"`
+	PlanID                    string                    `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides           []*PriceOverrideInput           `json:"priceOverrides,omitempty"`
 	PriceUnitAmount          *float64                        `json:"priceUnitAmount,omitempty"`
@@ -6366,9 +6366,9 @@ type UpdateSubscriptionInput struct {
 	BillableFeatures         []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
 	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
-	// Budget cap configuration
-	BudgetCapConfiguration *BudgetCapConfigurationInput `json:"budgetCapConfiguration,omitempty"`
-	EnvironmentID          *string                      `json:"environmentId,omitempty"`
+	// Budget configuration
+	Budget        *BudgetConfigurationInput `json:"budget,omitempty"`
+	EnvironmentID *string                   `json:"environmentId,omitempty"`
 	// Override the price of the subscription
 	PriceOverrides           []*PriceOverrideInput                 `json:"priceOverrides,omitempty"`
 	PromotionCode            *string                               `json:"promotionCode,omitempty"`
