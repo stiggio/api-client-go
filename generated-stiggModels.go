@@ -6694,6 +6694,7 @@ type ExperimentInfo struct {
 type AccessDeniedReason string
 
 const (
+	AccessDeniedReasonBudgetExceeded                     AccessDeniedReason = "BudgetExceeded"
 	AccessDeniedReasonCustomerIsArchived                 AccessDeniedReason = "CustomerIsArchived"
 	AccessDeniedReasonCustomerNotFound                   AccessDeniedReason = "CustomerNotFound"
 	AccessDeniedReasonCustomerResourceNotFound           AccessDeniedReason = "CustomerResourceNotFound"
@@ -6705,6 +6706,7 @@ const (
 )
 
 var AllAccessDeniedReason = []AccessDeniedReason{
+	AccessDeniedReasonBudgetExceeded,
 	AccessDeniedReasonCustomerIsArchived,
 	AccessDeniedReasonCustomerNotFound,
 	AccessDeniedReasonCustomerResourceNotFound,
@@ -6717,7 +6719,7 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 
 func (e AccessDeniedReason) IsValid() bool {
 	switch e {
-	case AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonUnknown:
+	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonUnknown:
 		return true
 	}
 	return false
