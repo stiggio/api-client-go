@@ -1745,9 +1745,12 @@ type DefaultTrialConfig struct {
 }
 
 type DefaultTrialConfigChange struct {
-	After      *DefaultTrialConfig `json:"after"`
-	Before     *DefaultTrialConfig `json:"before"`
-	ChangeType *ChangeType         `json:"changeType"`
+	// The value after the change
+	After *DefaultTrialConfig `json:"after"`
+	// The value before the change
+	Before *DefaultTrialConfig `json:"before"`
+	// The change type
+	ChangeType *ChangeType `json:"changeType"`
 }
 
 type DefaultTrialConfigInputDto struct {
@@ -3217,6 +3220,32 @@ type MeteringNotAvailableForFeatureTypeError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// Minimum spend configuration
+type MinimumSpend struct {
+	// Minimum spend billing period
+	BillingPeriod BillingPeriod `json:"billingPeriod"`
+	// The minimum spend limit
+	Minimum Money `json:"minimum"`
+}
+
+// Minimum spend change
+type MinimumSpendChange struct {
+	// The value after the change
+	After *MinimumSpend `json:"after"`
+	// The value before the change
+	Before *MinimumSpend `json:"before"`
+	// The change type
+	ChangeType *ChangeType `json:"changeType"`
+}
+
+// Minimum spend input
+type MinimumSpendInput struct {
+	// The billing period of minimum spend
+	BillingPeriod BillingPeriod `json:"billingPeriod"`
+	// The minimum spend value
+	Minimum *MoneyInputDto `json:"minimum,omitempty"`
+}
+
 type MockPaywall struct {
 	Configuration *PaywallConfiguration `json:"configuration"`
 	Plans         []*PaywallPlan        `json:"plans"`
@@ -3243,8 +3272,11 @@ type MonthlyResetPeriodConfigInput struct {
 }
 
 type NumberChange struct {
-	After      *float64    `json:"after"`
-	Before     *float64    `json:"before"`
+	// The value after the change
+	After *float64 `json:"after"`
+	// The value before the change
+	Before *float64 `json:"before"`
+	// The change type
 	ChangeType *ChangeType `json:"changeType"`
 }
 
@@ -3319,7 +3351,9 @@ type PackageChanges struct {
 	Entitlements      []*PackageEntitlementChange `json:"entitlements"`
 	HiddenFromWidgets *HiddenFromWidgetsChange    `json:"hiddenFromWidgets"`
 	// Max quantity for an addon
-	MaxQuantity   *NumberChange         `json:"maxQuantity"`
+	MaxQuantity *NumberChange `json:"maxQuantity"`
+	// Minimum spend limit
+	MinimumSpend  []*MinimumSpendChange `json:"minimumSpend"`
 	OveragePrices []*PackagePriceChange `json:"overagePrices"`
 	Prices        []*PackagePriceChange `json:"prices"`
 	PricingType   *PricingTypeChange    `json:"pricingType"`
@@ -3424,9 +3458,12 @@ type PackageEntitlementAggregateGroupBy struct {
 }
 
 type PackageEntitlementChange struct {
-	After      *PackageEntitlement `json:"after"`
-	Before     *PackageEntitlement `json:"before"`
-	ChangeType *ChangeType         `json:"changeType"`
+	// The value after the change
+	After *PackageEntitlement `json:"after"`
+	// The value before the change
+	Before *PackageEntitlement `json:"before"`
+	// The change type
+	ChangeType *ChangeType `json:"changeType"`
 }
 
 type PackageEntitlementConnection struct {
@@ -3726,13 +3763,18 @@ type PackagePrice struct {
 }
 
 type PackagePriceChange struct {
-	After      *Price      `json:"after"`
-	Before     *Price      `json:"before"`
+	// The value after the change
+	After *Price `json:"after"`
+	// The value before the change
+	Before *Price `json:"before"`
+	// The change type
 	ChangeType *ChangeType `json:"changeType"`
 }
 
 type PackagePricingInput struct {
-	EnvironmentID        string                            `json:"environmentId"`
+	EnvironmentID string `json:"environmentId"`
+	// The minimum spend configuration per each billing period
+	MinimumSpend         []*MinimumSpendInput              `json:"minimumSpend,omitempty"`
 	OverageBillingPeriod *OverageBillingPeriod             `json:"overageBillingPeriod,omitempty"`
 	OveragePricingModels []*OveragePricingModelCreateInput `json:"overagePricingModels,omitempty"`
 	PackageID            string                            `json:"packageId"`
@@ -3979,18 +4021,20 @@ type Plan struct {
 	InheritedEntitlements       []*PackageEntitlement          `json:"inheritedEntitlements"`
 	IsLatest                    *bool                          `json:"isLatest"`
 	IsParent                    bool                           `json:"isParent"`
-	OverageBillingPeriod        *OverageBillingPeriod          `json:"overageBillingPeriod"`
-	OveragePrices               []*Price                       `json:"overagePrices"`
-	Prices                      []*Price                       `json:"prices"`
-	PricingType                 *PricingType                   `json:"pricingType"`
-	Product                     Product                        `json:"product"`
-	ProductID                   *string                        `json:"productId"`
-	RefID                       string                         `json:"refId"`
-	Status                      PackageStatus                  `json:"status"`
-	SyncStates                  []*SyncState                   `json:"syncStates"`
-	Type                        string                         `json:"type"`
-	UpdatedAt                   *string                        `json:"updatedAt"`
-	VersionNumber               int64                          `json:"versionNumber"`
+	// Minimum spend configuration
+	MinimumSpend         []*MinimumSpend       `json:"minimumSpend"`
+	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
+	OveragePrices        []*Price              `json:"overagePrices"`
+	Prices               []*Price              `json:"prices"`
+	PricingType          *PricingType          `json:"pricingType"`
+	Product              Product               `json:"product"`
+	ProductID            *string               `json:"productId"`
+	RefID                string                `json:"refId"`
+	Status               PackageStatus         `json:"status"`
+	SyncStates           []*SyncState          `json:"syncStates"`
+	Type                 string                `json:"type"`
+	UpdatedAt            *string               `json:"updatedAt"`
+	VersionNumber        int64                 `json:"versionNumber"`
 }
 
 type PlanAggregateGroupBy struct {
@@ -5180,8 +5224,11 @@ type StopExperimentInput struct {
 }
 
 type StringChangeDto struct {
-	After      *string     `json:"after"`
-	Before     *string     `json:"before"`
+	// The value after the change
+	After *string `json:"after"`
+	// The value before the change
+	Before *string `json:"before"`
+	// The change type
 	ChangeType *ChangeType `json:"changeType"`
 }
 
