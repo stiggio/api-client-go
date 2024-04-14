@@ -4282,6 +4282,14 @@ type PlanUpdateInput struct {
 	Status             *PackageStatus              `json:"status,omitempty"`
 }
 
+// Input to preview the next invoice for a subscription
+type PreviewNextInvoiceInput struct {
+	// The environment id of the subscription to preview
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The subscription id to preview
+	SubscriptionID string `json:"subscriptionId"`
+}
+
 type PreviewSubscriptionInput struct {
 	Addons             []*SubscriptionAddonInput `json:"addons,omitempty"`
 	BillableFeatures   []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
