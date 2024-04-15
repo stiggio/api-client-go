@@ -4294,8 +4294,10 @@ type PlanUpdateInput struct {
 	DisplayName        *string                     `json:"displayName,omitempty"`
 	HiddenFromWidgets  []WidgetType                `json:"hiddenFromWidgets,omitempty"`
 	ID                 string                      `json:"id"`
-	ParentPlanID       *string                     `json:"parentPlanId,omitempty"`
-	Status             *PackageStatus              `json:"status,omitempty"`
+	// The minimum spend configuration per each billing period
+	MinimumSpend []*MinimumSpendInput `json:"minimumSpend,omitempty"`
+	ParentPlanID *string              `json:"parentPlanId,omitempty"`
+	Status       *PackageStatus       `json:"status,omitempty"`
 }
 
 // Input to preview the next invoice for a subscription
