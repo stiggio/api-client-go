@@ -525,16 +525,6 @@ type BudgetConfiguration struct {
 	Limit float64 `json:"limit"`
 }
 
-// Budget configuration change
-type BudgetConfigurationChange struct {
-	// The value after the change
-	After *BudgetConfiguration `json:"after"`
-	// The value before the change
-	Before *BudgetConfiguration `json:"before"`
-	// The change type
-	ChangeType *ChangeType `json:"changeType"`
-}
-
 // Budget configuration input
 type BudgetConfigurationInput struct {
 	// Indicates the behavior of the budget when the limit is exceeded. If true, the limit is a soft limit, if false, the limit is a hard limit. Default is false.
@@ -1750,8 +1740,10 @@ type DateRange struct {
 }
 
 type DefaultTrialConfig struct {
-	Duration float64          `json:"duration"`
-	Units    TrialPeriodUnits `json:"units"`
+	// Budget configuration
+	Budget   *BudgetConfiguration `json:"budget"`
+	Duration float64              `json:"duration"`
+	Units    TrialPeriodUnits     `json:"units"`
 }
 
 type DefaultTrialConfigChange struct {
@@ -1764,8 +1756,10 @@ type DefaultTrialConfigChange struct {
 }
 
 type DefaultTrialConfigInputDto struct {
-	Duration *float64          `json:"duration,omitempty"`
-	Units    *TrialPeriodUnits `json:"units,omitempty"`
+	// Budget configuration
+	Budget   *BudgetConfigurationInput `json:"budget,omitempty"`
+	Duration *float64                  `json:"duration,omitempty"`
+	Units    *TrialPeriodUnits         `json:"units,omitempty"`
 }
 
 type DeleteFeatureInput struct {
@@ -3348,11 +3342,9 @@ type PackageAlreadyPublishedError struct {
 }
 
 type PackageChanges struct {
-	AdditionalMetaData *AdditionalMetaDataChange `json:"additionalMetaData"`
-	BasePlan           *BasePlanChange           `json:"basePlan"`
-	// Budget configuration
-	Budget           *BudgetConfigurationChange   `json:"budget"`
-	CompatibleAddons []*PlanCompatibleAddonChange `json:"compatibleAddons"`
+	AdditionalMetaData *AdditionalMetaDataChange    `json:"additionalMetaData"`
+	BasePlan           *BasePlanChange              `json:"basePlan"`
+	CompatibleAddons   []*PlanCompatibleAddonChange `json:"compatibleAddons"`
 	// Package groups
 	CompatiblePackageGroups []*PlanCompatiblePackageGroupChange `json:"compatiblePackageGroups"`
 	DefaultTrialConfig      *DefaultTrialConfigChange           `json:"defaultTrialConfig"`
@@ -3784,9 +3776,7 @@ type PackagePriceChange struct {
 }
 
 type PackagePricingInput struct {
-	// Budget configuration
-	Budget        *BudgetConfigurationInput `json:"budget,omitempty"`
-	EnvironmentID string                    `json:"environmentId"`
+	EnvironmentID string `json:"environmentId"`
 	// The minimum spend configuration per each billing period
 	MinimumSpend         []*MinimumSpendInput              `json:"minimumSpend,omitempty"`
 	OverageBillingPeriod *OverageBillingPeriod             `json:"overageBillingPeriod,omitempty"`
@@ -4014,29 +4004,27 @@ type PaywallProduct struct {
 }
 
 type Plan struct {
-	AdditionalMetaData          map[string]interface{} `json:"additionalMetaData"`
-	AwsMarketplacePlanDimension *string                `json:"awsMarketplacePlanDimension"`
-	BasePlan                    *Plan                  `json:"basePlan"`
-	BillingID                   *string                `json:"billingId"`
-	BillingLinkURL              *string                `json:"billingLinkUrl"`
-	// Budget configuration
-	Budget                  *BudgetConfiguration           `json:"budget"`
-	CompatibleAddons        []*Addon                       `json:"compatibleAddons"`
-	CompatiblePackageGroups []*PlanCompatiblePackageGroups `json:"compatiblePackageGroups"`
-	CreatedAt               *string                        `json:"createdAt"`
-	DefaultTrialConfig      *DefaultTrialConfig            `json:"defaultTrialConfig"`
-	Description             *string                        `json:"description"`
-	DisplayName             string                         `json:"displayName"`
-	DraftDetails            *PackageDraftDetails           `json:"draftDetails"`
-	DraftSummary            *PackageDraftSummary           `json:"draftSummary"`
-	Entitlements            []*PackageEntitlement          `json:"entitlements"`
-	Environment             Environment                    `json:"environment"`
-	EnvironmentID           string                         `json:"environmentId"`
-	HiddenFromWidgets       []WidgetType                   `json:"hiddenFromWidgets"`
-	ID                      string                         `json:"id"`
-	InheritedEntitlements   []*PackageEntitlement          `json:"inheritedEntitlements"`
-	IsLatest                *bool                          `json:"isLatest"`
-	IsParent                bool                           `json:"isParent"`
+	AdditionalMetaData          map[string]interface{}         `json:"additionalMetaData"`
+	AwsMarketplacePlanDimension *string                        `json:"awsMarketplacePlanDimension"`
+	BasePlan                    *Plan                          `json:"basePlan"`
+	BillingID                   *string                        `json:"billingId"`
+	BillingLinkURL              *string                        `json:"billingLinkUrl"`
+	CompatibleAddons            []*Addon                       `json:"compatibleAddons"`
+	CompatiblePackageGroups     []*PlanCompatiblePackageGroups `json:"compatiblePackageGroups"`
+	CreatedAt                   *string                        `json:"createdAt"`
+	DefaultTrialConfig          *DefaultTrialConfig            `json:"defaultTrialConfig"`
+	Description                 *string                        `json:"description"`
+	DisplayName                 string                         `json:"displayName"`
+	DraftDetails                *PackageDraftDetails           `json:"draftDetails"`
+	DraftSummary                *PackageDraftSummary           `json:"draftSummary"`
+	Entitlements                []*PackageEntitlement          `json:"entitlements"`
+	Environment                 Environment                    `json:"environment"`
+	EnvironmentID               string                         `json:"environmentId"`
+	HiddenFromWidgets           []WidgetType                   `json:"hiddenFromWidgets"`
+	ID                          string                         `json:"id"`
+	InheritedEntitlements       []*PackageEntitlement          `json:"inheritedEntitlements"`
+	IsLatest                    *bool                          `json:"isLatest"`
+	IsParent                    bool                           `json:"isParent"`
 	// Minimum spend configuration
 	MinimumSpend         []*MinimumSpend       `json:"minimumSpend"`
 	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
