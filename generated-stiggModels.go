@@ -2755,15 +2755,17 @@ type IdentityForbiddenError struct {
 }
 
 type ImmediateSubscriptionPreviewInvoice struct {
-	Credits           *SubscriptionPreviewCredits    `json:"credits"`
-	Discount          *Money                         `json:"discount"`
-	DiscountDetails   *SubscriptionPreviewDiscount   `json:"discountDetails"`
-	Proration         *SubscriptionPreviewProrations `json:"proration"`
-	SubTotal          Money                          `json:"subTotal"`
-	Tax               *Money                         `json:"tax"`
-	TaxDetails        *SubscriptionPreviewTaxDetails `json:"taxDetails"`
-	Total             Money                          `json:"total"`
-	TotalExcludingTax Money                          `json:"totalExcludingTax"`
+	Credits         *SubscriptionPreviewCredits  `json:"credits"`
+	Discount        *Money                       `json:"discount"`
+	DiscountDetails *SubscriptionPreviewDiscount `json:"discountDetails"`
+	// The minimum spend adjustment applied to the invoice
+	MinimumSpendAdjustment Money                          `json:"minimumSpendAdjustment"`
+	Proration              *SubscriptionPreviewProrations `json:"proration"`
+	SubTotal               Money                          `json:"subTotal"`
+	Tax                    *Money                         `json:"tax"`
+	TaxDetails             *SubscriptionPreviewTaxDetails `json:"taxDetails"`
+	Total                  Money                          `json:"total"`
+	TotalExcludingTax      Money                          `json:"totalExcludingTax"`
 }
 
 type ImportAlreadyInProgressError struct {
@@ -5826,19 +5828,21 @@ type SubscriptionMustHaveSinglePlanError struct {
 }
 
 type SubscriptionPreview struct {
-	BillingPeriodRange  DateRange                      `json:"billingPeriodRange"`
-	Credits             *SubscriptionPreviewCredits    `json:"credits"`
-	Discount            *SubscriptionPreviewDiscount   `json:"discount"`
-	DiscountAmount      *Money                         `json:"discountAmount"`
-	HasScheduledUpdates *bool                          `json:"hasScheduledUpdates"`
-	IsPlanDowngrade     *bool                          `json:"isPlanDowngrade"`
-	Proration           *SubscriptionPreviewProrations `json:"proration"`
-	SubTotal            Money                          `json:"subTotal"`
-	Subscription        *SubscriptionPricePreviewDto   `json:"subscription"`
-	Tax                 *Money                         `json:"tax"`
-	TaxDetails          *SubscriptionPreviewTaxDetails `json:"taxDetails"`
-	Total               Money                          `json:"total"`
-	TotalExcludingTax   Money                          `json:"totalExcludingTax"`
+	BillingPeriodRange  DateRange                    `json:"billingPeriodRange"`
+	Credits             *SubscriptionPreviewCredits  `json:"credits"`
+	Discount            *SubscriptionPreviewDiscount `json:"discount"`
+	DiscountAmount      *Money                       `json:"discountAmount"`
+	HasScheduledUpdates *bool                        `json:"hasScheduledUpdates"`
+	IsPlanDowngrade     *bool                        `json:"isPlanDowngrade"`
+	// The minimum spend adjustment applied to the invoice
+	MinimumSpendAdjustment Money                          `json:"minimumSpendAdjustment"`
+	Proration              *SubscriptionPreviewProrations `json:"proration"`
+	SubTotal               Money                          `json:"subTotal"`
+	Subscription           *SubscriptionPricePreviewDto   `json:"subscription"`
+	Tax                    *Money                         `json:"tax"`
+	TaxDetails             *SubscriptionPreviewTaxDetails `json:"taxDetails"`
+	Total                  Money                          `json:"total"`
+	TotalExcludingTax      Money                          `json:"totalExcludingTax"`
 }
 
 type SubscriptionPreviewCredits struct {
@@ -5855,13 +5859,15 @@ type SubscriptionPreviewDiscount struct {
 }
 
 type SubscriptionPreviewInvoice struct {
-	Discount          *Money                         `json:"discount"`
-	DiscountDetails   *SubscriptionPreviewDiscount   `json:"discountDetails"`
-	SubTotal          Money                          `json:"subTotal"`
-	Tax               *Money                         `json:"tax"`
-	TaxDetails        *SubscriptionPreviewTaxDetails `json:"taxDetails"`
-	Total             Money                          `json:"total"`
-	TotalExcludingTax Money                          `json:"totalExcludingTax"`
+	Discount        *Money                       `json:"discount"`
+	DiscountDetails *SubscriptionPreviewDiscount `json:"discountDetails"`
+	// The minimum spend adjustment applied to the invoice
+	MinimumSpendAdjustment Money                          `json:"minimumSpendAdjustment"`
+	SubTotal               Money                          `json:"subTotal"`
+	Tax                    *Money                         `json:"tax"`
+	TaxDetails             *SubscriptionPreviewTaxDetails `json:"taxDetails"`
+	Total                  Money                          `json:"total"`
+	TotalExcludingTax      Money                          `json:"totalExcludingTax"`
 }
 
 type SubscriptionPreviewProrations struct {
