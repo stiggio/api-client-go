@@ -4461,10 +4461,12 @@ type PriceNotFoundError struct {
 }
 
 type PriceOverrideInput struct {
+	// Whether the price is a base charge
+	BaseCharge *bool `json:"baseCharge,omitempty"`
 	// The number of units per block. Defaults to 1 unit.
 	BlockSize *float64 `json:"blockSize,omitempty"`
 	// The corresponding feature id of the price
-	FeatureID string            `json:"featureId"`
+	FeatureID *string           `json:"featureId,omitempty"`
 	Price     *MoneyInputDto    `json:"price,omitempty"`
 	Tiers     []*PriceTierInput `json:"tiers,omitempty"`
 }
