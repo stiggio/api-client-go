@@ -2820,7 +2820,7 @@ type ImportIntegrationTask struct {
 	ImportErrors       []*ImportSubTaskError `json:"importErrors"`
 	ProductsCount      int64                 `json:"productsCount"`
 	Progress           int64                 `json:"progress"`
-	StartDate          string                `json:"startDate"`
+	StartDate          *string               `json:"startDate"`
 	Status             TaskStatus            `json:"status"`
 	TaskType           TaskType              `json:"taskType"`
 	TotalSubtasksCount int64                 `json:"totalSubtasksCount"`
@@ -5756,7 +5756,7 @@ type SubscriptionMigrationTask struct {
 	MigratedCustomersCount *int64        `json:"migratedCustomersCount"`
 	Packages               []*PackageDto `json:"packages"`
 	Progress               int64         `json:"progress"`
-	StartDate              string        `json:"startDate"`
+	StartDate              *string       `json:"startDate"`
 	Status                 TaskStatus    `json:"status"`
 	TaskType               TaskType      `json:"taskType"`
 }
@@ -8694,6 +8694,7 @@ const (
 	EventLogTypeSubscriptionCanceled                            EventLogType = "SUBSCRIPTION_CANCELED"
 	EventLogTypeSubscriptionCreated                             EventLogType = "SUBSCRIPTION_CREATED"
 	EventLogTypeSubscriptionExpired                             EventLogType = "SUBSCRIPTION_EXPIRED"
+	EventLogTypeSubscriptionSpentLimitExceeded                  EventLogType = "SUBSCRIPTION_SPENT_LIMIT_EXCEEDED"
 	EventLogTypeSubscriptionTrialConverted                      EventLogType = "SUBSCRIPTION_TRIAL_CONVERTED"
 	EventLogTypeSubscriptionTrialEndsSoon                       EventLogType = "SUBSCRIPTION_TRIAL_ENDS_SOON"
 	EventLogTypeSubscriptionTrialExpired                        EventLogType = "SUBSCRIPTION_TRIAL_EXPIRED"
@@ -8759,6 +8760,7 @@ var AllEventLogType = []EventLogType{
 	EventLogTypeSubscriptionCanceled,
 	EventLogTypeSubscriptionCreated,
 	EventLogTypeSubscriptionExpired,
+	EventLogTypeSubscriptionSpentLimitExceeded,
 	EventLogTypeSubscriptionTrialConverted,
 	EventLogTypeSubscriptionTrialEndsSoon,
 	EventLogTypeSubscriptionTrialExpired,
@@ -8772,7 +8774,7 @@ var AllEventLogType = []EventLogType{
 
 func (e EventLogType) IsValid() bool {
 	switch e {
-	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIDoggoResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEntitlementUsageExceeded, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackageGroupCreated, EventLogTypePackageGroupUpdated, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeSubscriptionsMigrated, EventLogTypeSubscriptionsMigrationTriggered, EventLogTypeSubscriptionBillingMonthEndsSoon, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageChargeTriggered, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
+	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIDoggoResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEntitlementUsageExceeded, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackageGroupCreated, EventLogTypePackageGroupUpdated, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeSubscriptionsMigrated, EventLogTypeSubscriptionsMigrationTriggered, EventLogTypeSubscriptionBillingMonthEndsSoon, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionSpentLimitExceeded, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageChargeTriggered, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
 		return true
 	}
 	return false
