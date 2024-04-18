@@ -336,9 +336,11 @@ type ApplySubscriptionInput struct {
 	Budget     *BudgetConfigurationInput `json:"budget,omitempty"`
 	CustomerID string                    `json:"customerId"`
 	// The minimum spend configuration
-	MinimumSpend    *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
-	PaymentMethodID *string                             `json:"paymentMethodId,omitempty"`
-	PlanID          string                              `json:"planId"`
+	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
+	// Subscription payment collection method
+	PaymentCollectionMethod *PaymentCollectionMethod `json:"paymentCollectionMethod,omitempty"`
+	PaymentMethodID         *string                  `json:"paymentMethodId,omitempty"`
+	PlanID                  string                   `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
@@ -1464,10 +1466,12 @@ type CustomerSubscription struct {
 	IsCustomPriceSubscription *bool                       `json:"isCustomPriceSubscription"`
 	LatestInvoice             *SubscriptionInvoice        `json:"latestInvoice"`
 	// Minimum spend configuration
-	MinimumSpend             *SubscriptionMinimumSpend       `json:"minimumSpend"`
-	OldBillingID             *string                         `json:"oldBillingId"`
-	OutdatedPricePackages    []string                        `json:"outdatedPricePackages"`
-	PaymentCollection        PaymentCollection               `json:"paymentCollection"`
+	MinimumSpend          *SubscriptionMinimumSpend `json:"minimumSpend"`
+	OldBillingID          *string                   `json:"oldBillingId"`
+	OutdatedPricePackages []string                  `json:"outdatedPricePackages"`
+	PaymentCollection     PaymentCollection         `json:"paymentCollection"`
+	// Payment collection method of the subscription
+	PaymentCollectionMethod  *PaymentCollectionMethod        `json:"paymentCollectionMethod"`
 	Plan                     Plan                            `json:"plan"`
 	Prices                   []*SubscriptionPrice            `json:"prices"`
 	PricingType              PricingType                     `json:"pricingType"`
@@ -4928,7 +4932,9 @@ type ProvisionCustomerSubscriptionInput struct {
 	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
-	PlanID       string                              `json:"planId"`
+	// Subscription payment collection method
+	PaymentCollectionMethod *PaymentCollectionMethod `json:"paymentCollectionMethod,omitempty"`
+	PlanID                  string                   `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
@@ -4963,7 +4969,9 @@ type ProvisionSubscription struct {
 	CustomerID      string                    `json:"customerId"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
-	PlanID       string                              `json:"planId"`
+	// Subscription payment collection method
+	PaymentCollectionMethod *PaymentCollectionMethod `json:"paymentCollectionMethod,omitempty"`
+	PlanID                  string                   `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
@@ -4995,7 +5003,9 @@ type ProvisionSubscriptionInput struct {
 	CustomerID      string                    `json:"customerId"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
-	PlanID       string                              `json:"planId"`
+	// Subscription payment collection method
+	PaymentCollectionMethod *PaymentCollectionMethod `json:"paymentCollectionMethod,omitempty"`
+	PlanID                  string                   `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
@@ -5722,7 +5732,9 @@ type SubscriptionInput struct {
 	IsTrial                   *bool                     `json:"isTrial,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
-	PlanID       string                              `json:"planId"`
+	// Subscription payment collection method
+	PaymentCollectionMethod *PaymentCollectionMethod `json:"paymentCollectionMethod,omitempty"`
+	PlanID                  string                   `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides           []*PriceOverrideInput           `json:"priceOverrides,omitempty"`
 	PriceUnitAmount          *float64                        `json:"priceUnitAmount,omitempty"`
@@ -9810,6 +9822,50 @@ func (e *PaymentCollection) UnmarshalGQL(v interface{}) error {
 }
 
 func (e PaymentCollection) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Either pay for this subscription using the default payment method of the customer, or generate an invoice with payment details to be paid manually.
+type PaymentCollectionMethod string
+
+const (
+	// Automatically charge the payment method on file
+	PaymentCollectionMethodCharge PaymentCollectionMethod = "CHARGE"
+	// Generate an invoice to the customer to pay manually
+	PaymentCollectionMethodInvoice PaymentCollectionMethod = "INVOICE"
+)
+
+var AllPaymentCollectionMethod = []PaymentCollectionMethod{
+	PaymentCollectionMethodCharge,
+	PaymentCollectionMethodInvoice,
+}
+
+func (e PaymentCollectionMethod) IsValid() bool {
+	switch e {
+	case PaymentCollectionMethodCharge, PaymentCollectionMethodInvoice:
+		return true
+	}
+	return false
+}
+
+func (e PaymentCollectionMethod) String() string {
+	return string(e)
+}
+
+func (e *PaymentCollectionMethod) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = PaymentCollectionMethod(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid PaymentCollectionMethod", str)
+	}
+	return nil
+}
+
+func (e PaymentCollectionMethod) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
