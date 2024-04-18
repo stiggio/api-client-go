@@ -333,10 +333,12 @@ type ApplySubscriptionInput struct {
 	BillingInformation       *SubscriptionBillingInfo  `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
-	CustomerID      string                    `json:"customerId"`
-	PaymentMethodID *string                   `json:"paymentMethodId,omitempty"`
-	PlanID          string                    `json:"planId"`
+	Budget     *BudgetConfigurationInput `json:"budget,omitempty"`
+	CustomerID string                    `json:"customerId"`
+	// The minimum spend configuration
+	MinimumSpend    *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
+	PaymentMethodID *string                             `json:"paymentMethodId,omitempty"`
+	PlanID          string                              `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PromotionCode              *string                          `json:"promotionCode,omitempty"`
@@ -1440,46 +1442,48 @@ type CustomerSubscription struct {
 	// Budget configuration
 	Budget *BudgetConfiguration `json:"budget"`
 	// Indicates if the budget has been exceeded
-	BudgetExceeded            *bool                           `json:"budgetExceeded"`
-	CancelReason              *SubscriptionCancelReason       `json:"cancelReason"`
-	CancellationDate          *string                         `json:"cancellationDate"`
-	Coupon                    *SubscriptionCoupon             `json:"coupon"`
-	CreatedAt                 *string                         `json:"createdAt"`
-	CrmID                     *string                         `json:"crmId"`
-	CrmLinkURL                *string                         `json:"crmLinkUrl"`
-	CurrentBillingPeriodEnd   *string                         `json:"currentBillingPeriodEnd"`
-	CurrentBillingPeriodStart *string                         `json:"currentBillingPeriodStart"`
-	Customer                  Customer                        `json:"customer"`
-	EffectiveEndDate          *string                         `json:"effectiveEndDate"`
-	EndDate                   *string                         `json:"endDate"`
-	Environment               Environment                     `json:"environment"`
-	EnvironmentID             string                          `json:"environmentId"`
-	Experiment                *Experiment                     `json:"experiment"`
-	ExperimentInfo            *ExperimentInfo                 `json:"experimentInfo"`
-	FreeItems                 []*FreeSubscriptionItem         `json:"freeItems"`
-	FutureUpdates             []*SubscriptionFutureUpdate     `json:"futureUpdates"`
-	ID                        string                          `json:"id"`
-	IsCustomPriceSubscription *bool                           `json:"isCustomPriceSubscription"`
-	LatestInvoice             *SubscriptionInvoice            `json:"latestInvoice"`
-	OldBillingID              *string                         `json:"oldBillingId"`
-	OutdatedPricePackages     []string                        `json:"outdatedPricePackages"`
-	PaymentCollection         PaymentCollection               `json:"paymentCollection"`
-	Plan                      Plan                            `json:"plan"`
-	Prices                    []*SubscriptionPrice            `json:"prices"`
-	PricingType               PricingType                     `json:"pricingType"`
-	RefID                     string                          `json:"refId"`
-	Resource                  *CustomerResource               `json:"resource"`
-	ResourceID                *string                         `json:"resourceId"`
-	SalesforceID              *string                         `json:"salesforceId"`
-	ScheduledUpdates          []*SubscriptionScheduledUpdate  `json:"scheduledUpdates"`
-	StartDate                 string                          `json:"startDate"`
-	Status                    SubscriptionStatus              `json:"status"`
-	SubscriptionEntitlements  []*SubscriptionEntitlement      `json:"subscriptionEntitlements"`
-	SubscriptionID            string                          `json:"subscriptionId"`
-	SyncStates                []*SyncState                    `json:"syncStates"`
-	TotalPrice                *CustomerSubscriptionTotalPrice `json:"totalPrice"`
-	TrialEndDate              *string                         `json:"trialEndDate"`
-	WasInTrial                *bool                           `json:"wasInTrial"`
+	BudgetExceeded            *bool                       `json:"budgetExceeded"`
+	CancelReason              *SubscriptionCancelReason   `json:"cancelReason"`
+	CancellationDate          *string                     `json:"cancellationDate"`
+	Coupon                    *SubscriptionCoupon         `json:"coupon"`
+	CreatedAt                 *string                     `json:"createdAt"`
+	CrmID                     *string                     `json:"crmId"`
+	CrmLinkURL                *string                     `json:"crmLinkUrl"`
+	CurrentBillingPeriodEnd   *string                     `json:"currentBillingPeriodEnd"`
+	CurrentBillingPeriodStart *string                     `json:"currentBillingPeriodStart"`
+	Customer                  Customer                    `json:"customer"`
+	EffectiveEndDate          *string                     `json:"effectiveEndDate"`
+	EndDate                   *string                     `json:"endDate"`
+	Environment               Environment                 `json:"environment"`
+	EnvironmentID             string                      `json:"environmentId"`
+	Experiment                *Experiment                 `json:"experiment"`
+	ExperimentInfo            *ExperimentInfo             `json:"experimentInfo"`
+	FreeItems                 []*FreeSubscriptionItem     `json:"freeItems"`
+	FutureUpdates             []*SubscriptionFutureUpdate `json:"futureUpdates"`
+	ID                        string                      `json:"id"`
+	IsCustomPriceSubscription *bool                       `json:"isCustomPriceSubscription"`
+	LatestInvoice             *SubscriptionInvoice        `json:"latestInvoice"`
+	// Minimum spend configuration
+	MinimumSpend             *SubscriptionMinimumSpend       `json:"minimumSpend"`
+	OldBillingID             *string                         `json:"oldBillingId"`
+	OutdatedPricePackages    []string                        `json:"outdatedPricePackages"`
+	PaymentCollection        PaymentCollection               `json:"paymentCollection"`
+	Plan                     Plan                            `json:"plan"`
+	Prices                   []*SubscriptionPrice            `json:"prices"`
+	PricingType              PricingType                     `json:"pricingType"`
+	RefID                    string                          `json:"refId"`
+	Resource                 *CustomerResource               `json:"resource"`
+	ResourceID               *string                         `json:"resourceId"`
+	SalesforceID             *string                         `json:"salesforceId"`
+	ScheduledUpdates         []*SubscriptionScheduledUpdate  `json:"scheduledUpdates"`
+	StartDate                string                          `json:"startDate"`
+	Status                   SubscriptionStatus              `json:"status"`
+	SubscriptionEntitlements []*SubscriptionEntitlement      `json:"subscriptionEntitlements"`
+	SubscriptionID           string                          `json:"subscriptionId"`
+	SyncStates               []*SyncState                    `json:"syncStates"`
+	TotalPrice               *CustomerSubscriptionTotalPrice `json:"totalPrice"`
+	TrialEndDate             *string                         `json:"trialEndDate"`
+	WasInTrial               *bool                           `json:"wasInTrial"`
 }
 
 type CustomerSubscriptionAggregateGroupBy struct {
@@ -3257,7 +3261,7 @@ type MinimumSpendInput struct {
 	// The billing period of minimum spend
 	BillingPeriod BillingPeriod `json:"billingPeriod"`
 	// The minimum spend value
-	Minimum *MoneyInputDto `json:"minimum,omitempty"`
+	Minimum MoneyInputDto `json:"minimum"`
 }
 
 type MockPaywall struct {
@@ -4922,7 +4926,9 @@ type ProvisionCustomerSubscriptionInput struct {
 	BillingPeriod            *BillingPeriod            `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
-	PlanID string                    `json:"planId"`
+	// The minimum spend configuration
+	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
+	PlanID       string                              `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
@@ -4955,7 +4961,9 @@ type ProvisionSubscription struct {
 	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
 	CheckoutOptions *CheckoutOptions          `json:"checkoutOptions,omitempty"`
 	CustomerID      string                    `json:"customerId"`
-	PlanID          string                    `json:"planId"`
+	// The minimum spend configuration
+	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
+	PlanID       string                              `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
@@ -4985,7 +4993,9 @@ type ProvisionSubscriptionInput struct {
 	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
 	CheckoutOptions *CheckoutOptions          `json:"checkoutOptions,omitempty"`
 	CustomerID      string                    `json:"customerId"`
-	PlanID          string                    `json:"planId"`
+	// The minimum spend configuration
+	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
+	PlanID       string                              `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
 	PriceUnitAmount            *float64                         `json:"priceUnitAmount,omitempty"`
@@ -5710,7 +5720,9 @@ type SubscriptionInput struct {
 	IsCustomPriceSubscription *bool                     `json:"isCustomPriceSubscription,omitempty"`
 	IsOverridingTrialConfig   *bool                     `json:"isOverridingTrialConfig,omitempty"`
 	IsTrial                   *bool                     `json:"isTrial,omitempty"`
-	PlanID                    string                    `json:"planId"`
+	// The minimum spend configuration
+	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
+	PlanID       string                              `json:"planId"`
 	// Override the price of the subscription
 	PriceOverrides           []*PriceOverrideInput           `json:"priceOverrides,omitempty"`
 	PriceUnitAmount          *float64                        `json:"priceUnitAmount,omitempty"`
@@ -5829,6 +5841,20 @@ type SubscriptionMigrationTaskSort struct {
 	Direction SortDirection                       `json:"direction"`
 	Field     SubscriptionMigrationTaskSortFields `json:"field"`
 	Nulls     *SortNulls                          `json:"nulls,omitempty"`
+}
+
+// Subscription minimum spend
+type SubscriptionMinimumSpend struct {
+	// Is the minimum spend an override on the subscription level
+	IsOverride *bool `json:"isOverride"`
+	// The minimum spend limit
+	Minimum *Money `json:"minimum"`
+}
+
+// Subscription minimum spend
+type SubscriptionMinimumSpendValueInput struct {
+	// The minimum spend
+	Minimum *MoneyInputDto `json:"minimum,omitempty"`
 }
 
 type SubscriptionMustHaveSinglePlanError struct {
