@@ -3961,10 +3961,12 @@ type PaywallPlan struct {
 	DisplayName             string                               `json:"displayName"`
 	Entitlements            []*Entitlement                       `json:"entitlements"`
 	InheritedEntitlements   []*Entitlement                       `json:"inheritedEntitlements"`
-	Prices                  []*PaywallPrice                      `json:"prices"`
-	PricingType             *PricingType                         `json:"pricingType"`
-	Product                 PaywallProduct                       `json:"product"`
-	RefID                   string                               `json:"refId"`
+	// Minimum spend configuration
+	MinimumSpend []*MinimumSpend `json:"minimumSpend"`
+	Prices       []*PaywallPrice `json:"prices"`
+	PricingType  *PricingType    `json:"pricingType"`
+	Product      PaywallProduct  `json:"product"`
+	RefID        string          `json:"refId"`
 }
 
 type PaywallPlanCompatiblePackageGroup struct {
