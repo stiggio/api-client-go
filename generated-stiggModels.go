@@ -6485,6 +6485,8 @@ type UpdateSubscriptionInput struct {
 	// Budget configuration
 	Budget        *BudgetConfigurationInput `json:"budget,omitempty"`
 	EnvironmentID *string                   `json:"environmentId,omitempty"`
+	// The minimum spend configuration
+	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	// Override the price of the subscription
 	PriceOverrides           []*PriceOverrideInput                 `json:"priceOverrides,omitempty"`
 	PromotionCode            *string                               `json:"promotionCode,omitempty"`
