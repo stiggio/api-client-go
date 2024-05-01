@@ -5752,26 +5752,27 @@ type SubscriptionInput struct {
 }
 
 type SubscriptionInvoice struct {
-	AmountDue            *float64                  `json:"amountDue"`
-	AppliedBalance       *float64                  `json:"appliedBalance"`
-	BillingID            string                    `json:"billingId"`
-	CreatedAt            string                    `json:"createdAt"`
-	Currency             *string                   `json:"currency"`
-	EndingBalance        *float64                  `json:"endingBalance"`
-	ErrorMessage         *string                   `json:"errorMessage"`
-	Lines                []*InvoiceLine            `json:"lines"`
-	PaymentSecret        *string                   `json:"paymentSecret"`
-	PaymentURL           *string                   `json:"paymentUrl"`
-	PDFURL               *string                   `json:"pdfUrl"`
-	RequiresAction       bool                      `json:"requiresAction"`
-	StartingBalance      *float64                  `json:"startingBalance"`
-	Status               SubscriptionInvoiceStatus `json:"status"`
-	SubTotal             *float64                  `json:"subTotal"`
-	SubTotalExcludingTax *float64                  `json:"subTotalExcludingTax"`
-	Tax                  *float64                  `json:"tax"`
-	Total                *float64                  `json:"total"`
-	TotalExcludingTax    *float64                  `json:"totalExcludingTax"`
-	UpdatedAt            string                    `json:"updatedAt"`
+	AmountDue            *float64                          `json:"amountDue"`
+	AppliedBalance       *float64                          `json:"appliedBalance"`
+	BillingID            string                            `json:"billingId"`
+	BillingReason        *SubscriptionInvoiceBillingReason `json:"billingReason"`
+	CreatedAt            string                            `json:"createdAt"`
+	Currency             *string                           `json:"currency"`
+	EndingBalance        *float64                          `json:"endingBalance"`
+	ErrorMessage         *string                           `json:"errorMessage"`
+	Lines                []*InvoiceLine                    `json:"lines"`
+	PaymentSecret        *string                           `json:"paymentSecret"`
+	PaymentURL           *string                           `json:"paymentUrl"`
+	PDFURL               *string                           `json:"pdfUrl"`
+	RequiresAction       bool                              `json:"requiresAction"`
+	StartingBalance      *float64                          `json:"startingBalance"`
+	Status               SubscriptionInvoiceStatus         `json:"status"`
+	SubTotal             *float64                          `json:"subTotal"`
+	SubTotalExcludingTax *float64                          `json:"subTotalExcludingTax"`
+	Tax                  *float64                          `json:"tax"`
+	Total                *float64                          `json:"total"`
+	TotalExcludingTax    *float64                          `json:"totalExcludingTax"`
+	UpdatedAt            string                            `json:"updatedAt"`
 }
 
 type SubscriptionMigrationInput struct {
@@ -10935,6 +10936,62 @@ func (e *SubscriptionEntitlementSortFields) UnmarshalGQL(v interface{}) error {
 }
 
 func (e SubscriptionEntitlementSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The reason the billing event was created.
+type SubscriptionInvoiceBillingReason string
+
+const (
+	// A subscription advanced into a new billing cycle.
+	SubscriptionInvoiceBillingReasonBillingCycle SubscriptionInvoiceBillingReason = "BILLING_CYCLE"
+	// An invoice was created manually.
+	SubscriptionInvoiceBillingReasonManual SubscriptionInvoiceBillingReason = "MANUAL"
+	// A subscription passed the minimum invoice amount
+	SubscriptionInvoiceBillingReasonMinimumInvoiceAmountExceeded SubscriptionInvoiceBillingReason = "MINIMUM_INVOICE_AMOUNT_EXCEEDED"
+	// An invoice was created for another reason.
+	SubscriptionInvoiceBillingReasonOther SubscriptionInvoiceBillingReason = "OTHER"
+	// A subscription was created.
+	SubscriptionInvoiceBillingReasonSubscriptionCreation SubscriptionInvoiceBillingReason = "SUBSCRIPTION_CREATION"
+	// A subscription was updated.
+	SubscriptionInvoiceBillingReasonSubscriptionUpdate SubscriptionInvoiceBillingReason = "SUBSCRIPTION_UPDATE"
+)
+
+var AllSubscriptionInvoiceBillingReason = []SubscriptionInvoiceBillingReason{
+	SubscriptionInvoiceBillingReasonBillingCycle,
+	SubscriptionInvoiceBillingReasonManual,
+	SubscriptionInvoiceBillingReasonMinimumInvoiceAmountExceeded,
+	SubscriptionInvoiceBillingReasonOther,
+	SubscriptionInvoiceBillingReasonSubscriptionCreation,
+	SubscriptionInvoiceBillingReasonSubscriptionUpdate,
+}
+
+func (e SubscriptionInvoiceBillingReason) IsValid() bool {
+	switch e {
+	case SubscriptionInvoiceBillingReasonBillingCycle, SubscriptionInvoiceBillingReasonManual, SubscriptionInvoiceBillingReasonMinimumInvoiceAmountExceeded, SubscriptionInvoiceBillingReasonOther, SubscriptionInvoiceBillingReasonSubscriptionCreation, SubscriptionInvoiceBillingReasonSubscriptionUpdate:
+		return true
+	}
+	return false
+}
+
+func (e SubscriptionInvoiceBillingReason) String() string {
+	return string(e)
+}
+
+func (e *SubscriptionInvoiceBillingReason) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = SubscriptionInvoiceBillingReason(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid SubscriptionInvoiceBillingReason", str)
+	}
+	return nil
+}
+
+func (e SubscriptionInvoiceBillingReason) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
