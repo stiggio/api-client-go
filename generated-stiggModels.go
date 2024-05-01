@@ -2795,6 +2795,8 @@ type ImportCustomerInput struct {
 	Name               *string                `json:"name,omitempty"`
 	PaymentMethodID    *string                `json:"paymentMethodId,omitempty"`
 	RefID              *string                `json:"refId,omitempty"`
+	// Indicates the last update of the customer. In case there's already existing customer that was updated after that date, it will skip import this customer
+	UpdatedAt *string `json:"updatedAt,omitempty"`
 }
 
 type ImportIntegrationCatalogInput struct {
@@ -2910,6 +2912,8 @@ type ImportSubscriptionInput struct {
 	ResourceID         *string                `json:"resourceId,omitempty"`
 	StartDate          *string                `json:"startDate,omitempty"`
 	UnitQuantity       *float64               `json:"unitQuantity,omitempty"`
+	// Indicates the last update of the subscription. In case there's already existing subscription that was updated after that date, it will skip import this subscription
+	UpdatedAt *string `json:"updatedAt,omitempty"`
 }
 
 type ImportSubscriptionsBulk struct {
