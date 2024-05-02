@@ -1102,6 +1102,7 @@ type CustomerFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                      `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                        `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                        `json:"currentBillingPeriodStart,omitempty"`
+	CustomerID                *StringFieldComparison                      `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                        `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                        `json:"endDate,omitempty"`
 	EnvironmentID             *StringFieldComparison                      `json:"environmentId,omitempty"`
@@ -1387,6 +1388,7 @@ type CustomerResourceFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                              `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                                `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                `json:"currentBillingPeriodStart,omitempty"`
+	CustomerID                *StringFieldComparison                              `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                `json:"endDate,omitempty"`
 	EnvironmentID             *StringFieldComparison                              `json:"environmentId,omitempty"`
@@ -1454,6 +1456,7 @@ type CustomerSubscription struct {
 	CurrentBillingPeriodEnd   *string                     `json:"currentBillingPeriodEnd"`
 	CurrentBillingPeriodStart *string                     `json:"currentBillingPeriodStart"`
 	Customer                  Customer                    `json:"customer"`
+	CustomerID                *string                     `json:"customerId"`
 	EffectiveEndDate          *string                     `json:"effectiveEndDate"`
 	EndDate                   *string                     `json:"endDate"`
 	Environment               Environment                 `json:"environment"`
@@ -1499,6 +1502,7 @@ type CustomerSubscriptionAggregateGroupBy struct {
 	CrmLinkURL                *string                   `json:"crmLinkUrl"`
 	CurrentBillingPeriodEnd   *string                   `json:"currentBillingPeriodEnd"`
 	CurrentBillingPeriodStart *string                   `json:"currentBillingPeriodStart"`
+	CustomerID                *string                   `json:"customerId"`
 	EffectiveEndDate          *string                   `json:"effectiveEndDate"`
 	EndDate                   *string                   `json:"endDate"`
 	EnvironmentID             *string                   `json:"environmentId"`
@@ -1532,6 +1536,7 @@ type CustomerSubscriptionCountAggregate struct {
 	CrmLinkURL                *int64 `json:"crmLinkUrl"`
 	CurrentBillingPeriodEnd   *int64 `json:"currentBillingPeriodEnd"`
 	CurrentBillingPeriodStart *int64 `json:"currentBillingPeriodStart"`
+	CustomerID                *int64 `json:"customerId"`
 	EffectiveEndDate          *int64 `json:"effectiveEndDate"`
 	EndDate                   *int64 `json:"endDate"`
 	EnvironmentID             *int64 `json:"environmentId"`
@@ -1566,6 +1571,7 @@ type CustomerSubscriptionFilter struct {
 	CurrentBillingPeriodEnd   *DateFieldComparison                                     `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                     `json:"currentBillingPeriodStart,omitempty"`
 	Customer                  *CustomerSubscriptionFilterCustomerFilter                `json:"customer,omitempty"`
+	CustomerID                *StringFieldComparison                                   `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                     `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                     `json:"endDate,omitempty"`
 	EnvironmentID             *StringFieldComparison                                   `json:"environmentId,omitempty"`
@@ -1671,6 +1677,7 @@ type CustomerSubscriptionMaxAggregate struct {
 	CrmLinkURL                *string                   `json:"crmLinkUrl"`
 	CurrentBillingPeriodEnd   *string                   `json:"currentBillingPeriodEnd"`
 	CurrentBillingPeriodStart *string                   `json:"currentBillingPeriodStart"`
+	CustomerID                *string                   `json:"customerId"`
 	EffectiveEndDate          *string                   `json:"effectiveEndDate"`
 	EndDate                   *string                   `json:"endDate"`
 	EnvironmentID             *string                   `json:"environmentId"`
@@ -1695,6 +1702,7 @@ type CustomerSubscriptionMinAggregate struct {
 	CrmLinkURL                *string                   `json:"crmLinkUrl"`
 	CurrentBillingPeriodEnd   *string                   `json:"currentBillingPeriodEnd"`
 	CurrentBillingPeriodStart *string                   `json:"currentBillingPeriodStart"`
+	CustomerID                *string                   `json:"customerId"`
 	EffectiveEndDate          *string                   `json:"effectiveEndDate"`
 	EndDate                   *string                   `json:"endDate"`
 	EnvironmentID             *string                   `json:"environmentId"`
@@ -5462,6 +5470,7 @@ type SubscriptionAddonFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                                 `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                 `json:"currentBillingPeriodStart,omitempty"`
+	CustomerID                *StringFieldComparison                               `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                 `json:"endDate,omitempty"`
 	EnvironmentID             *StringFieldComparison                               `json:"environmentId,omitempty"`
@@ -5643,6 +5652,7 @@ type SubscriptionEntitlementFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                                     `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                                       `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                       `json:"currentBillingPeriodStart,omitempty"`
+	CustomerID                *StringFieldComparison                                     `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                       `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                       `json:"endDate,omitempty"`
 	EnvironmentID             *StringFieldComparison                                     `json:"environmentId,omitempty"`
@@ -6016,6 +6026,7 @@ type SubscriptionPriceFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                                 `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                 `json:"currentBillingPeriodStart,omitempty"`
+	CustomerID                *StringFieldComparison                               `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                 `json:"endDate,omitempty"`
 	EnvironmentID             *StringFieldComparison                               `json:"environmentId,omitempty"`
@@ -7986,6 +7997,7 @@ const (
 	CustomerSubscriptionSortFieldsCrmLinkURL                CustomerSubscriptionSortFields = "crmLinkUrl"
 	CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd   CustomerSubscriptionSortFields = "currentBillingPeriodEnd"
 	CustomerSubscriptionSortFieldsCurrentBillingPeriodStart CustomerSubscriptionSortFields = "currentBillingPeriodStart"
+	CustomerSubscriptionSortFieldsCustomerID                CustomerSubscriptionSortFields = "customerId"
 	CustomerSubscriptionSortFieldsEffectiveEndDate          CustomerSubscriptionSortFields = "effectiveEndDate"
 	CustomerSubscriptionSortFieldsEndDate                   CustomerSubscriptionSortFields = "endDate"
 	CustomerSubscriptionSortFieldsEnvironmentID             CustomerSubscriptionSortFields = "environmentId"
@@ -8010,6 +8022,7 @@ var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
 	CustomerSubscriptionSortFieldsCrmLinkURL,
 	CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd,
 	CustomerSubscriptionSortFieldsCurrentBillingPeriodStart,
+	CustomerSubscriptionSortFieldsCustomerID,
 	CustomerSubscriptionSortFieldsEffectiveEndDate,
 	CustomerSubscriptionSortFieldsEndDate,
 	CustomerSubscriptionSortFieldsEnvironmentID,
@@ -8027,7 +8040,7 @@ var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
 
 func (e CustomerSubscriptionSortFields) IsValid() bool {
 	switch e {
-	case CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd, CustomerSubscriptionSortFieldsCurrentBillingPeriodStart, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
+	case CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd, CustomerSubscriptionSortFieldsCurrentBillingPeriodStart, CustomerSubscriptionSortFieldsCustomerID, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
 		return true
 	}
 	return false
