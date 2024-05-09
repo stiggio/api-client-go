@@ -440,6 +440,32 @@ type BasePlanChange struct {
 	ChangeType *ChangeType `json:"changeType"`
 }
 
+type BigQueryCredentials struct {
+	AirbyteConnectionID  *string `json:"airbyteConnectionId"`
+	AirbyteDestinationID *string `json:"airbyteDestinationId"`
+	CredentialsJSON      string  `json:"credentialsJson"`
+	DatasetID            string  `json:"datasetId"`
+	DatasetLocation      string  `json:"datasetLocation"`
+	GcsBucketName        string  `json:"gcsBucketName"`
+	GcsBucketPath        string  `json:"gcsBucketPath"`
+	HmacKeyAccessID      string  `json:"hmacKeyAccessId"`
+	HmacKeySecret        string  `json:"hmacKeySecret"`
+	ProjectID            string  `json:"projectId"`
+}
+
+func (BigQueryCredentials) IsCredentials() {}
+
+type BigQueryCredentialsInput struct {
+	CredentialsJSON string `json:"credentialsJson"`
+	DatasetID       string `json:"datasetId"`
+	DatasetLocation string `json:"datasetLocation"`
+	GcsBucketName   string `json:"gcsBucketName"`
+	GcsBucketPath   string `json:"gcsBucketPath"`
+	HmacKeyAccessID string `json:"hmacKeyAccessId"`
+	HmacKeySecret   string `json:"hmacKeySecret"`
+	ProjectID       string `json:"projectId"`
+}
+
 type BillableFeature struct {
 	FeatureID string  `json:"featureId"`
 	Quantity  float64 `json:"quantity"`
@@ -876,6 +902,7 @@ type CreateHook struct {
 
 type CreateIntegrationInput struct {
 	AwsMarketplaceCredentials *AwsMarketplaceCredentialsInput `json:"awsMarketplaceCredentials,omitempty"`
+	BigQueryCredentials       *BigQueryCredentialsInput       `json:"bigQueryCredentials,omitempty"`
 	EnvironmentID             string                          `json:"environmentId"`
 	HubspotCredentials        *HubspotCredentialsInput        `json:"hubspotCredentials,omitempty"`
 	SalesforceCredentials     *SalesforceCredentialsInput     `json:"salesforceCredentials,omitempty"`
@@ -11719,6 +11746,7 @@ type VendorIdentifier string
 
 const (
 	VendorIdentifierAwsMarketplace VendorIdentifier = "AWS_MARKETPLACE"
+	VendorIdentifierBigQuery       VendorIdentifier = "BIG_QUERY"
 	VendorIdentifierHubspot        VendorIdentifier = "HUBSPOT"
 	VendorIdentifierSalesforce     VendorIdentifier = "SALESFORCE"
 	VendorIdentifierSnowflake      VendorIdentifier = "SNOWFLAKE"
@@ -11728,6 +11756,7 @@ const (
 
 var AllVendorIdentifier = []VendorIdentifier{
 	VendorIdentifierAwsMarketplace,
+	VendorIdentifierBigQuery,
 	VendorIdentifierHubspot,
 	VendorIdentifierSalesforce,
 	VendorIdentifierSnowflake,
@@ -11737,7 +11766,7 @@ var AllVendorIdentifier = []VendorIdentifier{
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierAwsMarketplace, VendorIdentifierHubspot, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
