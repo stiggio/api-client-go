@@ -862,14 +862,16 @@ type CreateExperimentInput struct {
 }
 
 type CreateHook struct {
-	CreatedAt     *string        `json:"createdAt,omitempty"`
-	Description   *string        `json:"description,omitempty"`
-	Endpoint      *string        `json:"endpoint,omitempty"`
-	EnvironmentID *string        `json:"environmentId,omitempty"`
-	EventLogTypes []EventLogType `json:"eventLogTypes,omitempty"`
-	ID            *string        `json:"id,omitempty"`
-	SecretKey     *string        `json:"secretKey,omitempty"`
-	Status        *HookStatus    `json:"status,omitempty"`
+	// A JSON containing the configuration for each event log type
+	Configuration map[string]interface{} `json:"configuration,omitempty"`
+	CreatedAt     *string                `json:"createdAt,omitempty"`
+	Description   *string                `json:"description,omitempty"`
+	Endpoint      *string                `json:"endpoint,omitempty"`
+	EnvironmentID *string                `json:"environmentId,omitempty"`
+	EventLogTypes []EventLogType         `json:"eventLogTypes,omitempty"`
+	ID            *string                `json:"id,omitempty"`
+	SecretKey     *string                `json:"secretKey,omitempty"`
+	Status        *HookStatus            `json:"status,omitempty"`
 }
 
 type CreateIntegrationInput struct {
@@ -2647,16 +2649,18 @@ type HiddenFromWidgetsChange struct {
 }
 
 type Hook struct {
-	Account       *Account       `json:"account"`
-	CreatedAt     *string        `json:"createdAt"`
-	Description   *string        `json:"description"`
-	Endpoint      string         `json:"endpoint"`
-	Environment   *Environment   `json:"environment"`
-	EnvironmentID string         `json:"environmentId"`
-	EventLogTypes []EventLogType `json:"eventLogTypes"`
-	ID            string         `json:"id"`
-	SecretKey     *string        `json:"secretKey"`
-	Status        HookStatus     `json:"status"`
+	Account *Account `json:"account"`
+	// A JSON containing the configuration for each event log type
+	Configuration map[string]interface{} `json:"configuration"`
+	CreatedAt     *string                `json:"createdAt"`
+	Description   *string                `json:"description"`
+	Endpoint      string                 `json:"endpoint"`
+	Environment   *Environment           `json:"environment"`
+	EnvironmentID string                 `json:"environmentId"`
+	EventLogTypes []EventLogType         `json:"eventLogTypes"`
+	ID            string                 `json:"id"`
+	SecretKey     *string                `json:"secretKey"`
+	Status        HookStatus             `json:"status"`
 }
 
 type HookAggregateGroupBy struct {
@@ -2685,14 +2689,16 @@ type HookCountAggregate struct {
 }
 
 type HookDeleteResponse struct {
-	CreatedAt     *string        `json:"createdAt"`
-	Description   *string        `json:"description"`
-	Endpoint      *string        `json:"endpoint"`
-	EnvironmentID *string        `json:"environmentId"`
-	EventLogTypes []EventLogType `json:"eventLogTypes"`
-	ID            *string        `json:"id"`
-	SecretKey     *string        `json:"secretKey"`
-	Status        *HookStatus    `json:"status"`
+	// A JSON containing the configuration for each event log type
+	Configuration map[string]interface{} `json:"configuration"`
+	CreatedAt     *string                `json:"createdAt"`
+	Description   *string                `json:"description"`
+	Endpoint      *string                `json:"endpoint"`
+	EnvironmentID *string                `json:"environmentId"`
+	EventLogTypes []EventLogType         `json:"eventLogTypes"`
+	ID            *string                `json:"id"`
+	SecretKey     *string                `json:"secretKey"`
+	Status        *HookStatus            `json:"status"`
 }
 
 type HookEdge struct {
@@ -6403,14 +6409,16 @@ type UpdateFeatureInput struct {
 }
 
 type UpdateHook struct {
-	CreatedAt     *string        `json:"createdAt,omitempty"`
-	Description   *string        `json:"description,omitempty"`
-	Endpoint      *string        `json:"endpoint,omitempty"`
-	EnvironmentID *string        `json:"environmentId,omitempty"`
-	EventLogTypes []EventLogType `json:"eventLogTypes,omitempty"`
-	ID            *string        `json:"id,omitempty"`
-	SecretKey     *string        `json:"secretKey,omitempty"`
-	Status        *HookStatus    `json:"status,omitempty"`
+	// A JSON containing the configuration for each event log type
+	Configuration map[string]interface{} `json:"configuration,omitempty"`
+	CreatedAt     *string                `json:"createdAt,omitempty"`
+	Description   *string                `json:"description,omitempty"`
+	Endpoint      *string                `json:"endpoint,omitempty"`
+	EnvironmentID *string                `json:"environmentId,omitempty"`
+	EventLogTypes []EventLogType         `json:"eventLogTypes,omitempty"`
+	ID            *string                `json:"id,omitempty"`
+	SecretKey     *string                `json:"secretKey,omitempty"`
+	Status        *HookStatus            `json:"status,omitempty"`
 }
 
 type UpdateIntegrationInput struct {
