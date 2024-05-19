@@ -5832,6 +5832,103 @@ type SubscriptionInvoice struct {
 	UpdatedAt            string                            `json:"updatedAt"`
 }
 
+// The preview of the next upcoming invoice for the given subscription
+type SubscriptionInvoicePreview struct {
+	// The amount due for the invoice after taxes, discounts and credits
+	AmountDue Money `json:"amountDue"`
+	// Credits information (initial, used, remaining)
+	Credits *SubscriptionPreviewCredits `json:"credits"`
+	// The total discount amount of the invoice
+	Discount *Money `json:"discount"`
+	// The applied discount details
+	DiscountDetails *SubscriptionPreviewDiscount `json:"discountDetails"`
+	// The date when the invoice was last updated
+	LastUpdatedAt string `json:"lastUpdatedAt"`
+	// The line items of the invoice
+	Lines []*SubscriptionInvoicePreviewLineItem `json:"lines"`
+	// The minimum spend adjustment applied to the invoice
+	MinimumSpendAdjustment Money `json:"minimumSpendAdjustment"`
+	// The sub total amount of the invoice excluding  discounts
+	SubTotal Money `json:"subTotal"`
+	// The sub total amount of the invoice excluding taxes and discounts
+	SubTotalExcludingTax Money `json:"subTotalExcludingTax"`
+	// The total tax amount of the invoice
+	Tax *Money `json:"tax"`
+	// The applied tax details
+	TaxDetails *SubscriptionPreviewTaxDetails `json:"taxDetails"`
+	// The total amount of the invoice including taxes and discounts
+	Total Money `json:"total"`
+	// The total amount of the invoice excluding taxes
+	TotalExcludingTax Money `json:"totalExcludingTax"`
+}
+
+// The invoice line item
+type SubscriptionInvoicePreviewLineItem struct {
+	// The total amount of the invoice line item
+	Amount Money `json:"amount"`
+	// The cost description of the invoice line item
+	CostDescription string `json:"costDescription"`
+	// The description of the invoice line item
+	Description string `json:"description"`
+	// Whether the price connected to the invoice line item has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// The nested line items of the invoice line item
+	Lines []*SubscriptionInvoicePreviewLineItemData `json:"lines"`
+	// The price connected to the invoice line item
+	Price *Price `json:"price"`
+	// Whether the line item is prorated
+	Proration bool `json:"proration"`
+	// The quantity of the invoice line item
+	Quantity *int64 `json:"quantity"`
+	// The charge type of the invoice line item
+	Type InvoiceLineItemType `json:"type"`
+	// The unit price of the invoice line item
+	UnitPrice *Money `json:"unitPrice"`
+	// The usage limit of the invoice line item
+	UsageLimit *float64 `json:"usageLimit"`
+}
+
+// The invoice line item
+type SubscriptionInvoicePreviewLineItemData struct {
+	// The total amount of the invoice line item
+	Amount Money `json:"amount"`
+	// The cost description of the invoice line item
+	CostDescription string `json:"costDescription"`
+	// The description of the invoice line item
+	Description string `json:"description"`
+	// Whether the price connected to the invoice line item has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// The price connected to the invoice line item
+	Price *Price `json:"price"`
+	// Whether the line item is prorated
+	Proration bool `json:"proration"`
+	// The quantity of the invoice line item
+	Quantity *int64 `json:"quantity"`
+	// The charge type of the invoice line item
+	Type InvoiceLineItemType `json:"type"`
+	// The unit price of the invoice line item
+	UnitPrice *Money `json:"unitPrice"`
+	// The usage limit of the invoice line item
+	UsageLimit *float64 `json:"usageLimit"`
+}
+
+type SubscriptionMaximumSpend struct {
+	Discount        *Money                                `json:"discount"`
+	DiscountDetails *SubscriptionMaximumSpendDiscount     `json:"discountDetails"`
+	LastUpdatedAt   string                                `json:"lastUpdatedAt"`
+	Lines           []*SubscriptionInvoicePreviewLineItem `json:"lines"`
+	// The maximum spending limit set
+	MaximumSpend Money `json:"maximumSpend"`
+	SubTotal     Money `json:"subTotal"`
+	Total        Money `json:"total"`
+}
+
+type SubscriptionMaximumSpendDiscount struct {
+	Name  *string       `json:"name"`
+	Type  *DiscountType `json:"type"`
+	Value *float64      `json:"value"`
+}
+
 type SubscriptionMigrationInput struct {
 	EnvironmentID             *string                    `json:"environmentId,omitempty"`
 	SubscriptionID            string                     `json:"subscriptionId"`
@@ -5935,6 +6032,12 @@ type SubscriptionMustHaveSinglePlanError struct {
 	RefIds            []string `json:"refIds"`
 }
 
+type SubscriptionNoBillingID struct {
+	Code              string `json:"code"`
+	IsValidationError bool   `json:"isValidationError"`
+	RefID             string `json:"refId"`
+}
+
 type SubscriptionPreview struct {
 	BillingPeriodRange  DateRange                    `json:"billingPeriodRange"`
 	Credits             *SubscriptionPreviewCredits  `json:"credits"`
@@ -5962,6 +6065,7 @@ type SubscriptionPreviewCredits struct {
 type SubscriptionPreviewDiscount struct {
 	DurationInMonths *float64             `json:"durationInMonths"`
 	DurationType     DiscountDurationType `json:"durationType"`
+	Name             *string              `json:"name"`
 	Type             DiscountType         `json:"type"`
 	Value            float64              `json:"value"`
 }
@@ -8638,6 +8742,7 @@ const (
 	ErrorCodeSubscriptionAlreadyOnLatestPlanError             ErrorCode = "SubscriptionAlreadyOnLatestPlanError"
 	ErrorCodeSubscriptionInvoiceStatusError                   ErrorCode = "SubscriptionInvoiceStatusError"
 	ErrorCodeSubscriptionMustHaveSinglePlanError              ErrorCode = "SubscriptionMustHaveSinglePlanError"
+	ErrorCodeSubscriptionNoBillingID                          ErrorCode = "SubscriptionNoBillingId"
 	ErrorCodeSubscriptionNotFound                             ErrorCode = "SubscriptionNotFound"
 	ErrorCodeTooManySubscriptionsPerCustomer                  ErrorCode = "TooManySubscriptionsPerCustomer"
 	ErrorCodeTrialMinDateError                                ErrorCode = "TrialMinDateError"
@@ -8762,6 +8867,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeSubscriptionAlreadyOnLatestPlanError,
 	ErrorCodeSubscriptionInvoiceStatusError,
 	ErrorCodeSubscriptionMustHaveSinglePlanError,
+	ErrorCodeSubscriptionNoBillingID,
 	ErrorCodeSubscriptionNotFound,
 	ErrorCodeTooManySubscriptionsPerCustomer,
 	ErrorCodeTrialMinDateError,
@@ -8778,7 +8884,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError:
 		return true
 	}
 	return false
@@ -9427,6 +9533,60 @@ func (e *IntegrationSortFields) UnmarshalGQL(v interface{}) error {
 }
 
 func (e IntegrationSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The type of the invoice line item
+type InvoiceLineItemType string
+
+const (
+	InvoiceLineItemTypeAddonCharge                  InvoiceLineItemType = "AddonCharge"
+	InvoiceLineItemTypeBaseCharge                   InvoiceLineItemType = "BaseCharge"
+	InvoiceLineItemTypeInAdvanceCommitmentCharge    InvoiceLineItemType = "InAdvanceCommitmentCharge"
+	InvoiceLineItemTypeMinimumSpendAdjustmentCharge InvoiceLineItemType = "MinimumSpendAdjustmentCharge"
+	InvoiceLineItemTypeOther                        InvoiceLineItemType = "Other"
+	InvoiceLineItemTypeOverageCharge                InvoiceLineItemType = "OverageCharge"
+	InvoiceLineItemTypePayAsYouGoCharge             InvoiceLineItemType = "PayAsYouGoCharge"
+	InvoiceLineItemTypeTierCharge                   InvoiceLineItemType = "TierCharge"
+)
+
+var AllInvoiceLineItemType = []InvoiceLineItemType{
+	InvoiceLineItemTypeAddonCharge,
+	InvoiceLineItemTypeBaseCharge,
+	InvoiceLineItemTypeInAdvanceCommitmentCharge,
+	InvoiceLineItemTypeMinimumSpendAdjustmentCharge,
+	InvoiceLineItemTypeOther,
+	InvoiceLineItemTypeOverageCharge,
+	InvoiceLineItemTypePayAsYouGoCharge,
+	InvoiceLineItemTypeTierCharge,
+}
+
+func (e InvoiceLineItemType) IsValid() bool {
+	switch e {
+	case InvoiceLineItemTypeAddonCharge, InvoiceLineItemTypeBaseCharge, InvoiceLineItemTypeInAdvanceCommitmentCharge, InvoiceLineItemTypeMinimumSpendAdjustmentCharge, InvoiceLineItemTypeOther, InvoiceLineItemTypeOverageCharge, InvoiceLineItemTypePayAsYouGoCharge, InvoiceLineItemTypeTierCharge:
+		return true
+	}
+	return false
+}
+
+func (e InvoiceLineItemType) String() string {
+	return string(e)
+}
+
+func (e *InvoiceLineItemType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = InvoiceLineItemType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid InvoiceLineItemType", str)
+	}
+	return nil
+}
+
+func (e InvoiceLineItemType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
