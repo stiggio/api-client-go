@@ -6671,12 +6671,22 @@ type UpdateUserInput struct {
 }
 
 type UsageEvent struct {
-	CustomerID string                 `json:"customerId"`
+	// The customer object reported
+	Customer *Customer `json:"customer"`
+	// The customer id reported
+	CustomerID string `json:"customerId"`
+	// The dimensions reported
 	Dimensions map[string]interface{} `json:"dimensions"`
-	EventName  string                 `json:"eventName"`
-	ID         string                 `json:"id"`
-	ResourceID *string                `json:"resourceId"`
-	Timestamp  string                 `json:"timestamp"`
+	// The event name reported
+	EventName string `json:"eventName"`
+	// The id of the event
+	ID string `json:"id"`
+	// The idempotency key reported
+	IdempotencyKey string `json:"idempotencyKey"`
+	// The resource id reported
+	ResourceID *string `json:"resourceId"`
+	// The timestamp reported
+	Timestamp string `json:"timestamp"`
 }
 
 type UsageEventReportInput struct {
@@ -6689,11 +6699,16 @@ type UsageEventReportInput struct {
 }
 
 type UsageEventsInput struct {
-	EnvironmentID string                        `json:"environmentId"`
-	Filters       []*MeterFilterDefinitionInput `json:"filters,omitempty"`
+	// Customer id filter
+	CustomerID *string `json:"customerId,omitempty"`
+	// Environment id filter
+	EnvironmentID string `json:"environmentId"`
+	// List of event filters
+	Filters []*MeterFilterDefinitionInput `json:"filters,omitempty"`
 }
 
 type UsageEventsPreview struct {
+	// List of events
 	Events []*UsageEvent `json:"events"`
 }
 
