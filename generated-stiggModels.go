@@ -4394,13 +4394,14 @@ type Price struct {
 	BillingModel       BillingModel   `json:"billingModel"`
 	BillingPeriod      BillingPeriod  `json:"billingPeriod"`
 	// The number of units per block. Defaults to 1 unit.
-	BlockSize  *float64 `json:"blockSize"`
-	CreatedAt  *string  `json:"createdAt"`
-	CrmID      *string  `json:"crmId"`
-	CrmLinkURL *string  `json:"crmLinkUrl"`
-	Feature    *Feature `json:"feature"`
-	FeatureID  *string  `json:"featureId"`
-	ID         string   `json:"id"`
+	BlockSize     *float64 `json:"blockSize"`
+	CreatedAt     *string  `json:"createdAt"`
+	CrmID         *string  `json:"crmId"`
+	CrmLinkURL    *string  `json:"crmLinkUrl"`
+	EnvironmentID *string  `json:"environmentId"`
+	Feature       *Feature `json:"feature"`
+	FeatureID     *string  `json:"featureId"`
+	ID            string   `json:"id"`
 	// Indication whether the subscription price is an override price
 	IsOverridePrice     bool         `json:"isOverridePrice"`
 	MaxUnitQuantity     *float64     `json:"maxUnitQuantity"`
@@ -4444,6 +4445,7 @@ type PriceDeleteResponse struct {
 	CreatedAt           *string      `json:"createdAt"`
 	CrmID               *string      `json:"crmId"`
 	CrmLinkURL          *string      `json:"crmLinkUrl"`
+	EnvironmentID       *string      `json:"environmentId"`
 	Feature             *Feature     `json:"feature"`
 	FeatureID           *string      `json:"featureId"`
 	ID                  *string      `json:"id"`
