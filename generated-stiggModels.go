@@ -2162,17 +2162,6 @@ type EstimateSubscriptionUpdateInput struct {
 	UnitQuantity     *float64                  `json:"unitQuantity,omitempty"`
 }
 
-type EventListItem struct {
-	Customer       *Customer              `json:"customer"`
-	CustomerID     string                 `json:"customerId"`
-	Dimensions     map[string]interface{} `json:"dimensions"`
-	EventName      string                 `json:"eventName"`
-	ID             string                 `json:"id"`
-	IdempotencyKey string                 `json:"idempotencyKey"`
-	ResourceID     *string                `json:"resourceId"`
-	Timestamp      string                 `json:"timestamp"`
-}
-
 type EventLog struct {
 	Description      *string      `json:"description"`
 	Environment      *Environment `json:"environment"`
@@ -2221,15 +2210,6 @@ type EventsFieldsInput struct {
 	ResourceID    *string                       `json:"resourceId,omitempty"`
 	// Omit fields that have more than this number of unique values.
 	UniqueValuesLimit *float64 `json:"uniqueValuesLimit,omitempty"`
-}
-
-type EventsList struct {
-	Events []*EventListItem `json:"events"`
-}
-
-type EventsListInput struct {
-	CustomerID    *string `json:"customerId,omitempty"`
-	EnvironmentID string  `json:"environmentId"`
 }
 
 type Experiment struct {
