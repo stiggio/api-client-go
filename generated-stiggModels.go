@@ -2162,23 +2162,67 @@ type EstimateSubscriptionUpdateInput struct {
 	UnitQuantity     *float64                  `json:"unitQuantity,omitempty"`
 }
 
+// Event actor information
+type EventActorInfo struct {
+	// Actor email
+	Email *string `json:"email"`
+	// Actor IP address
+	IPAddress *string `json:"ipAddress"`
+	// Actor name
+	Name *string `json:"name"`
+	// Actor type
+	Type *EventActor `json:"type"`
+}
+
 type EventLog struct {
-	Description      *string      `json:"description"`
-	Environment      *Environment `json:"environment"`
-	EnvironmentID    string       `json:"environmentId"`
-	EventLogType     EventLogType `json:"eventLogType"`
-	ID               string       `json:"id"`
-	WebhookEndpoints []string     `json:"webhookEndpoints"`
+	// The account ID
+	AccountID string `json:"accountId"`
+	// Actor information
+	Actor *EventActorInfo `json:"actor"`
+	// The timestamp the event was created at
+	CreatedAt string `json:"createdAt"`
+	// The entity id of this event
+	EntityID *string `json:"entityId"`
+	// The environment ID
+	EnvironmentID string `json:"environmentId"`
+	// The type of the event
+	EventLogType EventLogType `json:"eventLogType"`
+	// The ID of the event
+	ID string `json:"id"`
+	// The parent entity id of this events entity
+	ParentEntityID *string `json:"parentEntityId"`
+	// The payload of the event
+	Payload map[string]interface{} `json:"payload"`
+	// Request information
+	Request *EventRequest `json:"request"`
+	// List of webhooks endpoints this event was configured to be sent to
+	Webhooks []*EventWebhook `json:"webhooks"`
 }
 
 type EventLogAggregateGroupBy struct {
-	EnvironmentID *string `json:"environmentId"`
-	ID            *string `json:"id"`
+	CreatedAt      *string       `json:"createdAt"`
+	EntityID       *string       `json:"entityId"`
+	EventLogType   *EventLogType `json:"eventLogType"`
+	ParentEntityID *string       `json:"parentEntityId"`
+}
+
+type EventLogConnection struct {
+	// Array of edges.
+	Edges []*EventLogEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
 }
 
 type EventLogCountAggregate struct {
-	EnvironmentID *int64 `json:"environmentId"`
-	ID            *int64 `json:"id"`
+	CreatedAt      *int64 `json:"createdAt"`
+	EntityID       *int64 `json:"entityId"`
+	EventLogType   *int64 `json:"eventLogType"`
+	ParentEntityID *int64 `json:"parentEntityId"`
+}
+
+type EventLogCreatedAtFilterComparison struct {
+	Gte *string `json:"gte,omitempty"`
+	Lte *string `json:"lte,omitempty"`
 }
 
 type EventLogEdge struct {
@@ -2188,14 +2232,62 @@ type EventLogEdge struct {
 	Node EventLog `json:"node"`
 }
 
+type EventLogEntityIDFilterComparison struct {
+	Eq *string  `json:"eq,omitempty"`
+	In []string `json:"in,omitempty"`
+}
+
+type EventLogEventLogTypeFilterComparison struct {
+	Eq *EventLogType  `json:"eq,omitempty"`
+	In []EventLogType `json:"in,omitempty"`
+}
+
+type EventLogFilter struct {
+	And            []*EventLogFilter                       `json:"and,omitempty"`
+	CreatedAt      *EventLogCreatedAtFilterComparison      `json:"createdAt,omitempty"`
+	EntityID       *EventLogEntityIDFilterComparison       `json:"entityId,omitempty"`
+	EventLogType   *EventLogEventLogTypeFilterComparison   `json:"eventLogType,omitempty"`
+	Or             []*EventLogFilter                       `json:"or,omitempty"`
+	ParentEntityID *EventLogParentEntityIDFilterComparison `json:"parentEntityId,omitempty"`
+}
+
 type EventLogMaxAggregate struct {
-	EnvironmentID *string `json:"environmentId"`
-	ID            *string `json:"id"`
+	CreatedAt      *string       `json:"createdAt"`
+	EntityID       *string       `json:"entityId"`
+	EventLogType   *EventLogType `json:"eventLogType"`
+	ParentEntityID *string       `json:"parentEntityId"`
 }
 
 type EventLogMinAggregate struct {
-	EnvironmentID *string `json:"environmentId"`
-	ID            *string `json:"id"`
+	CreatedAt      *string       `json:"createdAt"`
+	EntityID       *string       `json:"entityId"`
+	EventLogType   *EventLogType `json:"eventLogType"`
+	ParentEntityID *string       `json:"parentEntityId"`
+}
+
+type EventLogParentEntityIDFilterComparison struct {
+	Eq *string  `json:"eq,omitempty"`
+	In []string `json:"in,omitempty"`
+}
+
+type EventLogSort struct {
+	Direction SortDirection      `json:"direction"`
+	Field     EventLogSortFields `json:"field"`
+	Nulls     *SortNulls         `json:"nulls,omitempty"`
+}
+
+// Event request properties
+type EventRequest struct {
+	// The request trace ID
+	TraceID *string `json:"traceId"`
+}
+
+// An event webhook entity
+type EventWebhook struct {
+	// The endpoint of the webhook
+	Endpoint string `json:"endpoint"`
+	// The ID of the webhook entity
+	ID string `json:"id"`
 }
 
 type EventsFields struct {
@@ -8905,6 +8997,113 @@ func (e *ErrorCode) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ErrorCode) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Event actor type
+type EventActor string
+
+const (
+	// Client SDK with hardened authentication
+	EventActorAppCustomer EventActor = "APP_CUSTOMER"
+	// Client SDK
+	EventActorAppPublic EventActor = "APP_PUBLIC"
+	// Backend SDK
+	EventActorAppServer EventActor = "APP_SERVER"
+	// Salesforce API key
+	EventActorSalesforce EventActor = "SALESFORCE"
+	// Stigg user service key
+	EventActorService EventActor = "SERVICE"
+	// Stripe triggered event
+	EventActorStripe EventActor = "STRIPE"
+	// Stigg customer support
+	EventActorSupport EventActor = "SUPPORT"
+	// Web application user
+	EventActorUser EventActor = "USER"
+)
+
+var AllEventActor = []EventActor{
+	EventActorAppCustomer,
+	EventActorAppPublic,
+	EventActorAppServer,
+	EventActorSalesforce,
+	EventActorService,
+	EventActorStripe,
+	EventActorSupport,
+	EventActorUser,
+}
+
+func (e EventActor) IsValid() bool {
+	switch e {
+	case EventActorAppCustomer, EventActorAppPublic, EventActorAppServer, EventActorSalesforce, EventActorService, EventActorStripe, EventActorSupport, EventActorUser:
+		return true
+	}
+	return false
+}
+
+func (e EventActor) String() string {
+	return string(e)
+}
+
+func (e *EventActor) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EventActor(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EventActor", str)
+	}
+	return nil
+}
+
+func (e EventActor) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type EventLogSortFields string
+
+const (
+	EventLogSortFieldsCreatedAt      EventLogSortFields = "createdAt"
+	EventLogSortFieldsEntityID       EventLogSortFields = "entityId"
+	EventLogSortFieldsEventLogType   EventLogSortFields = "eventLogType"
+	EventLogSortFieldsParentEntityID EventLogSortFields = "parentEntityId"
+)
+
+var AllEventLogSortFields = []EventLogSortFields{
+	EventLogSortFieldsCreatedAt,
+	EventLogSortFieldsEntityID,
+	EventLogSortFieldsEventLogType,
+	EventLogSortFieldsParentEntityID,
+}
+
+func (e EventLogSortFields) IsValid() bool {
+	switch e {
+	case EventLogSortFieldsCreatedAt, EventLogSortFieldsEntityID, EventLogSortFieldsEventLogType, EventLogSortFieldsParentEntityID:
+		return true
+	}
+	return false
+}
+
+func (e EventLogSortFields) String() string {
+	return string(e)
+}
+
+func (e *EventLogSortFields) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EventLogSortFields(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EventLogSortFields", str)
+	}
+	return nil
+}
+
+func (e EventLogSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
