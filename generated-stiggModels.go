@@ -2183,6 +2183,8 @@ type EventLog struct {
 	CreatedAt string `json:"createdAt"`
 	// The entity id of this event
 	EntityID *string `json:"entityId"`
+	// The event entity type
+	EntityType *EventEntityType `json:"entityType"`
 	// The environment ID
 	EnvironmentID string `json:"environmentId"`
 	// The type of the event
@@ -2238,8 +2240,10 @@ type EventLogEntityIDFilterComparison struct {
 }
 
 type EventLogEventLogTypeFilterComparison struct {
-	Eq *EventLogType  `json:"eq,omitempty"`
-	In []EventLogType `json:"in,omitempty"`
+	Eq    *EventLogType  `json:"eq,omitempty"`
+	In    []EventLogType `json:"in,omitempty"`
+	Neq   *EventLogType  `json:"neq,omitempty"`
+	NotIn []EventLogType `json:"notIn,omitempty"`
 }
 
 type EventLogFilter struct {
@@ -9059,6 +9063,83 @@ func (e *EventActor) UnmarshalGQL(v interface{}) error {
 }
 
 func (e EventActor) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Event entity type
+type EventEntityType string
+
+const (
+	// Add-on entity
+	EventEntityTypeAddon EventEntityType = "ADDON"
+	// Coupon entity
+	EventEntityTypeCoupon EventEntityType = "COUPON"
+	// Customer entity
+	EventEntityTypeCustomer EventEntityType = "CUSTOMER"
+	// Entitlement entity
+	EventEntityTypeEntitlement EventEntityType = "ENTITLEMENT"
+	// Feature entity
+	EventEntityTypeFeature EventEntityType = "FEATURE"
+	// Import entity
+	EventEntityTypeImport EventEntityType = "IMPORT"
+	// Measurement entity
+	EventEntityTypeMeasurement EventEntityType = "MEASUREMENT"
+	// Package entity
+	EventEntityTypePackage EventEntityType = "PACKAGE"
+	// Package group entity
+	EventEntityTypePackageGroup EventEntityType = "PACKAGE_GROUP"
+	// Plan entity
+	EventEntityTypePlan EventEntityType = "PLAN"
+	// Product entity
+	EventEntityTypeProduct EventEntityType = "PRODUCT"
+	// Promotional entitlement entity
+	EventEntityTypePromotionalEntitlement EventEntityType = "PROMOTIONAL_ENTITLEMENT"
+	// Subscription entity
+	EventEntityTypeSubscription EventEntityType = "SUBSCRIPTION"
+)
+
+var AllEventEntityType = []EventEntityType{
+	EventEntityTypeAddon,
+	EventEntityTypeCoupon,
+	EventEntityTypeCustomer,
+	EventEntityTypeEntitlement,
+	EventEntityTypeFeature,
+	EventEntityTypeImport,
+	EventEntityTypeMeasurement,
+	EventEntityTypePackage,
+	EventEntityTypePackageGroup,
+	EventEntityTypePlan,
+	EventEntityTypeProduct,
+	EventEntityTypePromotionalEntitlement,
+	EventEntityTypeSubscription,
+}
+
+func (e EventEntityType) IsValid() bool {
+	switch e {
+	case EventEntityTypeAddon, EventEntityTypeCoupon, EventEntityTypeCustomer, EventEntityTypeEntitlement, EventEntityTypeFeature, EventEntityTypeImport, EventEntityTypeMeasurement, EventEntityTypePackage, EventEntityTypePackageGroup, EventEntityTypePlan, EventEntityTypeProduct, EventEntityTypePromotionalEntitlement, EventEntityTypeSubscription:
+		return true
+	}
+	return false
+}
+
+func (e EventEntityType) String() string {
+	return string(e)
+}
+
+func (e *EventEntityType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EventEntityType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EventEntityType", str)
+	}
+	return nil
+}
+
+func (e EventEntityType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
