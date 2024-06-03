@@ -3021,14 +3021,17 @@ type ImportSubTaskError struct {
 }
 
 type ImportSubscriptionInput struct {
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	BillingPeriod      *BillingPeriod         `json:"billingPeriod,omitempty"`
-	CustomerID         string                 `json:"customerId"`
-	PlanID             string                 `json:"planId"`
-	ResourceID         *string                `json:"resourceId,omitempty"`
-	StartDate          *string                `json:"startDate,omitempty"`
-	UnitQuantity       *float64               `json:"unitQuantity,omitempty"`
+	AdditionalMetaData map[string]interface{}    `json:"additionalMetaData,omitempty"`
+	Addons             []*SubscriptionAddonInput `json:"addons,omitempty"`
+	BillableFeatures   []*BillableFeatureInput   `json:"billableFeatures,omitempty"`
+	BillingID          *string                   `json:"billingId,omitempty"`
+	BillingPeriod      *BillingPeriod            `json:"billingPeriod,omitempty"`
+	CustomerID         string                    `json:"customerId"`
+	EndDate            *string                   `json:"endDate,omitempty"`
+	PlanID             string                    `json:"planId"`
+	ResourceID         *string                   `json:"resourceId,omitempty"`
+	StartDate          *string                   `json:"startDate,omitempty"`
+	UnitQuantity       *float64                  `json:"unitQuantity,omitempty"`
 	// Indicates the last update of the subscription. In case there's already existing subscription that was updated after that date, it will skip import this subscription
 	UpdatedAt *string `json:"updatedAt,omitempty"`
 }
