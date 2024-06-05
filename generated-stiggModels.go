@@ -403,6 +403,22 @@ type AttachCustomerPaymentMethodInput struct {
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
+// Auto cancellation rule - when subscription for source plan is canceled, other subscriptions to target plan would be cancelled as well
+type AutoCancellationRule struct {
+	// The source plan.
+	SourcePlan Plan `json:"sourcePlan"`
+	// The target plan.
+	TargetPlan Plan `json:"targetPlan"`
+}
+
+// The input of the auto cancellation rule.
+type AutoCancellationRuleInput struct {
+	// The id of the source plan.
+	SourcePlanID string `json:"sourcePlanId"`
+	// The id of the target plan.
+	TargetPlanID string `json:"targetPlanId"`
+}
+
 type AwsDimension struct {
 	Description   string  `json:"description"`
 	Key           string  `json:"key"`
@@ -957,16 +973,18 @@ type CreateOneProductInput struct {
 }
 
 type CreateOrUpdateAwsMarketplaceProductInput struct {
-	AdditionalMetaData    map[string]interface{}    `json:"additionalMetaData,omitempty"`
-	AwsDimensionsMapping  []*DimensionsMappingInput `json:"awsDimensionsMapping"`
-	AwsProductID          *string                   `json:"awsProductId,omitempty"`
-	Description           *string                   `json:"description,omitempty"`
-	DisplayName           *string                   `json:"displayName,omitempty"`
-	EnvironmentID         *string                   `json:"environmentId,omitempty"`
-	MultipleSubscriptions *bool                     `json:"multipleSubscriptions,omitempty"`
-	ProductID             *string                   `json:"productId,omitempty"`
-	ProductSettings       *ProductSettingsInput     `json:"productSettings,omitempty"`
-	RefID                 *string                   `json:"refId,omitempty"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// Auto cancellation rules
+	AutoCancellationRules []*AutoCancellationRuleInput `json:"autoCancellationRules,omitempty"`
+	AwsDimensionsMapping  []*DimensionsMappingInput    `json:"awsDimensionsMapping"`
+	AwsProductID          *string                      `json:"awsProductId,omitempty"`
+	Description           *string                      `json:"description,omitempty"`
+	DisplayName           *string                      `json:"displayName,omitempty"`
+	EnvironmentID         *string                      `json:"environmentId,omitempty"`
+	MultipleSubscriptions *bool                        `json:"multipleSubscriptions,omitempty"`
+	ProductID             *string                      `json:"productId,omitempty"`
+	ProductSettings       *ProductSettingsInput        `json:"productSettings,omitempty"`
+	RefID                 *string                      `json:"refId,omitempty"`
 }
 
 // The input type for creating an package group
@@ -3863,6 +3881,7 @@ type PackageGroupFilterProductFilter struct {
 	EnvironmentID             *StringFieldComparison             `json:"environmentId,omitempty"`
 	ID                        *StringFieldComparison             `json:"id,omitempty"`
 	IsDefaultProduct          *BooleanFieldComparison            `json:"isDefaultProduct,omitempty"`
+	MultipleSubscriptions     *BooleanFieldComparison            `json:"multipleSubscriptions,omitempty"`
 	Or                        []*PackageGroupFilterProductFilter `json:"or,omitempty"`
 	RefID                     *StringFieldComparison             `json:"refId,omitempty"`
 	UpdatedAt                 *DateFieldComparison               `json:"updatedAt,omitempty"`
@@ -4381,6 +4400,7 @@ type PlanFilterProductFilter struct {
 	EnvironmentID             *StringFieldComparison     `json:"environmentId,omitempty"`
 	ID                        *StringFieldComparison     `json:"id,omitempty"`
 	IsDefaultProduct          *BooleanFieldComparison    `json:"isDefaultProduct,omitempty"`
+	MultipleSubscriptions     *BooleanFieldComparison    `json:"multipleSubscriptions,omitempty"`
 	Or                        []*PlanFilterProductFilter `json:"or,omitempty"`
 	RefID                     *StringFieldComparison     `json:"refId,omitempty"`
 	UpdatedAt                 *DateFieldComparison       `json:"updatedAt,omitempty"`
@@ -4700,25 +4720,26 @@ type PricingTypeFilterComparison struct {
 }
 
 type Product struct {
-	AdditionalMetaData        map[string]interface{} `json:"additionalMetaData"`
-	Addons                    []*Addon               `json:"addons"`
-	AwsMarketplaceProductCode *string                `json:"awsMarketplaceProductCode"`
-	AwsMarketplaceProductID   *string                `json:"awsMarketplaceProductId"`
-	CreatedAt                 string                 `json:"createdAt"`
-	Description               *string                `json:"description"`
-	DisplayName               *string                `json:"displayName"`
-	DowngradePlan             *Plan                  `json:"downgradePlan"`
-	Environment               *Environment           `json:"environment"`
-	EnvironmentID             string                 `json:"environmentId"`
-	HasSubscriptions          bool                   `json:"hasSubscriptions"`
-	ID                        string                 `json:"id"`
-	IsDefaultProduct          bool                   `json:"isDefaultProduct"`
-	MultipleSubscriptions     bool                   `json:"multipleSubscriptions"`
-	Plans                     []*Plan                `json:"plans"`
-	ProductSettings           ProductSettings        `json:"productSettings"`
-	RefID                     string                 `json:"refId"`
-	SubscriptionStartPlan     *Plan                  `json:"subscriptionStartPlan"`
-	UpdatedAt                 string                 `json:"updatedAt"`
+	AdditionalMetaData        map[string]interface{}  `json:"additionalMetaData"`
+	Addons                    []*Addon                `json:"addons"`
+	AutoCancellationRules     []*AutoCancellationRule `json:"autoCancellationRules"`
+	AwsMarketplaceProductCode *string                 `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *string                 `json:"awsMarketplaceProductId"`
+	CreatedAt                 string                  `json:"createdAt"`
+	Description               *string                 `json:"description"`
+	DisplayName               *string                 `json:"displayName"`
+	DowngradePlan             *Plan                   `json:"downgradePlan"`
+	Environment               *Environment            `json:"environment"`
+	EnvironmentID             string                  `json:"environmentId"`
+	HasSubscriptions          bool                    `json:"hasSubscriptions"`
+	ID                        string                  `json:"id"`
+	IsDefaultProduct          bool                    `json:"isDefaultProduct"`
+	MultipleSubscriptions     bool                    `json:"multipleSubscriptions"`
+	Plans                     []*Plan                 `json:"plans"`
+	ProductSettings           ProductSettings         `json:"productSettings"`
+	RefID                     string                  `json:"refId"`
+	SubscriptionStartPlan     *Plan                   `json:"subscriptionStartPlan"`
+	UpdatedAt                 string                  `json:"updatedAt"`
 }
 
 type ProductAggregateGroupBy struct {
@@ -4730,6 +4751,7 @@ type ProductAggregateGroupBy struct {
 	EnvironmentID             *string `json:"environmentId"`
 	ID                        *string `json:"id"`
 	IsDefaultProduct          *bool   `json:"isDefaultProduct"`
+	MultipleSubscriptions     *bool   `json:"multipleSubscriptions"`
 	RefID                     *string `json:"refId"`
 	UpdatedAt                 *string `json:"updatedAt"`
 }
@@ -4756,6 +4778,7 @@ type ProductCountAggregate struct {
 	EnvironmentID             *int64 `json:"environmentId"`
 	ID                        *int64 `json:"id"`
 	IsDefaultProduct          *int64 `json:"isDefaultProduct"`
+	MultipleSubscriptions     *int64 `json:"multipleSubscriptions"`
 	RefID                     *int64 `json:"refId"`
 	UpdatedAt                 *int64 `json:"updatedAt"`
 }
@@ -4804,6 +4827,7 @@ type ProductFilter struct {
 	EnvironmentID             *StringFieldComparison  `json:"environmentId,omitempty"`
 	ID                        *StringFieldComparison  `json:"id,omitempty"`
 	IsDefaultProduct          *BooleanFieldComparison `json:"isDefaultProduct,omitempty"`
+	MultipleSubscriptions     *BooleanFieldComparison `json:"multipleSubscriptions,omitempty"`
 	Or                        []*ProductFilter        `json:"or,omitempty"`
 	RefID                     *StringFieldComparison  `json:"refId,omitempty"`
 	UpdatedAt                 *DateFieldComparison    `json:"updatedAt,omitempty"`
@@ -4861,11 +4885,13 @@ type ProductSort struct {
 }
 
 type ProductUpdateInput struct {
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
-	Description           *string                `json:"description,omitempty"`
-	DisplayName           *string                `json:"displayName,omitempty"`
-	MultipleSubscriptions *bool                  `json:"multipleSubscriptions,omitempty"`
-	ProductSettings       *ProductSettingsInput  `json:"productSettings,omitempty"`
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// Auto cancellation rules
+	AutoCancellationRules []*AutoCancellationRuleInput `json:"autoCancellationRules,omitempty"`
+	Description           *string                      `json:"description,omitempty"`
+	DisplayName           *string                      `json:"displayName,omitempty"`
+	MultipleSubscriptions *bool                        `json:"multipleSubscriptions,omitempty"`
+	ProductSettings       *ProductSettingsInput        `json:"productSettings,omitempty"`
 }
 
 type PromotionCodeCustomerNotFirstPurchase struct {
@@ -8810,35 +8836,37 @@ const (
 	ErrorCodeFeatureNotFound                     ErrorCode = "FeatureNotFound"
 	ErrorCodeFetchAllCountriesPricesNotAllowed   ErrorCode = "FetchAllCountriesPricesNotAllowed"
 	// Free plan can't have compatible package groups error
-	ErrorCodeFreePlanCantHaveCompatiblePackageGroupError   ErrorCode = "FreePlanCantHaveCompatiblePackageGroupError"
-	ErrorCodeHubspotIntegrationError                       ErrorCode = "HubspotIntegrationError"
-	ErrorCodeIdentityForbidden                             ErrorCode = "IdentityForbidden"
-	ErrorCodeImportAlreadyInProgress                       ErrorCode = "ImportAlreadyInProgress"
-	ErrorCodeImportSubscriptionsBulkError                  ErrorCode = "ImportSubscriptionsBulkError"
-	ErrorCodeInitStripePaymentMethodError                  ErrorCode = "InitStripePaymentMethodError"
-	ErrorCodeIntegrationNotFound                           ErrorCode = "IntegrationNotFound"
-	ErrorCodeIntegrationValidationError                    ErrorCode = "IntegrationValidationError"
-	ErrorCodeIntegrityViolation                            ErrorCode = "IntegrityViolation"
-	ErrorCodeInvalidAddressError                           ErrorCode = "InvalidAddressError"
-	ErrorCodeInvalidArgumentError                          ErrorCode = "InvalidArgumentError"
-	ErrorCodeInvalidCancellationDate                       ErrorCode = "InvalidCancellationDate"
-	ErrorCodeInvalidEntitlementResetPeriod                 ErrorCode = "InvalidEntitlementResetPeriod"
-	ErrorCodeInvalidMemberDelete                           ErrorCode = "InvalidMemberDelete"
-	ErrorCodeInvalidMetadataError                          ErrorCode = "InvalidMetadataError"
-	ErrorCodeInvalidQuantity                               ErrorCode = "InvalidQuantity"
-	ErrorCodeInvalidSubscriptionStatus                     ErrorCode = "InvalidSubscriptionStatus"
-	ErrorCodeInvalidUpdatePriceUnitAmountError             ErrorCode = "InvalidUpdatePriceUnitAmountError"
-	ErrorCodeMemberInvitationError                         ErrorCode = "MemberInvitationError"
-	ErrorCodeMemberNotFound                                ErrorCode = "MemberNotFound"
-	ErrorCodeMergeEnvironmentValidationError               ErrorCode = "MergeEnvironmentValidationError"
-	ErrorCodeMeterMustBeAssociatedToMeteredFeature         ErrorCode = "MeterMustBeAssociatedToMeteredFeature"
-	ErrorCodeMeteringNotAvailableForFeatureType            ErrorCode = "MeteringNotAvailableForFeatureType"
-	ErrorCodeMissingEntityIDError                          ErrorCode = "MissingEntityIdError"
-	ErrorCodeMissingSubscriptionInvoiceError               ErrorCode = "MissingSubscriptionInvoiceError"
-	ErrorCodeNoFeatureEntitlementInSubscription            ErrorCode = "NoFeatureEntitlementInSubscription"
-	ErrorCodeNoProductsAvailable                           ErrorCode = "NoProductsAvailable"
-	ErrorCodeOperationNotAllowedDuringInProgressExperiment ErrorCode = "OperationNotAllowedDuringInProgressExperiment"
-	ErrorCodePackageAlreadyPublished                       ErrorCode = "PackageAlreadyPublished"
+	ErrorCodeFreePlanCantHaveCompatiblePackageGroupError ErrorCode = "FreePlanCantHaveCompatiblePackageGroupError"
+	ErrorCodeHubspotIntegrationError                     ErrorCode = "HubspotIntegrationError"
+	ErrorCodeIdentityForbidden                           ErrorCode = "IdentityForbidden"
+	ErrorCodeImportAlreadyInProgress                     ErrorCode = "ImportAlreadyInProgress"
+	ErrorCodeImportSubscriptionsBulkError                ErrorCode = "ImportSubscriptionsBulkError"
+	ErrorCodeInitStripePaymentMethodError                ErrorCode = "InitStripePaymentMethodError"
+	ErrorCodeIntegrationNotFound                         ErrorCode = "IntegrationNotFound"
+	ErrorCodeIntegrationValidationError                  ErrorCode = "IntegrationValidationError"
+	ErrorCodeIntegrityViolation                          ErrorCode = "IntegrityViolation"
+	ErrorCodeInvalidAddressError                         ErrorCode = "InvalidAddressError"
+	ErrorCodeInvalidArgumentError                        ErrorCode = "InvalidArgumentError"
+	ErrorCodeInvalidCancellationDate                     ErrorCode = "InvalidCancellationDate"
+	ErrorCodeInvalidEntitlementResetPeriod               ErrorCode = "InvalidEntitlementResetPeriod"
+	ErrorCodeInvalidMemberDelete                         ErrorCode = "InvalidMemberDelete"
+	ErrorCodeInvalidMetadataError                        ErrorCode = "InvalidMetadataError"
+	ErrorCodeInvalidQuantity                             ErrorCode = "InvalidQuantity"
+	ErrorCodeInvalidSubscriptionStatus                   ErrorCode = "InvalidSubscriptionStatus"
+	ErrorCodeInvalidUpdatePriceUnitAmountError           ErrorCode = "InvalidUpdatePriceUnitAmountError"
+	ErrorCodeMemberInvitationError                       ErrorCode = "MemberInvitationError"
+	ErrorCodeMemberNotFound                              ErrorCode = "MemberNotFound"
+	ErrorCodeMergeEnvironmentValidationError             ErrorCode = "MergeEnvironmentValidationError"
+	ErrorCodeMeterMustBeAssociatedToMeteredFeature       ErrorCode = "MeterMustBeAssociatedToMeteredFeature"
+	ErrorCodeMeteringNotAvailableForFeatureType          ErrorCode = "MeteringNotAvailableForFeatureType"
+	ErrorCodeMissingEntityIDError                        ErrorCode = "MissingEntityIdError"
+	ErrorCodeMissingSubscriptionInvoiceError             ErrorCode = "MissingSubscriptionInvoiceError"
+	// Multi subscription product cannot be a source of auto-cancellation rules
+	ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError ErrorCode = "MultiSubscriptionCantBeAutoCancellationSourceError"
+	ErrorCodeNoFeatureEntitlementInSubscription                 ErrorCode = "NoFeatureEntitlementInSubscription"
+	ErrorCodeNoProductsAvailable                                ErrorCode = "NoProductsAvailable"
+	ErrorCodeOperationNotAllowedDuringInProgressExperiment      ErrorCode = "OperationNotAllowedDuringInProgressExperiment"
+	ErrorCodePackageAlreadyPublished                            ErrorCode = "PackageAlreadyPublished"
 	// Package group min items error
 	ErrorCodePackageGroupMinItemsError                        ErrorCode = "PackageGroupMinItemsError"
 	ErrorCodePackageGroupNotFound                             ErrorCode = "PackageGroupNotFound"
@@ -8866,25 +8894,27 @@ const (
 	ErrorCodeResyncAlreadyInProgress                          ErrorCode = "ResyncAlreadyInProgress"
 	ErrorCodeScheduledMigrationAlreadyExistsError             ErrorCode = "ScheduledMigrationAlreadyExistsError"
 	ErrorCodeSelectedBillingModelDoesntMatchImportedItemError ErrorCode = "SelectedBillingModelDoesntMatchImportedItemError"
-	ErrorCodeStripeCustomerIsDeleted                          ErrorCode = "StripeCustomerIsDeleted"
-	ErrorCodeStripeError                                      ErrorCode = "StripeError"
-	ErrorCodeSubscriptionAlreadyCanceledOrExpired             ErrorCode = "SubscriptionAlreadyCanceledOrExpired"
-	ErrorCodeSubscriptionAlreadyOnLatestPlanError             ErrorCode = "SubscriptionAlreadyOnLatestPlanError"
-	ErrorCodeSubscriptionInvoiceStatusError                   ErrorCode = "SubscriptionInvoiceStatusError"
-	ErrorCodeSubscriptionMustHaveSinglePlanError              ErrorCode = "SubscriptionMustHaveSinglePlanError"
-	ErrorCodeSubscriptionNoBillingID                          ErrorCode = "SubscriptionNoBillingId"
-	ErrorCodeSubscriptionNotFound                             ErrorCode = "SubscriptionNotFound"
-	ErrorCodeTooManySubscriptionsPerCustomer                  ErrorCode = "TooManySubscriptionsPerCustomer"
-	ErrorCodeTrialMinDateError                                ErrorCode = "TrialMinDateError"
-	ErrorCodeTrialMustBeCancelledImmediately                  ErrorCode = "TrialMustBeCancelledImmediately"
-	ErrorCodeUnPublishedPackage                               ErrorCode = "UnPublishedPackage"
-	ErrorCodeUnauthenticated                                  ErrorCode = "Unauthenticated"
-	ErrorCodeUncompatibleSubscriptionAddon                    ErrorCode = "UncompatibleSubscriptionAddon"
-	ErrorCodeUnexpectedError                                  ErrorCode = "UnexpectedError"
-	ErrorCodeUnsupportedFeatureType                           ErrorCode = "UnsupportedFeatureType"
-	ErrorCodeUnsupportedSubscriptionScheduleType              ErrorCode = "UnsupportedSubscriptionScheduleType"
-	ErrorCodeUnsupportedVendorIdentifier                      ErrorCode = "UnsupportedVendorIdentifier"
-	ErrorCodeUsageMeasurementDiffOutOfRangeError              ErrorCode = "UsageMeasurementDiffOutOfRangeError"
+	// Single subscription product cannot be a target of auto-cancellation rules
+	ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError ErrorCode = "SingleSubscriptionCantBeAutoCancellationTargetError"
+	ErrorCodeStripeCustomerIsDeleted                             ErrorCode = "StripeCustomerIsDeleted"
+	ErrorCodeStripeError                                         ErrorCode = "StripeError"
+	ErrorCodeSubscriptionAlreadyCanceledOrExpired                ErrorCode = "SubscriptionAlreadyCanceledOrExpired"
+	ErrorCodeSubscriptionAlreadyOnLatestPlanError                ErrorCode = "SubscriptionAlreadyOnLatestPlanError"
+	ErrorCodeSubscriptionInvoiceStatusError                      ErrorCode = "SubscriptionInvoiceStatusError"
+	ErrorCodeSubscriptionMustHaveSinglePlanError                 ErrorCode = "SubscriptionMustHaveSinglePlanError"
+	ErrorCodeSubscriptionNoBillingID                             ErrorCode = "SubscriptionNoBillingId"
+	ErrorCodeSubscriptionNotFound                                ErrorCode = "SubscriptionNotFound"
+	ErrorCodeTooManySubscriptionsPerCustomer                     ErrorCode = "TooManySubscriptionsPerCustomer"
+	ErrorCodeTrialMinDateError                                   ErrorCode = "TrialMinDateError"
+	ErrorCodeTrialMustBeCancelledImmediately                     ErrorCode = "TrialMustBeCancelledImmediately"
+	ErrorCodeUnPublishedPackage                                  ErrorCode = "UnPublishedPackage"
+	ErrorCodeUnauthenticated                                     ErrorCode = "Unauthenticated"
+	ErrorCodeUncompatibleSubscriptionAddon                       ErrorCode = "UncompatibleSubscriptionAddon"
+	ErrorCodeUnexpectedError                                     ErrorCode = "UnexpectedError"
+	ErrorCodeUnsupportedFeatureType                              ErrorCode = "UnsupportedFeatureType"
+	ErrorCodeUnsupportedSubscriptionScheduleType                 ErrorCode = "UnsupportedSubscriptionScheduleType"
+	ErrorCodeUnsupportedVendorIdentifier                         ErrorCode = "UnsupportedVendorIdentifier"
+	ErrorCodeUsageMeasurementDiffOutOfRangeError                 ErrorCode = "UsageMeasurementDiffOutOfRangeError"
 )
 
 var AllErrorCode = []ErrorCode{
@@ -8964,6 +8994,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeMeteringNotAvailableForFeatureType,
 	ErrorCodeMissingEntityIDError,
 	ErrorCodeMissingSubscriptionInvoiceError,
+	ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError,
 	ErrorCodeNoFeatureEntitlementInSubscription,
 	ErrorCodeNoProductsAvailable,
 	ErrorCodeOperationNotAllowedDuringInProgressExperiment,
@@ -8994,6 +9025,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeResyncAlreadyInProgress,
 	ErrorCodeScheduledMigrationAlreadyExistsError,
 	ErrorCodeSelectedBillingModelDoesntMatchImportedItemError,
+	ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError,
 	ErrorCodeStripeCustomerIsDeleted,
 	ErrorCodeStripeError,
 	ErrorCodeSubscriptionAlreadyCanceledOrExpired,
@@ -9017,7 +9049,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError:
 		return true
 	}
 	return false
@@ -10722,6 +10754,7 @@ const (
 	ProductSortFieldsEnvironmentID             ProductSortFields = "environmentId"
 	ProductSortFieldsID                        ProductSortFields = "id"
 	ProductSortFieldsIsDefaultProduct          ProductSortFields = "isDefaultProduct"
+	ProductSortFieldsMultipleSubscriptions     ProductSortFields = "multipleSubscriptions"
 	ProductSortFieldsRefID                     ProductSortFields = "refId"
 	ProductSortFieldsUpdatedAt                 ProductSortFields = "updatedAt"
 )
@@ -10735,13 +10768,14 @@ var AllProductSortFields = []ProductSortFields{
 	ProductSortFieldsEnvironmentID,
 	ProductSortFieldsID,
 	ProductSortFieldsIsDefaultProduct,
+	ProductSortFieldsMultipleSubscriptions,
 	ProductSortFieldsRefID,
 	ProductSortFieldsUpdatedAt,
 }
 
 func (e ProductSortFields) IsValid() bool {
 	switch e {
-	case ProductSortFieldsAwsMarketplaceProductCode, ProductSortFieldsAwsMarketplaceProductID, ProductSortFieldsCreatedAt, ProductSortFieldsDescription, ProductSortFieldsDisplayName, ProductSortFieldsEnvironmentID, ProductSortFieldsID, ProductSortFieldsIsDefaultProduct, ProductSortFieldsRefID, ProductSortFieldsUpdatedAt:
+	case ProductSortFieldsAwsMarketplaceProductCode, ProductSortFieldsAwsMarketplaceProductID, ProductSortFieldsCreatedAt, ProductSortFieldsDescription, ProductSortFieldsDisplayName, ProductSortFieldsEnvironmentID, ProductSortFieldsID, ProductSortFieldsIsDefaultProduct, ProductSortFieldsMultipleSubscriptions, ProductSortFieldsRefID, ProductSortFieldsUpdatedAt:
 		return true
 	}
 	return false
