@@ -9101,14 +9101,20 @@ const (
 	EventActorAppPublic EventActor = "APP_PUBLIC"
 	// Backend SDK
 	EventActorAppServer EventActor = "APP_SERVER"
+	// AWS triggered event
+	EventActorAws EventActor = "AWS"
 	// Salesforce API key
 	EventActorSalesforce EventActor = "SALESFORCE"
+	// Stigg scheduler
+	EventActorScheduler EventActor = "SCHEDULER"
 	// Stigg user service key
 	EventActorService EventActor = "SERVICE"
 	// Stripe triggered event
 	EventActorStripe EventActor = "STRIPE"
 	// Stigg customer support
 	EventActorSupport EventActor = "SUPPORT"
+	// Stigg internal system
+	EventActorSystem EventActor = "SYSTEM"
 	// Web application user
 	EventActorUser EventActor = "USER"
 )
@@ -9117,16 +9123,19 @@ var AllEventActor = []EventActor{
 	EventActorAppCustomer,
 	EventActorAppPublic,
 	EventActorAppServer,
+	EventActorAws,
 	EventActorSalesforce,
+	EventActorScheduler,
 	EventActorService,
 	EventActorStripe,
 	EventActorSupport,
+	EventActorSystem,
 	EventActorUser,
 }
 
 func (e EventActor) IsValid() bool {
 	switch e {
-	case EventActorAppCustomer, EventActorAppPublic, EventActorAppServer, EventActorSalesforce, EventActorService, EventActorStripe, EventActorSupport, EventActorUser:
+	case EventActorAppCustomer, EventActorAppPublic, EventActorAppServer, EventActorAws, EventActorSalesforce, EventActorScheduler, EventActorService, EventActorStripe, EventActorSupport, EventActorSystem, EventActorUser:
 		return true
 	}
 	return false
