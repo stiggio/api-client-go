@@ -2226,6 +2226,7 @@ type EventLog struct {
 type EventLogAggregateGroupBy struct {
 	CreatedAt      *string       `json:"createdAt"`
 	EntityID       *string       `json:"entityId"`
+	EnvironmentID  *string       `json:"environmentId"`
 	EventLogType   *EventLogType `json:"eventLogType"`
 	ParentEntityID *string       `json:"parentEntityId"`
 }
@@ -2240,6 +2241,7 @@ type EventLogConnection struct {
 type EventLogCountAggregate struct {
 	CreatedAt      *int64 `json:"createdAt"`
 	EntityID       *int64 `json:"entityId"`
+	EnvironmentID  *int64 `json:"environmentId"`
 	EventLogType   *int64 `json:"eventLogType"`
 	ParentEntityID *int64 `json:"parentEntityId"`
 }
@@ -2261,6 +2263,10 @@ type EventLogEntityIDFilterComparison struct {
 	In []string `json:"in,omitempty"`
 }
 
+type EventLogEnvironmentIDFilterComparison struct {
+	Eq *string `json:"eq,omitempty"`
+}
+
 type EventLogEventLogTypeFilterComparison struct {
 	Eq    *EventLogType  `json:"eq,omitempty"`
 	In    []EventLogType `json:"in,omitempty"`
@@ -2272,6 +2278,7 @@ type EventLogFilter struct {
 	And            []*EventLogFilter                       `json:"and,omitempty"`
 	CreatedAt      *EventLogCreatedAtFilterComparison      `json:"createdAt,omitempty"`
 	EntityID       *EventLogEntityIDFilterComparison       `json:"entityId,omitempty"`
+	EnvironmentID  EventLogEnvironmentIDFilterComparison   `json:"environmentId"`
 	EventLogType   *EventLogEventLogTypeFilterComparison   `json:"eventLogType,omitempty"`
 	Or             []*EventLogFilter                       `json:"or,omitempty"`
 	ParentEntityID *EventLogParentEntityIDFilterComparison `json:"parentEntityId,omitempty"`
@@ -2280,6 +2287,7 @@ type EventLogFilter struct {
 type EventLogMaxAggregate struct {
 	CreatedAt      *string       `json:"createdAt"`
 	EntityID       *string       `json:"entityId"`
+	EnvironmentID  *string       `json:"environmentId"`
 	EventLogType   *EventLogType `json:"eventLogType"`
 	ParentEntityID *string       `json:"parentEntityId"`
 }
@@ -2287,6 +2295,7 @@ type EventLogMaxAggregate struct {
 type EventLogMinAggregate struct {
 	CreatedAt      *string       `json:"createdAt"`
 	EntityID       *string       `json:"entityId"`
+	EnvironmentID  *string       `json:"environmentId"`
 	EventLogType   *EventLogType `json:"eventLogType"`
 	ParentEntityID *string       `json:"parentEntityId"`
 }
@@ -9226,6 +9235,7 @@ type EventLogSortFields string
 const (
 	EventLogSortFieldsCreatedAt      EventLogSortFields = "createdAt"
 	EventLogSortFieldsEntityID       EventLogSortFields = "entityId"
+	EventLogSortFieldsEnvironmentID  EventLogSortFields = "environmentId"
 	EventLogSortFieldsEventLogType   EventLogSortFields = "eventLogType"
 	EventLogSortFieldsParentEntityID EventLogSortFields = "parentEntityId"
 )
@@ -9233,13 +9243,14 @@ const (
 var AllEventLogSortFields = []EventLogSortFields{
 	EventLogSortFieldsCreatedAt,
 	EventLogSortFieldsEntityID,
+	EventLogSortFieldsEnvironmentID,
 	EventLogSortFieldsEventLogType,
 	EventLogSortFieldsParentEntityID,
 }
 
 func (e EventLogSortFields) IsValid() bool {
 	switch e {
-	case EventLogSortFieldsCreatedAt, EventLogSortFieldsEntityID, EventLogSortFieldsEventLogType, EventLogSortFieldsParentEntityID:
+	case EventLogSortFieldsCreatedAt, EventLogSortFieldsEntityID, EventLogSortFieldsEnvironmentID, EventLogSortFieldsEventLogType, EventLogSortFieldsParentEntityID:
 		return true
 	}
 	return false
