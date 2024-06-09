@@ -9103,6 +9103,10 @@ const (
 	EventActorAppServer EventActor = "APP_SERVER"
 	// AWS triggered event
 	EventActorAws EventActor = "AWS"
+	// Import triggered event
+	EventActorImport EventActor = "IMPORT"
+	// Migration triggered event
+	EventActorMigration EventActor = "MIGRATION"
 	// Salesforce API key
 	EventActorSalesforce EventActor = "SALESFORCE"
 	// Stigg scheduler
@@ -9124,6 +9128,8 @@ var AllEventActor = []EventActor{
 	EventActorAppPublic,
 	EventActorAppServer,
 	EventActorAws,
+	EventActorImport,
+	EventActorMigration,
 	EventActorSalesforce,
 	EventActorScheduler,
 	EventActorService,
@@ -9135,7 +9141,7 @@ var AllEventActor = []EventActor{
 
 func (e EventActor) IsValid() bool {
 	switch e {
-	case EventActorAppCustomer, EventActorAppPublic, EventActorAppServer, EventActorAws, EventActorSalesforce, EventActorScheduler, EventActorService, EventActorStripe, EventActorSupport, EventActorSystem, EventActorUser:
+	case EventActorAppCustomer, EventActorAppPublic, EventActorAppServer, EventActorAws, EventActorImport, EventActorMigration, EventActorSalesforce, EventActorScheduler, EventActorService, EventActorStripe, EventActorSupport, EventActorSystem, EventActorUser:
 		return true
 	}
 	return false
