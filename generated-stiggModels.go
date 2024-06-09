@@ -10478,7 +10478,7 @@ func (e PaymentCollection) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Either pay for this subscription using the default payment method of the customer, or generate an invoice with payment details to be paid manually.
+// The method used to collect payments for a subscription
 type PaymentCollectionMethod string
 
 const (
@@ -10486,16 +10486,19 @@ const (
 	PaymentCollectionMethodCharge PaymentCollectionMethod = "CHARGE"
 	// Generate an invoice to the customer to pay manually
 	PaymentCollectionMethodInvoice PaymentCollectionMethod = "INVOICE"
+	// Do not leverage Stigg to manage payments for this subscription
+	PaymentCollectionMethodNone PaymentCollectionMethod = "NONE"
 )
 
 var AllPaymentCollectionMethod = []PaymentCollectionMethod{
 	PaymentCollectionMethodCharge,
 	PaymentCollectionMethodInvoice,
+	PaymentCollectionMethodNone,
 }
 
 func (e PaymentCollectionMethod) IsValid() bool {
 	switch e {
-	case PaymentCollectionMethodCharge, PaymentCollectionMethodInvoice:
+	case PaymentCollectionMethodCharge, PaymentCollectionMethodInvoice, PaymentCollectionMethodNone:
 		return true
 	}
 	return false
