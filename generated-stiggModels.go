@@ -2228,6 +2228,7 @@ type EventLogAggregateGroupBy struct {
 	EntityID       *string       `json:"entityId"`
 	EnvironmentID  *string       `json:"environmentId"`
 	EventLogType   *EventLogType `json:"eventLogType"`
+	ID             *string       `json:"id"`
 	ParentEntityID *string       `json:"parentEntityId"`
 }
 
@@ -2243,6 +2244,7 @@ type EventLogCountAggregate struct {
 	EntityID       *int64 `json:"entityId"`
 	EnvironmentID  *int64 `json:"environmentId"`
 	EventLogType   *int64 `json:"eventLogType"`
+	ID             *int64 `json:"id"`
 	ParentEntityID *int64 `json:"parentEntityId"`
 }
 
@@ -2280,8 +2282,13 @@ type EventLogFilter struct {
 	EntityID       *EventLogEntityIDFilterComparison       `json:"entityId,omitempty"`
 	EnvironmentID  EventLogEnvironmentIDFilterComparison   `json:"environmentId"`
 	EventLogType   *EventLogEventLogTypeFilterComparison   `json:"eventLogType,omitempty"`
+	ID             *EventLogIDFilterComparison             `json:"id,omitempty"`
 	Or             []*EventLogFilter                       `json:"or,omitempty"`
 	ParentEntityID *EventLogParentEntityIDFilterComparison `json:"parentEntityId,omitempty"`
+}
+
+type EventLogIDFilterComparison struct {
+	Eq *string `json:"eq,omitempty"`
 }
 
 type EventLogMaxAggregate struct {
@@ -2289,6 +2296,7 @@ type EventLogMaxAggregate struct {
 	EntityID       *string       `json:"entityId"`
 	EnvironmentID  *string       `json:"environmentId"`
 	EventLogType   *EventLogType `json:"eventLogType"`
+	ID             *string       `json:"id"`
 	ParentEntityID *string       `json:"parentEntityId"`
 }
 
@@ -2297,6 +2305,7 @@ type EventLogMinAggregate struct {
 	EntityID       *string       `json:"entityId"`
 	EnvironmentID  *string       `json:"environmentId"`
 	EventLogType   *EventLogType `json:"eventLogType"`
+	ID             *string       `json:"id"`
 	ParentEntityID *string       `json:"parentEntityId"`
 }
 
@@ -9252,6 +9261,7 @@ const (
 	EventLogSortFieldsEntityID       EventLogSortFields = "entityId"
 	EventLogSortFieldsEnvironmentID  EventLogSortFields = "environmentId"
 	EventLogSortFieldsEventLogType   EventLogSortFields = "eventLogType"
+	EventLogSortFieldsID             EventLogSortFields = "id"
 	EventLogSortFieldsParentEntityID EventLogSortFields = "parentEntityId"
 )
 
@@ -9260,12 +9270,13 @@ var AllEventLogSortFields = []EventLogSortFields{
 	EventLogSortFieldsEntityID,
 	EventLogSortFieldsEnvironmentID,
 	EventLogSortFieldsEventLogType,
+	EventLogSortFieldsID,
 	EventLogSortFieldsParentEntityID,
 }
 
 func (e EventLogSortFields) IsValid() bool {
 	switch e {
-	case EventLogSortFieldsCreatedAt, EventLogSortFieldsEntityID, EventLogSortFieldsEnvironmentID, EventLogSortFieldsEventLogType, EventLogSortFieldsParentEntityID:
+	case EventLogSortFieldsCreatedAt, EventLogSortFieldsEntityID, EventLogSortFieldsEnvironmentID, EventLogSortFieldsEventLogType, EventLogSortFieldsID, EventLogSortFieldsParentEntityID:
 		return true
 	}
 	return false
