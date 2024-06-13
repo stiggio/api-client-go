@@ -952,11 +952,6 @@ type CreateOneEnvironmentInput struct {
 	Options     *CreateEnvironmentOptions `json:"options,omitempty"`
 }
 
-type CreateOneFeatureInput struct {
-	// The record to create
-	Feature FeatureInput `json:"feature"`
-}
-
 type CreateOneHookInput struct {
 	// The record to create
 	Hook CreateHook `json:"hook"`
@@ -2013,6 +2008,8 @@ type EntitlementFeature struct {
 	ID                 string                 `json:"id"`
 	MeterType          *MeterType             `json:"meterType"`
 	RefID              string                 `json:"refId"`
+	// Unit transformation to be applied to the reported usage
+	UnitTransformation *UnitTransformation `json:"unitTransformation"`
 }
 
 type EntitlementLimitExceededError struct {
@@ -2525,7 +2522,9 @@ type Feature struct {
 	Meter              *Meter                 `json:"meter"`
 	MeterType          *MeterType             `json:"meterType"`
 	RefID              string                 `json:"refId"`
-	UpdatedAt          string                 `json:"updatedAt"`
+	// Unit transformation to be applied to the reported usage
+	UnitTransformation *UnitTransformation `json:"unitTransformation"`
+	UpdatedAt          string              `json:"updatedAt"`
 }
 
 type FeatureAggregateGroupBy struct {
@@ -2602,6 +2601,8 @@ type FeatureInput struct {
 	Meter              *CreateMeter           `json:"meter,omitempty"`
 	MeterType          *MeterType             `json:"meterType,omitempty"`
 	RefID              string                 `json:"refId"`
+	// Unit transformation to be applied to the reported usage
+	UnitTransformation *UnitTransformationInput `json:"unitTransformation,omitempty"`
 }
 
 type FeatureMaxAggregate struct {
@@ -6608,6 +6609,30 @@ type UnitAmountChangeVariables struct {
 
 func (UnitAmountChangeVariables) IsScheduleVariables() {}
 
+// Transformation to the reported usage
+type UnitTransformation struct {
+	// Divide usage by this number
+	Divide float64 `json:"divide"`
+	// Singular feature units after the transformation
+	FeatureUnits *string `json:"featureUnits"`
+	// Plural feature units after the transformation
+	FeatureUnitsPlural *string `json:"featureUnitsPlural"`
+	// After division, either round the result up or down
+	Round UnitTransformationRound `json:"round"`
+}
+
+// Input for unit transformation to be applied to the reported usage
+type UnitTransformationInput struct {
+	// Divide usage by this number
+	Divide int64 `json:"divide"`
+	// Singular feature units after the transformation
+	FeatureUnits *string `json:"featureUnits,omitempty"`
+	// Plural feature units after the transformation
+	FeatureUnitsPlural *string `json:"featureUnitsPlural,omitempty"`
+	// After division, either round the result up or down
+	Round *UnitTransformationRound `json:"round,omitempty"`
+}
+
 type UnsupportedFeatureTypeError struct {
 	Code        string `json:"code"`
 	FeatureType string `json:"featureType"`
@@ -6667,22 +6692,6 @@ type UpdateExperimentInput struct {
 	VariantPercentage *float64              `json:"variantPercentage,omitempty"`
 }
 
-type UpdateFeature struct {
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	CreatedAt          *string                `json:"createdAt,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	DisplayName        *string                `json:"displayName,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	FeatureStatus      *FeatureStatus         `json:"featureStatus,omitempty"`
-	FeatureType        *FeatureType           `json:"featureType,omitempty"`
-	FeatureUnits       *string                `json:"featureUnits,omitempty"`
-	FeatureUnitsPlural *string                `json:"featureUnitsPlural,omitempty"`
-	ID                 *string                `json:"id,omitempty"`
-	MeterType          *MeterType             `json:"meterType,omitempty"`
-	RefID              *string                `json:"refId,omitempty"`
-	UpdatedAt          *string                `json:"updatedAt,omitempty"`
-}
-
 type UpdateFeatureInput struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	Description        *string                `json:"description,omitempty"`
@@ -6692,6 +6701,8 @@ type UpdateFeatureInput struct {
 	FeatureUnitsPlural *string                `json:"featureUnitsPlural,omitempty"`
 	Meter              *CreateMeter           `json:"meter,omitempty"`
 	RefID              string                 `json:"refId"`
+	// Unit transformation to be applied to the reported usage
+	UnitTransformation *UnitTransformationInput `json:"unitTransformation,omitempty"`
 }
 
 type UpdateHook struct {
@@ -6720,13 +6731,6 @@ type UpdateOneEnvironmentInput struct {
 	ID string `json:"id"`
 	// The update to apply.
 	Update EnvironmentInput `json:"update"`
-}
-
-type UpdateOneFeatureInput struct {
-	// The id of the record to update
-	ID string `json:"id"`
-	// The update to apply.
-	Update UpdateFeature `json:"update"`
 }
 
 type UpdateOneHookInput struct {
@@ -8827,17 +8831,19 @@ const (
 	ErrorCodeCannotEditPackageInNonDraftMode               ErrorCode = "CannotEditPackageInNonDraftMode"
 	ErrorCodeCannotRemovePaymentMethodFromCustomerError    ErrorCode = "CannotRemovePaymentMethodFromCustomerError"
 	ErrorCodeCannotReportUsageForEntitlementWithMeterError ErrorCode = "CannotReportUsageForEntitlementWithMeterError"
-	ErrorCodeCannotUpsertToPackageThatHasDraft             ErrorCode = "CannotUpsertToPackageThatHasDraft"
-	ErrorCodeCheckoutIsNotSupported                        ErrorCode = "CheckoutIsNotSupported"
-	ErrorCodeCouponNotFound                                ErrorCode = "CouponNotFound"
-	ErrorCodeCustomerAlreadyHaveCustomerCoupon             ErrorCode = "CustomerAlreadyHaveCustomerCoupon"
-	ErrorCodeCustomerAlreadyUsesCoupon                     ErrorCode = "CustomerAlreadyUsesCoupon"
-	ErrorCodeCustomerHasNoEmailAddress                     ErrorCode = "CustomerHasNoEmailAddress"
-	ErrorCodeCustomerNoBillingID                           ErrorCode = "CustomerNoBillingId"
-	ErrorCodeCustomerNotFound                              ErrorCode = "CustomerNotFound"
-	ErrorCodeCustomerResourceNotFound                      ErrorCode = "CustomerResourceNotFound"
-	ErrorCodeDowngradeBillingPeriodNotSupportedError       ErrorCode = "DowngradeBillingPeriodNotSupportedError"
-	ErrorCodeDraftPlanCantBeArchived                       ErrorCode = "DraftPlanCantBeArchived"
+	// Can not update unit transformation since this feature has connected active subscriptions
+	ErrorCodeCannotUpdateUnitTransformationError     ErrorCode = "CannotUpdateUnitTransformationError"
+	ErrorCodeCannotUpsertToPackageThatHasDraft       ErrorCode = "CannotUpsertToPackageThatHasDraft"
+	ErrorCodeCheckoutIsNotSupported                  ErrorCode = "CheckoutIsNotSupported"
+	ErrorCodeCouponNotFound                          ErrorCode = "CouponNotFound"
+	ErrorCodeCustomerAlreadyHaveCustomerCoupon       ErrorCode = "CustomerAlreadyHaveCustomerCoupon"
+	ErrorCodeCustomerAlreadyUsesCoupon               ErrorCode = "CustomerAlreadyUsesCoupon"
+	ErrorCodeCustomerHasNoEmailAddress               ErrorCode = "CustomerHasNoEmailAddress"
+	ErrorCodeCustomerNoBillingID                     ErrorCode = "CustomerNoBillingId"
+	ErrorCodeCustomerNotFound                        ErrorCode = "CustomerNotFound"
+	ErrorCodeCustomerResourceNotFound                ErrorCode = "CustomerResourceNotFound"
+	ErrorCodeDowngradeBillingPeriodNotSupportedError ErrorCode = "DowngradeBillingPeriodNotSupportedError"
+	ErrorCodeDraftPlanCantBeArchived                 ErrorCode = "DraftPlanCantBeArchived"
 	// Duplicate addons provisioned error
 	ErrorCodeDuplicateAddonProvisionedError      ErrorCode = "DuplicateAddonProvisionedError"
 	ErrorCodeDuplicateProductValidationError     ErrorCode = "DuplicateProductValidationError"
@@ -8964,6 +8970,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeCannotEditPackageInNonDraftMode,
 	ErrorCodeCannotRemovePaymentMethodFromCustomerError,
 	ErrorCodeCannotReportUsageForEntitlementWithMeterError,
+	ErrorCodeCannotUpdateUnitTransformationError,
 	ErrorCodeCannotUpsertToPackageThatHasDraft,
 	ErrorCodeCheckoutIsNotSupported,
 	ErrorCodeCouponNotFound,
@@ -9073,7 +9080,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError:
+	case ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMinDateError, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUncompatibleSubscriptionAddon, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError:
 		return true
 	}
 	return false
@@ -12269,6 +12276,50 @@ func (e *TrialPeriodUnits) UnmarshalGQL(v interface{}) error {
 }
 
 func (e TrialPeriodUnits) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Unit transformation round type
+type UnitTransformationRound string
+
+const (
+	// Apply round down after transformation
+	UnitTransformationRoundDown UnitTransformationRound = "DOWN"
+	// Apply round up after transformation
+	UnitTransformationRoundUp UnitTransformationRound = "UP"
+)
+
+var AllUnitTransformationRound = []UnitTransformationRound{
+	UnitTransformationRoundDown,
+	UnitTransformationRoundUp,
+}
+
+func (e UnitTransformationRound) IsValid() bool {
+	switch e {
+	case UnitTransformationRoundDown, UnitTransformationRoundUp:
+		return true
+	}
+	return false
+}
+
+func (e UnitTransformationRound) String() string {
+	return string(e)
+}
+
+func (e *UnitTransformationRound) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = UnitTransformationRound(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid UnitTransformationRound", str)
+	}
+	return nil
+}
+
+func (e UnitTransformationRound) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
