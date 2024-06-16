@@ -2752,6 +2752,14 @@ type GetPaywallInput struct {
 	ResourceID              *string     `json:"resourceId,omitempty"`
 }
 
+// Get subscription input
+type GetSubscriptionInput struct {
+	// The environment ID the subscription belongs to
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The subscription ID to retrieve
+	SubscriptionID string `json:"subscriptionId"`
+}
+
 type GetWidgetConfigurationInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
