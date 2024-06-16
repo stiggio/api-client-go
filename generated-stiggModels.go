@@ -11347,6 +11347,7 @@ func (e SubscriptionAddonSortFields) MarshalGQL(w io.Writer) {
 type SubscriptionCancelReason string
 
 const (
+	SubscriptionCancelReasonAutoCancellationRule  SubscriptionCancelReason = "AutoCancellationRule"
 	SubscriptionCancelReasonCancelledByBilling    SubscriptionCancelReason = "CancelledByBilling"
 	SubscriptionCancelReasonCustomerArchived      SubscriptionCancelReason = "CustomerArchived"
 	SubscriptionCancelReasonDetachBilling         SubscriptionCancelReason = "DetachBilling"
@@ -11360,6 +11361,7 @@ const (
 )
 
 var AllSubscriptionCancelReason = []SubscriptionCancelReason{
+	SubscriptionCancelReasonAutoCancellationRule,
 	SubscriptionCancelReasonCancelledByBilling,
 	SubscriptionCancelReasonCustomerArchived,
 	SubscriptionCancelReasonDetachBilling,
@@ -11374,7 +11376,7 @@ var AllSubscriptionCancelReason = []SubscriptionCancelReason{
 
 func (e SubscriptionCancelReason) IsValid() bool {
 	switch e {
-	case SubscriptionCancelReasonCancelledByBilling, SubscriptionCancelReasonCustomerArchived, SubscriptionCancelReasonDetachBilling, SubscriptionCancelReasonExpired, SubscriptionCancelReasonImmediate, SubscriptionCancelReasonPendingPaymentExpired, SubscriptionCancelReasonScheduledCancellation, SubscriptionCancelReasonTrialConverted, SubscriptionCancelReasonTrialEnded, SubscriptionCancelReasonUpgradeOrDowngrade:
+	case SubscriptionCancelReasonAutoCancellationRule, SubscriptionCancelReasonCancelledByBilling, SubscriptionCancelReasonCustomerArchived, SubscriptionCancelReasonDetachBilling, SubscriptionCancelReasonExpired, SubscriptionCancelReasonImmediate, SubscriptionCancelReasonPendingPaymentExpired, SubscriptionCancelReasonScheduledCancellation, SubscriptionCancelReasonTrialConverted, SubscriptionCancelReasonTrialEnded, SubscriptionCancelReasonUpgradeOrDowngrade:
 		return true
 	}
 	return false
