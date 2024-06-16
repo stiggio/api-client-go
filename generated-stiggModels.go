@@ -1536,7 +1536,7 @@ type CustomerSubscription struct {
 	SyncStates               []*SyncState                    `json:"syncStates"`
 	TotalPrice               *CustomerSubscriptionTotalPrice `json:"totalPrice"`
 	TrialEndDate             *string                         `json:"trialEndDate"`
-	WasInTrial               bool                            `json:"wasInTrial"`
+	WasInTrial               *bool                           `json:"wasInTrial"`
 }
 
 type CustomerSubscriptionAggregateGroupBy struct {
@@ -2750,11 +2750,6 @@ type GetPaywallInput struct {
 	IncludeHiddenPlans      *bool       `json:"includeHiddenPlans,omitempty"`
 	ProductID               *string     `json:"productId,omitempty"`
 	ResourceID              *string     `json:"resourceId,omitempty"`
-}
-
-type GetSubscriptionInput struct {
-	EnvironmentID  *string `json:"environmentId,omitempty"`
-	SubscriptionID string  `json:"subscriptionId"`
 }
 
 type GetWidgetConfigurationInput struct {
