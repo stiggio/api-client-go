@@ -5593,7 +5593,10 @@ type StripeSubscriptionSearchResult struct {
 }
 
 type SubscriptionAddon struct {
-	Addon        Addon                `json:"addon"`
+	// Addon object
+	Addon Addon `json:"addon"`
+	// The id of the addon
+	AddonID      string               `json:"addonId"`
 	CreatedAt    *string              `json:"createdAt"`
 	ID           string               `json:"id"`
 	Price        *Price               `json:"price"`
@@ -5628,7 +5631,6 @@ type SubscriptionAddonEdge struct {
 }
 
 type SubscriptionAddonFilter struct {
-	Addon        *SubscriptionAddonFilterAddonFilter                `json:"addon,omitempty"`
 	And          []*SubscriptionAddonFilter                         `json:"and,omitempty"`
 	CreatedAt    *DateFieldComparison                               `json:"createdAt,omitempty"`
 	ID           *StringFieldComparison                             `json:"id,omitempty"`
@@ -5637,24 +5639,6 @@ type SubscriptionAddonFilter struct {
 	Quantity     *NumberFieldComparison                             `json:"quantity,omitempty"`
 	Subscription *SubscriptionAddonFilterCustomerSubscriptionFilter `json:"subscription,omitempty"`
 	UpdatedAt    *DateFieldComparison                               `json:"updatedAt,omitempty"`
-}
-
-type SubscriptionAddonFilterAddonFilter struct {
-	And           []*SubscriptionAddonFilterAddonFilter `json:"and,omitempty"`
-	BillingID     *StringFieldComparison                `json:"billingId,omitempty"`
-	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
-	Description   *StringFieldComparison                `json:"description,omitempty"`
-	DisplayName   *StringFieldComparison                `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison                `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison                `json:"id,omitempty"`
-	IsLatest      *BooleanFieldComparison               `json:"isLatest,omitempty"`
-	Or            []*SubscriptionAddonFilterAddonFilter `json:"or,omitempty"`
-	PricingType   *PricingTypeFilterComparison          `json:"pricingType,omitempty"`
-	ProductID     *StringFieldComparison                `json:"productId,omitempty"`
-	RefID         *StringFieldComparison                `json:"refId,omitempty"`
-	Status        *PackageStatusFilterComparison        `json:"status,omitempty"`
-	UpdatedAt     *DateFieldComparison                  `json:"updatedAt,omitempty"`
-	VersionNumber *IntFieldComparison                   `json:"versionNumber,omitempty"`
 }
 
 type SubscriptionAddonFilterCustomerSubscriptionFilter struct {
