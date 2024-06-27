@@ -6510,12 +6510,6 @@ type TrialMinDateError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
-type TrialMustBeCancelledImmediately struct {
-	Code              string `json:"code"`
-	IsValidationError bool   `json:"isValidationError"`
-	RefID             string `json:"refId"`
-}
-
 type TrialOverrideConfigurationInput struct {
 	IsTrial      bool    `json:"isTrial"`
 	TrialEndDate *string `json:"trialEndDate,omitempty"`
