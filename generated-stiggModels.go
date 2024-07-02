@@ -7115,17 +7115,19 @@ type YearlyResetPeriodConfigInput struct {
 }
 
 type ZuoraCredentials struct {
-	BaseURL      string `json:"baseUrl"`
-	ClientID     string `json:"clientId"`
-	ClientSecret string `json:"clientSecret"`
+	BaseURL         string  `json:"baseUrl"`
+	ClientID        string  `json:"clientId"`
+	ClientSecret    string  `json:"clientSecret"`
+	StripeSecretKey *string `json:"stripeSecretKey"`
 }
 
 func (ZuoraCredentials) IsCredentials() {}
 
 type ZuoraCredentialsInput struct {
-	BaseURL      string `json:"baseUrl"`
-	ClientID     string `json:"clientId"`
-	ClientSecret string `json:"clientSecret"`
+	BaseURL         string  `json:"baseUrl"`
+	ClientID        string  `json:"clientId"`
+	ClientSecret    string  `json:"clientSecret"`
+	StripeSecretKey *string `json:"stripeSecretKey,omitempty"`
 }
 
 type ZuoraPaymentMethodForm struct {
