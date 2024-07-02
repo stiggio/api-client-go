@@ -1140,6 +1140,7 @@ type CustomerFilter struct {
 
 type CustomerFilterCustomerSubscriptionFilter struct {
 	And                       []*CustomerFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingCycleAnchor        *DateFieldComparison                        `json:"billingCycleAnchor,omitempty"`
 	BillingID                 *StringFieldComparison                      `json:"billingId,omitempty"`
 	CancelReason              *SubscriptionCancelReasonFilterComparison   `json:"cancelReason,omitempty"`
 	CancellationDate          *DateFieldComparison                        `json:"cancellationDate,omitempty"`
@@ -1426,6 +1427,7 @@ type CustomerResourceFilterCustomerFilter struct {
 
 type CustomerResourceFilterCustomerSubscriptionFilter struct {
 	And                       []*CustomerResourceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingCycleAnchor        *DateFieldComparison                                `json:"billingCycleAnchor,omitempty"`
 	BillingID                 *StringFieldComparison                              `json:"billingId,omitempty"`
 	CancelReason              *SubscriptionCancelReasonFilterComparison           `json:"cancelReason,omitempty"`
 	CancellationDate          *DateFieldComparison                                `json:"cancellationDate,omitempty"`
@@ -1486,9 +1488,11 @@ type CustomerStatistics struct {
 type CustomerSubscription struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	Addons             []*SubscriptionAddon   `json:"addons"`
-	BillingID          *string                `json:"billingId"`
-	BillingLinkURL     *string                `json:"billingLinkUrl"`
-	BillingSyncError   *string                `json:"billingSyncError"`
+	// Billing cycle anchor date
+	BillingCycleAnchor *string `json:"billingCycleAnchor"`
+	BillingID          *string `json:"billingId"`
+	BillingLinkURL     *string `json:"billingLinkUrl"`
+	BillingSyncError   *string `json:"billingSyncError"`
 	// Budget configuration
 	Budget *BudgetConfiguration `json:"budget"`
 	// Indicates if the budget has been exceeded
@@ -1540,6 +1544,7 @@ type CustomerSubscription struct {
 }
 
 type CustomerSubscriptionAggregateGroupBy struct {
+	BillingCycleAnchor        *string                   `json:"billingCycleAnchor"`
 	BillingID                 *string                   `json:"billingId"`
 	CancelReason              *SubscriptionCancelReason `json:"cancelReason"`
 	CancellationDate          *string                   `json:"cancellationDate"`
@@ -1574,6 +1579,7 @@ type CustomerSubscriptionConnection struct {
 }
 
 type CustomerSubscriptionCountAggregate struct {
+	BillingCycleAnchor        *int64 `json:"billingCycleAnchor"`
 	BillingID                 *int64 `json:"billingId"`
 	CancelReason              *int64 `json:"cancelReason"`
 	CancellationDate          *int64 `json:"cancellationDate"`
@@ -1608,6 +1614,7 @@ type CustomerSubscriptionEdge struct {
 type CustomerSubscriptionFilter struct {
 	Addons                    *CustomerSubscriptionFilterSubscriptionAddonFilter       `json:"addons,omitempty"`
 	And                       []*CustomerSubscriptionFilter                            `json:"and,omitempty"`
+	BillingCycleAnchor        *DateFieldComparison                                     `json:"billingCycleAnchor,omitempty"`
 	BillingID                 *StringFieldComparison                                   `json:"billingId,omitempty"`
 	CancelReason              *SubscriptionCancelReasonFilterComparison                `json:"cancelReason,omitempty"`
 	CancellationDate          *DateFieldComparison                                     `json:"cancellationDate,omitempty"`
@@ -1715,6 +1722,7 @@ type CustomerSubscriptionFilterSubscriptionPriceFilter struct {
 }
 
 type CustomerSubscriptionMaxAggregate struct {
+	BillingCycleAnchor        *string                   `json:"billingCycleAnchor"`
 	BillingID                 *string                   `json:"billingId"`
 	CancelReason              *SubscriptionCancelReason `json:"cancelReason"`
 	CancellationDate          *string                   `json:"cancellationDate"`
@@ -1740,6 +1748,7 @@ type CustomerSubscriptionMaxAggregate struct {
 }
 
 type CustomerSubscriptionMinAggregate struct {
+	BillingCycleAnchor        *string                   `json:"billingCycleAnchor"`
 	BillingID                 *string                   `json:"billingId"`
 	CancelReason              *SubscriptionCancelReason `json:"cancelReason"`
 	CancellationDate          *string                   `json:"cancellationDate"`
@@ -5643,6 +5652,7 @@ type SubscriptionAddonFilter struct {
 
 type SubscriptionAddonFilterCustomerSubscriptionFilter struct {
 	And                       []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingCycleAnchor        *DateFieldComparison                                 `json:"billingCycleAnchor,omitempty"`
 	BillingID                 *StringFieldComparison                               `json:"billingId,omitempty"`
 	CancelReason              *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
 	CancellationDate          *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
@@ -5825,6 +5835,7 @@ type SubscriptionEntitlementFilter struct {
 
 type SubscriptionEntitlementFilterCustomerSubscriptionFilter struct {
 	And                       []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingCycleAnchor        *DateFieldComparison                                       `json:"billingCycleAnchor,omitempty"`
 	BillingID                 *StringFieldComparison                                     `json:"billingId,omitempty"`
 	CancelReason              *SubscriptionCancelReasonFilterComparison                  `json:"cancelReason,omitempty"`
 	CancellationDate          *DateFieldComparison                                       `json:"cancellationDate,omitempty"`
@@ -6303,6 +6314,7 @@ type SubscriptionPriceFilter struct {
 
 type SubscriptionPriceFilterCustomerSubscriptionFilter struct {
 	And                       []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"and,omitempty"`
+	BillingCycleAnchor        *DateFieldComparison                                 `json:"billingCycleAnchor,omitempty"`
 	BillingID                 *StringFieldComparison                               `json:"billingId,omitempty"`
 	CancelReason              *SubscriptionCancelReasonFilterComparison            `json:"cancelReason,omitempty"`
 	CancellationDate          *DateFieldComparison                                 `json:"cancellationDate,omitempty"`
@@ -7474,18 +7486,20 @@ func (e APIKeyType) MarshalGQL(w io.Writer) {
 type BillingAnchor string
 
 const (
-	BillingAnchorStartOfTheMonth   BillingAnchor = "START_OF_THE_MONTH"
-	BillingAnchorSubscriptionStart BillingAnchor = "SUBSCRIPTION_START"
+	BillingAnchorStartOfTheMonth                 BillingAnchor = "START_OF_THE_MONTH"
+	BillingAnchorSubscriptionsConsolidateBilling BillingAnchor = "SUBSCRIPTIONS_CONSOLIDATE_BILLING"
+	BillingAnchorSubscriptionStart               BillingAnchor = "SUBSCRIPTION_START"
 )
 
 var AllBillingAnchor = []BillingAnchor{
 	BillingAnchorStartOfTheMonth,
+	BillingAnchorSubscriptionsConsolidateBilling,
 	BillingAnchorSubscriptionStart,
 }
 
 func (e BillingAnchor) IsValid() bool {
 	switch e {
-	case BillingAnchorStartOfTheMonth, BillingAnchorSubscriptionStart:
+	case BillingAnchorStartOfTheMonth, BillingAnchorSubscriptionsConsolidateBilling, BillingAnchorSubscriptionStart:
 		return true
 	}
 	return false
@@ -8299,6 +8313,7 @@ func (e CustomerSortFields) MarshalGQL(w io.Writer) {
 type CustomerSubscriptionSortFields string
 
 const (
+	CustomerSubscriptionSortFieldsBillingCycleAnchor        CustomerSubscriptionSortFields = "billingCycleAnchor"
 	CustomerSubscriptionSortFieldsBillingID                 CustomerSubscriptionSortFields = "billingId"
 	CustomerSubscriptionSortFieldsCancelReason              CustomerSubscriptionSortFields = "cancelReason"
 	CustomerSubscriptionSortFieldsCancellationDate          CustomerSubscriptionSortFields = "cancellationDate"
@@ -8324,6 +8339,7 @@ const (
 )
 
 var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
+	CustomerSubscriptionSortFieldsBillingCycleAnchor,
 	CustomerSubscriptionSortFieldsBillingID,
 	CustomerSubscriptionSortFieldsCancelReason,
 	CustomerSubscriptionSortFieldsCancellationDate,
@@ -8350,7 +8366,7 @@ var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
 
 func (e CustomerSubscriptionSortFields) IsValid() bool {
 	switch e {
-	case CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd, CustomerSubscriptionSortFieldsCurrentBillingPeriodStart, CustomerSubscriptionSortFieldsCustomerID, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
+	case CustomerSubscriptionSortFieldsBillingCycleAnchor, CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd, CustomerSubscriptionSortFieldsCurrentBillingPeriodStart, CustomerSubscriptionSortFieldsCustomerID, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
 		return true
 	}
 	return false
