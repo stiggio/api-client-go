@@ -5553,7 +5553,8 @@ type StripeCustomerSearchResult struct {
 }
 
 type StripePaymentMethodForm struct {
-	ClientSecret string `json:"clientSecret"`
+	ClientSecret         string  `json:"clientSecret"`
+	StripePublishableKey *string `json:"stripePublishableKey"`
 }
 
 func (StripePaymentMethodForm) IsPaymentMethodForm() {}
@@ -7115,19 +7116,21 @@ type YearlyResetPeriodConfigInput struct {
 }
 
 type ZuoraCredentials struct {
-	BaseURL         string  `json:"baseUrl"`
-	ClientID        string  `json:"clientId"`
-	ClientSecret    string  `json:"clientSecret"`
-	StripeSecretKey *string `json:"stripeSecretKey"`
+	BaseURL              string  `json:"baseUrl"`
+	ClientID             string  `json:"clientId"`
+	ClientSecret         string  `json:"clientSecret"`
+	StripePublishableKey *string `json:"stripePublishableKey"`
+	StripeSecretKey      *string `json:"stripeSecretKey"`
 }
 
 func (ZuoraCredentials) IsCredentials() {}
 
 type ZuoraCredentialsInput struct {
-	BaseURL         string  `json:"baseUrl"`
-	ClientID        string  `json:"clientId"`
-	ClientSecret    string  `json:"clientSecret"`
-	StripeSecretKey *string `json:"stripeSecretKey,omitempty"`
+	BaseURL              string  `json:"baseUrl"`
+	ClientID             string  `json:"clientId"`
+	ClientSecret         string  `json:"clientSecret"`
+	StripePublishableKey *string `json:"stripePublishableKey,omitempty"`
+	StripeSecretKey      *string `json:"stripeSecretKey,omitempty"`
 }
 
 type ZuoraPaymentMethodForm struct {
