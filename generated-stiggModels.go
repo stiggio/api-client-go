@@ -595,27 +595,27 @@ type CannotDeleteFeatureError struct {
 	RefID             string `json:"refId"`
 }
 
-// Input for triggering an immediate overage charge for a subscription
-type ChargeSubscriptionOverages struct {
+// Input for triggering an immediate usage charge for a subscription
+type ChargeSubscriptionUsage struct {
 	// The ID of the invoice in the billing integration. If null then no invoice was created
 	InvoiceBillingID *string `json:"invoiceBillingId"`
-	// An array of the overages which were charged
-	OveragesCharged []*OverageCharged `json:"overagesCharged"`
 	// The date from which the usage was calculated to
 	PeriodEnd string `json:"periodEnd"`
 	// The date from which the usage was calculated from
 	PeriodStart string `json:"periodStart"`
-	// The subscription reference id for which the overage was charged
+	// The subscription reference id for which the usage was charged
 	SubscriptionID string `json:"subscriptionId"`
+	// An array of the usage items which were charged
+	UsageCharged []*UsageCharged `json:"usageCharged"`
 }
 
-// Input for triggering an immediate overage charge for a subscription
-type ChargeSubscriptionOveragesInput struct {
+// Input for triggering an immediate usage charge for a subscription
+type ChargeSubscriptionUsageInput struct {
 	// The id of the subscriptions environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	// The subscription reference id to charge overage for
+	// The subscription reference id to charge usage for
 	SubscriptionID string `json:"subscriptionId"`
-	// The end date until which to calculate the overage
+	// The end date until which to calculate the usage
 	UntilDate *string `json:"untilDate,omitempty"`
 }
 
@@ -1517,6 +1517,7 @@ type CustomerSubscription struct {
 	FutureUpdates             []*SubscriptionFutureUpdate `json:"futureUpdates"`
 	ID                        string                      `json:"id"`
 	IsCustomPriceSubscription *bool                       `json:"isCustomPriceSubscription"`
+	LastUsageInvoice          *SubscriptionInvoice        `json:"lastUsageInvoice"`
 	LatestInvoice             *SubscriptionInvoice        `json:"latestInvoice"`
 	// Minimum spend configuration
 	MinimumSpend          *SubscriptionMinimumSpend `json:"minimumSpend"`
@@ -3502,14 +3503,6 @@ type NumberFieldComparison struct {
 type NumberFieldComparisonBetween struct {
 	Lower float64 `json:"lower"`
 	Upper float64 `json:"upper"`
-}
-
-// An object representing the overage charged
-type OverageCharged struct {
-	// The eid of the feature
-	FeatureID *string `json:"featureId"`
-	// The amount of units charged for overage usage
-	OverageAmount float64 `json:"overageAmount"`
 }
 
 type OverageEntitlementCreateInput struct {
@@ -6818,6 +6811,14 @@ type UpdateUserInput struct {
 	Name       string      `json:"name"`
 }
 
+// An object representing the usage charged
+type UsageCharged struct {
+	// The id of the feature
+	FeatureID *string `json:"featureId"`
+	// The amount of units charged for usage usage
+	UsageAmount float64 `json:"usageAmount"`
+}
+
 type UsageEvent struct {
 	// The customer object reported
 	Customer *Customer `json:"customer"`
@@ -9957,6 +9958,7 @@ const (
 	InvoiceLineItemTypeOverageCharge                InvoiceLineItemType = "OverageCharge"
 	InvoiceLineItemTypePayAsYouGoCharge             InvoiceLineItemType = "PayAsYouGoCharge"
 	InvoiceLineItemTypeTierCharge                   InvoiceLineItemType = "TierCharge"
+	InvoiceLineItemTypeZeroAmountBaseCharge         InvoiceLineItemType = "ZeroAmountBaseCharge"
 )
 
 var AllInvoiceLineItemType = []InvoiceLineItemType{
@@ -9968,11 +9970,12 @@ var AllInvoiceLineItemType = []InvoiceLineItemType{
 	InvoiceLineItemTypeOverageCharge,
 	InvoiceLineItemTypePayAsYouGoCharge,
 	InvoiceLineItemTypeTierCharge,
+	InvoiceLineItemTypeZeroAmountBaseCharge,
 }
 
 func (e InvoiceLineItemType) IsValid() bool {
 	switch e {
-	case InvoiceLineItemTypeAddonCharge, InvoiceLineItemTypeBaseCharge, InvoiceLineItemTypeInAdvanceCommitmentCharge, InvoiceLineItemTypeMinimumSpendAdjustmentCharge, InvoiceLineItemTypeOther, InvoiceLineItemTypeOverageCharge, InvoiceLineItemTypePayAsYouGoCharge, InvoiceLineItemTypeTierCharge:
+	case InvoiceLineItemTypeAddonCharge, InvoiceLineItemTypeBaseCharge, InvoiceLineItemTypeInAdvanceCommitmentCharge, InvoiceLineItemTypeMinimumSpendAdjustmentCharge, InvoiceLineItemTypeOther, InvoiceLineItemTypeOverageCharge, InvoiceLineItemTypePayAsYouGoCharge, InvoiceLineItemTypeTierCharge, InvoiceLineItemTypeZeroAmountBaseCharge:
 		return true
 	}
 	return false
