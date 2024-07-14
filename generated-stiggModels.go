@@ -2348,6 +2348,7 @@ type EventsFields struct {
 type EventsFieldsInput struct {
 	CustomerID    *string                       `json:"customerId,omitempty"`
 	EnvironmentID string                        `json:"environmentId"`
+	FeatureID     *string                       `json:"featureId,omitempty"`
 	Filters       []*MeterFilterDefinitionInput `json:"filters,omitempty"`
 	MeterID       *string                       `json:"meterId,omitempty"`
 	ResourceID    *string                       `json:"resourceId,omitempty"`
@@ -5312,12 +5313,13 @@ type RemoveExperimentFromCustomerSubscriptionInput struct {
 }
 
 type ReportUsageBaseInput struct {
-	CreatedAt      *string              `json:"createdAt,omitempty"`
-	CustomerID     string               `json:"customerId"`
-	FeatureID      string               `json:"featureId"`
-	ResourceID     *string              `json:"resourceId,omitempty"`
-	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
-	Value          float64              `json:"value"`
+	CreatedAt      *string                `json:"createdAt,omitempty"`
+	CustomerID     string                 `json:"customerId"`
+	Dimensions     map[string]interface{} `json:"dimensions,omitempty"`
+	FeatureID      string                 `json:"featureId"`
+	ResourceID     *string                `json:"resourceId,omitempty"`
+	UpdateBehavior *UsageUpdateBehavior   `json:"updateBehavior,omitempty"`
+	Value          float64                `json:"value"`
 }
 
 type ReportUsageBulkInput struct {
@@ -5326,13 +5328,14 @@ type ReportUsageBulkInput struct {
 }
 
 type ReportUsageInput struct {
-	CreatedAt      *string              `json:"createdAt,omitempty"`
-	CustomerID     string               `json:"customerId"`
-	EnvironmentID  *string              `json:"environmentId,omitempty"`
-	FeatureID      string               `json:"featureId"`
-	ResourceID     *string              `json:"resourceId,omitempty"`
-	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
-	Value          float64              `json:"value"`
+	CreatedAt      *string                `json:"createdAt,omitempty"`
+	CustomerID     string                 `json:"customerId"`
+	Dimensions     map[string]interface{} `json:"dimensions,omitempty"`
+	EnvironmentID  *string                `json:"environmentId,omitempty"`
+	FeatureID      string                 `json:"featureId"`
+	ResourceID     *string                `json:"resourceId,omitempty"`
+	UpdateBehavior *UsageUpdateBehavior   `json:"updateBehavior,omitempty"`
+	Value          float64                `json:"value"`
 }
 
 type ResyncIntegrationInput struct {
@@ -6926,13 +6929,14 @@ type UsageMeasurementCountAggregate struct {
 }
 
 type UsageMeasurementCreateInput struct {
-	CreatedAt      *string              `json:"createdAt,omitempty"`
-	CustomerID     string               `json:"customerId"`
-	EnvironmentID  *string              `json:"environmentId,omitempty"`
-	FeatureID      string               `json:"featureId"`
-	ResourceID     *string              `json:"resourceId,omitempty"`
-	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
-	Value          float64              `json:"value"`
+	CreatedAt      *string                `json:"createdAt,omitempty"`
+	CustomerID     string                 `json:"customerId"`
+	Dimensions     map[string]interface{} `json:"dimensions,omitempty"`
+	EnvironmentID  *string                `json:"environmentId,omitempty"`
+	FeatureID      string                 `json:"featureId"`
+	ResourceID     *string                `json:"resourceId,omitempty"`
+	UpdateBehavior *UsageUpdateBehavior   `json:"updateBehavior,omitempty"`
+	Value          float64                `json:"value"`
 }
 
 type UsageMeasurementEdge struct {
