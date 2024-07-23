@@ -3506,6 +3506,12 @@ type NumberFieldComparisonBetween struct {
 	Upper float64 `json:"upper"`
 }
 
+type OverageBillingPeriodChange struct {
+	After      *OverageBillingPeriod `json:"after"`
+	Before     *OverageBillingPeriod `json:"before"`
+	ChangeType *ChangeType           `json:"changeType"`
+}
+
 type OverageEntitlementCreateInput struct {
 	// The behavior of the entitlement
 	Behavior                        *EntitlementBehavior           `json:"behavior,omitempty"`
@@ -3553,11 +3559,13 @@ type PackageChanges struct {
 	// Max quantity for an addon
 	MaxQuantity *NumberChange `json:"maxQuantity"`
 	// Minimum spend limit
-	MinimumSpend  []*MinimumSpendChange `json:"minimumSpend"`
-	OveragePrices []*PackagePriceChange `json:"overagePrices"`
-	Prices        []*PackagePriceChange `json:"prices"`
-	PricingType   *PricingTypeChange    `json:"pricingType"`
-	TotalChanges  int64                 `json:"totalChanges"`
+	MinimumSpend []*MinimumSpendChange `json:"minimumSpend"`
+	// Configures when the overage charge is billed.
+	OverageBillingPeriod *OverageBillingPeriodChange `json:"overageBillingPeriod"`
+	OveragePrices        []*PackagePriceChange       `json:"overagePrices"`
+	Prices               []*PackagePriceChange       `json:"prices"`
+	PricingType          *PricingTypeChange          `json:"pricingType"`
+	TotalChanges         int64                       `json:"totalChanges"`
 }
 
 type PackageDto struct {
@@ -6020,7 +6028,8 @@ type SubscriptionInvoicePreviewLineItem struct {
 	// Whether the price connected to the invoice line item has a soft limit
 	HasSoftLimit *bool `json:"hasSoftLimit"`
 	// The nested line items of the invoice line item
-	Lines []*SubscriptionInvoicePreviewLineItemData `json:"lines"`
+	Lines  []*SubscriptionInvoicePreviewLineItemData `json:"lines"`
+	Period SubscriptionInvoicePreviewLineItemPeriod  `json:"period"`
 	// The price connected to the invoice line item
 	Price *Price `json:"price"`
 	// Whether the line item is prorated
@@ -6044,7 +6053,8 @@ type SubscriptionInvoicePreviewLineItemData struct {
 	// The description of the invoice line item
 	Description string `json:"description"`
 	// Whether the price connected to the invoice line item has a soft limit
-	HasSoftLimit *bool `json:"hasSoftLimit"`
+	HasSoftLimit *bool                                    `json:"hasSoftLimit"`
+	Period       SubscriptionInvoicePreviewLineItemPeriod `json:"period"`
 	// The price connected to the invoice line item
 	Price *Price `json:"price"`
 	// Whether the line item is prorated
@@ -6057,6 +6067,12 @@ type SubscriptionInvoicePreviewLineItemData struct {
 	UnitPrice *Money `json:"unitPrice"`
 	// The usage limit of the invoice line item
 	UsageLimit *float64 `json:"usageLimit"`
+}
+
+// The invoice line item period
+type SubscriptionInvoicePreviewLineItemPeriod struct {
+	End   string `json:"end"`
+	Start string `json:"start"`
 }
 
 type SubscriptionMaximumSpend struct {
@@ -7583,20 +7599,22 @@ func (e BillingCadence) MarshalGQL(w io.Writer) {
 type BillingModel string
 
 const (
-	BillingModelFlatFee    BillingModel = "FLAT_FEE"
-	BillingModelPerUnit    BillingModel = "PER_UNIT"
-	BillingModelUsageBased BillingModel = "USAGE_BASED"
+	BillingModelFlatFee      BillingModel = "FLAT_FEE"
+	BillingModelMinimumSpend BillingModel = "MINIMUM_SPEND"
+	BillingModelPerUnit      BillingModel = "PER_UNIT"
+	BillingModelUsageBased   BillingModel = "USAGE_BASED"
 )
 
 var AllBillingModel = []BillingModel{
 	BillingModelFlatFee,
+	BillingModelMinimumSpend,
 	BillingModelPerUnit,
 	BillingModelUsageBased,
 }
 
 func (e BillingModel) IsValid() bool {
 	switch e {
-	case BillingModelFlatFee, BillingModelPerUnit, BillingModelUsageBased:
+	case BillingModelFlatFee, BillingModelMinimumSpend, BillingModelPerUnit, BillingModelUsageBased:
 		return true
 	}
 	return false
@@ -9959,6 +9977,7 @@ const (
 	InvoiceLineItemTypeBaseCharge                   InvoiceLineItemType = "BaseCharge"
 	InvoiceLineItemTypeInAdvanceCommitmentCharge    InvoiceLineItemType = "InAdvanceCommitmentCharge"
 	InvoiceLineItemTypeMinimumSpendAdjustmentCharge InvoiceLineItemType = "MinimumSpendAdjustmentCharge"
+	InvoiceLineItemTypeMinimumSpendCharge           InvoiceLineItemType = "MinimumSpendCharge"
 	InvoiceLineItemTypeOther                        InvoiceLineItemType = "Other"
 	InvoiceLineItemTypeOverageCharge                InvoiceLineItemType = "OverageCharge"
 	InvoiceLineItemTypePayAsYouGoCharge             InvoiceLineItemType = "PayAsYouGoCharge"
@@ -9971,6 +9990,7 @@ var AllInvoiceLineItemType = []InvoiceLineItemType{
 	InvoiceLineItemTypeBaseCharge,
 	InvoiceLineItemTypeInAdvanceCommitmentCharge,
 	InvoiceLineItemTypeMinimumSpendAdjustmentCharge,
+	InvoiceLineItemTypeMinimumSpendCharge,
 	InvoiceLineItemTypeOther,
 	InvoiceLineItemTypeOverageCharge,
 	InvoiceLineItemTypePayAsYouGoCharge,
@@ -9980,7 +10000,7 @@ var AllInvoiceLineItemType = []InvoiceLineItemType{
 
 func (e InvoiceLineItemType) IsValid() bool {
 	switch e {
-	case InvoiceLineItemTypeAddonCharge, InvoiceLineItemTypeBaseCharge, InvoiceLineItemTypeInAdvanceCommitmentCharge, InvoiceLineItemTypeMinimumSpendAdjustmentCharge, InvoiceLineItemTypeOther, InvoiceLineItemTypeOverageCharge, InvoiceLineItemTypePayAsYouGoCharge, InvoiceLineItemTypeTierCharge, InvoiceLineItemTypeZeroAmountBaseCharge:
+	case InvoiceLineItemTypeAddonCharge, InvoiceLineItemTypeBaseCharge, InvoiceLineItemTypeInAdvanceCommitmentCharge, InvoiceLineItemTypeMinimumSpendAdjustmentCharge, InvoiceLineItemTypeMinimumSpendCharge, InvoiceLineItemTypeOther, InvoiceLineItemTypeOverageCharge, InvoiceLineItemTypePayAsYouGoCharge, InvoiceLineItemTypeTierCharge, InvoiceLineItemTypeZeroAmountBaseCharge:
 		return true
 	}
 	return false
