@@ -202,41 +202,6 @@ type AddonCreateInput struct {
 	Status      *PackageStatus `json:"status,omitempty"`
 }
 
-type AddonDeleteResponse struct {
-	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	BillingID          *string                `json:"billingId"`
-	BillingLinkURL     *string                `json:"billingLinkUrl"`
-	CreatedAt          *string                `json:"createdAt"`
-	// List of addons this addon is dependant on
-	Dependencies  []*Addon              `json:"dependencies"`
-	Description   *string               `json:"description"`
-	DisplayName   string                `json:"displayName"`
-	DraftDetails  *PackageDraftDetails  `json:"draftDetails"`
-	DraftSummary  *PackageDraftSummary  `json:"draftSummary"`
-	Entitlements  []*PackageEntitlement `json:"entitlements"`
-	Environment   Environment           `json:"environment"`
-	EnvironmentID string                `json:"environmentId"`
-	// Indicates if the addon has subscriptions
-	HasSubscriptions  bool         `json:"hasSubscriptions"`
-	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
-	ID                string       `json:"id"`
-	IsLatest          *bool        `json:"isLatest"`
-	// The maximum quantity of this addon that can be added to a subscription
-	MaxQuantity          *float64              `json:"maxQuantity"`
-	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
-	OveragePrices        []*Price              `json:"overagePrices"`
-	Prices               []*Price              `json:"prices"`
-	PricingType          *PricingType          `json:"pricingType"`
-	Product              *Product              `json:"product"`
-	ProductID            *string               `json:"productId"`
-	RefID                string                `json:"refId"`
-	Status               PackageStatus         `json:"status"`
-	SyncStates           []*SyncState          `json:"syncStates"`
-	Type                 string                `json:"type"`
-	UpdatedAt            *string               `json:"updatedAt"`
-	VersionNumber        int64                 `json:"versionNumber"`
-}
-
 // Addon dependency changed
 type AddonDependencyChange struct {
 	// Addon after change
@@ -1885,11 +1850,6 @@ type DefaultTrialConfigInputDto struct {
 type DeleteFeatureInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	ID            string  `json:"id"`
-}
-
-type DeleteOneAddonInput struct {
-	// The id of the record to delete.
-	ID string `json:"id"`
 }
 
 type DeleteOneHookInput struct {
