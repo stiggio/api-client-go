@@ -4703,6 +4703,8 @@ type PriceNotFoundError struct {
 }
 
 type PriceOverrideInput struct {
+	// The corresponding addon id of the price
+	AddonID *string `json:"addonId,omitempty"`
 	// Whether the price is a base charge
 	BaseCharge *bool `json:"baseCharge,omitempty"`
 	// The number of units per block. Defaults to 1 unit.
