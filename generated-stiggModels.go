@@ -4570,15 +4570,17 @@ type Price struct {
 	FeatureID     *string  `json:"featureId"`
 	ID            string   `json:"id"`
 	// Indication whether the subscription price is an override price
-	IsOverridePrice     bool         `json:"isOverridePrice"`
-	MaxUnitQuantity     *float64     `json:"maxUnitQuantity"`
-	MinUnitQuantity     *float64     `json:"minUnitQuantity"`
-	Package             PackageDto   `json:"package"`
-	PackageID           *string      `json:"packageId"`
-	Price               *Money       `json:"price"`
-	Tiers               []*PriceTier `json:"tiers"`
-	TiersMode           *TiersMode   `json:"tiersMode"`
-	UsedInSubscriptions *bool        `json:"usedInSubscriptions"`
+	IsOverridePrice          bool                     `json:"isOverridePrice"`
+	MaxUnitQuantity          *float64                 `json:"maxUnitQuantity"`
+	MinUnitQuantity          *float64                 `json:"minUnitQuantity"`
+	Package                  PackageDto               `json:"package"`
+	PackageID                *string                  `json:"packageId"`
+	Price                    *Money                   `json:"price"`
+	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
+	Tiers                    []*PriceTier             `json:"tiers"`
+	TiersMode                *TiersMode               `json:"tiersMode"`
+	UsedInSubscriptions      *bool                    `json:"usedInSubscriptions"`
 }
 
 type PriceAggregateGroupBy struct {
@@ -4608,21 +4610,23 @@ type PriceDeleteResponse struct {
 	BillingModel       *BillingModel   `json:"billingModel"`
 	BillingPeriod      *BillingPeriod  `json:"billingPeriod"`
 	// The number of units per block. Defaults to 1 unit.
-	BlockSize           *float64     `json:"blockSize"`
-	CreatedAt           *string      `json:"createdAt"`
-	CrmID               *string      `json:"crmId"`
-	CrmLinkURL          *string      `json:"crmLinkUrl"`
-	EnvironmentID       *string      `json:"environmentId"`
-	Feature             *Feature     `json:"feature"`
-	FeatureID           *string      `json:"featureId"`
-	ID                  *string      `json:"id"`
-	MaxUnitQuantity     *float64     `json:"maxUnitQuantity"`
-	MinUnitQuantity     *float64     `json:"minUnitQuantity"`
-	PackageID           *string      `json:"packageId"`
-	Price               *Money       `json:"price"`
-	Tiers               []*PriceTier `json:"tiers"`
-	TiersMode           *TiersMode   `json:"tiersMode"`
-	UsedInSubscriptions *bool        `json:"usedInSubscriptions"`
+	BlockSize                *float64                 `json:"blockSize"`
+	CreatedAt                *string                  `json:"createdAt"`
+	CrmID                    *string                  `json:"crmId"`
+	CrmLinkURL               *string                  `json:"crmLinkUrl"`
+	EnvironmentID            *string                  `json:"environmentId"`
+	Feature                  *Feature                 `json:"feature"`
+	FeatureID                *string                  `json:"featureId"`
+	ID                       *string                  `json:"id"`
+	MaxUnitQuantity          *float64                 `json:"maxUnitQuantity"`
+	MinUnitQuantity          *float64                 `json:"minUnitQuantity"`
+	PackageID                *string                  `json:"packageId"`
+	Price                    *Money                   `json:"price"`
+	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
+	Tiers                    []*PriceTier             `json:"tiers"`
+	TiersMode                *TiersMode               `json:"tiersMode"`
+	UsedInSubscriptions      *bool                    `json:"usedInSubscriptions"`
 }
 
 type PriceEdge struct {
@@ -4743,13 +4747,17 @@ type PriceTierInput struct {
 }
 
 type PricingModelCreateInput struct {
-	BillingCadence  *BillingCadence     `json:"billingCadence,omitempty"`
-	BillingModel    BillingModel        `json:"billingModel"`
-	FeatureID       *string             `json:"featureId,omitempty"`
-	MaxUnitQuantity *float64            `json:"maxUnitQuantity,omitempty"`
-	MinUnitQuantity *float64            `json:"minUnitQuantity,omitempty"`
-	PricePeriods    []*PricePeriodInput `json:"pricePeriods"`
-	TiersMode       *TiersMode          `json:"tiersMode,omitempty"`
+	BillingCadence                  *BillingCadence                `json:"billingCadence,omitempty"`
+	BillingModel                    BillingModel                   `json:"billingModel"`
+	FeatureID                       *string                        `json:"featureId,omitempty"`
+	MaxUnitQuantity                 *float64                       `json:"maxUnitQuantity,omitempty"`
+	MinUnitQuantity                 *float64                       `json:"minUnitQuantity,omitempty"`
+	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	PricePeriods                    []*PricePeriodInput            `json:"pricePeriods"`
+	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
+	TiersMode                       *TiersMode                     `json:"tiersMode,omitempty"`
+	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type PricingTypeChange struct {
