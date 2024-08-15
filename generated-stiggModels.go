@@ -416,6 +416,22 @@ type AttachCustomerPaymentMethodInput struct {
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
+type Auth0Credentials struct {
+	ClientID     string      `json:"clientId"`
+	ClientSecret string      `json:"clientSecret"`
+	Region       Auth0Region `json:"region"`
+	Tenant       string      `json:"tenant"`
+}
+
+func (Auth0Credentials) IsCredentials() {}
+
+type Auth0CredentialsInput struct {
+	ClientID     string `json:"clientId"`
+	ClientSecret string `json:"clientSecret"`
+	Region       string `json:"region"`
+	Tenant       string `json:"tenant"`
+}
+
 // Auto cancellation rule - when subscription for source plan is canceled, other subscriptions to target plan would be cancelled as well
 type AutoCancellationRule struct {
 	// The source plan.
@@ -934,6 +950,7 @@ type CreateHook struct {
 }
 
 type CreateIntegrationInput struct {
+	Auth0Credentials          *Auth0CredentialsInput          `json:"auth0Credentials,omitempty"`
 	AwsMarketplaceCredentials *AwsMarketplaceCredentialsInput `json:"awsMarketplaceCredentials,omitempty"`
 	BigQueryCredentials       *BigQueryCredentialsInput       `json:"bigQueryCredentials,omitempty"`
 	EnvironmentID             string                          `json:"environmentId"`
@@ -6751,6 +6768,7 @@ type UpdateHook struct {
 }
 
 type UpdateIntegrationInput struct {
+	Auth0Credentials *Auth0CredentialsInput `json:"auth0Credentials,omitempty"`
 	// Salesforce integration configuration
 	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
 	StripeCredentials     *StripeCredentialsInput     `json:"stripeCredentials,omitempty"`
@@ -7527,6 +7545,56 @@ func (e *APIKeyType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e APIKeyType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Auth0 region.
+type Auth0Region string
+
+const (
+	Auth0RegionAu Auth0Region = "AU"
+	Auth0RegionCa Auth0Region = "CA"
+	Auth0RegionEu Auth0Region = "EU"
+	Auth0RegionJp Auth0Region = "JP"
+	Auth0RegionUk Auth0Region = "UK"
+	Auth0RegionUs Auth0Region = "US"
+)
+
+var AllAuth0Region = []Auth0Region{
+	Auth0RegionAu,
+	Auth0RegionCa,
+	Auth0RegionEu,
+	Auth0RegionJp,
+	Auth0RegionUk,
+	Auth0RegionUs,
+}
+
+func (e Auth0Region) IsValid() bool {
+	switch e {
+	case Auth0RegionAu, Auth0RegionCa, Auth0RegionEu, Auth0RegionJp, Auth0RegionUk, Auth0RegionUs:
+		return true
+	}
+	return false
+}
+
+func (e Auth0Region) String() string {
+	return string(e)
+}
+
+func (e *Auth0Region) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = Auth0Region(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid Auth0Region", str)
+	}
+	return nil
+}
+
+func (e Auth0Region) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -12482,6 +12550,7 @@ func (e UsageUpdateBehavior) MarshalGQL(w io.Writer) {
 type VendorIdentifier string
 
 const (
+	VendorIdentifierAuth0          VendorIdentifier = "AUTH0"
 	VendorIdentifierAwsMarketplace VendorIdentifier = "AWS_MARKETPLACE"
 	VendorIdentifierBigQuery       VendorIdentifier = "BIG_QUERY"
 	VendorIdentifierHubspot        VendorIdentifier = "HUBSPOT"
@@ -12492,6 +12561,7 @@ const (
 )
 
 var AllVendorIdentifier = []VendorIdentifier{
+	VendorIdentifierAuth0,
 	VendorIdentifierAwsMarketplace,
 	VendorIdentifierBigQuery,
 	VendorIdentifierHubspot,
@@ -12503,7 +12573,7 @@ var AllVendorIdentifier = []VendorIdentifier{
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
