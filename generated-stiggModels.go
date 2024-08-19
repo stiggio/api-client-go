@@ -955,6 +955,7 @@ type CreateIntegrationInput struct {
 	BigQueryCredentials       *BigQueryCredentialsInput       `json:"bigQueryCredentials,omitempty"`
 	EnvironmentID             string                          `json:"environmentId"`
 	HubspotCredentials        *HubspotCredentialsInput        `json:"hubspotCredentials,omitempty"`
+	OpenFGACredentials        *OpenFGACredentialsInput        `json:"openFGACredentials,omitempty"`
 	SalesforceCredentials     *SalesforceCredentialsInput     `json:"salesforceCredentials,omitempty"`
 	SnowflakeCredentials      *SnowflakeCredentialsInput      `json:"snowflakeCredentials,omitempty"`
 	StripeCredentials         *StripeCredentialsInput         `json:"stripeCredentials,omitempty"`
@@ -3537,6 +3538,26 @@ type NumberFieldComparison struct {
 type NumberFieldComparisonBetween struct {
 	Lower float64 `json:"lower"`
 	Upper float64 `json:"upper"`
+}
+
+type OpenFGACredentials struct {
+	APIAudience    string `json:"apiAudience"`
+	APITokenIssuer string `json:"apiTokenIssuer"`
+	APIURL         string `json:"apiUrl"`
+	ClientID       string `json:"clientId"`
+	ModelID        string `json:"modelId"`
+	StoreID        string `json:"storeId"`
+}
+
+func (OpenFGACredentials) IsCredentials() {}
+
+type OpenFGACredentialsInput struct {
+	APIAudience    string  `json:"apiAudience"`
+	APITokenIssuer string  `json:"apiTokenIssuer"`
+	APIURL         string  `json:"apiUrl"`
+	ClientID       string  `json:"clientId"`
+	ClientSecret   string  `json:"clientSecret"`
+	StoreID        *string `json:"storeId,omitempty"`
 }
 
 type OverageBillingPeriodChange struct {
@@ -6768,7 +6789,8 @@ type UpdateHook struct {
 }
 
 type UpdateIntegrationInput struct {
-	Auth0Credentials *Auth0CredentialsInput `json:"auth0Credentials,omitempty"`
+	Auth0Credentials   *Auth0CredentialsInput   `json:"auth0Credentials,omitempty"`
+	OpenFGACredentials *OpenFGACredentialsInput `json:"openFGACredentials,omitempty"`
 	// Salesforce integration configuration
 	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
 	StripeCredentials     *StripeCredentialsInput     `json:"stripeCredentials,omitempty"`
@@ -12554,6 +12576,7 @@ const (
 	VendorIdentifierAwsMarketplace VendorIdentifier = "AWS_MARKETPLACE"
 	VendorIdentifierBigQuery       VendorIdentifier = "BIG_QUERY"
 	VendorIdentifierHubspot        VendorIdentifier = "HUBSPOT"
+	VendorIdentifierOpenFga        VendorIdentifier = "OPEN_FGA"
 	VendorIdentifierSalesforce     VendorIdentifier = "SALESFORCE"
 	VendorIdentifierSnowflake      VendorIdentifier = "SNOWFLAKE"
 	VendorIdentifierStripe         VendorIdentifier = "STRIPE"
@@ -12565,6 +12588,7 @@ var AllVendorIdentifier = []VendorIdentifier{
 	VendorIdentifierAwsMarketplace,
 	VendorIdentifierBigQuery,
 	VendorIdentifierHubspot,
+	VendorIdentifierOpenFga,
 	VendorIdentifierSalesforce,
 	VendorIdentifierSnowflake,
 	VendorIdentifierStripe,
@@ -12573,7 +12597,7 @@ var AllVendorIdentifier = []VendorIdentifier{
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierOpenFga, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
