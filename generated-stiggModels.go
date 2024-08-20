@@ -2985,7 +2985,7 @@ type ImportAlreadyInProgressError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
-type ImportCustomerBulk struct {
+type ImportCustomerBulkInput struct {
 	Customers     []*ImportCustomerInput `json:"customers"`
 	EnvironmentID *string                `json:"environmentId,omitempty"`
 }
@@ -3123,7 +3123,7 @@ type ImportSubscriptionInput struct {
 	UpdatedAt *string `json:"updatedAt,omitempty"`
 }
 
-type ImportSubscriptionsBulk struct {
+type ImportSubscriptionsBulkInput struct {
 	EnvironmentID *string                    `json:"environmentId,omitempty"`
 	Subscriptions []*ImportSubscriptionInput `json:"subscriptions"`
 }
