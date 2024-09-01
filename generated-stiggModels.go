@@ -1197,6 +1197,7 @@ type CustomerFilterCustomerSubscriptionFilter struct {
 	ID                        *StringFieldComparison                      `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                      `json:"oldBillingId,omitempty"`
 	Or                        []*CustomerFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PayingCustomerID          *StringFieldComparison                      `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison          `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                      `json:"refId,omitempty"`
@@ -1484,6 +1485,7 @@ type CustomerResourceFilterCustomerSubscriptionFilter struct {
 	ID                        *StringFieldComparison                              `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                              `json:"oldBillingId,omitempty"`
 	Or                        []*CustomerResourceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PayingCustomerID          *StringFieldComparison                              `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                  `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                        `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                              `json:"refId,omitempty"`
@@ -1565,6 +1567,7 @@ type CustomerSubscription struct {
 	OldBillingID          *string                   `json:"oldBillingId"`
 	OutdatedPricePackages []string                  `json:"outdatedPricePackages"`
 	PayingCustomer        *Customer                 `json:"payingCustomer"`
+	PayingCustomerID      *string                   `json:"payingCustomerId"`
 	PaymentCollection     PaymentCollection         `json:"paymentCollection"`
 	// Payment collection method of the subscription
 	PaymentCollectionMethod  *PaymentCollectionMethod        `json:"paymentCollectionMethod"`
@@ -1602,6 +1605,7 @@ type CustomerSubscriptionAggregateGroupBy struct {
 	EnvironmentID             *string                   `json:"environmentId"`
 	ID                        *string                   `json:"id"`
 	OldBillingID              *string                   `json:"oldBillingId"`
+	PayingCustomerID          *string                   `json:"payingCustomerId"`
 	PaymentCollection         *PaymentCollection        `json:"paymentCollection"`
 	PricingType               *PricingType              `json:"pricingType"`
 	RefID                     *string                   `json:"refId"`
@@ -1637,6 +1641,7 @@ type CustomerSubscriptionCountAggregate struct {
 	EnvironmentID             *int64 `json:"environmentId"`
 	ID                        *int64 `json:"id"`
 	OldBillingID              *int64 `json:"oldBillingId"`
+	PayingCustomerID          *int64 `json:"payingCustomerId"`
 	PaymentCollection         *int64 `json:"paymentCollection"`
 	PricingType               *int64 `json:"pricingType"`
 	RefID                     *int64 `json:"refId"`
@@ -1675,6 +1680,7 @@ type CustomerSubscriptionFilter struct {
 	OldBillingID              *StringFieldComparison                                   `json:"oldBillingId,omitempty"`
 	Or                        []*CustomerSubscriptionFilter                            `json:"or,omitempty"`
 	PayingCustomer            *CustomerSubscriptionFilterCustomerFilter                `json:"payingCustomer,omitempty"`
+	PayingCustomerID          *StringFieldComparison                                   `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                       `json:"paymentCollection,omitempty"`
 	Plan                      *CustomerSubscriptionFilterPlanFilter                    `json:"plan,omitempty"`
 	Prices                    *CustomerSubscriptionFilterSubscriptionPriceFilter       `json:"prices,omitempty"`
@@ -1781,6 +1787,7 @@ type CustomerSubscriptionMaxAggregate struct {
 	EnvironmentID             *string                   `json:"environmentId"`
 	ID                        *string                   `json:"id"`
 	OldBillingID              *string                   `json:"oldBillingId"`
+	PayingCustomerID          *string                   `json:"payingCustomerId"`
 	PaymentCollection         *PaymentCollection        `json:"paymentCollection"`
 	PricingType               *PricingType              `json:"pricingType"`
 	RefID                     *string                   `json:"refId"`
@@ -1807,6 +1814,7 @@ type CustomerSubscriptionMinAggregate struct {
 	EnvironmentID             *string                   `json:"environmentId"`
 	ID                        *string                   `json:"id"`
 	OldBillingID              *string                   `json:"oldBillingId"`
+	PayingCustomerID          *string                   `json:"payingCustomerId"`
 	PaymentCollection         *PaymentCollection        `json:"paymentCollection"`
 	PricingType               *PricingType              `json:"pricingType"`
 	RefID                     *string                   `json:"refId"`
@@ -5764,6 +5772,7 @@ type SubscriptionAddonFilterCustomerSubscriptionFilter struct {
 	ID                        *StringFieldComparison                               `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                               `json:"oldBillingId,omitempty"`
 	Or                        []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PayingCustomerID          *StringFieldComparison                               `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                               `json:"refId,omitempty"`
@@ -5958,6 +5967,7 @@ type SubscriptionEntitlementFilterCustomerSubscriptionFilter struct {
 	ID                        *StringFieldComparison                                     `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                                     `json:"oldBillingId,omitempty"`
 	Or                        []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PayingCustomerID          *StringFieldComparison                                     `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                         `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                               `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                                     `json:"refId,omitempty"`
@@ -6448,6 +6458,7 @@ type SubscriptionPriceFilterCustomerSubscriptionFilter struct {
 	ID                        *StringFieldComparison                               `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                               `json:"oldBillingId,omitempty"`
 	Or                        []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
+	PayingCustomerID          *StringFieldComparison                               `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                               `json:"refId,omitempty"`
@@ -8509,6 +8520,7 @@ const (
 	CustomerSubscriptionSortFieldsEnvironmentID             CustomerSubscriptionSortFields = "environmentId"
 	CustomerSubscriptionSortFieldsID                        CustomerSubscriptionSortFields = "id"
 	CustomerSubscriptionSortFieldsOldBillingID              CustomerSubscriptionSortFields = "oldBillingId"
+	CustomerSubscriptionSortFieldsPayingCustomerID          CustomerSubscriptionSortFields = "payingCustomerId"
 	CustomerSubscriptionSortFieldsPaymentCollection         CustomerSubscriptionSortFields = "paymentCollection"
 	CustomerSubscriptionSortFieldsPricingType               CustomerSubscriptionSortFields = "pricingType"
 	CustomerSubscriptionSortFieldsRefID                     CustomerSubscriptionSortFields = "refId"
@@ -8535,6 +8547,7 @@ var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
 	CustomerSubscriptionSortFieldsEnvironmentID,
 	CustomerSubscriptionSortFieldsID,
 	CustomerSubscriptionSortFieldsOldBillingID,
+	CustomerSubscriptionSortFieldsPayingCustomerID,
 	CustomerSubscriptionSortFieldsPaymentCollection,
 	CustomerSubscriptionSortFieldsPricingType,
 	CustomerSubscriptionSortFieldsRefID,
@@ -8547,7 +8560,7 @@ var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
 
 func (e CustomerSubscriptionSortFields) IsValid() bool {
 	switch e {
-	case CustomerSubscriptionSortFieldsBillingCycleAnchor, CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd, CustomerSubscriptionSortFieldsCurrentBillingPeriodStart, CustomerSubscriptionSortFieldsCustomerID, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
+	case CustomerSubscriptionSortFieldsBillingCycleAnchor, CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd, CustomerSubscriptionSortFieldsCurrentBillingPeriodStart, CustomerSubscriptionSortFieldsCustomerID, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPayingCustomerID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
 		return true
 	}
 	return false
