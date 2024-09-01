@@ -1564,6 +1564,7 @@ type CustomerSubscription struct {
 	MinimumSpend          *SubscriptionMinimumSpend `json:"minimumSpend"`
 	OldBillingID          *string                   `json:"oldBillingId"`
 	OutdatedPricePackages []string                  `json:"outdatedPricePackages"`
+	PayingCustomer        *Customer                 `json:"payingCustomer"`
 	PaymentCollection     PaymentCollection         `json:"paymentCollection"`
 	// Payment collection method of the subscription
 	PaymentCollectionMethod  *PaymentCollectionMethod        `json:"paymentCollectionMethod"`
@@ -1673,6 +1674,7 @@ type CustomerSubscriptionFilter struct {
 	ID                        *StringFieldComparison                                   `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                                   `json:"oldBillingId,omitempty"`
 	Or                        []*CustomerSubscriptionFilter                            `json:"or,omitempty"`
+	PayingCustomer            *CustomerSubscriptionFilterCustomerFilter                `json:"payingCustomer,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                       `json:"paymentCollection,omitempty"`
 	Plan                      *CustomerSubscriptionFilterPlanFilter                    `json:"plan,omitempty"`
 	Prices                    *CustomerSubscriptionFilterSubscriptionPriceFilter       `json:"prices,omitempty"`
