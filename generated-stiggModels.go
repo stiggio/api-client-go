@@ -1373,6 +1373,7 @@ type CustomerPortalPromotionalEntitlement struct {
 type CustomerPortalSubscription struct {
 	Addons             []*CustomerPortalAddon             `json:"addons"`
 	BillingPeriodRange *DateRange                         `json:"billingPeriodRange"`
+	PlanID             string                             `json:"planId"`
 	PlanName           string                             `json:"planName"`
 	Prices             []*CustomerPortalSubscriptionPrice `json:"prices"`
 	Pricing            CustomerPortalSubscriptionPricing  `json:"pricing"`
