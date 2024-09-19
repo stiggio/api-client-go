@@ -2562,9 +2562,11 @@ type ExperimentSumAggregate struct {
 }
 
 type FailedToImportCustomerError struct {
-	BillingID         string `json:"billingId"`
-	Code              string `json:"code"`
-	IsValidationError bool   `json:"isValidationError"`
+	BillingID         string   `json:"billingId"`
+	Code              string   `json:"code"`
+	FailedBillingIds  []string `json:"failedBillingIds"`
+	FailedCustomerIds []string `json:"failedCustomerIds"`
+	IsValidationError bool     `json:"isValidationError"`
 }
 
 type Feature struct {
