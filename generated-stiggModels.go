@@ -2381,6 +2381,10 @@ type EventLogSort struct {
 
 // Event request properties
 type EventRequest struct {
+	// The request body
+	Body map[string]interface{} `json:"body"`
+	// The request response
+	Response map[string]interface{} `json:"response"`
 	// The request trace ID
 	TraceID *string `json:"traceId"`
 }
