@@ -2027,7 +2027,13 @@ type Entitlement struct {
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
 	ResourceID               *string                  `json:"resourceId"`
 	UsageLimit               *float64                 `json:"usageLimit"`
-	UsageUpdatedAt           *string                  `json:"usageUpdatedAt"`
+	// The anchor for calculating the usage period for metered entitlements with a reset period configured
+	UsagePeriodAnchor *string `json:"usagePeriodAnchor"`
+	// The end date of the usage period for metered entitlements with a reset period configured
+	UsagePeriodEnd *string `json:"usagePeriodEnd"`
+	// The start date of the usage period for metered entitlements with a reset period configured
+	UsagePeriodStart *string `json:"usagePeriodStart"`
+	UsageUpdatedAt   *string `json:"usageUpdatedAt"`
 }
 
 type EntitlementCheckRequested struct {
@@ -2109,7 +2115,13 @@ type EntitlementWithSummary struct {
 	ResourceID               *string                  `json:"resourceId"`
 	Summaries                []*EntitlementSummary    `json:"summaries"`
 	UsageLimit               *float64                 `json:"usageLimit"`
-	UsageUpdatedAt           *string                  `json:"usageUpdatedAt"`
+	// The anchor for calculating the usage period for metered entitlements with a reset period configured
+	UsagePeriodAnchor *string `json:"usagePeriodAnchor"`
+	// The end date of the usage period for metered entitlements with a reset period configured
+	UsagePeriodEnd *string `json:"usagePeriodEnd"`
+	// The start date of the usage period for metered entitlements with a reset period configured
+	UsagePeriodStart *string `json:"usagePeriodStart"`
+	UsageUpdatedAt   *string `json:"usageUpdatedAt"`
 }
 
 type EntitlementsUpdated struct {
@@ -7161,6 +7173,10 @@ type UsageMeasurementUpdated struct {
 	FeatureID     string   `json:"featureId"`
 	NextResetDate *float64 `json:"nextResetDate"`
 	ResourceID    *string  `json:"resourceId"`
+	// The end date of the usage period that the measurement resides in (for entitlement with reset period)
+	UsagePeriodEnd *float64 `json:"usagePeriodEnd"`
+	// The start date of the usage period that the measurement resides in (for entitlement with reset period)
+	UsagePeriodStart *float64 `json:"usagePeriodStart"`
 }
 
 type UsageMeasurementWithCurrentUsage struct {
@@ -7173,7 +7189,11 @@ type UsageMeasurementWithCurrentUsage struct {
 	NextResetDate *string  `json:"nextResetDate"`
 	ResourceID    *string  `json:"resourceId"`
 	Timestamp     string   `json:"timestamp"`
-	Value         float64  `json:"value"`
+	// The end date of the usage period that the measurement resides in (for entitlement with reset period)
+	UsagePeriodEnd *string `json:"usagePeriodEnd"`
+	// The start date of the usage period that the measurement resides in (for entitlement with reset period)
+	UsagePeriodStart *string `json:"usagePeriodStart"`
+	Value            float64 `json:"value"`
 }
 
 type UsageUpdated struct {
