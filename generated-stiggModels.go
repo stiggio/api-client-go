@@ -2235,13 +2235,15 @@ type EstimateSubscriptionInput struct {
 	BillingPeriod      *BillingPeriod           `json:"billingPeriod,omitempty"`
 	CustomerID         string                   `json:"customerId"`
 	EnvironmentID      *string                  `json:"environmentId,omitempty"`
-	PlanID             string                   `json:"planId"`
-	PriceUnitAmount    *float64                 `json:"priceUnitAmount,omitempty"`
-	PromotionCode      *string                  `json:"promotionCode,omitempty"`
-	ResourceID         *string                  `json:"resourceId,omitempty"`
-	SkipTrial          *bool                    `json:"skipTrial,omitempty"`
-	StartDate          *string                  `json:"startDate,omitempty"`
-	UnitQuantity       *float64                 `json:"unitQuantity,omitempty"`
+	// The customer that will pay for the subscription
+	PayingCustomerID *string  `json:"payingCustomerId,omitempty"`
+	PlanID           string   `json:"planId"`
+	PriceUnitAmount  *float64 `json:"priceUnitAmount,omitempty"`
+	PromotionCode    *string  `json:"promotionCode,omitempty"`
+	ResourceID       *string  `json:"resourceId,omitempty"`
+	SkipTrial        *bool    `json:"skipTrial,omitempty"`
+	StartDate        *string  `json:"startDate,omitempty"`
+	UnitQuantity     *float64 `json:"unitQuantity,omitempty"`
 }
 
 type EstimateSubscriptionUpdateInput struct {
@@ -4629,12 +4631,14 @@ type PreviewSubscriptionInput struct {
 	BillingPeriod      *BillingPeriod           `json:"billingPeriod,omitempty"`
 	CustomerID         string                   `json:"customerId"`
 	EnvironmentID      *string                  `json:"environmentId,omitempty"`
-	PlanID             string                   `json:"planId"`
-	PromotionCode      *string                  `json:"promotionCode,omitempty"`
-	ResourceID         *string                  `json:"resourceId,omitempty"`
-	ScheduleStrategy   *ScheduleStrategy        `json:"scheduleStrategy,omitempty"`
-	StartDate          *string                  `json:"startDate,omitempty"`
-	UnitQuantity       *float64                 `json:"unitQuantity,omitempty"`
+	// The customer that will pay for the subscription
+	PayingCustomerID *string           `json:"payingCustomerId,omitempty"`
+	PlanID           string            `json:"planId"`
+	PromotionCode    *string           `json:"promotionCode,omitempty"`
+	ResourceID       *string           `json:"resourceId,omitempty"`
+	ScheduleStrategy *ScheduleStrategy `json:"scheduleStrategy,omitempty"`
+	StartDate        *string           `json:"startDate,omitempty"`
+	UnitQuantity     *float64          `json:"unitQuantity,omitempty"`
 }
 
 type Price struct {
