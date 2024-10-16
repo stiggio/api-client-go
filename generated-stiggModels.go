@@ -5474,7 +5474,7 @@ type ResyncIntegrationInput struct {
 }
 
 type ResyncIntegrationResult struct {
-	TaskID string `json:"taskId"`
+	TaskID *string `json:"taskId"`
 }
 
 type RevokePromotionalEntitlementInput struct {
