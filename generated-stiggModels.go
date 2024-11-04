@@ -1021,6 +1021,8 @@ type CreateOrUpdateAwsMarketplaceProductInput struct {
 	ProductID             *string                      `json:"productId,omitempty"`
 	ProductSettings       *ProductSettingsInput        `json:"productSettings,omitempty"`
 	RefID                 *string                      `json:"refId,omitempty"`
+	// Usage reset cutoff rule
+	UsageResetCutoffRule *SubscriptionUpdateUsageResetCutoffRuleInput `json:"usageResetCutoffRule,omitempty"`
 }
 
 // The input type for creating an package group
@@ -4872,26 +4874,27 @@ type PricingTypeFilterComparison struct {
 
 // A product object
 type Product struct {
-	AdditionalMetaData        map[string]interface{}  `json:"additionalMetaData"`
-	Addons                    []*Addon                `json:"addons"`
-	AutoCancellationRules     []*AutoCancellationRule `json:"autoCancellationRules"`
-	AwsMarketplaceProductCode *string                 `json:"awsMarketplaceProductCode"`
-	AwsMarketplaceProductID   *string                 `json:"awsMarketplaceProductId"`
-	CreatedAt                 string                  `json:"createdAt"`
-	Description               *string                 `json:"description"`
-	DisplayName               *string                 `json:"displayName"`
-	DowngradePlan             *Plan                   `json:"downgradePlan"`
-	Environment               *Environment            `json:"environment"`
-	EnvironmentID             string                  `json:"environmentId"`
-	HasSubscriptions          bool                    `json:"hasSubscriptions"`
-	ID                        string                  `json:"id"`
-	IsDefaultProduct          bool                    `json:"isDefaultProduct"`
-	MultipleSubscriptions     bool                    `json:"multipleSubscriptions"`
-	Plans                     []*Plan                 `json:"plans"`
-	ProductSettings           ProductSettings         `json:"productSettings"`
-	RefID                     string                  `json:"refId"`
-	SubscriptionStartPlan     *Plan                   `json:"subscriptionStartPlan"`
-	UpdatedAt                 string                  `json:"updatedAt"`
+	AdditionalMetaData                     map[string]interface{}                 `json:"additionalMetaData"`
+	Addons                                 []*Addon                               `json:"addons"`
+	AutoCancellationRules                  []*AutoCancellationRule                `json:"autoCancellationRules"`
+	AwsMarketplaceProductCode              *string                                `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID                *string                                `json:"awsMarketplaceProductId"`
+	CreatedAt                              string                                 `json:"createdAt"`
+	Description                            *string                                `json:"description"`
+	DisplayName                            *string                                `json:"displayName"`
+	DowngradePlan                          *Plan                                  `json:"downgradePlan"`
+	Environment                            *Environment                           `json:"environment"`
+	EnvironmentID                          string                                 `json:"environmentId"`
+	HasSubscriptions                       bool                                   `json:"hasSubscriptions"`
+	ID                                     string                                 `json:"id"`
+	IsDefaultProduct                       bool                                   `json:"isDefaultProduct"`
+	MultipleSubscriptions                  bool                                   `json:"multipleSubscriptions"`
+	Plans                                  []*Plan                                `json:"plans"`
+	ProductSettings                        ProductSettings                        `json:"productSettings"`
+	RefID                                  string                                 `json:"refId"`
+	SubscriptionStartPlan                  *Plan                                  `json:"subscriptionStartPlan"`
+	SubscriptionUpdateUsageResetCutoffRule SubscriptionUpdateUsageResetCutoffRule `json:"subscriptionUpdateUsageResetCutoffRule"`
+	UpdatedAt                              string                                 `json:"updatedAt"`
 }
 
 type ProductAggregateGroupBy struct {
@@ -5044,6 +5047,8 @@ type ProductUpdateInput struct {
 	DisplayName           *string                      `json:"displayName,omitempty"`
 	MultipleSubscriptions *bool                        `json:"multipleSubscriptions,omitempty"`
 	ProductSettings       *ProductSettingsInput        `json:"productSettings,omitempty"`
+	// Usage reset cutoff rule
+	UsageResetCutoffRule *SubscriptionUpdateUsageResetCutoffRuleInput `json:"usageResetCutoffRule,omitempty"`
 }
 
 type PromotionCodeCustomerNotFirstPurchase struct {
@@ -6578,6 +6583,18 @@ type SubscriptionUpdateScheduleCancellationInput struct {
 	EnvironmentID  *string                     `json:"environmentId,omitempty"`
 	Status         *SubscriptionScheduleStatus `json:"status,omitempty"`
 	SubscriptionID string                      `json:"subscriptionId"`
+}
+
+// Usage reset cutoff rule - when does the usage for a feature should be reset
+type SubscriptionUpdateUsageResetCutoffRule struct {
+	// The behavior to reset according to
+	Behavior SubscriptionUpdateUsageCutoffBehavior `json:"behavior"`
+}
+
+// The input of the usage reset cutoff rule.
+type SubscriptionUpdateUsageResetCutoffRuleInput struct {
+	// The behavior of the usage reset cutoff rule.
+	Behavior SubscriptionUpdateUsageCutoffBehavior `json:"behavior"`
 }
 
 type SyncState struct {
@@ -12290,6 +12307,53 @@ func (e *SubscriptionStatus) UnmarshalGQL(v interface{}) error {
 }
 
 func (e SubscriptionStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Decide whether feature usage will be reset upon creation on new subscription
+type SubscriptionUpdateUsageCutoffBehavior string
+
+const (
+	// Always reset
+	SubscriptionUpdateUsageCutoffBehaviorAlwaysReset SubscriptionUpdateUsageCutoffBehavior = "ALWAYS_RESET"
+	// Billing period changed
+	SubscriptionUpdateUsageCutoffBehaviorBillingPeriodChange SubscriptionUpdateUsageCutoffBehavior = "BILLING_PERIOD_CHANGE"
+	// Never reset
+	SubscriptionUpdateUsageCutoffBehaviorNeverReset SubscriptionUpdateUsageCutoffBehavior = "NEVER_RESET"
+)
+
+var AllSubscriptionUpdateUsageCutoffBehavior = []SubscriptionUpdateUsageCutoffBehavior{
+	SubscriptionUpdateUsageCutoffBehaviorAlwaysReset,
+	SubscriptionUpdateUsageCutoffBehaviorBillingPeriodChange,
+	SubscriptionUpdateUsageCutoffBehaviorNeverReset,
+}
+
+func (e SubscriptionUpdateUsageCutoffBehavior) IsValid() bool {
+	switch e {
+	case SubscriptionUpdateUsageCutoffBehaviorAlwaysReset, SubscriptionUpdateUsageCutoffBehaviorBillingPeriodChange, SubscriptionUpdateUsageCutoffBehaviorNeverReset:
+		return true
+	}
+	return false
+}
+
+func (e SubscriptionUpdateUsageCutoffBehavior) String() string {
+	return string(e)
+}
+
+func (e *SubscriptionUpdateUsageCutoffBehavior) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = SubscriptionUpdateUsageCutoffBehavior(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid SubscriptionUpdateUsageCutoffBehavior", str)
+	}
+	return nil
+}
+
+func (e SubscriptionUpdateUsageCutoffBehavior) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
