@@ -7034,8 +7034,10 @@ type UsageEventsReportInput struct {
 }
 
 type UsageHistory struct {
-	EndDate           *string                  `json:"endDate"`
-	Groups            []*GroupUsageHistory     `json:"groups"`
+	EndDate *string              `json:"endDate"`
+	Groups  []*GroupUsageHistory `json:"groups"`
+	// Markers for events that affecting feature usage
+	Markers           []*UsageMarker           `json:"markers"`
 	StartDate         string                   `json:"startDate"`
 	UsageMeasurements []*UsageMeasurementPoint `json:"usageMeasurements"`
 }
@@ -7052,6 +7054,14 @@ type UsageHistoryInput struct {
 	StartDate                       string                         `json:"startDate"`
 	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
 	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+}
+
+// Marker for a event affecting usage
+type UsageMarker struct {
+	// Timestamp of the marker
+	Timestamp string `json:"timestamp"`
+	// Type of marker
+	Type UsageMarkerType `json:"type"`
 }
 
 type UsageMeasurement struct {
@@ -7166,9 +7176,12 @@ type UsageMeasurementMinAggregate struct {
 }
 
 type UsageMeasurementPoint struct {
-	Date         string  `json:"date"`
-	IsResetPoint *bool   `json:"isResetPoint"`
-	Value        float64 `json:"value"`
+	// Timestamp of the measurement point
+	Date string `json:"date"`
+	// Indicates whether there was usage reset in this point, see `markers` for details
+	IsResetPoint bool `json:"isResetPoint"`
+	// Value of the measurement point
+	Value float64 `json:"value"`
 }
 
 type UsageMeasurementSort struct {
@@ -12630,6 +12643,50 @@ func (e *UnitTransformationRound) UnmarshalGQL(v interface{}) error {
 }
 
 func (e UnitTransformationRound) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Type of marker for a usage measurement point
+type UsageMarkerType string
+
+const (
+	// Usage was reset due to reaching the end of a usage period
+	UsageMarkerTypePeriodicReset UsageMarkerType = "PERIODIC_RESET"
+	// Usage was reset due to a subscription change
+	UsageMarkerTypeSubscriptionChangeReset UsageMarkerType = "SUBSCRIPTION_CHANGE_RESET"
+)
+
+var AllUsageMarkerType = []UsageMarkerType{
+	UsageMarkerTypePeriodicReset,
+	UsageMarkerTypeSubscriptionChangeReset,
+}
+
+func (e UsageMarkerType) IsValid() bool {
+	switch e {
+	case UsageMarkerTypePeriodicReset, UsageMarkerTypeSubscriptionChangeReset:
+		return true
+	}
+	return false
+}
+
+func (e UsageMarkerType) String() string {
+	return string(e)
+}
+
+func (e *UsageMarkerType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = UsageMarkerType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid UsageMarkerType", str)
+	}
+	return nil
+}
+
+func (e UsageMarkerType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
