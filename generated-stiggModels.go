@@ -1588,8 +1588,10 @@ type CustomerSubscription struct {
 	SubscriptionID           string                          `json:"subscriptionId"`
 	SyncStates               []*SyncState                    `json:"syncStates"`
 	TotalPrice               *CustomerSubscriptionTotalPrice `json:"totalPrice"`
-	TrialEndDate             *string                         `json:"trialEndDate"`
-	WasInTrial               *bool                           `json:"wasInTrial"`
+	// Trial configuration
+	TrialConfiguration *TrialConfiguration `json:"trialConfiguration"`
+	TrialEndDate       *string             `json:"trialEndDate"`
+	WasInTrial         *bool               `json:"wasInTrial"`
 }
 
 type CustomerSubscriptionAggregateGroupBy struct {
@@ -6102,7 +6104,9 @@ type SubscriptionInput struct {
 	StartDate                *string                         `json:"startDate,omitempty"`
 	SubscriptionEntitlements []*SubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
 	SubscriptionID           *string                         `json:"subscriptionId,omitempty"`
-	UnitQuantity             *float64                        `json:"unitQuantity,omitempty"`
+	// Indicates the behavior of the subscription when the trial is expired.
+	TrialEndBehavior *TrialEndBehavior `json:"trialEndBehavior,omitempty"`
+	UnitQuantity     *float64          `json:"unitQuantity,omitempty"`
 }
 
 type SubscriptionInvoice struct {
@@ -6686,9 +6690,17 @@ type TransferSubscriptionInput struct {
 	SourceResourceID      string `json:"sourceResourceId"`
 }
 
+// Trial configuration
+type TrialConfiguration struct {
+	// Indicates the behavior of the subscription when the trial is expired.
+	TrialEndBehavior TrialEndBehavior `json:"trialEndBehavior"`
+}
+
 type TrialOverrideConfigurationInput struct {
-	IsTrial      bool    `json:"isTrial"`
-	TrialEndDate *string `json:"trialEndDate,omitempty"`
+	IsTrial bool `json:"isTrial"`
+	// Indicates the behavior of the subscription when the trial is expired.
+	TrialEndBehavior *TrialEndBehavior `json:"trialEndBehavior,omitempty"`
+	TrialEndDate     *string           `json:"trialEndDate,omitempty"`
 }
 
 type TrialedPlan struct {
@@ -12557,6 +12569,50 @@ func (e *TiersMode) UnmarshalGQL(v interface{}) error {
 }
 
 func (e TiersMode) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Indicates the behavior of the subscription when the trial is expired.
+type TrialEndBehavior string
+
+const (
+	// cancel the subscription when the trial is expired
+	TrialEndBehaviorCancelSubscription TrialEndBehavior = "CANCEL_SUBSCRIPTION"
+	// convert the trial subscription to a paid subscription
+	TrialEndBehaviorConvertToPaid TrialEndBehavior = "CONVERT_TO_PAID"
+)
+
+var AllTrialEndBehavior = []TrialEndBehavior{
+	TrialEndBehaviorCancelSubscription,
+	TrialEndBehaviorConvertToPaid,
+}
+
+func (e TrialEndBehavior) IsValid() bool {
+	switch e {
+	case TrialEndBehaviorCancelSubscription, TrialEndBehaviorConvertToPaid:
+		return true
+	}
+	return false
+}
+
+func (e TrialEndBehavior) String() string {
+	return string(e)
+}
+
+func (e *TrialEndBehavior) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = TrialEndBehavior(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid TrialEndBehavior", str)
+	}
+	return nil
+}
+
+func (e TrialEndBehavior) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
