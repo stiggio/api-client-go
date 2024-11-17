@@ -5476,7 +5476,10 @@ type ReportUsageInput struct {
 }
 
 type ResyncIntegrationInput struct {
-	EnvironmentID    string           `json:"environmentId"`
+	EnvironmentID string `json:"environmentId"`
+	// Allow skipping entitlement recalculation
+	RecalculateEntitlements *bool `json:"recalculateEntitlements,omitempty"`
+	// Type of integration to re-sync
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
