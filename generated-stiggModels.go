@@ -1890,6 +1890,16 @@ type DefaultTrialConfigInputDto struct {
 	Units    *TrialPeriodUnits         `json:"units,omitempty"`
 }
 
+// The input for delegating a subscription to a customer
+type DelegateSubscriptionToCustomerInput struct {
+	// The customer ID which will manage the subscription (the paying customer of the subscription will not change)
+	DestinationCustomerID *string `json:"destinationCustomerId,omitempty"`
+	// The environment ID of the subscription to delegate
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The ID of the subscription to delegate
+	SubscriptionID string `json:"subscriptionId"`
+}
+
 type DeleteFeatureInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	ID            string  `json:"id"`
@@ -6691,6 +6701,16 @@ type TransferSubscriptionInput struct {
 	CustomerID            string `json:"customerId"`
 	DestinationResourceID string `json:"destinationResourceId"`
 	SourceResourceID      string `json:"sourceResourceId"`
+}
+
+// The input for transferring a subscription to a resource
+type TransferSubscriptionToResourceInput struct {
+	// The resource ID to transfer the subscription to
+	DestinationResourceID *string `json:"destinationResourceId,omitempty"`
+	// The environment ID of the subscription to transfer
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The ID of the subscription to transfer
+	SubscriptionID string `json:"subscriptionId"`
 }
 
 // Trial configuration
