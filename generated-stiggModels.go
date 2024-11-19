@@ -741,25 +741,21 @@ type ClearCustomerPersistentCacheInput struct {
 
 type Coupon struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	// Discount amounts off
-	AmountsOff     []*Money     `json:"amountsOff"`
-	BillingID      *string      `json:"billingId"`
-	BillingLinkURL *string      `json:"billingLinkUrl"`
-	CreatedAt      string       `json:"createdAt"`
-	Customers      []*Customer  `json:"customers"`
-	Description    *string      `json:"description"`
-	DiscountValue  float64      `json:"discountValue"`
-	Environment    *Environment `json:"environment"`
-	EnvironmentID  string       `json:"environmentId"`
-	ID             string       `json:"id"`
-	Name           string       `json:"name"`
-	// Discount percent off
-	PercentOff *float64     `json:"percentOff"`
-	RefID      string       `json:"refId"`
-	Status     CouponStatus `json:"status"`
-	SyncStates []*SyncState `json:"syncStates"`
-	Type       CouponType   `json:"type"`
-	UpdatedAt  string       `json:"updatedAt"`
+	BillingID          *string                `json:"billingId"`
+	BillingLinkURL     *string                `json:"billingLinkUrl"`
+	CreatedAt          string                 `json:"createdAt"`
+	Customers          []*Customer            `json:"customers"`
+	Description        *string                `json:"description"`
+	DiscountValue      float64                `json:"discountValue"`
+	Environment        *Environment           `json:"environment"`
+	EnvironmentID      string                 `json:"environmentId"`
+	ID                 string                 `json:"id"`
+	Name               string                 `json:"name"`
+	RefID              string                 `json:"refId"`
+	Status             CouponStatus           `json:"status"`
+	SyncStates         []*SyncState           `json:"syncStates"`
+	Type               CouponType             `json:"type"`
+	UpdatedAt          string                 `json:"updatedAt"`
 }
 
 type CouponAggregateGroupBy struct {
@@ -915,16 +911,12 @@ type CouponTypeFilterComparison struct {
 
 type CreateCouponInput struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	// Discount flat fee amounts off
-	AmountsOff    []*MoneyInputDto `json:"amountsOff,omitempty"`
-	Description   *string          `json:"description,omitempty"`
-	DiscountValue *float64         `json:"discountValue,omitempty"`
-	EnvironmentID *string          `json:"environmentId,omitempty"`
-	Name          string           `json:"name"`
-	// Discount percent off
-	PercentOff *float64    `json:"percentOff,omitempty"`
-	RefID      string      `json:"refId"`
-	Type       *CouponType `json:"type,omitempty"`
+	Description        *string                `json:"description,omitempty"`
+	DiscountValue      float64                `json:"discountValue"`
+	EnvironmentID      *string                `json:"environmentId,omitempty"`
+	Name               string                 `json:"name"`
+	RefID              string                 `json:"refId"`
+	Type               CouponType             `json:"type"`
 }
 
 type CreateEnvironment struct {
@@ -5922,16 +5914,12 @@ type SubscriptionCancellationInput struct {
 }
 
 type SubscriptionCoupon struct {
-	// Discount amounts off
-	AmountsOff    []*Money `json:"amountsOff"`
-	DiscountValue float64  `json:"discountValue"`
-	EnvironmentID string   `json:"environmentId"`
-	ID            string   `json:"id"`
-	Name          string   `json:"name"`
-	// Discount percent off
-	PercentOff *float64   `json:"percentOff"`
-	RefID      string     `json:"refId"`
-	Type       CouponType `json:"type"`
+	DiscountValue float64    `json:"discountValue"`
+	EnvironmentID string     `json:"environmentId"`
+	ID            string     `json:"id"`
+	Name          string     `json:"name"`
+	RefID         string     `json:"refId"`
+	Type          CouponType `json:"type"`
 }
 
 // Subscription coupon input
