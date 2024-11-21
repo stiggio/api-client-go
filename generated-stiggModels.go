@@ -775,10 +775,6 @@ type CouponAggregateGroupBy struct {
 	UpdatedAt     *string       `json:"updatedAt"`
 }
 
-type CouponAvgAggregate struct {
-	ID *float64 `json:"id"`
-}
-
 type CouponConnection struct {
 	// Array of edges.
 	Edges []*CouponEdge `json:"edges"`
@@ -890,10 +886,6 @@ type CouponStatusFilterComparison struct {
 	NotILike *CouponStatus  `json:"notILike,omitempty"`
 	NotIn    []CouponStatus `json:"notIn,omitempty"`
 	NotLike  *CouponStatus  `json:"notLike,omitempty"`
-}
-
-type CouponSumAggregate struct {
-	ID *float64 `json:"id"`
 }
 
 type CouponTypeFilterComparison struct {
@@ -5446,13 +5438,6 @@ type RemoveCouponFromCustomerInput struct {
 	RelationID string `json:"relationId"`
 }
 
-type RemoveCouponFromCustomerSubscriptionInput struct {
-	// The id of the record.
-	ID string `json:"id"`
-	// The id of relation.
-	RelationID string `json:"relationId"`
-}
-
 type RemoveExperimentFromCustomerInput struct {
 	// The id of the record.
 	ID string `json:"id"`
@@ -5541,13 +5526,6 @@ type SetCompatibleAddonsOnPlanInput struct {
 }
 
 type SetCouponOnCustomerInput struct {
-	// The id of the record.
-	ID string `json:"id"`
-	// The id of relation.
-	RelationID string `json:"relationId"`
-}
-
-type SetCouponOnCustomerSubscriptionInput struct {
 	// The id of the record.
 	ID string `json:"id"`
 	// The id of relation.
