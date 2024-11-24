@@ -2257,7 +2257,9 @@ type EstimateSubscriptionInput struct {
 	ResourceID       *string  `json:"resourceId,omitempty"`
 	SkipTrial        *bool    `json:"skipTrial,omitempty"`
 	StartDate        *string  `json:"startDate,omitempty"`
-	UnitQuantity     *float64 `json:"unitQuantity,omitempty"`
+	// trial configuration to override the default values from plan if exists
+	TrialOverrideConfiguration *TrialOverrideConfigurationInput `json:"trialOverrideConfiguration,omitempty"`
+	UnitQuantity               *float64                         `json:"unitQuantity,omitempty"`
 }
 
 type EstimateSubscriptionUpdateInput struct {
@@ -4652,7 +4654,9 @@ type PreviewSubscriptionInput struct {
 	ResourceID       *string           `json:"resourceId,omitempty"`
 	ScheduleStrategy *ScheduleStrategy `json:"scheduleStrategy,omitempty"`
 	StartDate        *string           `json:"startDate,omitempty"`
-	UnitQuantity     *float64          `json:"unitQuantity,omitempty"`
+	// trial configuration to override the default values from plan if exists
+	TrialOverrideConfiguration *TrialOverrideConfigurationInput `json:"trialOverrideConfiguration,omitempty"`
+	UnitQuantity               *float64                         `json:"unitQuantity,omitempty"`
 }
 
 type Price struct {
