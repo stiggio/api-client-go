@@ -1542,10 +1542,13 @@ type CustomerSubscription struct {
 	// Budget configuration
 	Budget *BudgetConfiguration `json:"budget"`
 	// Indicates if the budget has been exceeded
-	BudgetExceeded            *bool                       `json:"budgetExceeded"`
-	CancelReason              *SubscriptionCancelReason   `json:"cancelReason"`
-	CancellationDate          *string                     `json:"cancellationDate"`
-	Coupon                    *SubscriptionCoupon         `json:"coupon"`
+	BudgetExceeded   *bool                     `json:"budgetExceeded"`
+	CancelReason     *SubscriptionCancelReason `json:"cancelReason"`
+	CancellationDate *string                   `json:"cancellationDate"`
+	// Active coupon for this subscription
+	Coupon *SubscriptionCoupon `json:"coupon"`
+	// List of coupons for this subscription
+	Coupons                   []*SubscriptionCoupon       `json:"coupons"`
 	CreatedAt                 *string                     `json:"createdAt"`
 	CrmID                     *string                     `json:"crmId"`
 	CrmLinkURL                *string                     `json:"crmLinkUrl"`
