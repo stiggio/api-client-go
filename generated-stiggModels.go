@@ -1388,10 +1388,12 @@ type CustomerPortalSubscription struct {
 }
 
 type CustomerPortalSubscriptionPrice struct {
-	BillingModel  *BillingModel                 `json:"billingModel"`
-	BillingPeriod *BillingPeriod                `json:"billingPeriod"`
-	Feature       *CustomerPortalPricingFeature `json:"feature"`
-	Price         *Money                        `json:"price"`
+	BillingModel  *BillingModel  `json:"billingModel"`
+	BillingPeriod *BillingPeriod `json:"billingPeriod"`
+	// The number of units per block
+	BlockSize *float64                      `json:"blockSize"`
+	Feature   *CustomerPortalPricingFeature `json:"feature"`
+	Price     *Money                        `json:"price"`
 }
 
 type CustomerPortalSubscriptionPricing struct {
