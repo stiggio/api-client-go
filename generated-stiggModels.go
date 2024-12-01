@@ -20,6 +20,7 @@ type ResetPeriodConfiguration interface {
 	IsResetPeriodConfiguration()
 }
 
+// Schedule variables by the type of the schedule
 type ScheduleVariables interface {
 	IsScheduleVariables()
 }
@@ -774,6 +775,14 @@ type CouponAggregateGroupBy struct {
 	Type          *CouponType   `json:"type"`
 	UpdatedAt     *string       `json:"updatedAt"`
 }
+
+// Coupon change variables
+type CouponChangeVariables struct {
+	// Coupon reference ID
+	CouponID string `json:"couponId"`
+}
+
+func (CouponChangeVariables) IsScheduleVariables() {}
 
 type CouponConnection struct {
 	// Array of edges.
@@ -5921,10 +5930,18 @@ type SubscriptionCoupon struct {
 	Type       CouponType `json:"type"`
 }
 
+// Subscription coupon configuration input
+type SubscriptionCouponConfigurationInput struct {
+	// The date to start the coupon from
+	StartDate *string `json:"startDate,omitempty"`
+}
+
 // Subscription coupon input
 type SubscriptionCouponInput struct {
 	// Billing integration coupon id
 	BillingCouponID *string `json:"billingCouponId,omitempty"`
+	// Coupon configuration input
+	Configuration *SubscriptionCouponConfigurationInput `json:"configuration,omitempty"`
 	// Stigg coupon id
 	CouponID *string `json:"couponId,omitempty"`
 	// Promotion code
@@ -6070,13 +6087,14 @@ type SubscriptionEntitlementSort struct {
 }
 
 type SubscriptionFutureUpdate struct {
-	BillingID                *string                    `json:"billingId"`
-	CreatedAt                *string                    `json:"createdAt"`
-	ScheduleStatus           SubscriptionScheduleStatus `json:"scheduleStatus"`
-	ScheduleVariables        ScheduleVariables          `json:"scheduleVariables"`
-	ScheduledExecutionTime   string                     `json:"scheduledExecutionTime"`
-	SubscriptionScheduleType SubscriptionScheduleType   `json:"subscriptionScheduleType"`
-	TargetPackage            *PackageDto                `json:"targetPackage"`
+	BillingID      *string                    `json:"billingId"`
+	CreatedAt      *string                    `json:"createdAt"`
+	ScheduleStatus SubscriptionScheduleStatus `json:"scheduleStatus"`
+	// The schedule variables by the type of the schedule
+	ScheduleVariables        ScheduleVariables        `json:"scheduleVariables"`
+	ScheduledExecutionTime   string                   `json:"scheduledExecutionTime"`
+	SubscriptionScheduleType SubscriptionScheduleType `json:"subscriptionScheduleType"`
+	TargetPackage            *PackageDto              `json:"targetPackage"`
 }
 
 type SubscriptionInput struct {
@@ -6569,13 +6587,14 @@ type SubscriptionPricingTypeStatistics struct {
 }
 
 type SubscriptionScheduledUpdate struct {
-	BillingID                *string                    `json:"billingId"`
-	CreatedAt                *string                    `json:"createdAt"`
-	ScheduleStatus           SubscriptionScheduleStatus `json:"scheduleStatus"`
-	ScheduleVariables        ScheduleVariables          `json:"scheduleVariables"`
-	ScheduledExecutionTime   string                     `json:"scheduledExecutionTime"`
-	SubscriptionScheduleType SubscriptionScheduleType   `json:"subscriptionScheduleType"`
-	TargetPackage            *PackageDto                `json:"targetPackage"`
+	BillingID      *string                    `json:"billingId"`
+	CreatedAt      *string                    `json:"createdAt"`
+	ScheduleStatus SubscriptionScheduleStatus `json:"scheduleStatus"`
+	// The schedule variables by the type of the schedule
+	ScheduleVariables        ScheduleVariables        `json:"scheduleVariables"`
+	ScheduledExecutionTime   string                   `json:"scheduledExecutionTime"`
+	SubscriptionScheduleType SubscriptionScheduleType `json:"subscriptionScheduleType"`
+	TargetPackage            *PackageDto              `json:"targetPackage"`
 }
 
 type SubscriptionStatusFilterComparison struct {
@@ -12218,17 +12237,26 @@ func (e SubscriptionScheduleStatus) MarshalGQL(w io.Writer) {
 type SubscriptionScheduleType string
 
 const (
-	SubscriptionScheduleTypeAddon           SubscriptionScheduleType = "Addon"
-	SubscriptionScheduleTypeBillingPeriod   SubscriptionScheduleType = "BillingPeriod"
-	SubscriptionScheduleTypeDowngrade       SubscriptionScheduleType = "Downgrade"
+	// Addon change
+	SubscriptionScheduleTypeAddon SubscriptionScheduleType = "Addon"
+	// Billing period change
+	SubscriptionScheduleTypeBillingPeriod SubscriptionScheduleType = "BillingPeriod"
+	// Coupon change
+	SubscriptionScheduleTypeCoupon SubscriptionScheduleType = "Coupon"
+	// Downgrade change
+	SubscriptionScheduleTypeDowngrade SubscriptionScheduleType = "Downgrade"
+	// Migrate to latest
 	SubscriptionScheduleTypeMigrateToLatest SubscriptionScheduleType = "MigrateToLatest"
-	SubscriptionScheduleTypePlan            SubscriptionScheduleType = "Plan"
-	SubscriptionScheduleTypeUnitAmount      SubscriptionScheduleType = "UnitAmount"
+	// Plan change
+	SubscriptionScheduleTypePlan SubscriptionScheduleType = "Plan"
+	// Unit amount change
+	SubscriptionScheduleTypeUnitAmount SubscriptionScheduleType = "UnitAmount"
 )
 
 var AllSubscriptionScheduleType = []SubscriptionScheduleType{
 	SubscriptionScheduleTypeAddon,
 	SubscriptionScheduleTypeBillingPeriod,
+	SubscriptionScheduleTypeCoupon,
 	SubscriptionScheduleTypeDowngrade,
 	SubscriptionScheduleTypeMigrateToLatest,
 	SubscriptionScheduleTypePlan,
@@ -12237,7 +12265,7 @@ var AllSubscriptionScheduleType = []SubscriptionScheduleType{
 
 func (e SubscriptionScheduleType) IsValid() bool {
 	switch e {
-	case SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypeUnitAmount:
+	case SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeCoupon, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypeUnitAmount:
 		return true
 	}
 	return false
