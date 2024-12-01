@@ -1885,7 +1885,9 @@ type DefaultTrialConfig struct {
 	// Budget configuration
 	Budget   *BudgetConfiguration `json:"budget"`
 	Duration float64              `json:"duration"`
-	Units    TrialPeriodUnits     `json:"units"`
+	// Trial end behavior
+	TrialEndBehavior *TrialEndBehavior `json:"trialEndBehavior"`
+	Units            TrialPeriodUnits  `json:"units"`
 }
 
 type DefaultTrialConfigChange struct {
@@ -1901,7 +1903,9 @@ type DefaultTrialConfigInputDto struct {
 	// Budget configuration
 	Budget   *BudgetConfigurationInput `json:"budget,omitempty"`
 	Duration *float64                  `json:"duration,omitempty"`
-	Units    *TrialPeriodUnits         `json:"units,omitempty"`
+	// Trial end behavior
+	TrialEndBehavior *TrialEndBehavior `json:"trialEndBehavior,omitempty"`
+	Units            *TrialPeriodUnits `json:"units,omitempty"`
 }
 
 // The input for delegating a subscription to a customer
