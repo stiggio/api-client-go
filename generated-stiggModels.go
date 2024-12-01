@@ -741,26 +741,41 @@ type ClearCustomerPersistentCacheInput struct {
 }
 
 type Coupon struct {
+	// Additional metadata associated with the coupon
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	// Discount amounts off
-	AmountsOff     []*Money     `json:"amountsOff"`
-	BillingID      *string      `json:"billingId"`
-	BillingLinkURL *string      `json:"billingLinkUrl"`
-	CreatedAt      string       `json:"createdAt"`
-	Customers      []*Customer  `json:"customers"`
-	Description    *string      `json:"description"`
-	DiscountValue  float64      `json:"discountValue"`
-	Environment    *Environment `json:"environment"`
-	EnvironmentID  string       `json:"environmentId"`
-	ID             string       `json:"id"`
-	Name           string       `json:"name"`
-	// Discount percent off
-	PercentOff *float64     `json:"percentOff"`
-	RefID      string       `json:"refId"`
+	// Fixed amount discounts in different currencies
+	AmountsOff []*Money `json:"amountsOff"`
+	// ID of the coupon in the billing system
+	BillingID *string `json:"billingId"`
+	// URL to the coupon in the billing system
+	BillingLinkURL *string `json:"billingLinkUrl"`
+	// Date when the coupon was created
+	CreatedAt string      `json:"createdAt"`
+	Customers []*Customer `json:"customers"`
+	// Description of the coupon
+	Description *string `json:"description"`
+	// Discount value of the coupon (deprecated)
+	DiscountValue float64 `json:"discountValue"`
+	// Duration of the coupon validity in months
+	DurationInMonths *float64     `json:"durationInMonths"`
+	Environment      *Environment `json:"environment"`
+	// ID of the environment the coupon belongs to
+	EnvironmentID string `json:"environmentId"`
+	// Unique identifier of the coupon
+	ID string `json:"id"`
+	// Name of the coupon
+	Name string `json:"name"`
+	// Percentage discount off the original price
+	PercentOff *float64 `json:"percentOff"`
+	// Customer-given identifier of the coupon
+	RefID string `json:"refId"`
+	// Current status of the coupon
 	Status     CouponStatus `json:"status"`
 	SyncStates []*SyncState `json:"syncStates"`
-	Type       CouponType   `json:"type"`
-	UpdatedAt  string       `json:"updatedAt"`
+	// Type of the coupon (percentage or fixed amount)
+	Type CouponType `json:"type"`
+	// Date when the coupon was last updated
+	UpdatedAt string `json:"updatedAt"`
 }
 
 type CouponAggregateGroupBy struct {
@@ -920,8 +935,10 @@ type CreateCouponInput struct {
 	AmountsOff    []*MoneyInputDto `json:"amountsOff,omitempty"`
 	Description   *string          `json:"description,omitempty"`
 	DiscountValue *float64         `json:"discountValue,omitempty"`
-	EnvironmentID *string          `json:"environmentId,omitempty"`
-	Name          string           `json:"name"`
+	// The duration in months for which the coupon remains active.
+	DurationInMonths *float64 `json:"durationInMonths,omitempty"`
+	EnvironmentID    *string  `json:"environmentId,omitempty"`
+	Name             string   `json:"name"`
 	// Discount percent off
 	PercentOff *float64    `json:"percentOff,omitempty"`
 	RefID      string      `json:"refId"`
@@ -5925,19 +5942,41 @@ type SubscriptionCoupon struct {
 	// Discount amounts off
 	AmountsOff    []*Money `json:"amountsOff"`
 	DiscountValue float64  `json:"discountValue"`
-	EnvironmentID string   `json:"environmentId"`
-	ID            string   `json:"id"`
-	Name          string   `json:"name"`
+	// The duration of the coupon in months
+	DurationInMonths *float64 `json:"durationInMonths"`
+	EnvironmentID    string   `json:"environmentId"`
+	// The expiration date of this coupon
+	ExpirationDate *string `json:"expirationDate"`
+	ID             string  `json:"id"`
+	Name           string  `json:"name"`
 	// Discount percent off
-	PercentOff *float64   `json:"percentOff"`
-	RefID      string     `json:"refId"`
-	Type       CouponType `json:"type"`
+	PercentOff *float64 `json:"percentOff"`
+	RefID      string   `json:"refId"`
+	// The start date of this coupon
+	StartDate *string `json:"startDate"`
+	// The status of this coupon
+	Status SubscriptionCouponStatus `json:"status"`
+	Type   CouponType               `json:"type"`
 }
 
 // Subscription coupon configuration input
 type SubscriptionCouponConfigurationInput struct {
 	// The date to start the coupon from
 	StartDate *string `json:"startDate,omitempty"`
+}
+
+// Inline subscription coupon input
+type SubscriptionCouponDiscountInput struct {
+	// Discount flat fee amounts off
+	AmountsOff []*MoneyInputDto `json:"amountsOff,omitempty"`
+	// Description of the coupon that will be created
+	Description *string `json:"description,omitempty"`
+	// The duration in months for which the coupon remains active.
+	DurationInMonths *float64 `json:"durationInMonths,omitempty"`
+	// Name of the coupon that will be created
+	Name string `json:"name"`
+	// Discount percent off
+	PercentOff *float64 `json:"percentOff,omitempty"`
 }
 
 // Subscription coupon input
@@ -5948,6 +5987,8 @@ type SubscriptionCouponInput struct {
 	Configuration *SubscriptionCouponConfigurationInput `json:"configuration,omitempty"`
 	// Stigg coupon id
 	CouponID *string `json:"couponId,omitempty"`
+	// An inline discount
+	Discount *SubscriptionCouponDiscountInput `json:"discount,omitempty"`
 	// Promotion code
 	PromotionCode *string `json:"promotionCode,omitempty"`
 }
@@ -11812,6 +11853,50 @@ func (e *SubscriptionCancellationTime) UnmarshalGQL(v interface{}) error {
 }
 
 func (e SubscriptionCancellationTime) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Status of a subscription coupon
+type SubscriptionCouponStatus string
+
+const (
+	SubscriptionCouponStatusActive  SubscriptionCouponStatus = "ACTIVE"
+	SubscriptionCouponStatusExpired SubscriptionCouponStatus = "EXPIRED"
+	SubscriptionCouponStatusRemoved SubscriptionCouponStatus = "REMOVED"
+)
+
+var AllSubscriptionCouponStatus = []SubscriptionCouponStatus{
+	SubscriptionCouponStatusActive,
+	SubscriptionCouponStatusExpired,
+	SubscriptionCouponStatusRemoved,
+}
+
+func (e SubscriptionCouponStatus) IsValid() bool {
+	switch e {
+	case SubscriptionCouponStatusActive, SubscriptionCouponStatusExpired, SubscriptionCouponStatusRemoved:
+		return true
+	}
+	return false
+}
+
+func (e SubscriptionCouponStatus) String() string {
+	return string(e)
+}
+
+func (e *SubscriptionCouponStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = SubscriptionCouponStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid SubscriptionCouponStatus", str)
+	}
+	return nil
+}
+
+func (e SubscriptionCouponStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
