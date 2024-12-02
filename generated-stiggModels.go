@@ -11856,7 +11856,7 @@ func (e SubscriptionCancellationTime) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Status of a subscription coupon
+// The status of the subscription coupon
 type SubscriptionCouponStatus string
 
 const (
