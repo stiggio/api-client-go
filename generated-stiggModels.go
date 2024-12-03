@@ -769,6 +769,8 @@ type Coupon struct {
 	PercentOff *float64 `json:"percentOff"`
 	// Customer-given identifier of the coupon
 	RefID string `json:"refId"`
+	// The source of the coupon
+	Source CouponSource `json:"source"`
 	// Current status of the coupon
 	Status     CouponStatus `json:"status"`
 	SyncStates []*SyncState `json:"syncStates"`
@@ -786,6 +788,7 @@ type CouponAggregateGroupBy struct {
 	ID            *string       `json:"id"`
 	Name          *string       `json:"name"`
 	RefID         *string       `json:"refId"`
+	Source        *CouponSource `json:"source"`
 	Status        *CouponStatus `json:"status"`
 	Type          *CouponType   `json:"type"`
 	UpdatedAt     *string       `json:"updatedAt"`
@@ -816,6 +819,7 @@ type CouponCountAggregate struct {
 	ID            *int64 `json:"id"`
 	Name          *int64 `json:"name"`
 	RefID         *int64 `json:"refId"`
+	Source        *int64 `json:"source"`
 	Status        *int64 `json:"status"`
 	Type          *int64 `json:"type"`
 	UpdatedAt     *int64 `json:"updatedAt"`
@@ -839,6 +843,7 @@ type CouponFilter struct {
 	Name          *StringFieldComparison        `json:"name,omitempty"`
 	Or            []*CouponFilter               `json:"or,omitempty"`
 	RefID         *StringFieldComparison        `json:"refId,omitempty"`
+	Source        *CouponSourceFilterComparison `json:"source,omitempty"`
 	Status        *CouponStatusFilterComparison `json:"status,omitempty"`
 	Type          *CouponTypeFilterComparison   `json:"type,omitempty"`
 	UpdatedAt     *DateFieldComparison          `json:"updatedAt,omitempty"`
@@ -871,6 +876,7 @@ type CouponMaxAggregate struct {
 	ID            *string       `json:"id"`
 	Name          *string       `json:"name"`
 	RefID         *string       `json:"refId"`
+	Source        *CouponSource `json:"source"`
 	Status        *CouponStatus `json:"status"`
 	Type          *CouponType   `json:"type"`
 	UpdatedAt     *string       `json:"updatedAt"`
@@ -884,6 +890,7 @@ type CouponMinAggregate struct {
 	ID            *string       `json:"id"`
 	Name          *string       `json:"name"`
 	RefID         *string       `json:"refId"`
+	Source        *CouponSource `json:"source"`
 	Status        *CouponStatus `json:"status"`
 	Type          *CouponType   `json:"type"`
 	UpdatedAt     *string       `json:"updatedAt"`
@@ -893,6 +900,11 @@ type CouponSort struct {
 	Direction SortDirection    `json:"direction"`
 	Field     CouponSortFields `json:"field"`
 	Nulls     *SortNulls       `json:"nulls,omitempty"`
+}
+
+type CouponSourceFilterComparison struct {
+	Eq *CouponSource  `json:"eq,omitempty"`
+	In []CouponSource `json:"in,omitempty"`
 }
 
 type CouponStatusFilterComparison struct {
@@ -5974,7 +5986,7 @@ type SubscriptionCouponDiscountInput struct {
 	// The duration in months for which the coupon remains active.
 	DurationInMonths *float64 `json:"durationInMonths,omitempty"`
 	// Name of the coupon that will be created
-	Name string `json:"name"`
+	Name *string `json:"name,omitempty"`
 	// Discount percent off
 	PercentOff *float64 `json:"percentOff,omitempty"`
 }
@@ -8149,6 +8161,7 @@ const (
 	CouponSortFieldsID            CouponSortFields = "id"
 	CouponSortFieldsName          CouponSortFields = "name"
 	CouponSortFieldsRefID         CouponSortFields = "refId"
+	CouponSortFieldsSource        CouponSortFields = "source"
 	CouponSortFieldsStatus        CouponSortFields = "status"
 	CouponSortFieldsType          CouponSortFields = "type"
 	CouponSortFieldsUpdatedAt     CouponSortFields = "updatedAt"
@@ -8162,6 +8175,7 @@ var AllCouponSortFields = []CouponSortFields{
 	CouponSortFieldsID,
 	CouponSortFieldsName,
 	CouponSortFieldsRefID,
+	CouponSortFieldsSource,
 	CouponSortFieldsStatus,
 	CouponSortFieldsType,
 	CouponSortFieldsUpdatedAt,
@@ -8169,7 +8183,7 @@ var AllCouponSortFields = []CouponSortFields{
 
 func (e CouponSortFields) IsValid() bool {
 	switch e {
-	case CouponSortFieldsBillingID, CouponSortFieldsCreatedAt, CouponSortFieldsDescription, CouponSortFieldsEnvironmentID, CouponSortFieldsID, CouponSortFieldsName, CouponSortFieldsRefID, CouponSortFieldsStatus, CouponSortFieldsType, CouponSortFieldsUpdatedAt:
+	case CouponSortFieldsBillingID, CouponSortFieldsCreatedAt, CouponSortFieldsDescription, CouponSortFieldsEnvironmentID, CouponSortFieldsID, CouponSortFieldsName, CouponSortFieldsRefID, CouponSortFieldsSource, CouponSortFieldsStatus, CouponSortFieldsType, CouponSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -8193,6 +8207,50 @@ func (e *CouponSortFields) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CouponSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The source of the coupon
+type CouponSource string
+
+const (
+	CouponSourceStigg      CouponSource = "STIGG"
+	CouponSourceStiggAdhoc CouponSource = "STIGG_ADHOC"
+	CouponSourceStripe     CouponSource = "STRIPE"
+)
+
+var AllCouponSource = []CouponSource{
+	CouponSourceStigg,
+	CouponSourceStiggAdhoc,
+	CouponSourceStripe,
+}
+
+func (e CouponSource) IsValid() bool {
+	switch e {
+	case CouponSourceStigg, CouponSourceStiggAdhoc, CouponSourceStripe:
+		return true
+	}
+	return false
+}
+
+func (e CouponSource) String() string {
+	return string(e)
+}
+
+func (e *CouponSource) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CouponSource(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CouponSource", str)
+	}
+	return nil
+}
+
+func (e CouponSource) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
