@@ -268,6 +268,13 @@ type AddonMinAggregate struct {
 	VersionNumber *int64         `json:"versionNumber"`
 }
 
+type AddonPriceOverrideChangeVariables struct {
+	AddonRefID string  `json:"addonRefId"`
+	FeatureID  *string `json:"featureId"`
+}
+
+func (AddonPriceOverrideChangeVariables) IsScheduleVariables() {}
+
 type AddonSort struct {
 	Direction SortDirection   `json:"direction"`
 	Field     AddonSortFields `json:"field"`
@@ -2004,11 +2011,12 @@ type DoesFeatureExist struct {
 }
 
 type DowngradeChangeVariables struct {
-	AddonRefIds        *string            `json:"addonRefIds"`
-	Addons             []*PlanChangeAddon `json:"addons"`
-	BillableFeatures   []*BillableFeature `json:"billableFeatures"`
-	BillingPeriod      *BillingPeriod     `json:"billingPeriod"`
-	DowngradePlanRefID string             `json:"downgradePlanRefId"`
+	AddonRefIds        *string                         `json:"addonRefIds"`
+	Addons             []*PlanChangeAddon              `json:"addons"`
+	BillableFeatures   []*BillableFeature              `json:"billableFeatures"`
+	BillingPeriod      *BillingPeriod                  `json:"billingPeriod"`
+	DowngradePlanRefID string                          `json:"downgradePlanRefId"`
+	PriceOverrides     []*PriceOverrideChangeVariables `json:"priceOverrides"`
 }
 
 func (DowngradeChangeVariables) IsScheduleVariables() {}
@@ -4444,11 +4452,12 @@ type PlanChangeAddon struct {
 }
 
 type PlanChangeVariables struct {
-	Addons           []*PlanChangeAddon `json:"addons"`
-	BillableFeatures []*BillableFeature `json:"billableFeatures"`
-	BillingPeriod    *BillingPeriod     `json:"billingPeriod"`
-	ChangeType       PlanChangeType     `json:"changeType"`
-	PlanRefID        string             `json:"planRefId"`
+	Addons           []*PlanChangeAddon              `json:"addons"`
+	BillableFeatures []*BillableFeature              `json:"billableFeatures"`
+	BillingPeriod    *BillingPeriod                  `json:"billingPeriod"`
+	ChangeType       PlanChangeType                  `json:"changeType"`
+	PlanRefID        string                          `json:"planRefId"`
+	PriceOverrides   []*PriceOverrideChangeVariables `json:"priceOverrides"`
 }
 
 func (PlanChangeVariables) IsScheduleVariables() {}
@@ -4641,6 +4650,13 @@ type PlanNotFoundError struct {
 	IsValidationError bool   `json:"isValidationError"`
 	RefID             string `json:"refId"`
 }
+
+type PlanPriceOverrideChangeVariables struct {
+	FeatureID *string `json:"featureId"`
+	PlanRefID string  `json:"planRefId"`
+}
+
+func (PlanPriceOverrideChangeVariables) IsScheduleVariables() {}
 
 type PlanSort struct {
 	Direction SortDirection  `json:"direction"`
@@ -4856,6 +4872,12 @@ type PriceMinAggregate struct {
 type PriceNotFoundError struct {
 	Code              string `json:"code"`
 	IsValidationError bool   `json:"isValidationError"`
+}
+
+type PriceOverrideChangeVariables struct {
+	AddonRefID *string `json:"addonRefId"`
+	FeatureID  *string `json:"featureId"`
+	PlanRefID  *string `json:"planRefId"`
 }
 
 type PriceOverrideInput struct {
@@ -12396,6 +12418,8 @@ const (
 	SubscriptionScheduleTypeMigrateToLatest SubscriptionScheduleType = "MigrateToLatest"
 	// Plan change
 	SubscriptionScheduleTypePlan SubscriptionScheduleType = "Plan"
+	// Custom price change
+	SubscriptionScheduleTypePriceOverride SubscriptionScheduleType = "PriceOverride"
 	// Unit amount change
 	SubscriptionScheduleTypeUnitAmount SubscriptionScheduleType = "UnitAmount"
 )
@@ -12407,12 +12431,13 @@ var AllSubscriptionScheduleType = []SubscriptionScheduleType{
 	SubscriptionScheduleTypeDowngrade,
 	SubscriptionScheduleTypeMigrateToLatest,
 	SubscriptionScheduleTypePlan,
+	SubscriptionScheduleTypePriceOverride,
 	SubscriptionScheduleTypeUnitAmount,
 }
 
 func (e SubscriptionScheduleType) IsValid() bool {
 	switch e {
-	case SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeCoupon, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypeUnitAmount:
+	case SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeCoupon, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypePriceOverride, SubscriptionScheduleTypeUnitAmount:
 		return true
 	}
 	return false
