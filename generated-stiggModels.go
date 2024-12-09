@@ -427,20 +427,40 @@ type AttachCustomerPaymentMethodInput struct {
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
+type Auth0ApplicationDto struct {
+	AppID string                `json:"appId"`
+	Name  string                `json:"name"`
+	Type  *Auth0ApplicationType `json:"type"`
+}
+
 type Auth0Credentials struct {
-	ClientID     string      `json:"clientId"`
-	ClientSecret string      `json:"clientSecret"`
-	Region       Auth0Region `json:"region"`
-	Tenant       string      `json:"tenant"`
+	ApplicationID                      string                  `json:"applicationId"`
+	ApplicationName                    string                  `json:"applicationName"`
+	ApplicationType                    Auth0ApplicationType    `json:"applicationType"`
+	ClientID                           string                  `json:"clientId"`
+	ClientSecret                       string                  `json:"clientSecret"`
+	IndividualInitialPlanID            *string                 `json:"individualInitialPlanId"`
+	IndividualSubscriptionStartSetup   *SubscriptionStartSetup `json:"individualSubscriptionStartSetup"`
+	OrganizationInitialPlanID          *string                 `json:"organizationInitialPlanId"`
+	OrganizationSubscriptionStartSetup *SubscriptionStartSetup `json:"organizationSubscriptionStartSetup"`
+	Region                             Auth0Region             `json:"region"`
+	Tenant                             string                  `json:"tenant"`
 }
 
 func (Auth0Credentials) IsCredentials() {}
 
 type Auth0CredentialsInput struct {
-	ClientID     string `json:"clientId"`
-	ClientSecret string `json:"clientSecret"`
-	Region       string `json:"region"`
-	Tenant       string `json:"tenant"`
+	ApplicationID                      string                  `json:"applicationId"`
+	ApplicationName                    string                  `json:"applicationName"`
+	ApplicationType                    Auth0ApplicationType    `json:"applicationType"`
+	ClientID                           string                  `json:"clientId"`
+	ClientSecret                       string                  `json:"clientSecret"`
+	IndividualInitialPlanID            *string                 `json:"individualInitialPlanId,omitempty"`
+	IndividualSubscriptionStartSetup   *SubscriptionStartSetup `json:"individualSubscriptionStartSetup,omitempty"`
+	OrganizationInitialPlanID          *string                 `json:"organizationInitialPlanId,omitempty"`
+	OrganizationSubscriptionStartSetup *SubscriptionStartSetup `json:"organizationSubscriptionStartSetup,omitempty"`
+	Region                             Auth0Region             `json:"region"`
+	Tenant                             string                  `json:"tenant"`
 }
 
 // Auto cancellation rule - when subscription for source plan is canceled, other subscriptions to target plan would be cancelled as well
@@ -2868,6 +2888,14 @@ type GetActiveSubscriptionsInput struct {
 	EnvironmentID *string  `json:"environmentId,omitempty"`
 	ResourceID    *string  `json:"resourceId,omitempty"`
 	ResourceIds   []string `json:"resourceIds,omitempty"`
+}
+
+type GetAuth0ApplicationsInput struct {
+	ClientID      string      `json:"clientId"`
+	ClientSecret  string      `json:"clientSecret"`
+	EnvironmentID *string     `json:"environmentId,omitempty"`
+	Region        Auth0Region `json:"region"`
+	Tenant        string      `json:"tenant"`
 }
 
 type GetAwsExternalIDResult struct {
@@ -7807,6 +7835,50 @@ func (e *APIKeyType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e APIKeyType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Auth0 application type.
+type Auth0ApplicationType string
+
+const (
+	Auth0ApplicationTypeBoth         Auth0ApplicationType = "BOTH"
+	Auth0ApplicationTypeIndividual   Auth0ApplicationType = "INDIVIDUAL"
+	Auth0ApplicationTypeOrganization Auth0ApplicationType = "ORGANIZATION"
+)
+
+var AllAuth0ApplicationType = []Auth0ApplicationType{
+	Auth0ApplicationTypeBoth,
+	Auth0ApplicationTypeIndividual,
+	Auth0ApplicationTypeOrganization,
+}
+
+func (e Auth0ApplicationType) IsValid() bool {
+	switch e {
+	case Auth0ApplicationTypeBoth, Auth0ApplicationTypeIndividual, Auth0ApplicationTypeOrganization:
+		return true
+	}
+	return false
+}
+
+func (e Auth0ApplicationType) String() string {
+	return string(e)
+}
+
+func (e *Auth0ApplicationType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = Auth0ApplicationType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid Auth0ApplicationType", str)
+	}
+	return nil
+}
+
+func (e Auth0ApplicationType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
