@@ -437,14 +437,13 @@ type Auth0Credentials struct {
 	ApplicationID                      string                  `json:"applicationId"`
 	ApplicationName                    string                  `json:"applicationName"`
 	ApplicationType                    Auth0ApplicationType    `json:"applicationType"`
+	ClientDomain                       string                  `json:"clientDomain"`
 	ClientID                           string                  `json:"clientId"`
 	ClientSecret                       string                  `json:"clientSecret"`
 	IndividualInitialPlanID            *string                 `json:"individualInitialPlanId"`
 	IndividualSubscriptionStartSetup   *SubscriptionStartSetup `json:"individualSubscriptionStartSetup"`
 	OrganizationInitialPlanID          *string                 `json:"organizationInitialPlanId"`
 	OrganizationSubscriptionStartSetup *SubscriptionStartSetup `json:"organizationSubscriptionStartSetup"`
-	Region                             Auth0Region             `json:"region"`
-	Tenant                             string                  `json:"tenant"`
 }
 
 func (Auth0Credentials) IsCredentials() {}
@@ -453,14 +452,13 @@ type Auth0CredentialsInput struct {
 	ApplicationID                      string                  `json:"applicationId"`
 	ApplicationName                    string                  `json:"applicationName"`
 	ApplicationType                    Auth0ApplicationType    `json:"applicationType"`
+	ClientDomain                       string                  `json:"clientDomain"`
 	ClientID                           string                  `json:"clientId"`
 	ClientSecret                       string                  `json:"clientSecret"`
 	IndividualInitialPlanID            *string                 `json:"individualInitialPlanId,omitempty"`
 	IndividualSubscriptionStartSetup   *SubscriptionStartSetup `json:"individualSubscriptionStartSetup,omitempty"`
 	OrganizationInitialPlanID          *string                 `json:"organizationInitialPlanId,omitempty"`
 	OrganizationSubscriptionStartSetup *SubscriptionStartSetup `json:"organizationSubscriptionStartSetup,omitempty"`
-	Region                             Auth0Region             `json:"region"`
-	Tenant                             string                  `json:"tenant"`
 }
 
 // Auto cancellation rule - when subscription for source plan is canceled, other subscriptions to target plan would be cancelled as well
@@ -2891,11 +2889,10 @@ type GetActiveSubscriptionsInput struct {
 }
 
 type GetAuth0ApplicationsInput struct {
-	ClientID      string      `json:"clientId"`
-	ClientSecret  string      `json:"clientSecret"`
-	EnvironmentID *string     `json:"environmentId,omitempty"`
-	Region        Auth0Region `json:"region"`
-	Tenant        string      `json:"tenant"`
+	ClientDomain  string  `json:"clientDomain"`
+	ClientID      string  `json:"clientId"`
+	ClientSecret  string  `json:"clientSecret"`
+	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
 type GetAwsExternalIDResult struct {
@@ -7879,56 +7876,6 @@ func (e *Auth0ApplicationType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e Auth0ApplicationType) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
-}
-
-// Auth0 region.
-type Auth0Region string
-
-const (
-	Auth0RegionAu Auth0Region = "AU"
-	Auth0RegionCa Auth0Region = "CA"
-	Auth0RegionEu Auth0Region = "EU"
-	Auth0RegionJp Auth0Region = "JP"
-	Auth0RegionUk Auth0Region = "UK"
-	Auth0RegionUs Auth0Region = "US"
-)
-
-var AllAuth0Region = []Auth0Region{
-	Auth0RegionAu,
-	Auth0RegionCa,
-	Auth0RegionEu,
-	Auth0RegionJp,
-	Auth0RegionUk,
-	Auth0RegionUs,
-}
-
-func (e Auth0Region) IsValid() bool {
-	switch e {
-	case Auth0RegionAu, Auth0RegionCa, Auth0RegionEu, Auth0RegionJp, Auth0RegionUk, Auth0RegionUs:
-		return true
-	}
-	return false
-}
-
-func (e Auth0Region) String() string {
-	return string(e)
-}
-
-func (e *Auth0Region) UnmarshalGQL(v interface{}) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = Auth0Region(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid Auth0Region", str)
-	}
-	return nil
-}
-
-func (e Auth0Region) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
