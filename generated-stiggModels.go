@@ -7213,6 +7213,57 @@ type UsageHistoryInput struct {
 	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
+// Point in the usage history
+type UsageHistoryPoint struct {
+	// Indicates whether there was usage reset in this point, see `markers` for details
+	IsResetPoint bool `json:"isResetPoint"`
+	// Timestamp of the usage history point
+	Timestamp string `json:"timestamp"`
+	// Value of the usage history point
+	Value float64 `json:"value"`
+}
+
+// Series of usage history
+type UsageHistorySeries struct {
+	// Points in the usage history series
+	Points []*UsageHistoryPoint `json:"points"`
+	// Tags for the usage history series
+	Tags []*UsageHistorySeriesTag `json:"tags"`
+}
+
+// Tag for the usage history series
+type UsageHistorySeriesTag struct {
+	// Key of the tag
+	Key string `json:"key"`
+	// Value of the tag
+	Value string `json:"value"`
+}
+
+// Usage history
+type UsageHistoryV2 struct {
+	// Markers for events that affecting feature usage
+	Markers []*UsageMarker `json:"markers"`
+	// Series of usage history
+	Series []*UsageHistorySeries `json:"series"`
+}
+
+// Input for fetching usage history
+type UsageHistoryV2Input struct {
+	// Customer ID
+	CustomerID string `json:"customerId"`
+	// End date of the usage history
+	EndDate       *string `json:"endDate,omitempty"`
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Feature ID
+	FeatureID string `json:"featureId"`
+	// Group usage per keys
+	GroupBy []string `json:"groupBy,omitempty"`
+	// Resource ID
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Start date of the usage history
+	StartDate string `json:"startDate"`
+}
+
 // Marker for a event affecting usage
 type UsageMarker struct {
 	// Timestamp of the marker
@@ -12943,7 +12994,7 @@ func (e UnitTransformationRound) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Type of marker for a usage measurement point
+// Type of marker for a usage history point
 type UsageMarkerType string
 
 const (
