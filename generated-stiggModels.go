@@ -3461,6 +3461,7 @@ type Member struct {
 
 type MemberAggregateGroupBy struct {
 	CreatedAt *string `json:"createdAt"`
+	Email     *string `json:"email"`
 	ID        *string `json:"id"`
 }
 
@@ -3475,6 +3476,7 @@ type MemberConnection struct {
 
 type MemberCountAggregate struct {
 	CreatedAt *int64 `json:"createdAt"`
+	Email     *int64 `json:"email"`
 	ID        *int64 `json:"id"`
 }
 
@@ -3486,10 +3488,20 @@ type MemberEdge struct {
 }
 
 type MemberFilter struct {
-	And       []*MemberFilter        `json:"and,omitempty"`
-	CreatedAt *DateFieldComparison   `json:"createdAt,omitempty"`
-	ID        *StringFieldComparison `json:"id,omitempty"`
-	Or        []*MemberFilter        `json:"or,omitempty"`
+	And       []*MemberFilter         `json:"and,omitempty"`
+	CreatedAt *DateFieldComparison    `json:"createdAt,omitempty"`
+	Email     *StringFieldComparison  `json:"email,omitempty"`
+	ID        *StringFieldComparison  `json:"id,omitempty"`
+	Or        []*MemberFilter         `json:"or,omitempty"`
+	User      *MemberFilterUserFilter `json:"user,omitempty"`
+}
+
+type MemberFilterUserFilter struct {
+	And   []*MemberFilterUserFilter `json:"and,omitempty"`
+	Email *StringFieldComparison    `json:"email,omitempty"`
+	ID    *StringFieldComparison    `json:"id,omitempty"`
+	Name  *StringFieldComparison    `json:"name,omitempty"`
+	Or    []*MemberFilterUserFilter `json:"or,omitempty"`
 }
 
 type MemberInvitationError struct {
@@ -3499,11 +3511,13 @@ type MemberInvitationError struct {
 
 type MemberMaxAggregate struct {
 	CreatedAt *string `json:"createdAt"`
+	Email     *string `json:"email"`
 	ID        *string `json:"id"`
 }
 
 type MemberMinAggregate struct {
 	CreatedAt *string `json:"createdAt"`
+	Email     *string `json:"email"`
 	ID        *string `json:"id"`
 }
 
@@ -10515,17 +10529,19 @@ type MemberSortFields string
 
 const (
 	MemberSortFieldsCreatedAt MemberSortFields = "createdAt"
+	MemberSortFieldsEmail     MemberSortFields = "email"
 	MemberSortFieldsID        MemberSortFields = "id"
 )
 
 var AllMemberSortFields = []MemberSortFields{
 	MemberSortFieldsCreatedAt,
+	MemberSortFieldsEmail,
 	MemberSortFieldsID,
 }
 
 func (e MemberSortFields) IsValid() bool {
 	switch e {
-	case MemberSortFieldsCreatedAt, MemberSortFieldsID:
+	case MemberSortFieldsCreatedAt, MemberSortFieldsEmail, MemberSortFieldsID:
 		return true
 	}
 	return false
