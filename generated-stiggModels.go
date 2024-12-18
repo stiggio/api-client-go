@@ -25,6 +25,16 @@ type ScheduleVariables interface {
 	IsScheduleVariables()
 }
 
+// access roles
+type AccessRoles struct {
+	// Account level access of the user
+	AccountRole AccountAccessRole `json:"accountRole"`
+	// Non-production environment level access of the user
+	NonProductionRole EnvironmentAccessRole `json:"nonProductionRole"`
+	// Production environment level access of the user
+	ProductionRole EnvironmentAccessRole `json:"productionRole"`
+}
+
 type Account struct {
 	AccountEmailDomain            *string            `json:"accountEmailDomain"`
 	AccountStatus                 *AccountStatus     `json:"accountStatus"`
@@ -3447,6 +3457,8 @@ type MarkInvoiceAsPaidInput struct {
 }
 
 type Member struct {
+	// Get the access roles assigned to the member
+	AccessRoles            *AccessRoles `json:"accessRoles"`
 	Account                Account      `json:"account"`
 	CreatedAt              *string      `json:"createdAt"`
 	CubejsToken            *string      `json:"cubejsToken"`
@@ -3457,6 +3469,8 @@ type Member struct {
 	MemberStatus           MemberStatus `json:"memberStatus"`
 	ServiceAPIKey          *string      `json:"serviceApiKey"`
 	User                   *User        `json:"user"`
+	// The id of the user associated with this member
+	UserID string `json:"userId"`
 }
 
 type MemberAggregateGroupBy struct {
@@ -5623,6 +5637,17 @@ type SdkConfiguration struct {
 	SentryDsn                *string `json:"sentryDsn"`
 }
 
+type SetAccessRolesInput struct {
+	// Account level access of the user
+	AccountRole AccountAccessRole `json:"accountRole"`
+	// Environment level access of the user
+	NonProductionRole EnvironmentAccessRole `json:"nonProductionRole"`
+	// Environment level access of the user
+	ProductionRole EnvironmentAccessRole `json:"productionRole"`
+	// The id of the user associated with this member
+	UserID string `json:"userId"`
+}
+
 type SetBasePlanOnPlanInput struct {
 	// The id of the record.
 	ID string `json:"id"`
@@ -7620,6 +7645,48 @@ func (e AccessDeniedReason) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Account access role of the user
+type AccountAccessRole string
+
+const (
+	AccountAccessRoleMember AccountAccessRole = "MEMBER"
+	AccountAccessRoleOwner  AccountAccessRole = "OWNER"
+)
+
+var AllAccountAccessRole = []AccountAccessRole{
+	AccountAccessRoleMember,
+	AccountAccessRoleOwner,
+}
+
+func (e AccountAccessRole) IsValid() bool {
+	switch e {
+	case AccountAccessRoleMember, AccountAccessRoleOwner:
+		return true
+	}
+	return false
+}
+
+func (e AccountAccessRole) String() string {
+	return string(e)
+}
+
+func (e *AccountAccessRole) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = AccountAccessRole(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid AccountAccessRole", str)
+	}
+	return nil
+}
+
+func (e AccountAccessRole) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type AccountStatus string
 
 const (
@@ -9172,6 +9239,52 @@ func (e *EntitySelectionMode) UnmarshalGQL(v interface{}) error {
 }
 
 func (e EntitySelectionMode) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Environment access role of the user
+type EnvironmentAccessRole string
+
+const (
+	EnvironmentAccessRoleAdmin   EnvironmentAccessRole = "ADMIN"
+	EnvironmentAccessRoleNone    EnvironmentAccessRole = "NONE"
+	EnvironmentAccessRoleSupport EnvironmentAccessRole = "SUPPORT"
+	EnvironmentAccessRoleViewer  EnvironmentAccessRole = "VIEWER"
+)
+
+var AllEnvironmentAccessRole = []EnvironmentAccessRole{
+	EnvironmentAccessRoleAdmin,
+	EnvironmentAccessRoleNone,
+	EnvironmentAccessRoleSupport,
+	EnvironmentAccessRoleViewer,
+}
+
+func (e EnvironmentAccessRole) IsValid() bool {
+	switch e {
+	case EnvironmentAccessRoleAdmin, EnvironmentAccessRoleNone, EnvironmentAccessRoleSupport, EnvironmentAccessRoleViewer:
+		return true
+	}
+	return false
+}
+
+func (e EnvironmentAccessRole) String() string {
+	return string(e)
+}
+
+func (e *EnvironmentAccessRole) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EnvironmentAccessRole(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EnvironmentAccessRole", str)
+	}
+	return nil
+}
+
+func (e EnvironmentAccessRole) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
