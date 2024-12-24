@@ -6406,9 +6406,12 @@ type SubscriptionMaximumSpend struct {
 }
 
 type SubscriptionMaximumSpendDiscount struct {
-	Name  *string       `json:"name"`
-	Type  *DiscountType `json:"type"`
-	Value *float64      `json:"value"`
+	// Coupon name
+	Name *string `json:"name"`
+	// Discount type
+	Type *DiscountType `json:"type"`
+	// Coupon value
+	Value *float64 `json:"value"`
 }
 
 type SubscriptionMigrationInput struct {
@@ -6545,11 +6548,20 @@ type SubscriptionPreviewCredits struct {
 }
 
 type SubscriptionPreviewDiscount struct {
-	DurationInMonths *float64             `json:"durationInMonths"`
-	DurationType     DiscountDurationType `json:"durationType"`
-	Name             *string              `json:"name"`
-	Type             DiscountType         `json:"type"`
-	Value            float64              `json:"value"`
+	// Coupon duration in month
+	DurationInMonths *float64 `json:"durationInMonths"`
+	// Coupon duration type
+	DurationType DiscountDurationType `json:"durationType"`
+	// Coupon end date
+	End *string `json:"end"`
+	// Coupon name
+	Name *string `json:"name"`
+	// Coupon start date
+	Start string `json:"start"`
+	// Discount type
+	Type DiscountType `json:"type"`
+	// Coupon value
+	Value float64 `json:"value"`
 }
 
 type SubscriptionPreviewInvoice struct {
