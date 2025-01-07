@@ -6406,8 +6406,14 @@ type SubscriptionMaximumSpend struct {
 }
 
 type SubscriptionMaximumSpendDiscount struct {
+	// Coupon duration in month
+	DurationInMonths *float64 `json:"durationInMonths"`
+	// Coupon duration type
+	DurationType *DiscountDurationType `json:"durationType"`
 	// Coupon name
 	Name *string `json:"name"`
+	// Coupon start date
+	Start *string `json:"start"`
 	// Discount type
 	Type *DiscountType `json:"type"`
 	// Coupon value
