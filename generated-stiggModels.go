@@ -3423,6 +3423,17 @@ type InvalidSubscriptionStatus struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+type InviteMembersInput struct {
+	// Account level access of the user
+	AccountRole *AccountAccessRole `json:"accountRole,omitempty"`
+	// List of emails to invite
+	Invites []string `json:"invites"`
+	// Environment level access of the user
+	NonProductionRole *EnvironmentAccessRole `json:"nonProductionRole,omitempty"`
+	// Environment level access of the user
+	ProductionRole *EnvironmentAccessRole `json:"productionRole,omitempty"`
+}
+
 type InvoiceLine struct {
 	Amount      float64 `json:"amount"`
 	Currency    string  `json:"currency"`
