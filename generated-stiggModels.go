@@ -3424,13 +3424,13 @@ type InvalidSubscriptionStatus struct {
 }
 
 type InviteMembersInput struct {
-	// Account level access of the user
+	// Account level access of the user, defaults to member role
 	AccountRole *AccountAccessRole `json:"accountRole,omitempty"`
 	// List of emails to invite
 	Invites []string `json:"invites"`
-	// Environment level access of the user
+	// Environment level access of the user, defaults to read-only role
 	NonProductionRole *EnvironmentAccessRole `json:"nonProductionRole,omitempty"`
-	// Environment level access of the user
+	// Environment level access of the user, defaults to read-only role
 	ProductionRole *EnvironmentAccessRole `json:"productionRole,omitempty"`
 }
 
