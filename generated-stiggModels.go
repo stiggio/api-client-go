@@ -12636,6 +12636,8 @@ func (e SubscriptionScheduleStatus) MarshalGQL(w io.Writer) {
 type SubscriptionScheduleType string
 
 const (
+	// Additional metadata change
+	SubscriptionScheduleTypeAdditionalMetaData SubscriptionScheduleType = "AdditionalMetaData"
 	// Addon change
 	SubscriptionScheduleTypeAddon SubscriptionScheduleType = "Addon"
 	// Billing period change
@@ -12655,6 +12657,7 @@ const (
 )
 
 var AllSubscriptionScheduleType = []SubscriptionScheduleType{
+	SubscriptionScheduleTypeAdditionalMetaData,
 	SubscriptionScheduleTypeAddon,
 	SubscriptionScheduleTypeBillingPeriod,
 	SubscriptionScheduleTypeCoupon,
@@ -12667,7 +12670,7 @@ var AllSubscriptionScheduleType = []SubscriptionScheduleType{
 
 func (e SubscriptionScheduleType) IsValid() bool {
 	switch e {
-	case SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeCoupon, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypePriceOverride, SubscriptionScheduleTypeUnitAmount:
+	case SubscriptionScheduleTypeAdditionalMetaData, SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeCoupon, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypePriceOverride, SubscriptionScheduleTypeUnitAmount:
 		return true
 	}
 	return false
