@@ -3272,6 +3272,7 @@ type ImportSubscriptionInput struct {
 	SalesforceID             *string                         `json:"salesforceId,omitempty"`
 	StartDate                *string                         `json:"startDate,omitempty"`
 	SubscriptionEntitlements []*SubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
+	SubscriptionID           *string                         `json:"subscriptionId,omitempty"`
 	UnitQuantity             *float64                        `json:"unitQuantity,omitempty"`
 	// Indicates the last update of the subscription. In case there's already existing subscription that was updated after that date, it will skip import this subscription
 	UpdatedAt *string `json:"updatedAt,omitempty"`
