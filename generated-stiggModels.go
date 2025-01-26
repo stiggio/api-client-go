@@ -2053,6 +2053,8 @@ func (DowngradeChangeVariables) IsScheduleVariables() {}
 type DumpEnvironmentForForMergeComparisonInput struct {
 	// The slug of the environment to copy to.
 	DestinationEnvironmentSlug string `json:"destinationEnvironmentSlug"`
+	// Merge configuration.
+	MergeConfiguration *EnvironmentMergeConfigurationInput `json:"mergeConfiguration,omitempty"`
 	// The slug of the environment to copy from.
 	SourceEnvironmentSlug string `json:"sourceEnvironmentSlug"`
 }
@@ -2301,6 +2303,12 @@ type EnvironmentMaxAggregate struct {
 	ID                    *string `json:"id"`
 	PermanentDeletionDate *string `json:"permanentDeletionDate"`
 	Slug                  *string `json:"slug"`
+}
+
+// Merge configuration
+type EnvironmentMergeConfigurationInput struct {
+	// Whether to include coupons during the merge.
+	IncludeCoupons *bool `json:"includeCoupons,omitempty"`
 }
 
 type EnvironmentMinAggregate struct {
@@ -3579,6 +3587,8 @@ type MergeEnvironmentInput struct {
 	DestinationEnvironmentSlug *string `json:"destinationEnvironmentSlug,omitempty"`
 	// The type of the new environment. only relevant when `destinationEnvironmentSlug` is not passed.
 	DestinationEnvironmentType *EnvironmentType `json:"destinationEnvironmentType,omitempty"`
+	// Merge configuration
+	MergeConfiguration *EnvironmentMergeConfigurationInput `json:"mergeConfiguration,omitempty"`
 	// How to migrate customers to newer plan version of updated plans. Default is not to migrate existing customers.
 	MigrationType *PublishMigrationType `json:"migrationType,omitempty"`
 	// The slug of the environment to copy from. If missing `sourceTemplate` will be used.
@@ -7531,6 +7541,8 @@ type ValidateMergeEnvironment struct {
 type ValidateMergeEnvironmentInput struct {
 	// The slug of the environment to copy to.
 	DestinationEnvironmentSlug string `json:"destinationEnvironmentSlug"`
+	// Merge configuration
+	MergeConfiguration *EnvironmentMergeConfigurationInput `json:"mergeConfiguration,omitempty"`
 	// The slug of the environment to copy from.
 	SourceEnvironmentSlug string `json:"sourceEnvironmentSlug"`
 }
