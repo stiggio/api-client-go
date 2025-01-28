@@ -38,6 +38,7 @@ type AccessRoles struct {
 type Account struct {
 	AccountEmailDomain            *string            `json:"accountEmailDomain"`
 	AccountStatus                 *AccountStatus     `json:"accountStatus"`
+	DefaultSSORoles               *AccessRoles       `json:"defaultSSORoles"`
 	DisplayName                   string             `json:"displayName"`
 	ID                            string             `json:"id"`
 	SamlEnabled                   *bool              `json:"samlEnabled"`
@@ -1943,6 +1944,15 @@ type DateFieldComparisonBetween struct {
 type DateRange struct {
 	End   *string `json:"end"`
 	Start *string `json:"start"`
+}
+
+type DefaultSSORolesInput struct {
+	// Account level access of the user
+	AccountRole AccountAccessRole `json:"accountRole"`
+	// Environment level access of the user
+	NonProductionRole EnvironmentAccessRole `json:"nonProductionRole"`
+	// Environment level access of the user
+	ProductionRole EnvironmentAccessRole `json:"productionRole"`
 }
 
 type DefaultTrialConfig struct {
@@ -7038,11 +7048,11 @@ type UnsupportedVendorIdentifierError struct {
 }
 
 type UpdateAccountInput struct {
-	DisplayName                   string             `json:"displayName"`
-	ID                            *string            `json:"id,omitempty"`
-	SubscriptionBillingAnchor     *BillingAnchor     `json:"subscriptionBillingAnchor,omitempty"`
-	SubscriptionProrationBehavior *ProrationBehavior `json:"subscriptionProrationBehavior,omitempty"`
-	Timezone                      *string            `json:"timezone,omitempty"`
+	DefaultSSORoles               *DefaultSSORolesInput `json:"defaultSSORoles,omitempty"`
+	DisplayName                   string                `json:"displayName"`
+	SubscriptionBillingAnchor     *BillingAnchor        `json:"subscriptionBillingAnchor,omitempty"`
+	SubscriptionProrationBehavior *ProrationBehavior    `json:"subscriptionProrationBehavior,omitempty"`
+	Timezone                      *string               `json:"timezone,omitempty"`
 }
 
 type UpdateCouponInput struct {
