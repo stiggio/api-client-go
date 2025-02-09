@@ -5640,7 +5640,10 @@ type ReportUsageInput struct {
 }
 
 type ResyncIntegrationInput struct {
+	// ID of the environment to re-sync
 	EnvironmentID string `json:"environmentId"`
+	// ID of the integration to re-sync
+	IntegrationID *string `json:"integrationId,omitempty"`
 	// Allow skipping entitlement recalculation
 	RecalculateEntitlements *bool `json:"recalculateEntitlements,omitempty"`
 	// Type of integration to re-sync
@@ -5648,6 +5651,9 @@ type ResyncIntegrationInput struct {
 }
 
 type ResyncIntegrationResult struct {
+	// ID of the integration that was re-synced
+	IntegrationID string `json:"integrationId"`
+	// ID of the task associated with the re-sync operation
 	TaskID *string `json:"taskId"`
 }
 
