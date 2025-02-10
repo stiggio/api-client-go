@@ -1039,12 +1039,16 @@ type CreateIntegrationInput struct {
 	BigQueryCredentials       *BigQueryCredentialsInput       `json:"bigQueryCredentials,omitempty"`
 	EnvironmentID             string                          `json:"environmentId"`
 	HubspotCredentials        *HubspotCredentialsInput        `json:"hubspotCredentials,omitempty"`
-	OpenFGACredentials        *OpenFGACredentialsInput        `json:"openFGACredentials,omitempty"`
-	SalesforceCredentials     *SalesforceCredentialsInput     `json:"salesforceCredentials,omitempty"`
-	SnowflakeCredentials      *SnowflakeCredentialsInput      `json:"snowflakeCredentials,omitempty"`
-	StripeCredentials         *StripeCredentialsInput         `json:"stripeCredentials,omitempty"`
-	VendorIdentifier          VendorIdentifier                `json:"vendorIdentifier"`
-	ZuoraCredentials          *ZuoraCredentialsInput          `json:"zuoraCredentials,omitempty"`
+	// The reference ID for the integration
+	IntegrationID *string `json:"integrationId,omitempty"`
+	// Whether the integration is the default integration
+	IsDefault             *bool                       `json:"isDefault,omitempty"`
+	OpenFGACredentials    *OpenFGACredentialsInput    `json:"openFGACredentials,omitempty"`
+	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
+	SnowflakeCredentials  *SnowflakeCredentialsInput  `json:"snowflakeCredentials,omitempty"`
+	StripeCredentials     *StripeCredentialsInput     `json:"stripeCredentials,omitempty"`
+	VendorIdentifier      VendorIdentifier            `json:"vendorIdentifier"`
+	ZuoraCredentials      *ZuoraCredentialsInput      `json:"zuoraCredentials,omitempty"`
 }
 
 type CreateManyPackageEntitlementsInput struct {
@@ -3343,13 +3347,19 @@ type IntFieldComparisonBetween struct {
 }
 
 type Integration struct {
-	Account          *Account         `json:"account"`
-	CreatedAt        *string          `json:"createdAt"`
-	Credentials      Credentials      `json:"credentials"`
-	Environment      *Environment     `json:"environment"`
-	EnvironmentID    string           `json:"environmentId"`
-	ID               string           `json:"id"`
+	Account       *Account     `json:"account"`
+	CreatedAt     *string      `json:"createdAt"`
+	Credentials   Credentials  `json:"credentials"`
+	Environment   *Environment `json:"environment"`
+	EnvironmentID string       `json:"environmentId"`
+	ID            string       `json:"id"`
+	// The reference ID for the integration
+	IntegrationID *string `json:"integrationId"`
+	// Whether the integration is the default
+	IsDefault        *bool            `json:"isDefault"`
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
+	// The vendor type
+	VendorType VendorType `json:"vendorType"`
 }
 
 type IntegrationAggregateGroupBy struct {
@@ -3357,6 +3367,7 @@ type IntegrationAggregateGroupBy struct {
 	EnvironmentID    *string           `json:"environmentId"`
 	ID               *string           `json:"id"`
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
+	VendorType       *VendorType       `json:"vendorType"`
 }
 
 type IntegrationConnection struct {
@@ -3373,14 +3384,21 @@ type IntegrationCountAggregate struct {
 	EnvironmentID    *int64 `json:"environmentId"`
 	ID               *int64 `json:"id"`
 	VendorIdentifier *int64 `json:"vendorIdentifier"`
+	VendorType       *int64 `json:"vendorType"`
 }
 
 type IntegrationDeleteResponse struct {
-	CreatedAt        *string           `json:"createdAt"`
-	Credentials      Credentials       `json:"credentials"`
-	EnvironmentID    *string           `json:"environmentId"`
-	ID               *string           `json:"id"`
+	CreatedAt     *string     `json:"createdAt"`
+	Credentials   Credentials `json:"credentials"`
+	EnvironmentID *string     `json:"environmentId"`
+	ID            *string     `json:"id"`
+	// The reference ID for the integration
+	IntegrationID *string `json:"integrationId"`
+	// Whether the integration is the default
+	IsDefault        *bool             `json:"isDefault"`
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
+	// The vendor type
+	VendorType *VendorType `json:"vendorType"`
 }
 
 type IntegrationEdge struct {
@@ -3391,12 +3409,13 @@ type IntegrationEdge struct {
 }
 
 type IntegrationFilter struct {
-	And              []*IntegrationFilter              `json:"and,omitempty"`
-	CreatedAt        *DateFieldComparison              `json:"createdAt,omitempty"`
-	EnvironmentID    *StringFieldComparison            `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison            `json:"id,omitempty"`
-	Or               []*IntegrationFilter              `json:"or,omitempty"`
-	VendorIdentifier *VendorIdentifierFilterComparison `json:"vendorIdentifier,omitempty"`
+	And              []*IntegrationFilter                   `json:"and,omitempty"`
+	CreatedAt        *DateFieldComparison                   `json:"createdAt,omitempty"`
+	EnvironmentID    *StringFieldComparison                 `json:"environmentId,omitempty"`
+	ID               *StringFieldComparison                 `json:"id,omitempty"`
+	Or               []*IntegrationFilter                   `json:"or,omitempty"`
+	VendorIdentifier *VendorIdentifierFilterComparison      `json:"vendorIdentifier,omitempty"`
+	VendorType       *IntegrationVendorTypeFilterComparison `json:"vendorType,omitempty"`
 }
 
 type IntegrationMaxAggregate struct {
@@ -3404,6 +3423,7 @@ type IntegrationMaxAggregate struct {
 	EnvironmentID    *string           `json:"environmentId"`
 	ID               *string           `json:"id"`
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
+	VendorType       *VendorType       `json:"vendorType"`
 }
 
 type IntegrationMinAggregate struct {
@@ -3411,12 +3431,20 @@ type IntegrationMinAggregate struct {
 	EnvironmentID    *string           `json:"environmentId"`
 	ID               *string           `json:"id"`
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
+	VendorType       *VendorType       `json:"vendorType"`
 }
 
 type IntegrationSort struct {
 	Direction SortDirection         `json:"direction"`
 	Field     IntegrationSortFields `json:"field"`
 	Nulls     *SortNulls            `json:"nulls,omitempty"`
+}
+
+type IntegrationVendorTypeFilterComparison struct {
+	Eq    *VendorType  `json:"eq,omitempty"`
+	In    []VendorType `json:"in,omitempty"`
+	Neq   *VendorType  `json:"neq,omitempty"`
+	NotIn []VendorType `json:"notIn,omitempty"`
 }
 
 type InvalidArgumentError struct {
@@ -7129,7 +7157,11 @@ type UpdateHook struct {
 }
 
 type UpdateIntegrationInput struct {
-	Auth0Credentials   *Auth0CredentialsInput   `json:"auth0Credentials,omitempty"`
+	Auth0Credentials *Auth0CredentialsInput `json:"auth0Credentials,omitempty"`
+	// The reference ID for the integration
+	IntegrationID *string `json:"integrationId,omitempty"`
+	// Whether the integration is the default integration
+	IsDefault          *bool                    `json:"isDefault,omitempty"`
 	OpenFGACredentials *OpenFGACredentialsInput `json:"openFGACredentials,omitempty"`
 	// Salesforce integration configuration
 	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
@@ -10607,6 +10639,7 @@ const (
 	IntegrationSortFieldsEnvironmentID    IntegrationSortFields = "environmentId"
 	IntegrationSortFieldsID               IntegrationSortFields = "id"
 	IntegrationSortFieldsVendorIdentifier IntegrationSortFields = "vendorIdentifier"
+	IntegrationSortFieldsVendorType       IntegrationSortFields = "vendorType"
 )
 
 var AllIntegrationSortFields = []IntegrationSortFields{
@@ -10614,11 +10647,12 @@ var AllIntegrationSortFields = []IntegrationSortFields{
 	IntegrationSortFieldsEnvironmentID,
 	IntegrationSortFieldsID,
 	IntegrationSortFieldsVendorIdentifier,
+	IntegrationSortFieldsVendorType,
 }
 
 func (e IntegrationSortFields) IsValid() bool {
 	switch e {
-	case IntegrationSortFieldsCreatedAt, IntegrationSortFieldsEnvironmentID, IntegrationSortFieldsID, IntegrationSortFieldsVendorIdentifier:
+	case IntegrationSortFieldsCreatedAt, IntegrationSortFieldsEnvironmentID, IntegrationSortFieldsID, IntegrationSortFieldsVendorIdentifier, IntegrationSortFieldsVendorType:
 		return true
 	}
 	return false
@@ -13371,6 +13405,59 @@ func (e *VendorIdentifier) UnmarshalGQL(v interface{}) error {
 }
 
 func (e VendorIdentifier) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The type of integration
+type VendorType string
+
+const (
+	// Authentication integration type
+	VendorTypeAuth VendorType = "AUTH"
+	// Billing integration type
+	VendorTypeBilling VendorType = "BILLING"
+	// CRM integration type
+	VendorTypeCrm VendorType = "CRM"
+	// Data export integration type
+	VendorTypeDataExport VendorType = "DATA_EXPORT"
+	// Marketplace integration type
+	VendorTypeMarketplace VendorType = "MARKETPLACE"
+)
+
+var AllVendorType = []VendorType{
+	VendorTypeAuth,
+	VendorTypeBilling,
+	VendorTypeCrm,
+	VendorTypeDataExport,
+	VendorTypeMarketplace,
+}
+
+func (e VendorType) IsValid() bool {
+	switch e {
+	case VendorTypeAuth, VendorTypeBilling, VendorTypeCrm, VendorTypeDataExport, VendorTypeMarketplace:
+		return true
+	}
+	return false
+}
+
+func (e VendorType) String() string {
+	return string(e)
+}
+
+func (e *VendorType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = VendorType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid VendorType", str)
+	}
+	return nil
+}
+
+func (e VendorType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
