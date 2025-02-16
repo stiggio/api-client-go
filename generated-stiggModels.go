@@ -7649,8 +7649,10 @@ type ZuoraCredentials struct {
 	BaseURL              string  `json:"baseUrl"`
 	ClientID             string  `json:"clientId"`
 	ClientSecret         string  `json:"clientSecret"`
+	PaymentPageID        *string `json:"paymentPageId"`
 	StripePublishableKey *string `json:"stripePublishableKey"`
 	StripeSecretKey      *string `json:"stripeSecretKey"`
+	WebhookSecret        *string `json:"webhookSecret"`
 }
 
 func (ZuoraCredentials) IsCredentials() {}
