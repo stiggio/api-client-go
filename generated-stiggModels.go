@@ -4804,6 +4804,8 @@ type PreparePaymentMethodFormInput struct {
 }
 
 type PreparedPaymentMethodForm struct {
+	// The integration id of the payment method
+	IntegrationID     string            `json:"integrationId"`
 	PaymentMethodForm PaymentMethodForm `json:"paymentMethodForm"`
 	VendorIdentifier  VendorIdentifier  `json:"vendorIdentifier"`
 }
