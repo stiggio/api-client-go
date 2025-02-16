@@ -7660,9 +7660,10 @@ type ZuoraCredentials struct {
 func (ZuoraCredentials) IsCredentials() {}
 
 type ZuoraCredentialsInput struct {
-	BaseURL              string  `json:"baseUrl"`
-	ClientID             string  `json:"clientId"`
-	ClientSecret         string  `json:"clientSecret"`
+	BaseURL      string `json:"baseUrl"`
+	ClientID     string `json:"clientId"`
+	ClientSecret string `json:"clientSecret"`
+	// The ID of the payment page to use
 	PaymentPageID        *string `json:"paymentPageId,omitempty"`
 	StripePublishableKey *string `json:"stripePublishableKey,omitempty"`
 	StripeSecretKey      *string `json:"stripeSecretKey,omitempty"`
