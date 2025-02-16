@@ -7661,6 +7661,7 @@ type ZuoraCredentialsInput struct {
 	BaseURL              string  `json:"baseUrl"`
 	ClientID             string  `json:"clientId"`
 	ClientSecret         string  `json:"clientSecret"`
+	PaymentPageID        *string `json:"paymentPageId,omitempty"`
 	StripePublishableKey *string `json:"stripePublishableKey,omitempty"`
 	StripeSecretKey      *string `json:"stripeSecretKey,omitempty"`
 }
