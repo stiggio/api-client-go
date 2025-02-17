@@ -767,6 +767,7 @@ type CheckoutStateInput struct {
 	BillingCountryCode *string `json:"billingCountryCode,omitempty"`
 	CustomerID         string  `json:"customerId"`
 	PlanID             string  `json:"planId"`
+	ProductID          *string `json:"productId,omitempty"`
 	ResourceID         *string `json:"resourceId,omitempty"`
 }
 
