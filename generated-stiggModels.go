@@ -6355,8 +6355,10 @@ type SubscriptionInput struct {
 }
 
 type SubscriptionInvoice struct {
-	AmountDue            *float64                          `json:"amountDue"`
-	AppliedBalance       *float64                          `json:"appliedBalance"`
+	AmountDue      *float64 `json:"amountDue"`
+	AppliedBalance *float64 `json:"appliedBalance"`
+	// Number of payment attempts made for this invoice, from the perspective of the payment retry schedule.
+	AttemptCount         *float64                          `json:"attemptCount"`
 	BillingID            string                            `json:"billingId"`
 	BillingReason        *SubscriptionInvoiceBillingReason `json:"billingReason"`
 	CreatedAt            string                            `json:"createdAt"`
