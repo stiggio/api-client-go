@@ -5853,6 +5853,7 @@ type StringFieldComparison struct {
 type StripeCredentials struct {
 	AccountDisplayName string `json:"accountDisplayName"`
 	AccountID          string `json:"accountId"`
+	IsTaxEnabled       bool   `json:"isTaxEnabled"`
 	IsTestMode         bool   `json:"isTestMode"`
 }
 
@@ -5861,6 +5862,7 @@ func (StripeCredentials) IsCredentials() {}
 type StripeCredentialsInput struct {
 	AccountID         *string `json:"accountId,omitempty"`
 	AuthorizationCode string  `json:"authorizationCode"`
+	IsTaxEnabled      *bool   `json:"isTaxEnabled,omitempty"`
 	IsTestMode        bool    `json:"isTestMode"`
 }
 
@@ -7169,10 +7171,10 @@ type UpdateIntegrationInput struct {
 	IsDefault          *bool                    `json:"isDefault,omitempty"`
 	OpenFGACredentials *OpenFGACredentialsInput `json:"openFGACredentials,omitempty"`
 	// Salesforce integration configuration
-	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
-	StripeCredentials     *StripeCredentialsInput     `json:"stripeCredentials,omitempty"`
-	VendorIdentifier      VendorIdentifier            `json:"vendorIdentifier"`
-	ZuoraCredentials      *ZuoraCredentialsInput      `json:"zuoraCredentials,omitempty"`
+	SalesforceCredentials *SalesforceCredentialsInput   `json:"salesforceCredentials,omitempty"`
+	StripeCredentials     *UpdateStripeCredentialsInput `json:"stripeCredentials,omitempty"`
+	VendorIdentifier      VendorIdentifier              `json:"vendorIdentifier"`
+	ZuoraCredentials      *ZuoraCredentialsInput        `json:"zuoraCredentials,omitempty"`
 }
 
 type UpdateOneEnvironmentInput struct {
@@ -7226,6 +7228,10 @@ type UpdatePackageEntitlementOrderInput struct {
 type UpdatePackageEntitlementOrderItemInput struct {
 	ID    string   `json:"id"`
 	Order *float64 `json:"order,omitempty"`
+}
+
+type UpdateStripeCredentialsInput struct {
+	IsTaxEnabled *bool `json:"isTaxEnabled,omitempty"`
 }
 
 type UpdateSubscriptionEntitlementInput struct {
