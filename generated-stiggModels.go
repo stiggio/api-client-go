@@ -25,6 +25,11 @@ type ScheduleVariables interface {
 	IsScheduleVariables()
 }
 
+// Data of the sync revision
+type SyncRevisionData interface {
+	IsSyncRevisionData()
+}
+
 // access roles
 type AccessRoles struct {
 	// Account level access of the user
@@ -6869,9 +6874,46 @@ type SubscriptionUpdateUsageResetCutoffRuleInput struct {
 	Behavior SubscriptionUpdateUsageCutoffBehavior `json:"behavior"`
 }
 
+type SyncRevisionBillingData struct {
+	// The billing integration id
+	BillingID string `json:"billingId"`
+	// The billing integration url
+	BillingLinkURL string `json:"billingLinkUrl"`
+}
+
+func (SyncRevisionBillingData) IsSyncRevisionData() {}
+
+type SyncRevisionMarketplaceData struct {
+	// The dimensions of the marketplace sync revision
+	Dimensions string `json:"dimensions"`
+}
+
+func (SyncRevisionMarketplaceData) IsSyncRevisionData() {}
+
+type SyncRevisionPriceBillingData struct {
+	// The billing integration id
+	BillingID string `json:"billingId"`
+	// The billing integration url
+	BillingLinkURL string `json:"billingLinkUrl"`
+	// The price group package billing id
+	PriceGroupPackageBillingID string `json:"priceGroupPackageBillingId"`
+}
+
+func (SyncRevisionPriceBillingData) IsSyncRevisionData() {}
+
+// State of the integration sync
 type SyncState struct {
-	Error            *string          `json:"error"`
-	Status           SyncStatus       `json:"status"`
+	// Sync revision data
+	Data SyncRevisionData `json:"data"`
+	// Error message
+	Error *string `json:"error"`
+	// Integration details
+	Integration Integration `json:"integration"`
+	// Status of the integration sync
+	Status SyncStatus `json:"status"`
+	// Synced entity id
+	SyncedEntityID *string `json:"syncedEntityId"`
+	// Vendor identifier
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 

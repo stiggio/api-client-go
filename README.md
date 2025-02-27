@@ -7,7 +7,7 @@
 0. Install
 
 ```go
-go get github.com/stiggio/api-client-go/v
+go get github.com/stiggio/api-client-go/v2
 ```
 
 1. Retrieve your server API key from [Stigg console](https://app.stigg.io/account/settings)
