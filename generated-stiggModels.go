@@ -6874,6 +6874,7 @@ type SubscriptionUpdateUsageResetCutoffRuleInput struct {
 	Behavior SubscriptionUpdateUsageCutoffBehavior `json:"behavior"`
 }
 
+// Data of billing sync revision
 type SyncRevisionBillingData struct {
 	// The billing integration id
 	BillingID string `json:"billingId"`
@@ -6883,6 +6884,7 @@ type SyncRevisionBillingData struct {
 
 func (SyncRevisionBillingData) IsSyncRevisionData() {}
 
+// Data of marketplace sync revision
 type SyncRevisionMarketplaceData struct {
 	// The dimensions of the marketplace sync revision
 	Dimensions string `json:"dimensions"`
@@ -6890,6 +6892,7 @@ type SyncRevisionMarketplaceData struct {
 
 func (SyncRevisionMarketplaceData) IsSyncRevisionData() {}
 
+// Data of price billing sync revision
 type SyncRevisionPriceBillingData struct {
 	// The billing integration id
 	BillingID string `json:"billingId"`
