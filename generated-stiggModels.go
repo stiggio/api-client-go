@@ -301,6 +301,14 @@ type AddonSumAggregate struct {
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
+// Un-archive addon input
+type AddonUnArchiveInput struct {
+	// Environment ID to unarchive the add-on in
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Add-on ID to unarchive
+	ID string `json:"id"`
+}
+
 type AddonUpdateInput struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	BillingID          *string                `json:"billingId,omitempty"`
@@ -7073,6 +7081,22 @@ type TypographyConfigurationInput struct {
 	H1         *FontVariantInput `json:"h1,omitempty"`
 	H2         *FontVariantInput `json:"h2,omitempty"`
 	H3         *FontVariantInput `json:"h3,omitempty"`
+}
+
+// Input for un-archiving a feature
+type UnArchiveFeatureInput struct {
+	// Environment ID to unarchive the feature in
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Feature ID to unarchive
+	ID string `json:"id"`
+}
+
+// Input for un-archiving a plan
+type UnArchivePlanInput struct {
+	// Environment ID to unarchive the plan in
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Plan ID to unarchive
+	ID string `json:"id"`
 }
 
 type UnPublishedPackageError struct {
