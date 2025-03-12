@@ -3,10 +3,11 @@ package stigg
 import (
 	"context"
 	"fmt"
-	"github.com/Yamashou/gqlgenc/clientv2"
-	"github.com/hashicorp/go-retryablehttp"
 	"net/http"
 	"time"
+
+	"github.com/Yamashou/gqlgenc/clientv2"
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 const RetryCount = 3
@@ -28,7 +29,8 @@ func NewStiggClient(apiKey string, httpClient *http.Client, baseUrl *string) Sti
 	return NewClient(httpClient, *baseUrl, func(ctx context.Context, req *http.Request, gqlInfo *clientv2.GQLRequestInfo, res interface{}, next clientv2.RequestInterceptorFunc) error {
 		req.Header.Set("x-api-key", fmt.Sprintf(apiKey))
 		req.Header.Set("Cache-Control", "no-cache")
-    req.Header.Set("x-graphql-operation-name", gqlInfo.Request.OperationName)
+    	req.Header.Set("x-graphql-operation-name", gqlInfo.Request.OperationName)
+		req.Header.Set("content-type", "application/json")
 
 		return next(ctx, req, gqlInfo, res)
 	})
