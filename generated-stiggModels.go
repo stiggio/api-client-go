@@ -12821,6 +12821,8 @@ const (
 	SubscriptionScheduleTypeAdditionalMetaData SubscriptionScheduleType = "AdditionalMetaData"
 	// Addon change
 	SubscriptionScheduleTypeAddon SubscriptionScheduleType = "Addon"
+	// Billing info metadata change
+	SubscriptionScheduleTypeBillingInfoMetadata SubscriptionScheduleType = "BillingInfoMetadata"
 	// Billing period change
 	SubscriptionScheduleTypeBillingPeriod SubscriptionScheduleType = "BillingPeriod"
 	// Coupon change
@@ -12840,6 +12842,7 @@ const (
 var AllSubscriptionScheduleType = []SubscriptionScheduleType{
 	SubscriptionScheduleTypeAdditionalMetaData,
 	SubscriptionScheduleTypeAddon,
+	SubscriptionScheduleTypeBillingInfoMetadata,
 	SubscriptionScheduleTypeBillingPeriod,
 	SubscriptionScheduleTypeCoupon,
 	SubscriptionScheduleTypeDowngrade,
@@ -12851,7 +12854,7 @@ var AllSubscriptionScheduleType = []SubscriptionScheduleType{
 
 func (e SubscriptionScheduleType) IsValid() bool {
 	switch e {
-	case SubscriptionScheduleTypeAdditionalMetaData, SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeCoupon, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypePriceOverride, SubscriptionScheduleTypeUnitAmount:
+	case SubscriptionScheduleTypeAdditionalMetaData, SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingInfoMetadata, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeCoupon, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypePriceOverride, SubscriptionScheduleTypeUnitAmount:
 		return true
 	}
 	return false
