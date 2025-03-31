@@ -7725,6 +7725,20 @@ type WidgetConfigurationUpdateInput struct {
 	PaywallConfiguration        *PaywallConfigurationInput        `json:"paywallConfiguration,omitempty"`
 }
 
+// Workflow login
+type WorkflowsLoginDto struct {
+	// Current project id
+	ProjectID string `json:"projectId"`
+	// Workflow token
+	Token string `json:"token"`
+}
+
+// Workflow login input
+type WorkflowsLoginInput struct {
+	// Environment id
+	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
 type YearlyResetPeriodConfig struct {
 	YearlyAccordingTo *YearlyAccordingTo `json:"yearlyAccordingTo"`
 }
