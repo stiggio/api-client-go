@@ -41,15 +41,17 @@ type AccessRoles struct {
 }
 
 type Account struct {
-	AccountEmailDomain            *string            `json:"accountEmailDomain"`
-	AccountStatus                 *AccountStatus     `json:"accountStatus"`
-	DefaultSSORoles               *AccessRoles       `json:"defaultSSORoles"`
-	DisplayName                   string             `json:"displayName"`
-	ID                            string             `json:"id"`
-	SamlEnabled                   *bool              `json:"samlEnabled"`
-	SubscriptionBillingAnchor     *BillingAnchor     `json:"subscriptionBillingAnchor"`
-	SubscriptionProrationBehavior *ProrationBehavior `json:"subscriptionProrationBehavior"`
-	Timezone                      *string            `json:"timezone"`
+	// Access method for new users to join this account. 'invite only' is the default.
+	AccessMethod                  AccountAccessMethod `json:"accessMethod"`
+	AccountEmailDomain            *string             `json:"accountEmailDomain"`
+	AccountStatus                 *AccountStatus      `json:"accountStatus"`
+	DefaultSSORoles               *AccessRoles        `json:"defaultSSORoles"`
+	DisplayName                   string              `json:"displayName"`
+	ID                            string              `json:"id"`
+	SamlEnabled                   *bool               `json:"samlEnabled"`
+	SubscriptionBillingAnchor     *BillingAnchor      `json:"subscriptionBillingAnchor"`
+	SubscriptionProrationBehavior *ProrationBehavior  `json:"subscriptionProrationBehavior"`
+	Timezone                      *string             `json:"timezone"`
 }
 
 type AccountNotFoundError struct {
@@ -7168,6 +7170,10 @@ type UnsupportedVendorIdentifierError struct {
 }
 
 type UpdateAccountInput struct {
+	// The method of adding new members to this account
+	AccessMethod *AccountAccessMethod `json:"accessMethod,omitempty"`
+	// Email domain to be used for sso and authorized domain configuration
+	AccountEmailDomain            *string               `json:"accountEmailDomain,omitempty"`
 	DefaultSSORoles               *DefaultSSORolesInput `json:"defaultSSORoles,omitempty"`
 	DisplayName                   string                `json:"displayName"`
 	SubscriptionBillingAnchor     *BillingAnchor        `json:"subscriptionBillingAnchor,omitempty"`
@@ -7843,6 +7849,53 @@ func (e *AccessDeniedReason) UnmarshalGQL(v interface{}) error {
 }
 
 func (e AccessDeniedReason) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// different methods to control how new users can join an account
+type AccountAccessMethod string
+
+const (
+	// when a user with the same email-domain as the account authorized domain is registered, it will be automatically added to this account (an accountEmailDomain need to be configured)
+	AccountAccessMethodAuthorizedDomain AccountAccessMethod = "AUTHORIZED_DOMAIN"
+	// new users can only be added to the account if they are invited
+	AccountAccessMethodInviteOnly AccountAccessMethod = "INVITE_ONLY"
+	// an identity provider will be used to provide new users access to this account (an accountEmailDomain need to be configured)
+	AccountAccessMethodSso AccountAccessMethod = "SSO"
+)
+
+var AllAccountAccessMethod = []AccountAccessMethod{
+	AccountAccessMethodAuthorizedDomain,
+	AccountAccessMethodInviteOnly,
+	AccountAccessMethodSso,
+}
+
+func (e AccountAccessMethod) IsValid() bool {
+	switch e {
+	case AccountAccessMethodAuthorizedDomain, AccountAccessMethodInviteOnly, AccountAccessMethodSso:
+		return true
+	}
+	return false
+}
+
+func (e AccountAccessMethod) String() string {
+	return string(e)
+}
+
+func (e *AccountAccessMethod) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = AccountAccessMethod(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid AccountAccessMethod", str)
+	}
+	return nil
+}
+
+func (e AccountAccessMethod) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
