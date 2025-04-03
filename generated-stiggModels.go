@@ -1135,6 +1135,20 @@ type CreatePackageGroup struct {
 	ProductID string `json:"productId"`
 }
 
+// Create workflow trigger input
+type CreateWorkflowTriggerInput struct {
+	// A JSON containing the configuration for each event log type
+	Configuration map[string]interface{} `json:"configuration,omitempty"`
+	// Workflow trigger endpoint
+	Endpoint string `json:"endpoint"`
+	// Environment id
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Event log types
+	EventLogTypes []EventLogType `json:"eventLogTypes"`
+	// Workflow trigger id
+	TriggerID *string `json:"triggerId,omitempty"`
+}
+
 type CursorPaging struct {
 	// Paginate after opaque cursor
 	After *string `json:"after,omitempty"`
@@ -2049,6 +2063,14 @@ type DeleteOneProductInput struct {
 type DeleteOnePromotionalEntitlementInput struct {
 	// The id of the record to delete.
 	ID string `json:"id"`
+}
+
+// Delete workflow trigger input
+type DeleteWorkflowTriggerInput struct {
+	// Environment id
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Workflow trigger id
+	WorkflowTriggerID string `json:"workflowTriggerId"`
 }
 
 type DetachCustomerPaymentMethodInput struct {
@@ -2993,6 +3015,16 @@ type GetSubscriptionInput struct {
 
 type GetWidgetConfigurationInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
+// Get workflow triggers input
+type GetWorkflowTriggersInput struct {
+	// Environment id
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Trigger id
+	TriggerID *string `json:"triggerId,omitempty"`
+	// Workflow trigger id
+	WorkflowTriggerID *string `json:"workflowTriggerId,omitempty"`
 }
 
 type GrantPromotionalEntitlementInput struct {
@@ -7729,6 +7761,17 @@ type WidgetConfigurationUpdateInput struct {
 	CustomerPortalConfiguration *CustomerPortalConfigurationInput `json:"customerPortalConfiguration,omitempty"`
 	EnvironmentID               *string                           `json:"environmentId,omitempty"`
 	PaywallConfiguration        *PaywallConfigurationInput        `json:"paywallConfiguration,omitempty"`
+}
+
+// Workflow trigger
+type WorkflowTriggerDto struct {
+	// Workflow trigger endpoint
+	Endpoint string `json:"endpoint"`
+	// Event log types
+	EventLogTypes []EventLogType `json:"eventLogTypes"`
+	ID            string         `json:"id"`
+	// Workflow trigger id
+	TriggerID string `json:"triggerId"`
 }
 
 // Workflow login
