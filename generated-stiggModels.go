@@ -11551,18 +11551,20 @@ func (e PaymentCollectionMethod) MarshalGQL(w io.Writer) {
 type PaymentMethodType string
 
 const (
-	PaymentMethodTypeBank PaymentMethodType = "BANK"
-	PaymentMethodTypeCard PaymentMethodType = "CARD"
+	PaymentMethodTypeBank    PaymentMethodType = "BANK"
+	PaymentMethodTypeCard    PaymentMethodType = "CARD"
+	PaymentMethodTypeCashApp PaymentMethodType = "CASH_APP"
 )
 
 var AllPaymentMethodType = []PaymentMethodType{
 	PaymentMethodTypeBank,
 	PaymentMethodTypeCard,
+	PaymentMethodTypeCashApp,
 }
 
 func (e PaymentMethodType) IsValid() bool {
 	switch e {
-	case PaymentMethodTypeBank, PaymentMethodTypeCard:
+	case PaymentMethodTypeBank, PaymentMethodTypeCard, PaymentMethodTypeCashApp:
 		return true
 	}
 	return false
