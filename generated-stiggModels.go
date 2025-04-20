@@ -8244,17 +8244,19 @@ const (
 	APIKeyTypeClient     APIKeyType = "CLIENT"
 	APIKeyTypeSalesforce APIKeyType = "SALESFORCE"
 	APIKeyTypeServer     APIKeyType = "SERVER"
+	APIKeyTypeWorkflow   APIKeyType = "WORKFLOW"
 )
 
 var AllAPIKeyType = []APIKeyType{
 	APIKeyTypeClient,
 	APIKeyTypeSalesforce,
 	APIKeyTypeServer,
+	APIKeyTypeWorkflow,
 }
 
 func (e APIKeyType) IsValid() bool {
 	switch e {
-	case APIKeyTypeClient, APIKeyTypeSalesforce, APIKeyTypeServer:
+	case APIKeyTypeClient, APIKeyTypeSalesforce, APIKeyTypeServer, APIKeyTypeWorkflow:
 		return true
 	}
 	return false
@@ -10127,6 +10129,8 @@ const (
 	EventActorSystem EventActor = "SYSTEM"
 	// Web application user
 	EventActorUser EventActor = "USER"
+	// Workflow triggered event
+	EventActorWorkflow EventActor = "WORKFLOW"
 )
 
 var AllEventActor = []EventActor{
@@ -10143,11 +10147,12 @@ var AllEventActor = []EventActor{
 	EventActorSupport,
 	EventActorSystem,
 	EventActorUser,
+	EventActorWorkflow,
 }
 
 func (e EventActor) IsValid() bool {
 	switch e {
-	case EventActorAppCustomer, EventActorAppPublic, EventActorAppServer, EventActorAws, EventActorImport, EventActorMigration, EventActorSalesforce, EventActorScheduler, EventActorService, EventActorStripe, EventActorSupport, EventActorSystem, EventActorUser:
+	case EventActorAppCustomer, EventActorAppPublic, EventActorAppServer, EventActorAws, EventActorImport, EventActorMigration, EventActorSalesforce, EventActorScheduler, EventActorService, EventActorStripe, EventActorSupport, EventActorSystem, EventActorUser, EventActorWorkflow:
 		return true
 	}
 	return false
