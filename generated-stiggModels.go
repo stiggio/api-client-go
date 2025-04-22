@@ -2430,6 +2430,14 @@ type EventActorInfo struct {
 	Name *string `json:"name"`
 	// Actor type
 	Type *EventActor `json:"type"`
+	// Workflow execution ID
+	WorkflowExecutionID *string `json:"workflowExecutionId"`
+	// Workflow execution time
+	WorkflowExecutionTime *string `json:"workflowExecutionTime"`
+	// Workflow ID
+	WorkflowID *string `json:"workflowId"`
+	// Workflow name
+	WorkflowName *string `json:"workflowName"`
 }
 
 type EventLog struct {
