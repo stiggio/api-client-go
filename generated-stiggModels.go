@@ -7129,6 +7129,8 @@ type TriggerWorkflowDto struct {
 
 // Trigger workflow input
 type TriggerWorkflowInput struct {
+	// If set to true, trigger the test workflow, otherwise trigger live workflow
+	IsTest *bool `json:"isTest,omitempty"`
 	// Workflow payload
 	Payload map[string]interface{} `json:"payload,omitempty"`
 	// Trigger id
