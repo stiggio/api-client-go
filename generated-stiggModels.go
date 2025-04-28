@@ -7732,6 +7732,8 @@ type User struct {
 	Memberships     []*Member `json:"memberships"`
 	Name            *string   `json:"name"`
 	ProfileImageURL *string   `json:"profileImageUrl"`
+	// support chat user identity token
+	SupportChatToken *string `json:"supportChatToken"`
 }
 
 type ValidateMergeEnvironment struct {
