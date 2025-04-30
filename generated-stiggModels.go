@@ -7723,15 +7723,13 @@ type UsageUpdated struct {
 }
 
 type User struct {
-	Department *Department `json:"department"`
-	Email      *string     `json:"email"`
-	ID         string      `json:"id"`
-	// Intercom user identity token
-	IntercomToken   *string   `json:"intercomToken"`
-	LastSeenAt      *string   `json:"lastSeenAt"`
-	Memberships     []*Member `json:"memberships"`
-	Name            *string   `json:"name"`
-	ProfileImageURL *string   `json:"profileImageUrl"`
+	Department      *Department `json:"department"`
+	Email           *string     `json:"email"`
+	ID              string      `json:"id"`
+	LastSeenAt      *string     `json:"lastSeenAt"`
+	Memberships     []*Member   `json:"memberships"`
+	Name            *string     `json:"name"`
+	ProfileImageURL *string     `json:"profileImageUrl"`
 	// support chat user identity token
 	SupportChatToken *string `json:"supportChatToken"`
 }
