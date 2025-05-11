@@ -7040,6 +7040,16 @@ type TestHookResult struct {
 	ResponseSuccess    bool     `json:"responseSuccess"`
 }
 
+// Trigger workflow with test eventinput
+type TestWorkflowInput struct {
+	// The endpoint url of the trigger
+	EndpointURL string `json:"endpointUrl"`
+	// The environment id to trigger the workflow on
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The event type to trigger the workflow on
+	HookEventType EventLogType `json:"hookEventType"`
+}
+
 type TiersModeFilterComparison struct {
 	Eq       *TiersMode  `json:"eq,omitempty"`
 	Gt       *TiersMode  `json:"gt,omitempty"`
