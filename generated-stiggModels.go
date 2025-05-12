@@ -446,8 +446,10 @@ type AsyncTaskResult struct {
 }
 
 type AttachCustomerPaymentMethodInput struct {
-	CustomerID    *string `json:"customerId,omitempty"`
-	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The currency to use for this payment method (only used for Zuora)
+	BillingCurrency *Currency `json:"billingCurrency,omitempty"`
+	CustomerID      *string   `json:"customerId,omitempty"`
+	EnvironmentID   *string   `json:"environmentId,omitempty"`
 	// The billing integration to use for this payment method
 	IntegrationID    *string          `json:"integrationId,omitempty"`
 	PaymentMethodID  string           `json:"paymentMethodId"`
