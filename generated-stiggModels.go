@@ -9400,6 +9400,8 @@ type ZuoraCredentials struct {
 	ClientID string `json:"clientId"`
 	// Client secret for the Zuora account
 	ClientSecret string `json:"clientSecret"`
+	// The ID of the payment gateway to use
+	PaymentGatewayID *string `json:"paymentGatewayId"`
 	// The ID of the payment page to use
 	PaymentPageID *string `json:"paymentPageId"`
 	// Stripe publishable key for the Zuora payment page
@@ -9420,6 +9422,8 @@ type ZuoraCredentialsInput struct {
 	ClientID string `json:"clientId"`
 	// Client secret for the Zuora account
 	ClientSecret string `json:"clientSecret"`
+	// The ID of the payment gateway to use
+	PaymentGatewayID *string `json:"paymentGatewayId,omitempty"`
 	// The ID of the payment page to use
 	PaymentPageID *string `json:"paymentPageId,omitempty"`
 	// Stripe publishable key for the Zuora payment page
