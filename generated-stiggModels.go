@@ -8,14 +8,17 @@ import (
 	"strconv"
 )
 
+// Configuration for the integration
 type Credentials interface {
 	IsCredentials()
 }
 
+// Union of all payment method forms for different billing providers
 type PaymentMethodForm interface {
 	IsPaymentMethodForm()
 }
 
+// Reset period config
 type ResetPeriodConfiguration interface {
 	IsResetPeriodConfiguration()
 }
@@ -40,18 +43,28 @@ type AccessRoles struct {
 	ProductionRole EnvironmentAccessRole `json:"productionRole"`
 }
 
+// An account object
 type Account struct {
-	// Access method for new users to join this account. 'invite only' is the default.
-	AccessMethod                  AccountAccessMethod `json:"accessMethod"`
-	AccountEmailDomain            *string             `json:"accountEmailDomain"`
-	AccountStatus                 *AccountStatus      `json:"accountStatus"`
-	DefaultSSORoles               *AccessRoles        `json:"defaultSSORoles"`
-	DisplayName                   string              `json:"displayName"`
-	ID                            string              `json:"id"`
-	SamlEnabled                   *bool               `json:"samlEnabled"`
-	SubscriptionBillingAnchor     *BillingAnchor      `json:"subscriptionBillingAnchor"`
-	SubscriptionProrationBehavior *ProrationBehavior  `json:"subscriptionProrationBehavior"`
-	Timezone                      *string             `json:"timezone"`
+	// Access method for new users to join this account. 'invite only' is the default
+	AccessMethod AccountAccessMethod `json:"accessMethod"`
+	// Email domain to be used for SSO and authorized domain configuration
+	AccountEmailDomain *string `json:"accountEmailDomain"`
+	// The status of the account, e.g. "ACTIVE" or "BLOCKED"
+	AccountStatus *AccountStatus `json:"accountStatus"`
+	// Default SSO roles for the account
+	DefaultSSORoles *AccessRoles `json:"defaultSSORoles"`
+	// The display name of the account
+	DisplayName string `json:"displayName"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Whether SAML SSO is enabled for the account
+	SamlEnabled *bool `json:"samlEnabled"`
+	// The billing anchor for the subscription, e.g. "START_OF_THE_MONTH"
+	SubscriptionBillingAnchor *BillingAnchor `json:"subscriptionBillingAnchor"`
+	// The proration behavior for the subscription, e.g. "CREATE_PRORATIONS"
+	SubscriptionProrationBehavior *ProrationBehavior `json:"subscriptionProrationBehavior"`
+	// The timezone of the account, e.g. "America/New_York"
+	Timezone *string `json:"timezone"`
 }
 
 type AccountNotFoundError struct {
@@ -66,45 +79,73 @@ type AddCompatibleAddonsToPlanInput struct {
 	RelationIds []string `json:"relationIds"`
 }
 
+// Additional meta data change
 type AdditionalMetaDataChange struct {
-	After      map[string]interface{} `json:"after"`
-	Before     map[string]interface{} `json:"before"`
-	ChangeType *ChangeType            `json:"changeType"`
+	// The value after the change
+	After map[string]interface{} `json:"after"`
+	// The value before the change
+	Before map[string]interface{} `json:"before"`
+	// The change type
+	ChangeType *ChangeType `json:"changeType"`
 }
 
+// Addon
 type Addon struct {
+	// The additional meta data of the package
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	BillingID          *string                `json:"billingId"`
-	BillingLinkURL     *string                `json:"billingLinkUrl"`
-	CreatedAt          *string                `json:"createdAt"`
-	// List of addons this addon is dependant on
-	Dependencies  []*Addon              `json:"dependencies"`
-	Description   *string               `json:"description"`
-	DisplayName   string                `json:"displayName"`
-	DraftDetails  *PackageDraftDetails  `json:"draftDetails"`
-	DraftSummary  *PackageDraftSummary  `json:"draftSummary"`
-	Entitlements  []*PackageEntitlement `json:"entitlements"`
-	Environment   Environment           `json:"environment"`
-	EnvironmentID string                `json:"environmentId"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId"`
+	// The billing link url of the package
+	BillingLinkURL *string `json:"billingLinkUrl"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// List of addons the addon is dependant on
+	Dependencies []*Addon `json:"dependencies"`
+	// The description of the package
+	Description *string `json:"description"`
+	// The display name of the package
+	DisplayName string `json:"displayName"`
+	// Draft details for the addon
+	DraftDetails *PackageDraftDetails `json:"draftDetails"`
+	// Draft summary for the addon
+	DraftSummary *PackageDraftSummary `json:"draftSummary"`
+	// List of entitlements for the addon
+	Entitlements []*PackageEntitlement `json:"entitlements"`
+	Environment  Environment           `json:"environment"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
 	// Indicates if the addon has subscriptions
-	HasSubscriptions  bool         `json:"hasSubscriptions"`
+	HasSubscriptions bool `json:"hasSubscriptions"`
+	// List of hidden widgets of the package
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
-	ID                string       `json:"id"`
-	IsLatest          *bool        `json:"isLatest"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Indicates if the package is the latest version
+	IsLatest *bool `json:"isLatest"`
 	// The maximum quantity of this addon that can be added to a subscription
-	MaxQuantity          *float64              `json:"maxQuantity"`
+	MaxQuantity *float64 `json:"maxQuantity"`
+	// The overage billing period of the package
 	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
-	OveragePrices        []*Price              `json:"overagePrices"`
-	Prices               []*Price              `json:"prices"`
-	PricingType          *PricingType          `json:"pricingType"`
-	Product              *Product              `json:"product"`
-	ProductID            *string               `json:"productId"`
-	RefID                string                `json:"refId"`
-	Status               PackageStatus         `json:"status"`
-	SyncStates           []*SyncState          `json:"syncStates"`
-	Type                 string                `json:"type"`
-	UpdatedAt            *string               `json:"updatedAt"`
-	VersionNumber        int64                 `json:"versionNumber"`
+	// List of overage prices of the package
+	OveragePrices []*Price `json:"overagePrices"`
+	Prices        []*Price `json:"prices"`
+	// The pricing type of the package
+	PricingType *PricingType `json:"pricingType"`
+	Product     *Product     `json:"product"`
+	// The product id of the package
+	ProductID *string `json:"productId"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
+	// The status of the package
+	Status PackageStatus `json:"status"`
+	// List of sync states for the addon
+	SyncStates []*SyncState `json:"syncStates"`
+	// The type of the package
+	Type string `json:"type"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The version number of the package
+	VersionNumber int64 `json:"versionNumber"`
 }
 
 type AddonAggregateGroupBy struct {
@@ -125,7 +166,7 @@ type AddonAggregateGroupBy struct {
 
 // Archive addon input
 type AddonArchiveInput struct {
-	// Environment id
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Addon id
 	RefID string `json:"refId"`
@@ -141,9 +182,9 @@ type AddonAssociatedEntities struct {
 
 // Query associated entities input
 type AddonAssociatedEntitiesInput struct {
-	// Environment id
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
-	// Addon id
+	// Addon refId
 	RefID string `json:"refId"`
 }
 
@@ -203,31 +244,43 @@ type AddonCountAggregate struct {
 	VersionNumber *int64 `json:"versionNumber"`
 }
 
+// Input for creating an addon
 type AddonCreateInput struct {
-	AdditionalMetaData          map[string]interface{} `json:"additionalMetaData,omitempty"`
-	AwsMarketplacePlanDimension *string                `json:"awsMarketplacePlanDimension,omitempty"`
-	BillingID                   *string                `json:"billingId,omitempty"`
+	// The additional meta data of the package
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// The AWS marketplace plan dimension of the package
+	AwsMarketplacePlanDimension *string `json:"awsMarketplacePlanDimension,omitempty"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
 	// List of addon ids this addon should be dependant on
-	Dependencies      []string     `json:"dependencies,omitempty"`
-	Description       *string      `json:"description,omitempty"`
-	DisplayName       string       `json:"displayName"`
-	EnvironmentID     *string      `json:"environmentId,omitempty"`
+	Dependencies []string `json:"dependencies,omitempty"`
+	// The description of the package
+	Description *string `json:"description,omitempty"`
+	// The display name of the package
+	DisplayName string `json:"displayName"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// List of hidden widgets of the package
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
 	// The maximum quantity of this addon that can be added to a subscription
-	MaxQuantity *float64       `json:"maxQuantity,omitempty"`
-	PricingType *PricingType   `json:"pricingType,omitempty"`
-	ProductID   string         `json:"productId"`
-	RefID       *string        `json:"refId,omitempty"`
-	Status      *PackageStatus `json:"status,omitempty"`
+	MaxQuantity *float64 `json:"maxQuantity,omitempty"`
+	// The pricing type of the package
+	PricingType *PricingType `json:"pricingType,omitempty"`
+	// The product id of the package
+	ProductID string `json:"productId"`
+	// The unique identifier for the entity
+	RefID *string `json:"refId,omitempty"`
+	// The status of the package
+	Status *PackageStatus `json:"status,omitempty"`
 }
 
-// Addon dependency changed
+// Addon dependency change
 type AddonDependencyChange struct {
-	// Addon after change
+	// The value after the change
 	After *Addon `json:"after"`
-	// Addon before change
+	// The value before the change
 	Before *Addon `json:"before"`
-	// Type of change
+	// The change type
 	ChangeType *ChangeType `json:"changeType"`
 }
 
@@ -305,7 +358,7 @@ type AddonSumAggregate struct {
 
 // Un-archive addon input
 type AddonUnArchiveInput struct {
-	// Environment ID to unarchive the add-on in
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Add-on ID to unarchive
 	ID string `json:"id"`
@@ -325,36 +378,58 @@ type AddonUpdateInput struct {
 	Status      *PackageStatus `json:"status,omitempty"`
 }
 
+// Customers address
 type Address struct {
+	// Address line 1
 	AddressLine1 *string `json:"addressLine1,omitempty"`
+	// Address line 2
 	AddressLine2 *string `json:"addressLine2,omitempty"`
-	City         *string `json:"city,omitempty"`
-	Country      *string `json:"country,omitempty"`
-	PhoneNumber  *string `json:"phoneNumber,omitempty"`
-	PostalCode   *string `json:"postalCode,omitempty"`
-	State        *string `json:"state,omitempty"`
+	// City
+	City *string `json:"city,omitempty"`
+	// Country
+	Country *string `json:"country,omitempty"`
+	// Phone number
+	PhoneNumber *string `json:"phoneNumber,omitempty"`
+	// Postal code
+	PostalCode *string `json:"postalCode,omitempty"`
+	// State
+	State *string `json:"state,omitempty"`
 }
 
+// Aggregated events by customer
 type AggregatedEventsByCustomer struct {
+	// Aggregated usage data for the customer
 	AggregatedUsage []*CustomerAggregatedUsage `json:"aggregatedUsage"`
 }
 
+// Input parameters for aggregating events by customer
 type AggregatedEventsByCustomerInput struct {
-	Aggregation   MeterAggregation              `json:"aggregation"`
-	CustomerID    *string                       `json:"customerId,omitempty"`
-	EnvironmentID string                        `json:"environmentId"`
-	Filters       []*MeterFilterDefinitionInput `json:"filters"`
+	// Meter aggregation
+	Aggregation MeterAggregation `json:"aggregation"`
+	// Customer id
+	CustomerID *string `json:"customerId,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// List of event filters
+	Filters []*MeterFilterDefinitionInput `json:"filters"`
 }
 
+// Defines how meter data should be aggregated using a specified aggregation function
 type Aggregation struct {
-	Field    *string             `json:"field"`
+	// The data field to which the aggregation function will be applied
+	Field *string `json:"field"`
+	// The aggregation function to apply to the data (e.g. SUM, AVG, COUNT)
 	Function AggregationFunction `json:"function"`
 }
 
+// API key
 type APIKey struct {
-	ID      string     `json:"id"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// The type of API key
 	KeyType APIKeyType `json:"keyType"`
-	Token   string     `json:"token"`
+	// The token of the API key
+	Token string `json:"token"`
 }
 
 type APIKeyFilter struct {
@@ -369,11 +444,15 @@ type APIKeySort struct {
 	Nulls     *SortNulls       `json:"nulls,omitempty"`
 }
 
+// Apply subscription response
 type ApplySubscription struct {
-	Entitlements []*Entitlement        `json:"entitlements"`
+	// The updated entitlements
+	Entitlements []*Entitlement `json:"entitlements"`
+	// The updated subscription
 	Subscription *CustomerSubscription `json:"subscription"`
 }
 
+// Apply subscription changes input
 type ApplySubscriptionInput struct {
 	AdditionalMetaData map[string]interface{}    `json:"additionalMetaData,omitempty"`
 	Addons             []*SubscriptionAddonInput `json:"addons,omitempty"`
@@ -386,21 +465,25 @@ type ApplySubscriptionInput struct {
 	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget     *BudgetConfigurationInput `json:"budget,omitempty"`
-	CustomerID string                    `json:"customerId"`
+	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
+	// Customer ID
+	CustomerID string `json:"customerId"`
 	// The minimum spend configuration
-	MinimumSpend     *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
-	PayingCustomerID *string                             `json:"payingCustomerId,omitempty"`
+	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
+	// Paying customer ID
+	PayingCustomerID *string `json:"payingCustomerId,omitempty"`
 	// Subscription payment collection method
 	PaymentCollectionMethod *PaymentCollectionMethod `json:"paymentCollectionMethod,omitempty"`
-	PaymentMethodID         *string                  `json:"paymentMethodId,omitempty"`
-	PlanID                  string                   `json:"planId"`
+	// Payment method ID
+	PaymentMethodID *string `json:"paymentMethodId,omitempty"`
+	PlanID          string  `json:"planId"`
 	// Override the price of the subscription
-	PriceOverrides             []*PriceOverrideInput            `json:"priceOverrides,omitempty"`
-	PromotionCode              *string                          `json:"promotionCode,omitempty"`
-	ResourceID                 *string                          `json:"resourceId,omitempty"`
-	SalesforceID               *string                          `json:"salesforceId,omitempty"`
-	ScheduleStrategy           *ScheduleStrategy                `json:"scheduleStrategy,omitempty"`
+	PriceOverrides   []*PriceOverrideInput `json:"priceOverrides,omitempty"`
+	PromotionCode    *string               `json:"promotionCode,omitempty"`
+	ResourceID       *string               `json:"resourceId,omitempty"`
+	SalesforceID     *string               `json:"salesforceId,omitempty"`
+	ScheduleStrategy *ScheduleStrategy     `json:"scheduleStrategy,omitempty"`
+	// Should skip trial
 	SkipTrial                  *bool                            `json:"skipTrial,omitempty"`
 	StartDate                  *string                          `json:"startDate,omitempty"`
 	SubscriptionEntitlements   []*SubscriptionEntitlementInput  `json:"subscriptionEntitlements,omitempty"`
@@ -408,170 +491,263 @@ type ApplySubscriptionInput struct {
 	UnitQuantity               *float64                         `json:"unitQuantity,omitempty"`
 }
 
+// Archive a coupon input
 type ArchiveCouponInput struct {
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	RefID         string  `json:"refId"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
 }
 
 type ArchiveCustomerInput struct {
-	CustomerID    string  `json:"customerId"`
+	// Customer slug
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// Input for archiving an environment
 type ArchiveEnvironmentInput struct {
-	ID   *string `json:"id,omitempty"`
+	// Unique identifier for the entity
+	ID *string `json:"id,omitempty"`
+	// A unique identifier for the environment
 	Slug *string `json:"slug,omitempty"`
 }
 
+// Input for archiving a feature
 type ArchiveFeatureInput struct {
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	ID            string  `json:"id"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
 }
 
-// The input type for archiving package group
+// The input type for archiving a package group
 type ArchivePackageGroup struct {
-	// The environment id to get the package group in
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The id of the package group
 	PackageGroupID string `json:"packageGroupId"`
 }
 
+// Input for archiving a plan
 type ArchivePlanInput struct {
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	ID            string  `json:"id"`
+	// Plan ID to archive
+	ID string `json:"id"`
 }
 
+// Result of an asynchronous import task
 type AsyncTaskResult struct {
+	// Unique identifier for the import task
 	TaskID string `json:"taskId"`
 }
 
+// Input for attaching a payment method to a customer
 type AttachCustomerPaymentMethodInput struct {
 	// The currency to use for this payment method (only used for Zuora)
 	BillingCurrency *Currency `json:"billingCurrency,omitempty"`
-	CustomerID      *string   `json:"customerId,omitempty"`
-	EnvironmentID   *string   `json:"environmentId,omitempty"`
+	// Customer slug
+	CustomerID *string `json:"customerId,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The billing integration to use for this payment method
-	IntegrationID    *string          `json:"integrationId,omitempty"`
-	PaymentMethodID  string           `json:"paymentMethodId"`
-	RefID            *string          `json:"refId,omitempty"`
+	IntegrationID *string `json:"integrationId,omitempty"`
+	// Billing provider payment method id
+	PaymentMethodID string `json:"paymentMethodId"`
+	// Customer slug
+	RefID *string `json:"refId,omitempty"`
+	// The integration type to attach the payment method to
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
+// An Auth0 application object
 type Auth0ApplicationDto struct {
-	AppID string                `json:"appId"`
-	Name  string                `json:"name"`
-	Type  *Auth0ApplicationType `json:"type"`
+	// ID of the Auth0 application
+	AppID string `json:"appId"`
+	// Name of the Auth0 application
+	Name string `json:"name"`
+	// Type of the Auth0 application
+	Type *Auth0ApplicationType `json:"type"`
 }
 
+// An Auth0 configuration object
 type Auth0Credentials struct {
-	ApplicationID                      string                  `json:"applicationId"`
-	ApplicationName                    string                  `json:"applicationName"`
-	ApplicationType                    Auth0ApplicationType    `json:"applicationType"`
-	ClientDomain                       string                  `json:"clientDomain"`
-	ClientID                           string                  `json:"clientId"`
-	ClientSecret                       string                  `json:"clientSecret"`
-	IndividualInitialPlanID            *string                 `json:"individualInitialPlanId"`
-	IndividualSubscriptionStartSetup   *SubscriptionStartSetup `json:"individualSubscriptionStartSetup"`
-	OrganizationInitialPlanID          *string                 `json:"organizationInitialPlanId"`
+	// ID of the Auth0 application
+	ApplicationID string `json:"applicationId"`
+	// Name of the Auth0 application
+	ApplicationName string `json:"applicationName"`
+	// Type of the Auth0 application
+	ApplicationType Auth0ApplicationType `json:"applicationType"`
+	// Domain of the Auth0 client
+	ClientDomain string `json:"clientDomain"`
+	// ID of the Auth0 client
+	ClientID string `json:"clientId"`
+	// Secret of the Auth0 client
+	ClientSecret string `json:"clientSecret"`
+	// Initial plan ID for individual subscriptions
+	IndividualInitialPlanID *string `json:"individualInitialPlanId"`
+	// Setup for starting individual subscriptions
+	IndividualSubscriptionStartSetup *SubscriptionStartSetup `json:"individualSubscriptionStartSetup"`
+	// Initial plan ID for organization subscriptions
+	OrganizationInitialPlanID *string `json:"organizationInitialPlanId"`
+	// Setup for starting organization subscriptions
 	OrganizationSubscriptionStartSetup *SubscriptionStartSetup `json:"organizationSubscriptionStartSetup"`
 }
 
 func (Auth0Credentials) IsCredentials() {}
 
+// Input configuration for Auth0 integration
 type Auth0CredentialsInput struct {
-	ApplicationID                      string                  `json:"applicationId"`
-	ApplicationName                    string                  `json:"applicationName"`
-	ApplicationType                    Auth0ApplicationType    `json:"applicationType"`
-	ClientDomain                       string                  `json:"clientDomain"`
-	ClientID                           string                  `json:"clientId"`
-	ClientSecret                       string                  `json:"clientSecret"`
-	IndividualInitialPlanID            *string                 `json:"individualInitialPlanId,omitempty"`
-	IndividualSubscriptionStartSetup   *SubscriptionStartSetup `json:"individualSubscriptionStartSetup,omitempty"`
-	OrganizationInitialPlanID          *string                 `json:"organizationInitialPlanId,omitempty"`
+	// ID of the Auth0 application
+	ApplicationID string `json:"applicationId"`
+	// Name of the Auth0 application
+	ApplicationName string `json:"applicationName"`
+	// Type of the Auth0 application
+	ApplicationType Auth0ApplicationType `json:"applicationType"`
+	// Domain of the Auth0 client
+	ClientDomain string `json:"clientDomain"`
+	// ID of the Auth0 client
+	ClientID string `json:"clientId"`
+	// Secret of the Auth0 client
+	ClientSecret string `json:"clientSecret"`
+	// Initial plan ID for individual subscriptions
+	IndividualInitialPlanID *string `json:"individualInitialPlanId,omitempty"`
+	// Setup for starting individual subscriptions
+	IndividualSubscriptionStartSetup *SubscriptionStartSetup `json:"individualSubscriptionStartSetup,omitempty"`
+	// Initial plan ID for organization subscriptions
+	OrganizationInitialPlanID *string `json:"organizationInitialPlanId,omitempty"`
+	// Setup for starting organization subscriptions
 	OrganizationSubscriptionStartSetup *SubscriptionStartSetup `json:"organizationSubscriptionStartSetup,omitempty"`
 }
 
-// Auto cancellation rule - when subscription for source plan is canceled, other subscriptions to target plan would be cancelled as well
+// Auto cancellation rule - when subscription for source plan is cancelled, other subscriptions to target plan would be cancelled as well
 type AutoCancellationRule struct {
-	// The source plan.
+	// Source plan
 	SourcePlan Plan `json:"sourcePlan"`
-	// The target plan.
+	// Target plan
 	TargetPlan Plan `json:"targetPlan"`
 }
 
-// The input of the auto cancellation rule.
+// Input for auto cancellation rule
 type AutoCancellationRuleInput struct {
-	// The id of the source plan.
+	// ID of the source plan
 	SourcePlanID string `json:"sourcePlanId"`
-	// The id of the target plan.
+	// ID of the target plan
 	TargetPlanID string `json:"targetPlanId"`
 }
 
+// AWS Marketplace product dimension (maps to Stigg plan)
 type AwsDimension struct {
-	Description   string  `json:"description"`
-	Key           string  `json:"key"`
-	Name          string  `json:"name"`
-	StiggPlanID   *string `json:"stiggPlanId"`
+	// Detailed description of the dimension offering
+	Description string `json:"description"`
+	// Unique identifier for the dimension in AWS
+	Key string `json:"key"`
+	// Dimension name in AWS Marketplace
+	Name string `json:"name"`
+	// Mapped Stigg plan ID for feature access control
+	StiggPlanID *string `json:"stiggPlanId"`
+	// Mapped Stigg plan name for entitlement management
 	StiggPlanName *string `json:"stiggPlanName"`
-	Type          string  `json:"type"`
-	Unit          string  `json:"unit"`
+	// Dimension type (e.g., Contracts)
+	Type string `json:"type"`
+	// Unit of measurement for the dimension
+	Unit string `json:"unit"`
 }
 
+// AWS Marketplace integration configuration for SaaS contract pricing model
 type AwsMarketplaceCredentials struct {
+	// AWS IAM role ARN with StiggAWSMarketplaceAccess policy attached
 	AwsRoleArn string `json:"awsRoleArn"`
 }
 
 func (AwsMarketplaceCredentials) IsCredentials() {}
 
+// AWS Marketplace integration configuration for SaaS contract pricing model
 type AwsMarketplaceCredentialsInput struct {
+	// AWS IAM role ARN with StiggAWSMarketplaceAccess policy attached
 	AwsRoleArn string `json:"awsRoleArn"`
 }
 
+// AWS Marketplace SaaS product configuration
 type AwsProduct struct {
-	Description       string  `json:"description"`
-	LogoURL           *string `json:"logoUrl"`
-	ProductCode       string  `json:"productCode"`
-	ProductID         string  `json:"productId"`
-	StiggProductID    *string `json:"stiggProductId"`
+	// Product description as shown in AWS Marketplace catalog
+	Description string `json:"description"`
+	// Product logo URL in AWS Marketplace listing
+	LogoURL *string `json:"logoUrl"`
+	// AWS Marketplace product code identifier
+	ProductCode string `json:"productCode"`
+	// Unique identifier for the product in Stigg
+	ProductID string `json:"productId"`
+	// Mapped Stigg product ID for entitlement management
+	StiggProductID *string `json:"stiggProductId"`
+	// Reference ID for the mapped Stigg product
 	StiggProductRefID *string `json:"stiggProductRefId"`
-	Title             string  `json:"title"`
-	Visibility        string  `json:"visibility"`
+	// Product name as displayed in AWS Marketplace
+	Title string `json:"title"`
+	// Product visibility status in AWS Marketplace catalog
+	Visibility string `json:"visibility"`
 }
 
 type BaseError struct {
 	Code string `json:"code"`
 }
 
+// Base plan change
 type BasePlanChange struct {
-	After      *Addon      `json:"after"`
-	Before     *Addon      `json:"before"`
+	// The value after the change
+	After *Addon `json:"after"`
+	// The value before the change
+	Before *Addon `json:"before"`
+	// The change type
 	ChangeType *ChangeType `json:"changeType"`
 }
 
+// Google BigQuery integration configuration object
 type BigQueryCredentials struct {
-	AirbyteConnectionID  *string `json:"airbyteConnectionId"`
+	// Airbyte connection ID for BigQuery
+	AirbyteConnectionID *string `json:"airbyteConnectionId"`
+	// Airbyte destination ID for BigQuery
 	AirbyteDestinationID *string `json:"airbyteDestinationId"`
-	CredentialsJSON      string  `json:"credentialsJson"`
-	DatasetID            string  `json:"datasetId"`
-	DatasetLocation      string  `json:"datasetLocation"`
-	GcsBucketName        string  `json:"gcsBucketName"`
-	GcsBucketPath        string  `json:"gcsBucketPath"`
-	HmacKeyAccessID      string  `json:"hmacKeyAccessId"`
-	HmacKeySecret        string  `json:"hmacKeySecret"`
-	ProjectID            string  `json:"projectId"`
+	// JSON credentials for Google BigQuery
+	CredentialsJSON string `json:"credentialsJson"`
+	// ID of the BigQuery dataset
+	DatasetID string `json:"datasetId"`
+	// Location of the BigQuery dataset
+	DatasetLocation string `json:"datasetLocation"`
+	// Name of the Google Cloud Storage bucket
+	GcsBucketName string `json:"gcsBucketName"`
+	// Path within the Google Cloud Storage bucket
+	GcsBucketPath string `json:"gcsBucketPath"`
+	// Access ID for the HMAC key
+	HmacKeyAccessID string `json:"hmacKeyAccessId"`
+	// Secret for the HMAC key
+	HmacKeySecret string `json:"hmacKeySecret"`
+	// ID of the Google Cloud project
+	ProjectID string `json:"projectId"`
 }
 
 func (BigQueryCredentials) IsCredentials() {}
 
+// Input configuration for Google BigQuery integration
 type BigQueryCredentialsInput struct {
+	// JSON credentials for Google BigQuery
 	CredentialsJSON string `json:"credentialsJson"`
-	DatasetID       string `json:"datasetId"`
+	// ID of the BigQuery dataset
+	DatasetID string `json:"datasetId"`
+	// Location of the BigQuery dataset
 	DatasetLocation string `json:"datasetLocation"`
-	GcsBucketName   string `json:"gcsBucketName"`
-	GcsBucketPath   string `json:"gcsBucketPath"`
+	// Name of the Google Cloud Storage bucket
+	GcsBucketName string `json:"gcsBucketName"`
+	// Path within the Google Cloud Storage bucket
+	GcsBucketPath string `json:"gcsBucketPath"`
+	// Access ID for the HMAC key
 	HmacKeyAccessID string `json:"hmacKeyAccessId"`
-	HmacKeySecret   string `json:"hmacKeySecret"`
-	ProjectID       string `json:"projectId"`
+	// Secret for the HMAC key
+	HmacKeySecret string `json:"hmacKeySecret"`
+	// ID of the Google Cloud project
+	ProjectID string `json:"projectId"`
 }
 
 type BillableFeature struct {
@@ -714,9 +890,12 @@ type ChargeSubscriptionUsageInput struct {
 	UntilDate *string `json:"untilDate,omitempty"`
 }
 
+// Checkout billing integration
 type CheckoutBillingIntegration struct {
+	// The billing vendor identifier
 	BillingIdentifier BillingVendorIdentifier `json:"billingIdentifier"`
-	Credentials       CheckoutCredentials     `json:"credentials"`
+	// The billing credentials
+	Credentials CheckoutCredentials `json:"credentials"`
 }
 
 type CheckoutColorPalette struct {
@@ -749,8 +928,11 @@ type CheckoutContentInput struct {
 	CollectPhoneNumber *bool `json:"collectPhoneNumber,omitempty"`
 }
 
+// Checkout credentials
 type CheckoutCredentials struct {
+	// The account ID
 	AccountID string `json:"accountId"`
+	// The public key
 	PublicKey string `json:"publicKey"`
 }
 
@@ -772,40 +954,56 @@ type CheckoutPaletteInput struct {
 	TextColor              *string `json:"textColor,omitempty"`
 }
 
+// Checkout state response
 type CheckoutState struct {
-	ActiveSubscription *CustomerSubscription      `json:"activeSubscription"`
+	// The current active subscription
+	ActiveSubscription *CustomerSubscription `json:"activeSubscription"`
+	// Current billing integration
 	BillingIntegration CheckoutBillingIntegration `json:"billingIntegration"`
-	Configuration      *CheckoutConfiguration     `json:"configuration"`
-	Customer           Customer                   `json:"customer"`
-	Plan               Plan                       `json:"plan"`
-	Resource           *CustomerResource          `json:"resource"`
-	SetupSecret        string                     `json:"setupSecret"`
+	// The checkout configuration
+	Configuration *CheckoutConfiguration `json:"configuration"`
+	// The customer
+	Customer Customer `json:"customer"`
+	// The selected plan
+	Plan Plan `json:"plan"`
+	// The resource
+	Resource *CustomerResource `json:"resource"`
+	// The billing integration setup secret
+	SetupSecret string `json:"setupSecret"`
 }
 
+// Checkout state input
 type CheckoutStateInput struct {
+	// The billing country code of the customer to checkout
 	BillingCountryCode *string `json:"billingCountryCode,omitempty"`
-	CustomerID         string  `json:"customerId"`
-	PlanID             string  `json:"planId"`
-	ProductID          *string `json:"productId,omitempty"`
-	ResourceID         *string `json:"resourceId,omitempty"`
+	// Customer ID
+	CustomerID string `json:"customerId"`
+	// The plan ID to checkout
+	PlanID string `json:"planId"`
+	// The Plan Product ID to checkout
+	ProductID *string `json:"productId,omitempty"`
+	// The resource ID to checkout
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 type ClearCustomerPersistentCacheInput struct {
-	CustomerID    string  `json:"customerId"`
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	ResourceID    *string `json:"resourceId,omitempty"`
 }
 
+// Coupons
 type Coupon struct {
-	// Additional metadata associated with the coupon
+	// Metadata associated with the entity
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	// Fixed amount discounts in different currencies
 	AmountsOff []*Money `json:"amountsOff"`
-	// ID of the coupon in the billing system
+	// The unique identifier for the entity in the billing provider
 	BillingID *string `json:"billingId"`
-	// URL to the coupon in the billing system
+	// The URL to the entity in the billing provider
 	BillingLinkURL *string `json:"billingLinkUrl"`
-	// Date when the coupon was created
+	// Timestamp of when the record was created
 	CreatedAt string      `json:"createdAt"`
 	Customers []*Customer `json:"customers"`
 	// Description of the coupon
@@ -815,15 +1013,15 @@ type Coupon struct {
 	// Duration of the coupon validity in months
 	DurationInMonths *float64     `json:"durationInMonths"`
 	Environment      *Environment `json:"environment"`
-	// ID of the environment the coupon belongs to
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
-	// Unique identifier of the coupon
+	// Unique identifier for the entity
 	ID string `json:"id"`
 	// Name of the coupon
 	Name string `json:"name"`
 	// Percentage discount off the original price
 	PercentOff *float64 `json:"percentOff"`
-	// Customer-given identifier of the coupon
+	// The unique identifier for the entity
 	RefID string `json:"refId"`
 	// The source of the coupon
 	Source CouponSource `json:"source"`
@@ -832,7 +1030,7 @@ type Coupon struct {
 	SyncStates []*SyncState `json:"syncStates"`
 	// Type of the coupon (percentage or fixed amount)
 	Type CouponType `json:"type"`
-	// Date when the coupon was last updated
+	// Timestamp of when the record was last updated
 	UpdatedAt string `json:"updatedAt"`
 }
 
@@ -997,78 +1195,127 @@ type CouponTypeFilterComparison struct {
 	NotLike  *CouponType  `json:"notLike,omitempty"`
 }
 
+// Create a new coupon input
 type CreateCouponInput struct {
+	// Metadata associated with the entity
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	// Discount flat fee amounts off
-	AmountsOff    []*MoneyInputDto `json:"amountsOff,omitempty"`
-	Description   *string          `json:"description,omitempty"`
-	DiscountValue *float64         `json:"discountValue,omitempty"`
-	// The duration in months for which the coupon remains active.
+	// Fixed amount discounts in different currencies
+	AmountsOff []*MoneyInputDto `json:"amountsOff,omitempty"`
+	// Description of the coupon
+	Description *string `json:"description,omitempty"`
+	// Discount value of the coupon (deprecated)
+	DiscountValue *float64 `json:"discountValue,omitempty"`
+	// Duration of the coupon validity in months
 	DurationInMonths *float64 `json:"durationInMonths,omitempty"`
-	EnvironmentID    *string  `json:"environmentId,omitempty"`
-	Name             string   `json:"name"`
-	// Discount percent off
-	PercentOff *float64    `json:"percentOff,omitempty"`
-	RefID      string      `json:"refId"`
-	Type       *CouponType `json:"type,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Name of the coupon
+	Name string `json:"name"`
+	// Percentage discount off the original price
+	PercentOff *float64 `json:"percentOff,omitempty"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
+	// Type of the coupon (percentage or fixed amount)
+	Type *CouponType `json:"type,omitempty"`
 }
 
+// Input for creating a new environment
 type CreateEnvironment struct {
-	Color                     *string                     `json:"color,omitempty"`
-	CreatedAt                 *string                     `json:"createdAt,omitempty"`
-	Description               *string                     `json:"description,omitempty"`
-	DisplayName               *string                     `json:"displayName,omitempty"`
-	HardenClientAccessEnabled *bool                       `json:"hardenClientAccessEnabled,omitempty"`
-	ID                        *string                     `json:"id,omitempty"`
-	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
-	Slug                      *string                     `json:"slug,omitempty"`
-	Type                      *EnvironmentType            `json:"type,omitempty"`
+	// The color used to distinguish this environment in the UI
+	Color *string `json:"color,omitempty"`
+	// The timestamp when the environment was created
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// Optional description of the environment
+	Description *string `json:"description,omitempty"`
+	// The name of the environment that will be displayed in the UI
+	DisplayName *string `json:"displayName,omitempty"`
+	// Whether client-side security hardening is enabled for this environment
+	HardenClientAccessEnabled *bool `json:"hardenClientAccessEnabled,omitempty"`
+	// Unique identifier for the entity
+	ID *string `json:"id,omitempty"`
+	// The current provisioning status of the environment
+	ProvisionStatus *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
+	// A unique identifier for the environment
+	Slug *string `json:"slug,omitempty"`
+	// The type of environment (production or non-production)
+	Type *EnvironmentType `json:"type,omitempty"`
 }
 
+// Additional options for environment creation
 type CreateEnvironmentOptions struct {
+	// Whether to automatically create a default product in the new environment
 	CreateDefaultProduct *bool `json:"createDefaultProduct,omitempty"`
 }
 
+// Input parameters for creating a new experiment
 type CreateExperimentInput struct {
-	ControlGroupName  string                `json:"controlGroupName"`
-	Description       *string               `json:"description,omitempty"`
-	EnvironmentID     *string               `json:"environmentId,omitempty"`
-	Name              string                `json:"name"`
-	ProductID         string                `json:"productId"`
-	ProductSettings   *ProductSettingsInput `json:"productSettings,omitempty"`
-	VariantGroupName  string                `json:"variantGroupName"`
-	VariantPercentage float64               `json:"variantPercentage"`
+	// Name for the control group
+	ControlGroupName string `json:"controlGroupName"`
+	// Description of the experiements
+	Description *string `json:"description,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Name of the experiment
+	Name string `json:"name"`
+	// Internal identifier for the product experiment is associated with
+	ProductID string `json:"productId"`
+	// Product settings for the variant group
+	ProductSettings *ProductSettingsInput `json:"productSettings,omitempty"`
+	// Name for the variant group
+	VariantGroupName string `json:"variantGroupName"`
+	// Percentage of users in the variant group
+	VariantPercentage float64 `json:"variantPercentage"`
 }
 
 type CreateHook struct {
 	// A JSON containing the configuration for each event log type
 	Configuration map[string]interface{} `json:"configuration,omitempty"`
-	CreatedAt     *string                `json:"createdAt,omitempty"`
-	Description   *string                `json:"description,omitempty"`
-	Endpoint      *string                `json:"endpoint,omitempty"`
-	EnvironmentID *string                `json:"environmentId,omitempty"`
-	EventLogTypes []EventLogType         `json:"eventLogTypes,omitempty"`
-	ID            *string                `json:"id,omitempty"`
-	SecretKey     *string                `json:"secretKey,omitempty"`
-	Status        *HookStatus            `json:"status,omitempty"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// Webhook description
+	Description *string `json:"description,omitempty"`
+	// The Webhook endpoint URL
+	Endpoint *string `json:"endpoint,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The event types that the webhook will be triggered on
+	EventLogTypes []EventLogType `json:"eventLogTypes,omitempty"`
+	// Unique identifier for the entity
+	ID *string `json:"id,omitempty"`
+	// Secret key for the webhook
+	SecretKey *string `json:"secretKey,omitempty"`
+	// The status of the webhook
+	Status *HookStatus `json:"status,omitempty"`
 }
 
+// Create integration input
 type CreateIntegrationInput struct {
-	Auth0Credentials          *Auth0CredentialsInput          `json:"auth0Credentials,omitempty"`
+	// Auth0 integration configuration
+	Auth0Credentials *Auth0CredentialsInput `json:"auth0Credentials,omitempty"`
+	// Amazon Web Services Marketplace integration configuration
 	AwsMarketplaceCredentials *AwsMarketplaceCredentialsInput `json:"awsMarketplaceCredentials,omitempty"`
-	BigQueryCredentials       *BigQueryCredentialsInput       `json:"bigQueryCredentials,omitempty"`
-	EnvironmentID             string                          `json:"environmentId"`
-	HubspotCredentials        *HubspotCredentialsInput        `json:"hubspotCredentials,omitempty"`
+	// Google BigQuery integration configuration
+	BigQueryCredentials *BigQueryCredentialsInput `json:"bigQueryCredentials,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// HubSpot integration configuration
+	HubspotCredentials *HubspotCredentialsInput `json:"hubspotCredentials,omitempty"`
 	// The reference ID for the integration
 	IntegrationID *string `json:"integrationId,omitempty"`
 	// Whether the integration is the default integration
-	IsDefault             *bool                       `json:"isDefault,omitempty"`
-	OpenFGACredentials    *OpenFGACredentialsInput    `json:"openFGACredentials,omitempty"`
+	IsDefault *bool `json:"isDefault,omitempty"`
+	// OpenFGA integration configuration
+	OpenFGACredentials *OpenFGACredentialsInput `json:"openFGACredentials,omitempty"`
+	// Salesforce integration configuration
 	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
-	SnowflakeCredentials  *SnowflakeCredentialsInput  `json:"snowflakeCredentials,omitempty"`
-	StripeCredentials     *StripeCredentialsInput     `json:"stripeCredentials,omitempty"`
-	VendorIdentifier      VendorIdentifier            `json:"vendorIdentifier"`
-	ZuoraCredentials      *ZuoraCredentialsInput      `json:"zuoraCredentials,omitempty"`
+	// Snowflake integration configuration
+	SnowflakeCredentials *SnowflakeCredentialsInput `json:"snowflakeCredentials,omitempty"`
+	// Stripe integration configuration
+	StripeCredentials *StripeCredentialsInput `json:"stripeCredentials,omitempty"`
+	// The vendor identifier of integration
+	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
+	// Zuora integration configuration
+	ZuoraCredentials *ZuoraCredentialsInput `json:"zuoraCredentials,omitempty"`
 }
 
 type CreateManyPackageEntitlementsInput struct {
@@ -1081,14 +1328,20 @@ type CreateManyPromotionalEntitlementsInput struct {
 	PromotionalEntitlements []*PromotionalEntitlementInput `json:"promotionalEntitlements"`
 }
 
+// A meter configuration that tracks and measures usage-based functionality
 type CreateMeter struct {
-	Aggregation MeterAggregation              `json:"aggregation"`
-	Filters     []*MeterFilterDefinitionInput `json:"filters"`
+	// Configuration specifying how to aggregate the meter data
+	Aggregation MeterAggregation `json:"aggregation"`
+	// List of filters that will be applied to the data
+	Filters []*MeterFilterDefinitionInput `json:"filters"`
 }
 
+// Input for creating a single environment
 type CreateOneEnvironmentInput struct {
-	Environment CreateEnvironment         `json:"environment"`
-	Options     *CreateEnvironmentOptions `json:"options,omitempty"`
+	// The environment configuration details
+	Environment CreateEnvironment `json:"environment"`
+	// Additional options for environment creation
+	Options *CreateEnvironmentOptions `json:"options,omitempty"`
 }
 
 type CreateOneHookInput struct {
@@ -1101,39 +1354,51 @@ type CreateOneIntegrationInput struct {
 	Integration CreateIntegrationInput `json:"integration"`
 }
 
+// Input for creating a single product
 type CreateOneProductInput struct {
-	// The record to create
+	// Record to create
 	Product ProductCreateInput `json:"product"`
 }
 
+// Create or update AWS Marketplace product input
 type CreateOrUpdateAwsMarketplaceProductInput struct {
+	// Additional metadata for the product
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	// Auto cancellation rules
 	AutoCancellationRules []*AutoCancellationRuleInput `json:"autoCancellationRules,omitempty"`
-	AwsDimensionsMapping  []*DimensionsMappingInput    `json:"awsDimensionsMapping"`
-	AwsProductID          *string                      `json:"awsProductId,omitempty"`
-	Description           *string                      `json:"description,omitempty"`
-	DisplayName           *string                      `json:"displayName,omitempty"`
-	EnvironmentID         *string                      `json:"environmentId,omitempty"`
-	MultipleSubscriptions *bool                        `json:"multipleSubscriptions,omitempty"`
-	ProductID             *string                      `json:"productId,omitempty"`
-	ProductSettings       *ProductSettingsInput        `json:"productSettings,omitempty"`
-	RefID                 *string                      `json:"refId,omitempty"`
+	// Mapping between AWS dimensions and Stigg plans for entitlements
+	AwsDimensionsMapping []*DimensionsMappingInput `json:"awsDimensionsMapping"`
+	// AWS Marketplace product identifier
+	AwsProductID *string `json:"awsProductId,omitempty"`
+	// Description of the product
+	Description *string `json:"description,omitempty"`
+	// Display name of the product
+	DisplayName *string `json:"displayName,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Indicates if multiple subscriptions to this product are allowed
+	MultipleSubscriptions *bool `json:"multipleSubscriptions,omitempty"`
+	// Stigg product ID to be mapped to AWS Marketplace
+	ProductID *string `json:"productId,omitempty"`
+	// Settings for the product
+	ProductSettings *ProductSettingsInput `json:"productSettings,omitempty"`
+	// The unique identifier for the entity
+	RefID *string `json:"refId,omitempty"`
 	// Usage reset cutoff rule
 	UsageResetCutoffRule *SubscriptionUpdateUsageResetCutoffRuleInput `json:"usageResetCutoffRule,omitempty"`
 }
 
-// The input type for creating an package group
+// The input type for creating a package group
 type CreatePackageGroup struct {
 	// The description of the package group
 	Description *string `json:"description,omitempty"`
 	// The display name of the package group
 	DisplayName string `json:"displayName"`
-	// The environment id to create the package group in
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The id of the package group
 	PackageGroupID string `json:"packageGroupId"`
-	// The id of the product
+	// The id of the related product
 	ProductID string `json:"productId"`
 }
 
@@ -1143,7 +1408,7 @@ type CreateWorkflowTriggerInput struct {
 	Configuration map[string]interface{} `json:"configuration,omitempty"`
 	// Workflow trigger endpoint
 	Endpoint string `json:"endpoint"`
-	// Environment id
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Event log types
 	EventLogTypes []EventLogType `json:"eventLogTypes"`
@@ -1162,46 +1427,81 @@ type CursorPaging struct {
 	Last *int64 `json:"last,omitempty"`
 }
 
+// Stigg customer object
 type Customer struct {
-	AdditionalMetaData                 map[string]interface{}    `json:"additionalMetaData"`
-	AwsMarketplaceCustomerID           *string                   `json:"awsMarketplaceCustomerId"`
-	BillingCurrency                    *Currency                 `json:"billingCurrency"`
-	BillingID                          *string                   `json:"billingId"`
-	BillingLinkURL                     *string                   `json:"billingLinkUrl"`
-	Coupon                             *Coupon                   `json:"coupon"`
-	CreatedAt                          *string                   `json:"createdAt"`
-	CrmHubspotCompanyID                *string                   `json:"crmHubspotCompanyId"`
-	CrmHubspotCompanyURL               *string                   `json:"crmHubspotCompanyUrl"`
-	CrmID                              *string                   `json:"crmId"`
-	CustomerID                         string                    `json:"customerId"`
-	DefaultPaymentExpirationMonth      *int64                    `json:"defaultPaymentExpirationMonth"`
-	DefaultPaymentExpirationYear       *int64                    `json:"defaultPaymentExpirationYear"`
-	DefaultPaymentMethodID             *string                   `json:"defaultPaymentMethodId"`
-	DefaultPaymentMethodLast4Digits    *string                   `json:"defaultPaymentMethodLast4Digits"`
-	DefaultPaymentMethodType           *PaymentMethodType        `json:"defaultPaymentMethodType"`
-	DeletedAt                          *string                   `json:"deletedAt"`
-	EligibleForTrial                   []*EligibleForTrial       `json:"eligibleForTrial"`
-	Email                              *string                   `json:"email"`
-	Environment                        *Environment              `json:"environment"`
-	EnvironmentID                      string                    `json:"environmentId"`
-	ExcludeFromExperiment              *bool                     `json:"excludeFromExperiment"`
-	Experiment                         *Experiment               `json:"experiment"`
-	ExperimentInfo                     *ExperimentInfo           `json:"experimentInfo"`
-	HasActiveResource                  bool                      `json:"hasActiveResource"`
-	HasActiveSubscription              bool                      `json:"hasActiveSubscription"`
-	HasPaymentMethod                   bool                      `json:"hasPaymentMethod"`
-	ID                                 string                    `json:"id"`
-	Name                               *string                   `json:"name"`
-	PromotionalEntitlements            []*PromotionalEntitlement `json:"promotionalEntitlements"`
-	RefID                              string                    `json:"refId"`
-	SalesforceID                       *string                   `json:"salesforceId"`
-	Statistics                         *CustomerStatistics       `json:"statistics"`
-	Subscriptions                      []*CustomerSubscription   `json:"subscriptions"`
-	SyncStates                         []*SyncState              `json:"syncStates"`
-	TotalActivePromotionalEntitlements float64                   `json:"totalActivePromotionalEntitlements"`
-	TotalActiveSubscription            float64                   `json:"totalActiveSubscription"`
-	TrialedPlans                       []*TrialedPlan            `json:"trialedPlans"`
-	UpdatedAt                          string                    `json:"updatedAt"`
+	// Additional metadata
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	// The AWS Marketplace integration id
+	AwsMarketplaceCustomerID *string `json:"awsMarketplaceCustomerId"`
+	// The billing currency of the customer
+	BillingCurrency *Currency `json:"billingCurrency"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId"`
+	// The URL to the entity in the billing provider
+	BillingLinkURL *string `json:"billingLinkUrl"`
+	Coupon         *Coupon `json:"coupon"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// Company ID in Hubspot integration
+	CrmHubspotCompanyID *string `json:"crmHubspotCompanyId"`
+	// Company URL in Hubspot integration
+	CrmHubspotCompanyURL *string `json:"crmHubspotCompanyUrl"`
+	// The unique identifier for the customer in Hubspot integration
+	CrmID *string `json:"crmId"`
+	// Customer slug
+	CustomerID string `json:"customerId"`
+	// The expiration month of the default payment method
+	DefaultPaymentExpirationMonth *int64 `json:"defaultPaymentExpirationMonth"`
+	// The expiration year of the default payment method
+	DefaultPaymentExpirationYear *int64 `json:"defaultPaymentExpirationYear"`
+	// The default payment method id
+	DefaultPaymentMethodID *string `json:"defaultPaymentMethodId"`
+	// The last 4 digits of the default payment method
+	DefaultPaymentMethodLast4Digits *string `json:"defaultPaymentMethodLast4Digits"`
+	// The default payment method type
+	DefaultPaymentMethodType *PaymentMethodType `json:"defaultPaymentMethodType"`
+	// Timestamp of when the record was deleted
+	DeletedAt *string `json:"deletedAt"`
+	// Whether the customer is eligible for a trial
+	EligibleForTrial []*EligibleForTrial `json:"eligibleForTrial"`
+	// The email of the customer
+	Email       *string      `json:"email"`
+	Environment *Environment `json:"environment"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Whether the customer is excluded from the experiment
+	ExcludeFromExperiment *bool       `json:"excludeFromExperiment"`
+	Experiment            *Experiment `json:"experiment"`
+	// Experiment info
+	ExperimentInfo *ExperimentInfo `json:"experimentInfo"`
+	// Wether the customer has an active resource
+	HasActiveResource bool `json:"hasActiveResource"`
+	// Wether the customer has an active subscription
+	HasActiveSubscription bool `json:"hasActiveSubscription"`
+	// Whether the customer has an attached payment method
+	HasPaymentMethod bool `json:"hasPaymentMethod"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// The name of the customer
+	Name                    *string                   `json:"name"`
+	PromotionalEntitlements []*PromotionalEntitlement `json:"promotionalEntitlements"`
+	// Customer slug
+	RefID string `json:"refId"`
+	// The unique identifier for the customer in Salesforce integration
+	SalesforceID *string `json:"salesforceId"`
+	// Customer related aggregations
+	Statistics    *CustomerStatistics     `json:"statistics"`
+	Subscriptions []*CustomerSubscription `json:"subscriptions"`
+	// List of integration sync states
+	SyncStates []*SyncState `json:"syncStates"`
+	// Total active promotional entitlement count
+	TotalActivePromotionalEntitlements float64 `json:"totalActivePromotionalEntitlements"`
+	// Total active subscription count
+	TotalActiveSubscription float64 `json:"totalActiveSubscription"`
+	// List of already trialed plans
+	TrialedPlans []*TrialedPlan `json:"trialedPlans"`
+	// Timestamp of when the record was last updated
+	UpdatedAt string `json:"updatedAt"`
 }
 
 type CustomerAggregateGroupBy struct {
@@ -1221,24 +1521,38 @@ type CustomerAggregateGroupBy struct {
 	UpdatedAt            *string `json:"updatedAt"`
 }
 
+// Aggregated events by customer
 type CustomerAggregatedUsage struct {
-	CustomerID string  `json:"customerId"`
-	Usage      float64 `json:"usage"`
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// Usage
+	Usage float64 `json:"usage"`
 }
 
+// Update customer billing information
 type CustomerBillingInfo struct {
-	BillingAddress *Address  `json:"billingAddress,omitempty"`
-	Currency       *Currency `json:"currency,omitempty"`
-	CustomerName   *string   `json:"customerName,omitempty"`
+	// Customer billing address
+	BillingAddress *Address `json:"billingAddress,omitempty"`
+	// Customers selected currency
+	Currency *Currency `json:"currency,omitempty"`
+	// Customer name
+	CustomerName *string `json:"customerName,omitempty"`
 	// The billing integration to use for this customer
-	IntegrationID       *string                `json:"integrationId,omitempty"`
+	IntegrationID *string `json:"integrationId,omitempty"`
+	// Invoice custom fields
 	InvoiceCustomFields map[string]interface{} `json:"invoiceCustomFields,omitempty"`
-	Language            *string                `json:"language,omitempty"`
-	Metadata            map[string]interface{} `json:"metadata,omitempty"`
-	PaymentMethodID     *string                `json:"paymentMethodId,omitempty"`
-	ShippingAddress     *Address               `json:"shippingAddress,omitempty"`
-	TaxIds              []*TaxExempt           `json:"taxIds,omitempty"`
-	Timezone            *string                `json:"timezone,omitempty"`
+	// Language to use for this customer
+	Language *string `json:"language,omitempty"`
+	// Additional metadata
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	// Billing provider payment method id, attached to this customer
+	PaymentMethodID *string `json:"paymentMethodId,omitempty"`
+	// Customer shipping address
+	ShippingAddress *Address `json:"shippingAddress,omitempty"`
+	// Tax IDs
+	TaxIds []*TaxExempt `json:"taxIds,omitempty"`
+	// Timezone to use for this customer
+	Timezone *string `json:"timezone,omitempty"`
 }
 
 type CustomerConnection struct {
@@ -1334,21 +1648,36 @@ type CustomerFilterPromotionalEntitlementFilter struct {
 	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
 }
 
+// Create a new customer
 type CustomerInput struct {
-	AdditionalMetaData       map[string]interface{} `json:"additionalMetaData,omitempty"`
-	AwsMarketplaceCustomerID *string                `json:"awsMarketplaceCustomerId,omitempty"`
-	BillingID                *string                `json:"billingId,omitempty"`
-	BillingInformation       *CustomerBillingInfo   `json:"billingInformation,omitempty"`
-	CouponRefID              *string                `json:"couponRefId,omitempty"`
-	CreatedAt                *string                `json:"createdAt,omitempty"`
-	CrmID                    *string                `json:"crmId,omitempty"`
-	CustomerID               *string                `json:"customerId,omitempty"`
-	Email                    *string                `json:"email,omitempty"`
-	EnvironmentID            *string                `json:"environmentId,omitempty"`
-	Name                     *string                `json:"name,omitempty"`
-	RefID                    *string                `json:"refId,omitempty"`
-	SalesforceID             *string                `json:"salesforceId,omitempty"`
-	ShouldSyncFree           *bool                  `json:"shouldSyncFree,omitempty"`
+	// Additional metadata
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// The AWS Marketplace integration id
+	AwsMarketplaceCustomerID *string `json:"awsMarketplaceCustomerId,omitempty"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
+	// Customer billing information
+	BillingInformation *CustomerBillingInfo `json:"billingInformation,omitempty"`
+	// Customer level coupon
+	CouponRefID *string `json:"couponRefId,omitempty"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// The unique identifier for the customer in Hubspot integration
+	CrmID *string `json:"crmId,omitempty"`
+	// Customer slug
+	CustomerID *string `json:"customerId,omitempty"`
+	// The email of the customer
+	Email *string `json:"email,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The name of the customer
+	Name *string `json:"name,omitempty"`
+	// Customer slug
+	RefID *string `json:"refId,omitempty"`
+	// The unique identifier for the customer in Salesforce integration
+	SalesforceID *string `json:"salesforceId,omitempty"`
+	// Wether or not to sync free subscriptions to the billing provider
+	ShouldSyncFree *bool `json:"shouldSyncFree,omitempty"`
 }
 
 type CustomerMaxAggregate struct {
@@ -1417,13 +1746,20 @@ type CustomerPortalAddon struct {
 }
 
 type CustomerPortalBillingInformation struct {
-	DefaultPaymentExpirationMonth   *int64             `json:"defaultPaymentExpirationMonth"`
-	DefaultPaymentExpirationYear    *int64             `json:"defaultPaymentExpirationYear"`
-	DefaultPaymentMethodID          *string            `json:"defaultPaymentMethodId"`
-	DefaultPaymentMethodLast4Digits *string            `json:"defaultPaymentMethodLast4Digits"`
-	DefaultPaymentMethodType        *PaymentMethodType `json:"defaultPaymentMethodType"`
-	Email                           *string            `json:"email"`
-	Name                            *string            `json:"name"`
+	// The expiration month of the default payment method
+	DefaultPaymentExpirationMonth *int64 `json:"defaultPaymentExpirationMonth"`
+	// The expiration year of the default payment method
+	DefaultPaymentExpirationYear *int64 `json:"defaultPaymentExpirationYear"`
+	// The default payment method id
+	DefaultPaymentMethodID *string `json:"defaultPaymentMethodId"`
+	// The last 4 digits of the default payment method
+	DefaultPaymentMethodLast4Digits *string `json:"defaultPaymentMethodLast4Digits"`
+	// The default payment method type
+	DefaultPaymentMethodType *PaymentMethodType `json:"defaultPaymentMethodType"`
+	// The email of the customer
+	Email *string `json:"email"`
+	// The name of the customer
+	Name *string `json:"name"`
 }
 
 type CustomerPortalColorsPalette struct {
@@ -1465,14 +1801,22 @@ type CustomerPortalInput struct {
 }
 
 type CustomerPortalPricingFeature struct {
-	Description        *string     `json:"description"`
-	DisplayName        string      `json:"displayName"`
-	FeatureType        FeatureType `json:"featureType"`
-	FeatureUnits       *string     `json:"featureUnits"`
-	FeatureUnitsPlural *string     `json:"featureUnitsPlural"`
-	ID                 string      `json:"id"`
-	MeterType          *MeterType  `json:"meterType"`
-	RefID              string      `json:"refId"`
+	// The description for the feature
+	Description *string `json:"description"`
+	// The display name for the feature
+	DisplayName string `json:"displayName"`
+	// The type of the feature
+	FeatureType FeatureType `json:"featureType"`
+	// The units for the feature
+	FeatureUnits *string `json:"featureUnits"`
+	// The plural units for the feature
+	FeatureUnitsPlural *string `json:"featureUnitsPlural"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// The meter type for the feature
+	MeterType *MeterType `json:"meterType"`
+	// The unique identifier for the feature
+	RefID string `json:"refId"`
 }
 
 type CustomerPortalPromotionalEntitlement struct {
@@ -1521,10 +1865,14 @@ type CustomerPortalSubscriptionPricing struct {
 	UsageBasedEstimatedBill *float64                      `json:"usageBasedEstimatedBill"`
 }
 
+// Resource object that belongs to a customer
 type CustomerResource struct {
-	CreatedAt     string                  `json:"createdAt"`
-	Customer      Customer                `json:"customer"`
-	EnvironmentID string                  `json:"environmentId"`
+	// Timestamp of when the record was created
+	CreatedAt string   `json:"createdAt"`
+	Customer  Customer `json:"customer"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Resource slug
 	ResourceID    string                  `json:"resourceId"`
 	Subscriptions []*CustomerSubscription `json:"subscriptions"`
 }
@@ -1643,7 +1991,9 @@ type CustomerSort struct {
 	Nulls     *SortNulls         `json:"nulls,omitempty"`
 }
 
+// Customer statistics
 type CustomerStatistics struct {
+	// Active subscriptions count by pricing type
 	ActiveSubscriptionsByPricingType []*SubscriptionPricingTypeStatistics `json:"activeSubscriptionsByPricingType"`
 }
 
@@ -1981,11 +2331,15 @@ type DateFieldComparisonBetween struct {
 	Upper string `json:"upper"`
 }
 
+// Represents a date range with a start and end date
 type DateRange struct {
-	End   *string `json:"end"`
+	// The end date of the range
+	End *string `json:"end"`
+	// The start date of the range
 	Start *string `json:"start"`
 }
 
+// Input type for default SSO roles
 type DefaultSSORolesInput struct {
 	// Account level access of the user
 	AccountRole AccountAccessRole `json:"accountRole"`
@@ -1995,15 +2349,19 @@ type DefaultSSORolesInput struct {
 	ProductionRole EnvironmentAccessRole `json:"productionRole"`
 }
 
+// Default configuration for a trial
 type DefaultTrialConfig struct {
 	// Budget configuration
-	Budget   *BudgetConfiguration `json:"budget"`
-	Duration float64              `json:"duration"`
+	Budget *BudgetConfiguration `json:"budget"`
+	// The duration of the trial in the specified units
+	Duration float64 `json:"duration"`
 	// Trial end behavior
 	TrialEndBehavior *TrialEndBehavior `json:"trialEndBehavior"`
-	Units            TrialPeriodUnits  `json:"units"`
+	// The time unit for the trial duration (days or months)
+	Units TrialPeriodUnits `json:"units"`
 }
 
+// Default trial config change
 type DefaultTrialConfigChange struct {
 	// The value after the change
 	After *DefaultTrialConfig `json:"after"`
@@ -2013,13 +2371,16 @@ type DefaultTrialConfigChange struct {
 	ChangeType *ChangeType `json:"changeType"`
 }
 
+// Default configuration for a trial
 type DefaultTrialConfigInputDto struct {
 	// Budget configuration
-	Budget   *BudgetConfigurationInput `json:"budget,omitempty"`
-	Duration *float64                  `json:"duration,omitempty"`
+	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
+	// The duration of the trial in the specified units
+	Duration *float64 `json:"duration,omitempty"`
 	// Trial end behavior
 	TrialEndBehavior *TrialEndBehavior `json:"trialEndBehavior,omitempty"`
-	Units            *TrialPeriodUnits `json:"units,omitempty"`
+	// The time unit for the trial duration (days or months)
+	Units *TrialPeriodUnits `json:"units,omitempty"`
 }
 
 // The input for delegating a subscription to a customer
@@ -2032,9 +2393,12 @@ type DelegateSubscriptionToCustomerInput struct {
 	SubscriptionID string `json:"subscriptionId"`
 }
 
+// Input for deleting a feature
 type DeleteFeatureInput struct {
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	ID            string  `json:"id"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
 }
 
 type DeleteOneHookInput struct {
@@ -2057,8 +2421,9 @@ type DeleteOnePriceInput struct {
 	ID string `json:"id"`
 }
 
+// Input for deleting a product
 type DeleteOneProductInput struct {
-	// The id of the record to delete.
+	// Unique identifier for the entity
 	ID string `json:"id"`
 }
 
@@ -2069,31 +2434,44 @@ type DeleteOnePromotionalEntitlementInput struct {
 
 // Delete workflow trigger input
 type DeleteWorkflowTriggerInput struct {
-	// Environment id
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Workflow trigger id
 	WorkflowTriggerID string `json:"workflowTriggerId"`
 }
 
+// Remove a payment method from a customer
 type DetachCustomerPaymentMethodInput struct {
-	CustomerID    string  `json:"customerId"`
+	// Customer slug
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// Configuration for mapping AWS Marketplace dimensions to Stigg plans
 type DimensionsMappingInput struct {
-	Key       string `json:"key"`
-	PlanName  string `json:"planName"`
+	// AWS dimension key for the mapping
+	Key string `json:"key"`
+	// Corresponding Stigg plan name for feature management
+	PlanName string `json:"planName"`
+	// Reference ID of the corresponding Stigg plan
 	PlanRefID string `json:"planRefId"`
 }
 
+// Discard Package Draft Input
 type DiscardPackageDraftInput struct {
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
-	RefID         string `json:"refId"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
 }
 
+// Input for checking if a feature exists
 type DoesFeatureExist struct {
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
-	RefID         string `json:"refId"`
+	// The unique identifier for the feature
+	RefID string `json:"refId"`
 }
 
 type DowngradeChangeVariables struct {
@@ -2107,33 +2485,42 @@ type DowngradeChangeVariables struct {
 
 func (DowngradeChangeVariables) IsScheduleVariables() {}
 
-// Input type for dumpEnvironmentForMergeComparison query.
+// Input for dumping two environments for comparison before a merge
 type DumpEnvironmentForForMergeComparisonInput struct {
-	// The slug of the environment to copy to.
+	// Slug of the destination environment
 	DestinationEnvironmentSlug string `json:"destinationEnvironmentSlug"`
-	// Merge configuration.
+	// Merge configuration
 	MergeConfiguration *EnvironmentMergeConfigurationInput `json:"mergeConfiguration,omitempty"`
-	// The slug of the environment to copy from.
+	// Slug of the source environment
 	SourceEnvironmentSlug string `json:"sourceEnvironmentSlug"`
 }
 
+// DTO representing the pre-merge and post-merge dumps of environments for comparison
 type DumpEnvironmentForMergeComparison struct {
+	// The anticipated state of the environment after the merge operation would be applied
 	PostMergeDump map[string]interface{} `json:"postMergeDump"`
-	PreMergeDump  map[string]interface{} `json:"preMergeDump"`
+	// The state of the environment before the merge operation is applied
+	PreMergeDump map[string]interface{} `json:"preMergeDump"`
 }
 
-// Input type for dumpEnvironmentProductCatalog mutation.
+// Input type for dumpEnvironmentProductCatalog mutation
 type DumpEnvironmentProductCatalogInput struct {
-	// The slug of the environment to dump.
+	// The slug of the environment to dump
 	EnvironmentSlug string `json:"environmentSlug"`
 }
 
+// Input for duplicating a product
 type DuplicateProductInput struct {
-	Description     *string `json:"description,omitempty"`
-	DisplayName     *string `json:"displayName,omitempty"`
-	EnvironmentID   string  `json:"environmentId"`
-	RefID           string  `json:"refId"`
-	SourceProductID string  `json:"sourceProductId"`
+	// Description of the new product
+	Description *string `json:"description,omitempty"`
+	// Display name of the new product
+	DisplayName *string `json:"displayName,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
+	// ID of the product to duplicate
+	SourceProductID string `json:"sourceProductId"`
 }
 
 type DuplicatedEntityNotAllowedError struct {
@@ -2148,21 +2535,25 @@ type EditAllowedOnDraftPackageOnlyError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
-// The input type for editing package group details
+// The input type for editing a package group details
 type EditPackageGroupDetailsInput struct {
 	// The description of the package group
 	Description *string `json:"description,omitempty"`
 	// The display name of the package group
 	DisplayName string `json:"displayName"`
-	// The environment id of the package group to be edited
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The id of the package group
 	PackageGroupID string `json:"packageGroupId"`
 }
 
+// Information on a product this customer is eligible for a trial
 type EligibleForTrial struct {
-	Eligible     bool    `json:"eligible"`
-	ProductID    *string `json:"productId"`
+	// Wether the customer is eligible for a trial
+	Eligible bool `json:"eligible"`
+	// Internal product id
+	ProductID *string `json:"productId"`
+	// Product slug, as defined by the user
 	ProductRefID *string `json:"productRefId"`
 }
 
@@ -2225,9 +2616,10 @@ type EntitlementFeature struct {
 	FeatureType        FeatureType            `json:"featureType"`
 	FeatureUnits       *string                `json:"featureUnits"`
 	FeatureUnitsPlural *string                `json:"featureUnitsPlural"`
-	ID                 string                 `json:"id"`
-	MeterType          *MeterType             `json:"meterType"`
-	RefID              string                 `json:"refId"`
+	// Unique identifier for the entity
+	ID        string     `json:"id"`
+	MeterType *MeterType `json:"meterType"`
+	RefID     string     `json:"refId"`
 	// Unit transformation to be applied to the reported usage
 	UnitTransformation *UnitTransformation `json:"unitTransformation"`
 }
@@ -2240,7 +2632,8 @@ type EntitlementLimitExceededError struct {
 
 type EntitlementOptions struct {
 	RequestedUsage *float64 `json:"requestedUsage,omitempty"`
-	ShouldTrack    *bool    `json:"shouldTrack,omitempty"`
+	// Not in use anymore
+	ShouldTrack *bool `json:"shouldTrack,omitempty"`
 }
 
 type EntitlementSummary struct {
@@ -2282,29 +2675,43 @@ type EntitlementWithSummary struct {
 }
 
 type EntitlementsUpdated struct {
-	AccountID     string         `json:"accountId"`
-	CustomerID    string         `json:"customerId"`
-	Entitlements  []*Entitlement `json:"entitlements"`
-	EnvironmentID string         `json:"environmentId"`
-	ResourceID    *string        `json:"resourceId"`
+	// The unique identifier for the account
+	AccountID    string         `json:"accountId"`
+	CustomerID   string         `json:"customerId"`
+	Entitlements []*Entitlement `json:"entitlements"`
+	// The unique identifier for the environment
+	EnvironmentID string  `json:"environmentId"`
+	ResourceID    *string `json:"resourceId"`
 }
 
 // An environment object
 type Environment struct {
-	Account                   *Account                    `json:"account"`
-	APIKeys                   []*APIKey                   `json:"apiKeys"`
-	Color                     *string                     `json:"color"`
-	CreatedAt                 *string                     `json:"createdAt"`
-	Description               *string                     `json:"description"`
-	DisplayName               string                      `json:"displayName"`
-	HardenClientAccessEnabled bool                        `json:"hardenClientAccessEnabled"`
-	ID                        string                      `json:"id"`
-	IsSandbox                 bool                        `json:"isSandbox"`
-	PermanentDeletionDate     *string                     `json:"permanentDeletionDate"`
-	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus"`
-	SigningToken              string                      `json:"signingToken"`
-	Slug                      string                      `json:"slug"`
-	Type                      EnvironmentType             `json:"type"`
+	Account *Account  `json:"account"`
+	APIKeys []*APIKey `json:"apiKeys"`
+	// The color associated with the environment, used for UI representation
+	Color *string `json:"color"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The description of the environment
+	Description *string `json:"description"`
+	// The display name of the environment
+	DisplayName string `json:"displayName"`
+	// Whether hardened client access is enabled for the environment
+	HardenClientAccessEnabled bool `json:"hardenClientAccessEnabled"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Whether the environment is a sandbox environment
+	IsSandbox bool `json:"isSandbox"`
+	// The date when the environment will be permanently deleted, if applicable
+	PermanentDeletionDate *string `json:"permanentDeletionDate"`
+	// The provisioning status of the environment, e.g. "PROVISIONED" or "PROVISIONING"
+	ProvisionStatus *EnvironmentProvisionStatus `json:"provisionStatus"`
+	// The signing token for the environment, used for secure communication
+	SigningToken string `json:"signingToken"`
+	// The slug of the environment, used in URLs
+	Slug string `json:"slug"`
+	// The type of the environment, e.g. "DEVELOPMENT", "PRODUCTION", or "SANDBOX"
+	Type EnvironmentType `json:"type"`
 }
 
 type EnvironmentAggregateGroupBy struct {
@@ -2347,12 +2754,18 @@ type EnvironmentFilter struct {
 	Slug                  *StringFieldComparison `json:"slug,omitempty"`
 }
 
+// Input for updating an existing environment
 type EnvironmentInput struct {
-	Color                     *string                     `json:"color,omitempty"`
-	Description               *string                     `json:"description,omitempty"`
-	DisplayName               *string                     `json:"displayName,omitempty"`
-	HardenClientAccessEnabled *bool                       `json:"hardenClientAccessEnabled,omitempty"`
-	ProvisionStatus           *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
+	// The color used to distinguish this environment in the UI
+	Color *string `json:"color,omitempty"`
+	// Optional description of the environment
+	Description *string `json:"description,omitempty"`
+	// The name of the environment that will be displayed in the UI
+	DisplayName *string `json:"displayName,omitempty"`
+	// Whether client-side security hardening is enabled for this environment
+	HardenClientAccessEnabled *bool `json:"hardenClientAccessEnabled,omitempty"`
+	// The current provisioning status of the environment
+	ProvisionStatus *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
 }
 
 type EnvironmentMaxAggregate struct {
@@ -2363,9 +2776,9 @@ type EnvironmentMaxAggregate struct {
 	Slug                  *string `json:"slug"`
 }
 
-// Merge configuration
+// Configuration options for customizing an environment merge or comparison process
 type EnvironmentMergeConfigurationInput struct {
-	// Whether to include coupons during the merge.
+	// Whether to include coupons in the merge or comparison. Defaults to true if not specified
 	IncludeCoupons *bool `json:"includeCoupons,omitempty"`
 }
 
@@ -2430,7 +2843,7 @@ type EventActorInfo struct {
 	IPAddress *string `json:"ipAddress"`
 	// Actor name
 	Name *string `json:"name"`
-	// Actor type
+	// Type of the actor (e.g., service, user, system, workflow)
 	Type *EventActor `json:"type"`
 	// Workflow execution ID
 	WorkflowExecutionID *string `json:"workflowExecutionId"`
@@ -2442,22 +2855,23 @@ type EventActorInfo struct {
 	WorkflowName *string `json:"workflowName"`
 }
 
+// Event log information
 type EventLog struct {
-	// The account ID
+	// The unique identifier for the account
 	AccountID string `json:"accountId"`
 	// Actor information
 	Actor *EventActorInfo `json:"actor"`
-	// The timestamp the event was created at
+	// Timestamp of when the record was created
 	CreatedAt string `json:"createdAt"`
 	// The entity id of this event
 	EntityID *string `json:"entityId"`
 	// The event entity type
 	EntityType *EventEntityType `json:"entityType"`
-	// The environment ID
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The type of the event
 	EventLogType EventLogType `json:"eventLogType"`
-	// The ID of the event
+	// Unique identifier for the entity
 	ID string `json:"id"`
 	// The parent entity id of this events entity
 	ParentEntityID *string `json:"parentEntityId"`
@@ -2580,45 +2994,71 @@ type EventRequest struct {
 type EventWebhook struct {
 	// The endpoint of the webhook
 	Endpoint string `json:"endpoint"`
-	// The ID of the webhook entity
+	// Unique identifier for the entity
 	ID string `json:"id"`
 }
 
+// Events fields
 type EventsFields struct {
+	// Fields included in the events data
 	Fields map[string]interface{} `json:"fields"`
 }
 
+// Input parameters for retrieving events fields
 type EventsFieldsInput struct {
-	CustomerID    *string                       `json:"customerId,omitempty"`
-	EnvironmentID string                        `json:"environmentId"`
-	FeatureID     *string                       `json:"featureId,omitempty"`
-	Filters       []*MeterFilterDefinitionInput `json:"filters,omitempty"`
-	MeterID       *string                       `json:"meterId,omitempty"`
-	ResourceID    *string                       `json:"resourceId,omitempty"`
-	// Omit fields that have more than this number of unique values.
+	// Customer id
+	CustomerID *string `json:"customerId,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Reference identifier for the feature
+	FeatureID *string `json:"featureId,omitempty"`
+	// Filters to apply to the events fields
+	Filters []*MeterFilterDefinitionInput `json:"filters,omitempty"`
+	// Meter id
+	MeterID *string `json:"meterId,omitempty"`
+	// Resource id
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Exclude fields with more than this number of unique values
 	UniqueValuesLimit *float64 `json:"uniqueValuesLimit,omitempty"`
 }
 
+// An experiment for A/B testing
 type Experiment struct {
-	ControlGroupName       string           `json:"controlGroupName"`
-	CreatedAt              string           `json:"createdAt"`
-	Customers              *Customer        `json:"customers"`
-	Description            *string          `json:"description"`
-	Environment            *Environment     `json:"environment"`
-	EnvironmentID          string           `json:"environmentId"`
-	ID                     string           `json:"id"`
+	// Name for the control group
+	ControlGroupName string `json:"controlGroupName"`
+	// Timestamp of when the record was created
+	CreatedAt string    `json:"createdAt"`
+	Customers *Customer `json:"customers"`
+	// Description of the experiements
+	Description *string      `json:"description"`
+	Environment *Environment `json:"environment"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// The product settings for the control group
 	InitialProductSettings *ProductSettings `json:"initialProductSettings"`
-	Name                   string           `json:"name"`
-	Product                *Product         `json:"product"`
-	ProductID              string           `json:"productId"`
-	ProductSettings        ProductSettings  `json:"productSettings"`
-	RefID                  string           `json:"refId"`
-	StartedAt              *string          `json:"startedAt"`
-	Status                 ExperimentStatus `json:"status"`
-	StoppedAt              *string          `json:"stoppedAt"`
-	UpdatedAt              string           `json:"updatedAt"`
-	VariantGroupName       string           `json:"variantGroupName"`
-	VariantPercentage      float64          `json:"variantPercentage"`
+	// Name of the experiment
+	Name    string   `json:"name"`
+	Product *Product `json:"product"`
+	// Internal identifier for the product experiment is associated with
+	ProductID string `json:"productId"`
+	// Product settings for the variant group
+	ProductSettings ProductSettings `json:"productSettings"`
+	// The unique identifier for the experiment
+	RefID string `json:"refId"`
+	// Start date of the experiment
+	StartedAt *string `json:"startedAt"`
+	// The status of the experiment
+	Status ExperimentStatus `json:"status"`
+	// Stop date of the experiment
+	StoppedAt *string `json:"stoppedAt"`
+	// Timestamp of when the record was last updated
+	UpdatedAt string `json:"updatedAt"`
+	// Name for the variant group
+	VariantGroupName string `json:"variantGroupName"`
+	// Percentage of users in the variant group
+	VariantPercentage float64 `json:"variantPercentage"`
 }
 
 type ExperimentAggregateGroupBy struct {
@@ -2719,16 +3159,24 @@ type ExperimentSort struct {
 	Nulls     *SortNulls           `json:"nulls,omitempty"`
 }
 
+// Statistics and metrics for the experiment
 type ExperimentStats struct {
+	// Number of paid subscriptions in the control group
 	ControlPaidSubscriptions float64 `json:"controlPaidSubscriptions"`
-	ControlSubscriptions     float64 `json:"controlSubscriptions"`
+	// Total number of subscriptions in the control group
+	ControlSubscriptions float64 `json:"controlSubscriptions"`
+	// Number of paid subscriptions in the variant group
 	VariantPaidSubscriptions float64 `json:"variantPaidSubscriptions"`
-	VariantSubscriptions     float64 `json:"variantSubscriptions"`
+	// Total number of subscriptions in the variant group
+	VariantSubscriptions float64 `json:"variantSubscriptions"`
 }
 
+// Query parameters for retrieving experiment statistics
 type ExperimentStatsQuery struct {
-	EnvironmentID   *string `json:"environmentId,omitempty"`
-	ExperimentRefID string  `json:"experimentRefId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The unique identifier for the experiment
+	ExperimentRefID string `json:"experimentRefId"`
 }
 
 type ExperimentStatusFilterComparison struct {
@@ -2760,27 +3208,44 @@ type FailedToImportCustomerError struct {
 	IsValidationError bool     `json:"isValidationError"`
 }
 
+// Feature DTO
 type Feature struct {
-	Account            *Account               `json:"account"`
+	Account *Account `json:"account"`
+	// The additional metadata for the feature
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	CreatedAt          *string                `json:"createdAt"`
-	Description        *string                `json:"description"`
-	DisplayName        string                 `json:"displayName"`
-	Environment        *Environment           `json:"environment"`
-	EnvironmentID      string                 `json:"environmentId"`
-	FeatureStatus      FeatureStatus          `json:"featureStatus"`
-	FeatureType        FeatureType            `json:"featureType"`
-	FeatureUnits       *string                `json:"featureUnits"`
-	FeatureUnitsPlural *string                `json:"featureUnitsPlural"`
-	HasEntitlements    *bool                  `json:"hasEntitlements"`
-	HasMeter           *bool                  `json:"hasMeter"`
-	ID                 string                 `json:"id"`
-	Meter              *Meter                 `json:"meter"`
-	MeterType          *MeterType             `json:"meterType"`
-	RefID              string                 `json:"refId"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The description for the feature
+	Description *string `json:"description"`
+	// The display name for the feature
+	DisplayName string       `json:"displayName"`
+	Environment *Environment `json:"environment"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The status of the feature
+	FeatureStatus FeatureStatus `json:"featureStatus"`
+	// The type of the feature
+	FeatureType FeatureType `json:"featureType"`
+	// The units for the feature
+	FeatureUnits *string `json:"featureUnits"`
+	// The plural units for the feature
+	FeatureUnitsPlural *string `json:"featureUnitsPlural"`
+	// Whether the feature has entitlements
+	HasEntitlements *bool `json:"hasEntitlements"`
+	// Whether the feature has a meter
+	HasMeter *bool `json:"hasMeter"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Get the meter for the feature
+	Meter *Meter `json:"meter"`
+	// The meter type for the feature
+	MeterType *MeterType `json:"meterType"`
+	// The unique identifier for the feature
+	RefID string `json:"refId"`
 	// Unit transformation to be applied to the reported usage
 	UnitTransformation *UnitTransformation `json:"unitTransformation"`
-	UpdatedAt          string              `json:"updatedAt"`
+	// Timestamp of when the record was last updated
+	UpdatedAt string `json:"updatedAt"`
 }
 
 type FeatureAggregateGroupBy struct {
@@ -2796,9 +3261,12 @@ type FeatureAggregateGroupBy struct {
 	UpdatedAt     *string        `json:"updatedAt"`
 }
 
+// Input for getting the associated latest packages for a feature
 type FeatureAssociatedLatestPackages struct {
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
-	FeatureID     string `json:"featureId"`
+	// The ID of the feature
+	FeatureID string `json:"featureId"`
 }
 
 type FeatureConnection struct {
@@ -2845,18 +3313,30 @@ type FeatureFilter struct {
 	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 }
 
+// Input for creating a feature
 type FeatureInput struct {
+	// The additional metadata for the feature
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	DisplayName        string                 `json:"displayName"`
-	EnvironmentID      string                 `json:"environmentId"`
-	FeatureStatus      *FeatureStatus         `json:"featureStatus,omitempty"`
-	FeatureType        FeatureType            `json:"featureType"`
-	FeatureUnits       *string                `json:"featureUnits,omitempty"`
-	FeatureUnitsPlural *string                `json:"featureUnitsPlural,omitempty"`
-	Meter              *CreateMeter           `json:"meter,omitempty"`
-	MeterType          *MeterType             `json:"meterType,omitempty"`
-	RefID              string                 `json:"refId"`
+	// The description for the feature
+	Description *string `json:"description,omitempty"`
+	// The display name for the feature
+	DisplayName string `json:"displayName"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The status of the feature
+	FeatureStatus *FeatureStatus `json:"featureStatus,omitempty"`
+	// The type of the feature
+	FeatureType FeatureType `json:"featureType"`
+	// The units for the feature
+	FeatureUnits *string `json:"featureUnits,omitempty"`
+	// The plural units for the feature
+	FeatureUnitsPlural *string `json:"featureUnitsPlural,omitempty"`
+	// Input for creating a meter
+	Meter *CreateMeter `json:"meter,omitempty"`
+	// The meter type for the feature
+	MeterType *MeterType `json:"meterType,omitempty"`
+	// The unique identifier for the feature
+	RefID string `json:"refId"`
 	// Unit transformation to be applied to the reported usage
 	UnitTransformation *UnitTransformationInput `json:"unitTransformation,omitempty"`
 }
@@ -2972,47 +3452,70 @@ type GetActiveSubscriptionsInput struct {
 	ResourceIds   []string `json:"resourceIds,omitempty"`
 }
 
+// Input configuration for retrieving Auth0 applications
 type GetAuth0ApplicationsInput struct {
-	ClientDomain  string  `json:"clientDomain"`
-	ClientID      string  `json:"clientId"`
-	ClientSecret  string  `json:"clientSecret"`
+	// Domain of the Auth0 client
+	ClientDomain string `json:"clientDomain"`
+	// ID of the Auth0 client
+	ClientID string `json:"clientId"`
+	// Secret of the Auth0 client
+	ClientSecret string `json:"clientSecret"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// AWS external ID for secure cross-account access
 type GetAwsExternalIDResult struct {
+	// Generated external ID for AWS IAM role trust relationship
 	ExternalID string `json:"externalId"`
 }
 
+// Get a customer by slug
 type GetCustomerByRefIDInput struct {
-	CustomerID    string  `json:"customerId"`
+	// Customer slug
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// Get Package By Ref Id Input
 type GetPackageByRefIDInput struct {
-	EnvironmentID string   `json:"environmentId"`
-	RefID         string   `json:"refId"`
-	VersionNumber *float64 `json:"versionNumber,omitempty"`
-}
-
-// The input type for getting an package group
-type GetPackageGroup struct {
-	// The environment id to get the package group in
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
-	// The id of the package group
-	PackageGroupID string `json:"packageGroupId"`
-	// The version number of the package group
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
+	// The version number of the package
 	VersionNumber *float64 `json:"versionNumber,omitempty"`
 }
 
+// The input type for getting a package group
+type GetPackageGroup struct {
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The id of the package group to filter by
+	PackageGroupID string `json:"packageGroupId"`
+	// The version number of the package group to filter by
+	VersionNumber *float64 `json:"versionNumber,omitempty"`
+}
+
+// Input for fetching the paywall
 type GetPaywallInput struct {
-	BillingCountryCode      *string     `json:"billingCountryCode,omitempty"`
-	Context                 *WidgetType `json:"context,omitempty"`
-	CustomerID              *string     `json:"customerId,omitempty"`
-	EnvironmentID           *string     `json:"environmentId,omitempty"`
-	FetchAllCountriesPrices *bool       `json:"fetchAllCountriesPrices,omitempty"`
-	IncludeHiddenPlans      *bool       `json:"includeHiddenPlans,omitempty"`
-	ProductID               *string     `json:"productId,omitempty"`
-	ResourceID              *string     `json:"resourceId,omitempty"`
+	// The country code for billing, e.g. US
+	BillingCountryCode *string `json:"billingCountryCode,omitempty"`
+	// Context for the paywall, e.g. "checkout" or "subscription"
+	Context *WidgetType `json:"context,omitempty"`
+	// The customer ID for whom the paywall is being fetched
+	CustomerID *string `json:"customerId,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Whether to fetch prices for all countries or just the specified billing country
+	FetchAllCountriesPrices *bool `json:"fetchAllCountriesPrices,omitempty"`
+	// Whether to include hidden plans in the paywall
+	IncludeHiddenPlans *bool `json:"includeHiddenPlans,omitempty"`
+	// The product ID for which the paywall is being fetched
+	ProductID *string `json:"productId,omitempty"`
+	// The resource ID for which the paywall is being fetched
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 // Get subscription input
@@ -3024,12 +3527,13 @@ type GetSubscriptionInput struct {
 }
 
 type GetWidgetConfigurationInput struct {
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
 // Get workflow triggers input
 type GetWorkflowTriggersInput struct {
-	// Environment id
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Trigger id
 	TriggerID *string `json:"triggerId,omitempty"`
@@ -3037,55 +3541,90 @@ type GetWorkflowTriggersInput struct {
 	WorkflowTriggerID *string `json:"workflowTriggerId,omitempty"`
 }
 
+// Grant promotional entitlement input
 type GrantPromotionalEntitlementInput struct {
-	CustomEndDate                   *string                        `json:"customEndDate,omitempty"`
-	FeatureID                       string                         `json:"featureId"`
-	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	IsVisible                       *bool                          `json:"isVisible,omitempty"`
+	// The custom end date of the promotional entitlement
+	CustomEndDate *string `json:"customEndDate,omitempty"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Whether the entitlement is visible
+	IsVisible *bool `json:"isVisible,omitempty"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	Period                          PromotionalEntitlementPeriod   `json:"period"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// The grant period of the promotional entitlement
+	Period PromotionalEntitlementPeriod `json:"period"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
+// Grant multiple promotional entitlements input
 type GrantPromotionalEntitlementsInput struct {
-	CustomerID              string                              `json:"customerId"`
-	EnvironmentID           *string                             `json:"environmentId,omitempty"`
+	// The unique identifier of the entitlement customer
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Promotional entitlements to grant
 	PromotionalEntitlements []*GrantPromotionalEntitlementInput `json:"promotionalEntitlements"`
 }
 
+// Group info
 type GroupInfo struct {
-	Key   string `json:"key"`
+	// The key representing the group
+	Key string `json:"key"`
+	// The value associated with the group key
 	Value string `json:"value"`
 }
 
+// Group usage history
 type GroupUsageHistory struct {
-	GroupInfo         []*GroupInfo             `json:"groupInfo"`
+	// Information about the group
+	GroupInfo []*GroupInfo `json:"groupInfo"`
+	// List of usage measurements for the group
 	UsageMeasurements []*UsageMeasurementPoint `json:"usageMeasurements"`
 }
 
+// Hidden from widgets change
 type HiddenFromWidgetsChange struct {
-	After      []WidgetType `json:"after"`
-	Before     []WidgetType `json:"before"`
-	ChangeType *ChangeType  `json:"changeType"`
+	// The value after the change
+	After []WidgetType `json:"after"`
+	// The value before the change
+	Before []WidgetType `json:"before"`
+	// The change type
+	ChangeType *ChangeType `json:"changeType"`
 }
 
+// Webhook
 type Hook struct {
 	Account *Account `json:"account"`
 	// A JSON containing the configuration for each event log type
 	Configuration map[string]interface{} `json:"configuration"`
-	CreatedAt     *string                `json:"createdAt"`
-	Description   *string                `json:"description"`
-	Endpoint      string                 `json:"endpoint"`
-	Environment   *Environment           `json:"environment"`
-	EnvironmentID string                 `json:"environmentId"`
-	EventLogTypes []EventLogType         `json:"eventLogTypes"`
-	ID            string                 `json:"id"`
-	SecretKey     *string                `json:"secretKey"`
-	Status        HookStatus             `json:"status"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// Webhook description
+	Description *string `json:"description"`
+	// The Webhook endpoint URL
+	Endpoint    string       `json:"endpoint"`
+	Environment *Environment `json:"environment"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The event types that the webhook will be triggered on
+	EventLogTypes []EventLogType `json:"eventLogTypes"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Secret key for the webhook
+	SecretKey *string `json:"secretKey"`
+	// The status of the webhook
+	Status HookStatus `json:"status"`
 }
 
 type HookAggregateGroupBy struct {
@@ -3116,14 +3655,22 @@ type HookCountAggregate struct {
 type HookDeleteResponse struct {
 	// A JSON containing the configuration for each event log type
 	Configuration map[string]interface{} `json:"configuration"`
-	CreatedAt     *string                `json:"createdAt"`
-	Description   *string                `json:"description"`
-	Endpoint      *string                `json:"endpoint"`
-	EnvironmentID *string                `json:"environmentId"`
-	EventLogTypes []EventLogType         `json:"eventLogTypes"`
-	ID            *string                `json:"id"`
-	SecretKey     *string                `json:"secretKey"`
-	Status        *HookStatus            `json:"status"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// Webhook description
+	Description *string `json:"description"`
+	// The Webhook endpoint URL
+	Endpoint *string `json:"endpoint"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId"`
+	// The event types that the webhook will be triggered on
+	EventLogTypes []EventLogType `json:"eventLogTypes"`
+	// Unique identifier for the entity
+	ID *string `json:"id"`
+	// Secret key for the webhook
+	SecretKey *string `json:"secretKey"`
+	// The status of the webhook
+	Status *HookStatus `json:"status"`
 }
 
 type HookEdge struct {
@@ -3182,15 +3729,20 @@ type HookStatusFilterComparison struct {
 	NotLike  *HookStatus  `json:"notLike,omitempty"`
 }
 
+// HubSpot integration configuration object
 type HubspotCredentials struct {
+	// Domain of the HubSpot account
 	HubDomain string `json:"hubDomain"`
 }
 
 func (HubspotCredentials) IsCredentials() {}
 
+// Input configuration for HubSpot integration
 type HubspotCredentialsInput struct {
-	AuthorizationCode string  `json:"authorizationCode"`
-	RefreshToken      *string `json:"refreshToken,omitempty"`
+	// Authorization code for HubSpot
+	AuthorizationCode string `json:"authorizationCode"`
+	// Refresh token for HubSpot
+	RefreshToken *string `json:"refreshToken,omitempty"`
 }
 
 type IdentityForbiddenError struct {
@@ -3220,60 +3772,104 @@ type ImportAlreadyInProgressError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// Input for importing a bulk of customers
 type ImportCustomerBulkInput struct {
-	Customers     []*ImportCustomerInput `json:"customers"`
-	EnvironmentID *string                `json:"environmentId,omitempty"`
+	// List of customers to import
+	Customers []*ImportCustomerInput `json:"customers"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// Input for importing a customer
 type ImportCustomerInput struct {
+	// Additional metadata
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	BillingID          *string                `json:"billingId,omitempty"`
-	CustomerID         *string                `json:"customerId,omitempty"`
-	Email              *string                `json:"email,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	Name               *string                `json:"name,omitempty"`
-	PaymentMethodID    *string                `json:"paymentMethodId,omitempty"`
-	RefID              *string                `json:"refId,omitempty"`
-	SalesforceID       *string                `json:"salesforceId,omitempty"`
+	// Id in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
+	// Customer slug
+	CustomerID *string `json:"customerId,omitempty"`
+	// Customer email
+	Email *string `json:"email,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Customer name
+	Name *string `json:"name,omitempty"`
+	// Payment method Id in the billing provider
+	PaymentMethodID *string `json:"paymentMethodId,omitempty"`
+	// Customer slug
+	RefID *string `json:"refId,omitempty"`
+	// The unique identifier for the customer in Salesforce integration
+	SalesforceID *string `json:"salesforceId,omitempty"`
 	// Indicates the last update of the customer. In case there's already existing customer that was updated after that date, it will skip import this customer
 	UpdatedAt *string `json:"updatedAt,omitempty"`
 }
 
+// Input parameters for importing product catalog from an integration
 type ImportIntegrationCatalogInput struct {
-	BillingModel            *BillingModel       `json:"billingModel,omitempty"`
-	EntitySelectionMode     EntitySelectionMode `json:"entitySelectionMode"`
-	EnvironmentID           string              `json:"environmentId"`
-	FeatureUnitName         *string             `json:"featureUnitName,omitempty"`
-	FeatureUnitPluralName   *string             `json:"featureUnitPluralName,omitempty"`
-	PlansSelectionBlacklist []string            `json:"plansSelectionBlacklist,omitempty"`
-	PlansSelectionWhitelist []string            `json:"plansSelectionWhitelist,omitempty"`
-	ProductID               string              `json:"productId"`
-	SelectedAddonBillingIds []string            `json:"selectedAddonBillingIds"`
-	VendorIdentifier        VendorIdentifier    `json:"vendorIdentifier"`
+	// Billing model configuration for the imported product
+	BillingModel *BillingModel `json:"billingModel,omitempty"`
+	// Mode for selecting plans to import (blacklist or whitelist)
+	EntitySelectionMode EntitySelectionMode `json:"entitySelectionMode"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Singular name for the feature unit
+	FeatureUnitName *string `json:"featureUnitName,omitempty"`
+	// Plural name for the feature unit
+	FeatureUnitPluralName *string `json:"featureUnitPluralName,omitempty"`
+	// List of plan IDs to exclude when using blacklist mode
+	PlansSelectionBlacklist []string `json:"plansSelectionBlacklist,omitempty"`
+	// List of plan IDs to include when using whitelist mode
+	PlansSelectionWhitelist []string `json:"plansSelectionWhitelist,omitempty"`
+	// Product ID to import from the integration
+	ProductID string `json:"productId"`
+	// List of addon billing IDs to import
+	SelectedAddonBillingIds []string `json:"selectedAddonBillingIds"`
+	// The vendor identifier of integration
+	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
+// Input parameters for importing customers from an integration
 type ImportIntegrationCustomersInput struct {
-	CustomersSelectionBlacklist []string            `json:"customersSelectionBlacklist,omitempty"`
-	CustomersSelectionWhitelist []string            `json:"customersSelectionWhitelist,omitempty"`
-	EntitySelectionMode         EntitySelectionMode `json:"entitySelectionMode"`
-	EnvironmentID               string              `json:"environmentId"`
-	ProductID                   string              `json:"productId"`
-	VendorIdentifier            VendorIdentifier    `json:"vendorIdentifier"`
+	// List of customer IDs to exclude when using blacklist mode
+	CustomersSelectionBlacklist []string `json:"customersSelectionBlacklist,omitempty"`
+	// List of customer IDs to include when using whitelist mode
+	CustomersSelectionWhitelist []string `json:"customersSelectionWhitelist,omitempty"`
+	// Mode for selecting customers to import (blacklist or whitelist)
+	EntitySelectionMode EntitySelectionMode `json:"entitySelectionMode"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Product ID to import customers from
+	ProductID string `json:"productId"`
+	// The vendor identifier of integration
+	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
+// Import task
 type ImportIntegrationTask struct {
-	CreatedAt          *string               `json:"createdAt"`
-	CustomersCount     int64                 `json:"customersCount"`
-	EndDate            *string               `json:"endDate"`
-	EnvironmentID      string                `json:"environmentId"`
-	ID                 string                `json:"id"`
-	ImportErrors       []*ImportSubTaskError `json:"importErrors"`
-	ProductsCount      int64                 `json:"productsCount"`
-	Progress           int64                 `json:"progress"`
-	StartDate          *string               `json:"startDate"`
-	Status             TaskStatus            `json:"status"`
-	TaskType           TaskType              `json:"taskType"`
-	TotalSubtasksCount int64                 `json:"totalSubtasksCount"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The number of customers in the import task
+	CustomersCount int64 `json:"customersCount"`
+	// The end date of the task
+	EndDate *string `json:"endDate"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// The import errors for the import task
+	ImportErrors []*ImportSubTaskError `json:"importErrors"`
+	// The number of products in the import task
+	ProductsCount int64 `json:"productsCount"`
+	// The progress of the task as a percentage, a number between 0 and 100
+	Progress int64 `json:"progress"`
+	// The start date of the task
+	StartDate *string `json:"startDate"`
+	// The status of the task
+	Status TaskStatus `json:"status"`
+	// The type of the task
+	TaskType TaskType `json:"taskType"`
+	// The total number of import subtasks
+	TotalSubtasksCount int64 `json:"totalSubtasksCount"`
 }
 
 type ImportIntegrationTaskAggregateGroupBy struct {
@@ -3338,9 +3934,12 @@ type ImportIntegrationTaskSort struct {
 	Nulls     *SortNulls                      `json:"nulls,omitempty"`
 }
 
+// Import subtask error
 type ImportSubTaskError struct {
+	// The error message of the import subtask
 	Error string `json:"error"`
-	ID    string `json:"id"`
+	// The id of the import subtask
+	ID string `json:"id"`
 }
 
 type ImportSubscriptionInput struct {
@@ -3374,12 +3973,17 @@ type IncompatibleSubscriptionAddonError struct {
 	PlanDisplayName     string   `json:"planDisplayName"`
 }
 
+// Response for initializing a Stripe payment method form
 type InitAddStripeCustomerPaymentMethod struct {
+	// The client secret for the payment method form
 	PaymentIntentClientSecret string `json:"paymentIntentClientSecret"`
 }
 
+// Input for initializing a payment method form for a customer
 type InitAddStripeCustomerPaymentMethodInput struct {
-	CustomerRefID string  `json:"customerRefId"`
+	// Customer slug
+	CustomerRefID string `json:"customerRefId"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The billing integration to use for this payment method
 	IntegrationID *string `json:"integrationId,omitempty"`
@@ -3410,19 +4014,25 @@ type IntFieldComparisonBetween struct {
 	Upper int64 `json:"upper"`
 }
 
+// An integration object
 type Integration struct {
-	Account       *Account     `json:"account"`
-	CreatedAt     *string      `json:"createdAt"`
-	Credentials   Credentials  `json:"credentials"`
-	Environment   *Environment `json:"environment"`
-	EnvironmentID string       `json:"environmentId"`
-	ID            string       `json:"id"`
+	Account *Account `json:"account"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// Configuration for the integration
+	Credentials Credentials  `json:"credentials"`
+	Environment *Environment `json:"environment"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
 	// The reference ID for the integration
 	IntegrationID *string `json:"integrationId"`
-	// Whether the integration is the default
-	IsDefault        *bool            `json:"isDefault"`
+	// Whether the integration is the default integration
+	IsDefault *bool `json:"isDefault"`
+	// The vendor identifier of integration
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
-	// The vendor type
+	// The type of integration
 	VendorType VendorType `json:"vendorType"`
 }
 
@@ -3452,16 +4062,21 @@ type IntegrationCountAggregate struct {
 }
 
 type IntegrationDeleteResponse struct {
-	CreatedAt     *string     `json:"createdAt"`
-	Credentials   Credentials `json:"credentials"`
-	EnvironmentID *string     `json:"environmentId"`
-	ID            *string     `json:"id"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// Configuration for the integration
+	Credentials Credentials `json:"credentials"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId"`
+	// Unique identifier for the entity
+	ID *string `json:"id"`
 	// The reference ID for the integration
 	IntegrationID *string `json:"integrationId"`
-	// Whether the integration is the default
-	IsDefault        *bool             `json:"isDefault"`
+	// Whether the integration is the default integration
+	IsDefault *bool `json:"isDefault"`
+	// The vendor identifier of integration
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
-	// The vendor type
+	// The type of integration
 	VendorType *VendorType `json:"vendorType"`
 }
 
@@ -3537,6 +4152,7 @@ type InvalidSubscriptionStatus struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// Input for inviting members
 type InviteMembersInput struct {
 	// Account level access of the user, defaults to member role
 	AccountRole *AccountAccessRole `json:"accountRole,omitempty"`
@@ -3556,20 +4172,29 @@ type InvoiceLine struct {
 	Quantity    *int64  `json:"quantity"`
 }
 
+// AWS Marketplace product dimensions response
 type ListAwsProductDimensionsDto struct {
+	// List of available dimensions for the AWS product
 	Dimensions []*AwsDimension `json:"dimensions"`
 }
 
+// Input for retrieving AWS Marketplace product dimensions
 type ListAwsProductDimensionsInput struct {
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	ProductID     string  `json:"productId"`
+	// AWS product ID to fetch dimensions for
+	ProductID string `json:"productId"`
 }
 
+// Input parameters for listing available AWS Marketplace products
 type ListAwsProductsInput struct {
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// Response containing available AWS Marketplace products
 type ListAwsProductsResult struct {
+	// Array of available AWS Marketplace product configurations
 	Products []*AwsProduct `json:"products"`
 }
 
@@ -3581,19 +4206,28 @@ type MarkInvoiceAsPaidInput struct {
 	SubscriptionID string `json:"subscriptionId"`
 }
 
+// DTO for a member
 type Member struct {
 	// Get the access roles assigned to the member
-	AccessRoles            *AccessRoles `json:"accessRoles"`
-	Account                Account      `json:"account"`
-	CreatedAt              *string      `json:"createdAt"`
-	CubejsToken            *string      `json:"cubejsToken"`
-	CustomerToken          *string      `json:"customerToken"`
-	Email                  string       `json:"email"`
-	HideGettingStartedPage *bool        `json:"hideGettingStartedPage"`
-	ID                     string       `json:"id"`
-	MemberStatus           MemberStatus `json:"memberStatus"`
-	ServiceAPIKey          *string      `json:"serviceApiKey"`
-	User                   *User        `json:"user"`
+	AccessRoles *AccessRoles `json:"accessRoles"`
+	Account     Account      `json:"account"`
+	// The date and time when the member was created
+	CreatedAt *string `json:"createdAt"`
+	// The Cube.js token associated with the member
+	CubejsToken *string `json:"cubejsToken"`
+	// The customer token associated with the member
+	CustomerToken *string `json:"customerToken"`
+	// The email address of the member
+	Email string `json:"email"`
+	// Indicates if the member has hidden the getting started page
+	HideGettingStartedPage *bool `json:"hideGettingStartedPage"`
+	// The unique identifier of the member
+	ID string `json:"id"`
+	// The status of the member, e.g. "active" or "inactive"
+	MemberStatus MemberStatus `json:"memberStatus"`
+	// The service API key associated with the member
+	ServiceAPIKey *string `json:"serviceApiKey"`
+	User          *User   `json:"user"`
 	// The id of the user associated with this member
 	UserID string `json:"userId"`
 }
@@ -3670,66 +4304,95 @@ type MemberSort struct {
 	Nulls     *SortNulls       `json:"nulls,omitempty"`
 }
 
+// Response DTO for inviting members
 type MembersInviteResponse struct {
-	FailedInvites  []string `json:"failedInvites"`
+	// List of emails that failed to be invited
+	FailedInvites []string `json:"failedInvites"`
+	// List of emails that were skipped during the invite process
 	SkippedInvites []string `json:"skippedInvites"`
+	// List of successfully invited members
 	SuccessInvites []string `json:"successInvites"`
 }
 
+// DTO representing the result of an environment merge operation
 type MergeEnvironment struct {
-	EnvironmentSlug string   `json:"environmentSlug"`
-	TaskIds         []string `json:"taskIds"`
+	// Slug of the environment that was created or merged into
+	EnvironmentSlug string `json:"environmentSlug"`
+	// List of task IDs related to the asynchronous merge process
+	TaskIds []string `json:"taskIds"`
 }
 
-// Input type for mergeEnvironment mutation.
+// Input type for mergeEnvironment mutation
 type MergeEnvironmentInput struct {
-	// The name of the new environment. Only relevant when `destinationEnvironmentSlug` is not passed.
+	// Name for the new environment if destinationEnvironmentSlug is not provided
 	DestinationEnvironmentName *string `json:"destinationEnvironmentName,omitempty"`
-	// The slug of the environment to merge into. Not passing this will create a new environment and requires passing `destinationEnvironmentName`.
+	// Slug of the destination environment to merge into. If not provided, a new environment will be created
 	DestinationEnvironmentSlug *string `json:"destinationEnvironmentSlug,omitempty"`
-	// The type of the new environment. only relevant when `destinationEnvironmentSlug` is not passed.
+	// Type for the new environment if destinationEnvironmentSlug is not provided
 	DestinationEnvironmentType *EnvironmentType `json:"destinationEnvironmentType,omitempty"`
-	// Merge configuration
+	// Optional configuration to customize the merge process
 	MergeConfiguration *EnvironmentMergeConfigurationInput `json:"mergeConfiguration,omitempty"`
-	// How to migrate customers to newer plan version of updated plans. Default is not to migrate existing customers.
+	// How to migrate customers to newer plan version of updated plans. Default is not to migrate existing customers
 	MigrationType *PublishMigrationType `json:"migrationType,omitempty"`
-	// The slug of the environment to copy from. If missing `sourceTemplate` will be used.
+	// Slug of the source environment to merge from. Either this or sourceTemplate must be provided
 	SourceEnvironmentSlug *string `json:"sourceEnvironmentSlug,omitempty"`
-	// The product catalog template to apply. Only relevant when `sourceEnvironmentSlug` is not passed.
+	// A template dump of the source environment. Either this or sourceEnvironmentSlug must be provided
 	SourceTemplate map[string]interface{} `json:"sourceTemplate,omitempty"`
 }
 
+// A meter configuration that tracks and measures usage-based functionality
 type Meter struct {
-	Aggregation   Aggregation              `json:"aggregation"`
-	CreatedAt     string                   `json:"createdAt"`
-	EnvironmentID string                   `json:"environmentId"`
-	Filters       []*MeterFilterDefinition `json:"filters"`
-	ID            string                   `json:"id"`
-	UpdatedAt     string                   `json:"updatedAt"`
+	// Configuration specifying how to aggregate the meter data
+	Aggregation Aggregation `json:"aggregation"`
+	// Timestamp of when the record was created
+	CreatedAt string `json:"createdAt"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// List of filters that will be applied to the data
+	Filters []*MeterFilterDefinition `json:"filters"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Timestamp of when the record was last updated
+	UpdatedAt string `json:"updatedAt"`
 }
 
+// Defines how meter data should be aggregated using a specified aggregation function
 type MeterAggregation struct {
-	Field    *string             `json:"field,omitempty"`
+	// The data field to which the aggregation function will be applied
+	Field *string `json:"field,omitempty"`
+	// The aggregation function to apply to the data (e.g. SUM, AVG, COUNT)
 	Function AggregationFunction `json:"function"`
 }
 
+// A condition that will be used to filter the data
 type MeterCondition struct {
-	Field     string             `json:"field"`
+	// The field to filter on
+	Field string `json:"field"`
+	// The operation to perform on the field
 	Operation ConditionOperation `json:"operation"`
-	Value     *string            `json:"value"`
+	// The value of the field to filter on
+	Value *string `json:"value"`
 }
 
+// A condition that will be used to filter the data
 type MeterConditionInput struct {
-	Field     string             `json:"field"`
+	// The field to filter on
+	Field string `json:"field"`
+	// The operation to perform on the field
 	Operation ConditionOperation `json:"operation"`
-	Value     *string            `json:"value,omitempty"`
+	// The value of the field to filter on
+	Value *string `json:"value,omitempty"`
 }
 
+// A configuration defining how to filter the data
 type MeterFilterDefinition struct {
+	// List of conditions that will be applied to the data
 	Conditions []*MeterCondition `json:"conditions"`
 }
 
+// A configuration defining how to filter the data
 type MeterFilterDefinitionInput struct {
+	// List of conditions that will be applied to the data
 	Conditions []*MeterConditionInput `json:"conditions"`
 }
 
@@ -3776,37 +4439,50 @@ type MinimumSpendChange struct {
 
 // Minimum spend input
 type MinimumSpendInput struct {
-	// The billing period of minimum spend
+	// The billing period of the price
 	BillingPeriod BillingPeriod `json:"billingPeriod"`
 	// The minimum spend value
 	Minimum MoneyInputDto `json:"minimum"`
 }
 
+// Mock DTO for the paywall
 type MockPaywall struct {
+	// Mock paywall configuration
 	Configuration *PaywallConfiguration `json:"configuration"`
-	Plans         []*PaywallPlan        `json:"plans"`
+	// List of mock plans available in the paywall
+	Plans []*PaywallPlan `json:"plans"`
 }
 
 type Money struct {
-	Amount   float64  `json:"amount"`
+	// The price amount
+	Amount float64 `json:"amount"`
+	// The price currency
 	Currency Currency `json:"currency"`
 }
 
+// Money Input
 type MoneyInputDto struct {
-	Amount   float64   `json:"amount"`
+	// The price amount
+	Amount float64 `json:"amount"`
+	// The price currency
 	Currency *Currency `json:"currency,omitempty"`
 }
 
+// Monthly reset period config
 type MonthlyResetPeriodConfig struct {
+	// Monthly according to configuration
 	MonthlyAccordingTo *MonthlyAccordingTo `json:"monthlyAccordingTo"`
 }
 
 func (MonthlyResetPeriodConfig) IsResetPeriodConfiguration() {}
 
+// Monthly reset period config input
 type MonthlyResetPeriodConfigInput struct {
+	// Monthly according to configuration
 	AccordingTo MonthlyAccordingTo `json:"accordingTo"`
 }
 
+// Number change
 type NumberChange struct {
 	// The value after the change
 	After *float64 `json:"after"`
@@ -3836,56 +4512,94 @@ type NumberFieldComparisonBetween struct {
 	Upper float64 `json:"upper"`
 }
 
+// OpenFGA integration configuration object
 type OpenFGACredentials struct {
-	APIAudience    string `json:"apiAudience"`
+	// Audience for the OpenFGA API
+	APIAudience string `json:"apiAudience"`
+	// Issuer of the OpenFGA API token
 	APITokenIssuer string `json:"apiTokenIssuer"`
-	APIURL         string `json:"apiUrl"`
-	ClientID       string `json:"clientId"`
-	ModelID        string `json:"modelId"`
-	StoreID        string `json:"storeId"`
+	// URL of the OpenFGA API
+	APIURL string `json:"apiUrl"`
+	// Client ID for the OpenFGA API
+	ClientID string `json:"clientId"`
+	// ID of the OpenFGA model
+	ModelID string `json:"modelId"`
+	// ID of the OpenFGA store
+	StoreID string `json:"storeId"`
 }
 
 func (OpenFGACredentials) IsCredentials() {}
 
+// Input configuration for OpenFGA integration
 type OpenFGACredentialsInput struct {
-	APIAudience    string  `json:"apiAudience"`
-	APITokenIssuer string  `json:"apiTokenIssuer"`
-	APIURL         string  `json:"apiUrl"`
-	ClientID       string  `json:"clientId"`
-	ClientSecret   string  `json:"clientSecret"`
-	StoreID        *string `json:"storeId,omitempty"`
+	// Audience for the OpenFGA API
+	APIAudience string `json:"apiAudience"`
+	// Issuer of the OpenFGA API token
+	APITokenIssuer string `json:"apiTokenIssuer"`
+	// URL of the OpenFGA API
+	APIURL string `json:"apiUrl"`
+	// Client ID for the OpenFGA API
+	ClientID string `json:"clientId"`
+	// Client secret for OpenFGA
+	ClientSecret string `json:"clientSecret"`
+	// ID of the OpenFGA store
+	StoreID *string `json:"storeId,omitempty"`
 }
 
+// Overage billing period change
 type OverageBillingPeriodChange struct {
-	After      *OverageBillingPeriod `json:"after"`
-	Before     *OverageBillingPeriod `json:"before"`
-	ChangeType *ChangeType           `json:"changeType"`
+	// The value after the change
+	After *OverageBillingPeriod `json:"after"`
+	// The value before the change
+	Before *OverageBillingPeriod `json:"before"`
+	// The change type
+	ChangeType *ChangeType `json:"changeType"`
 }
 
+// Overage Entitlement Create Input
 type OverageEntitlementCreateInput struct {
 	// The behavior of the entitlement
-	Behavior                        *EntitlementBehavior           `json:"behavior,omitempty"`
-	Description                     *string                        `json:"description,omitempty"`
-	DisplayNameOverride             *string                        `json:"displayNameOverride,omitempty"`
-	FeatureID                       string                         `json:"featureId"`
-	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
-	IsCustom                        *bool                          `json:"isCustom,omitempty"`
+	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom,omitempty"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	Order                           *float64                       `json:"order,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// The order of the entitlement in the entitlement list
+	Order *float64 `json:"order,omitempty"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
+// Overage Pricing Model Create Input
 type OveragePricingModelCreateInput struct {
-	BillingCadence *BillingCadence                `json:"billingCadence,omitempty"`
-	BillingModel   BillingModel                   `json:"billingModel"`
-	Entitlement    *OverageEntitlementCreateInput `json:"entitlement,omitempty"`
-	FeatureID      *string                        `json:"featureId,omitempty"`
-	PricePeriods   []*PricePeriodInput            `json:"pricePeriods"`
+	// The billing cadence of the base pricing model
+	BillingCadence *BillingCadence `json:"billingCadence,omitempty"`
+	// The billing model of the base pricing model
+	BillingModel BillingModel `json:"billingModel"`
+	// The entitlement of the overage pricing model
+	Entitlement *OverageEntitlementCreateInput `json:"entitlement,omitempty"`
+	// The feature id of the base pricing model
+	FeatureID *string `json:"featureId,omitempty"`
+	// The price periods of the base pricing model
+	PricePeriods []*PricePeriodInput `json:"pricePeriods"`
 }
 
 type PackageAlreadyPublishedError struct {
@@ -3893,7 +4607,9 @@ type PackageAlreadyPublishedError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// Package Changes
 type PackageChanges struct {
+	// The additional meta data of the package
 	AdditionalMetaData *AdditionalMetaDataChange    `json:"additionalMetaData"`
 	BasePlan           *BasePlanChange              `json:"basePlan"`
 	CompatibleAddons   []*PlanCompatibleAddonChange `json:"compatibleAddons"`
@@ -3901,48 +4617,80 @@ type PackageChanges struct {
 	CompatiblePackageGroups []*PlanCompatiblePackageGroupChange `json:"compatiblePackageGroups"`
 	DefaultTrialConfig      *DefaultTrialConfigChange           `json:"defaultTrialConfig"`
 	// Addon dependencies
-	Dependencies      []*AddonDependencyChange    `json:"dependencies"`
-	Description       *StringChangeDto            `json:"description"`
-	DisplayName       *StringChangeDto            `json:"displayName"`
-	Entitlements      []*PackageEntitlementChange `json:"entitlements"`
-	HiddenFromWidgets *HiddenFromWidgetsChange    `json:"hiddenFromWidgets"`
+	Dependencies []*AddonDependencyChange `json:"dependencies"`
+	// The description of the package
+	Description *StringChangeDto `json:"description"`
+	// The display name of the package
+	DisplayName *StringChangeDto `json:"displayName"`
+	// List of entitlements of the package
+	Entitlements []*PackageEntitlementChange `json:"entitlements"`
+	// List of hidden widgets of the package
+	HiddenFromWidgets *HiddenFromWidgetsChange `json:"hiddenFromWidgets"`
 	// Max quantity for an addon
 	MaxQuantity *NumberChange `json:"maxQuantity"`
 	// Minimum spend limit
 	MinimumSpend []*MinimumSpendChange `json:"minimumSpend"`
 	// Configures when the overage charge is billed.
 	OverageBillingPeriod *OverageBillingPeriodChange `json:"overageBillingPeriod"`
-	OveragePrices        []*PackagePriceChange       `json:"overagePrices"`
-	Prices               []*PackagePriceChange       `json:"prices"`
-	PricingType          *PricingTypeChange          `json:"pricingType"`
-	TotalChanges         int64                       `json:"totalChanges"`
+	// List of overage prices of the package
+	OveragePrices []*PackagePriceChange `json:"overagePrices"`
+	// List of prices of the package
+	Prices []*PackagePriceChange `json:"prices"`
+	// The pricing type of the package
+	PricingType  *PricingTypeChange `json:"pricingType"`
+	TotalChanges int64              `json:"totalChanges"`
 }
 
+// Package
 type PackageDto struct {
-	AdditionalMetaData   map[string]interface{} `json:"additionalMetaData"`
-	BillingID            *string                `json:"billingId"`
-	BillingLinkURL       *string                `json:"billingLinkUrl"`
-	CreatedAt            *string                `json:"createdAt"`
-	Description          *string                `json:"description"`
-	DisplayName          string                 `json:"displayName"`
-	DraftDetails         *PackageDraftDetails   `json:"draftDetails"`
-	DraftSummary         *PackageDraftSummary   `json:"draftSummary"`
-	Entitlements         []*PackageEntitlement  `json:"entitlements"`
-	EnvironmentID        string                 `json:"environmentId"`
-	HiddenFromWidgets    []WidgetType           `json:"hiddenFromWidgets"`
-	ID                   string                 `json:"id"`
-	IsLatest             *bool                  `json:"isLatest"`
-	OverageBillingPeriod *OverageBillingPeriod  `json:"overageBillingPeriod"`
-	OveragePrices        []*Price               `json:"overagePrices"`
-	Prices               []*Price               `json:"prices"`
-	PricingType          *PricingType           `json:"pricingType"`
-	ProductID            *string                `json:"productId"`
-	RefID                string                 `json:"refId"`
-	Status               PackageStatus          `json:"status"`
-	SyncStates           []*SyncState           `json:"syncStates"`
-	Type                 string                 `json:"type"`
-	UpdatedAt            *string                `json:"updatedAt"`
-	VersionNumber        int64                  `json:"versionNumber"`
+	// The additional meta data of the package
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId"`
+	// The billing link url of the package
+	BillingLinkURL *string `json:"billingLinkUrl"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The description of the package
+	Description *string `json:"description"`
+	// The display name of the package
+	DisplayName string `json:"displayName"`
+	// The draft details of the package
+	DraftDetails *PackageDraftDetails `json:"draftDetails"`
+	// The draft summary of the package
+	DraftSummary *PackageDraftSummary `json:"draftSummary"`
+	// List of entitlements of the package
+	Entitlements []*PackageEntitlement `json:"entitlements"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// List of hidden widgets of the package
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Indicates if the package is the latest version
+	IsLatest *bool `json:"isLatest"`
+	// The overage billing period of the package
+	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
+	// List of overage prices of the package
+	OveragePrices []*Price `json:"overagePrices"`
+	// List of prices of the package
+	Prices []*Price `json:"prices"`
+	// The pricing type of the package
+	PricingType *PricingType `json:"pricingType"`
+	// The product id of the package
+	ProductID *string `json:"productId"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
+	// The status of the package
+	Status PackageStatus `json:"status"`
+	// List of sync states of the package
+	SyncStates []*SyncState `json:"syncStates"`
+	// The type of the package
+	Type string `json:"type"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The version number of the package
+	VersionNumber int64 `json:"versionNumber"`
 }
 
 type PackageDTOFilter struct {
@@ -3969,44 +4717,72 @@ type PackageDTOSort struct {
 	Nulls     *SortNulls           `json:"nulls,omitempty"`
 }
 
+// Package Draft Details
 type PackageDraftDetails struct {
-	AffectedChildPlans  []*Plan         `json:"affectedChildPlans"`
-	Changes             *PackageChanges `json:"changes"`
-	ChildPlansWithDraft []*Plan         `json:"childPlansWithDraft"`
-	CustomersAffected   *int64          `json:"customersAffected"`
-	UpdatedAt           string          `json:"updatedAt"`
-	UpdatedBy           *string         `json:"updatedBy"`
-	Version             int64           `json:"version"`
-}
-
-type PackageDraftSummary struct {
-	UpdatedAt string  `json:"updatedAt"`
+	// List of affected child plans
+	AffectedChildPlans []*Plan `json:"affectedChildPlans"`
+	// The package changes
+	Changes *PackageChanges `json:"changes"`
+	// List of child plans with draft
+	ChildPlansWithDraft []*Plan `json:"childPlansWithDraft"`
+	// The number of customers affected by the package
+	CustomersAffected *int64 `json:"customersAffected"`
+	// Timestamp of when the record was last updated
+	UpdatedAt string `json:"updatedAt"`
+	// The user who last updated the record
 	UpdatedBy *string `json:"updatedBy"`
-	Version   int64   `json:"version"`
+	// The version number of the package
+	Version int64 `json:"version"`
 }
 
+// Package Draft Summary
+type PackageDraftSummary struct {
+	// Timestamp of when the record was last updated
+	UpdatedAt string `json:"updatedAt"`
+	// The user who last updated the record
+	UpdatedBy *string `json:"updatedBy"`
+	// The version number of the package
+	Version int64 `json:"version"`
+}
+
+// Package entitlement
 type PackageEntitlement struct {
 	// The behavior of the entitlement
-	Behavior                 EntitlementBehavior      `json:"behavior"`
-	CreatedAt                *string                  `json:"createdAt"`
-	Description              *string                  `json:"description"`
-	DisplayNameOverride      *string                  `json:"displayNameOverride"`
-	EnvironmentID            string                   `json:"environmentId"`
-	Feature                  Feature                  `json:"feature"`
-	FeatureID                string                   `json:"featureId"`
-	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
-	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
-	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
-	ID                       string                   `json:"id"`
-	IsCustom                 *bool                    `json:"isCustom"`
-	Meter                    *Meter                   `json:"meter"`
-	Order                    *float64                 `json:"order"`
-	Package                  *PackageDto              `json:"package"`
-	PackageID                string                   `json:"packageId"`
-	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	Behavior EntitlementBehavior `json:"behavior"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The description of the entitlement
+	Description *string `json:"description"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride"`
+	// The unique identifier for the environment
+	EnvironmentID string  `json:"environmentId"`
+	Feature       Feature `json:"feature"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
+	ID                string       `json:"id"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool  `json:"isCustom"`
+	Meter    *Meter `json:"meter"`
+	// The order of the entitlement in the entitlement list
+	Order   *float64    `json:"order"`
+	Package *PackageDto `json:"package"`
+	// The unique identifier of the entitlement package
+	PackageID string `json:"packageId"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// The reset period configuration of the entitlement
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	UpdatedAt                *string                  `json:"updatedAt"`
-	UsageLimit               *float64                 `json:"usageLimit"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit"`
 }
 
 type PackageEntitlementAggregateGroupBy struct {
@@ -4017,6 +4793,7 @@ type PackageEntitlementAggregateGroupBy struct {
 	UpdatedAt     *string `json:"updatedAt"`
 }
 
+// Package entitlement change
 type PackageEntitlementChange struct {
 	// The value after the change
 	After *PackageEntitlement `json:"after"`
@@ -4045,23 +4822,38 @@ type PackageEntitlementCountAggregate struct {
 
 type PackageEntitlementDeleteResponse struct {
 	// The behavior of the entitlement
-	Behavior                 *EntitlementBehavior     `json:"behavior"`
-	CreatedAt                *string                  `json:"createdAt"`
-	Description              *string                  `json:"description"`
-	DisplayNameOverride      *string                  `json:"displayNameOverride"`
-	EnvironmentID            *string                  `json:"environmentId"`
-	FeatureID                *string                  `json:"featureId"`
-	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
-	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
-	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
-	ID                       *string                  `json:"id"`
-	IsCustom                 *bool                    `json:"isCustom"`
-	Order                    *float64                 `json:"order"`
-	PackageID                *string                  `json:"packageId"`
-	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	Behavior *EntitlementBehavior `json:"behavior"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The description of the entitlement
+	Description *string `json:"description"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId"`
+	// The unique identifier of the entitlement feature
+	FeatureID *string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
+	ID                *string      `json:"id"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom"`
+	// The order of the entitlement in the entitlement list
+	Order *float64 `json:"order"`
+	// The unique identifier of the entitlement package
+	PackageID *string `json:"packageId"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// The reset period configuration of the entitlement
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	UpdatedAt                *string                  `json:"updatedAt"`
-	UsageLimit               *float64                 `json:"usageLimit"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit"`
 }
 
 type PackageEntitlementEdge struct {
@@ -4116,24 +4908,40 @@ type PackageEntitlementFilterPackageDTOFilter struct {
 	VersionNumber *IntFieldComparison                         `json:"versionNumber,omitempty"`
 }
 
+// Package entitlement input
 type PackageEntitlementInput struct {
 	// The behavior of the entitlement
-	Behavior                        *EntitlementBehavior           `json:"behavior,omitempty"`
-	Description                     *string                        `json:"description,omitempty"`
-	DisplayNameOverride             *string                        `json:"displayNameOverride,omitempty"`
-	EnvironmentID                   string                         `json:"environmentId"`
-	FeatureID                       string                         `json:"featureId"`
-	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
-	IsCustom                        *bool                          `json:"isCustom,omitempty"`
+	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom,omitempty"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	Order                           *float64                       `json:"order,omitempty"`
-	PackageID                       string                         `json:"packageId"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// The order of the entitlement in the entitlement list
+	Order *float64 `json:"order,omitempty"`
+	// The unique identifier of the entitlement package
+	PackageID string `json:"packageId"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type PackageEntitlementMaxAggregate struct {
@@ -4158,43 +4966,57 @@ type PackageEntitlementSort struct {
 	Nulls     *SortNulls                   `json:"nulls,omitempty"`
 }
 
+// Package entitlement update input
 type PackageEntitlementUpdateInput struct {
 	// The behavior of the entitlement
-	Behavior                        *EntitlementBehavior           `json:"behavior,omitempty"`
-	Description                     *string                        `json:"description,omitempty"`
-	DisplayNameOverride             *string                        `json:"displayNameOverride,omitempty"`
-	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	HiddenFromWidgets               []WidgetType                   `json:"hiddenFromWidgets,omitempty"`
-	IsCustom                        *bool                          `json:"isCustom,omitempty"`
+	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom,omitempty"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	Order                           *float64                       `json:"order,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// The order of the entitlement in the entitlement list
+	Order *float64 `json:"order,omitempty"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
-// Package group
+// A set of addons bundled together
 type PackageGroup struct {
 	Addons []*Addon `json:"addons"`
-	// The date the package group was created
+	// Timestamp of when the record was created
 	CreatedAt string `json:"createdAt"`
 	// The description of the package group
 	Description *string `json:"description"`
 	// The display name of the package group
 	DisplayName string `json:"displayName"`
-	// The environment id of the package group in
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// Indicates if this is the latest version of the package group
 	IsLatest bool `json:"isLatest"`
 	// The id of the package group
 	PackageGroupID string  `json:"packageGroupId"`
 	Product        Product `json:"product"`
-	ProductID      *string `json:"productId"`
-	// The status of the package group
+	// The id of the related product
+	ProductID *string `json:"productId"`
+	// The status of the package group (draft, published, archived)
 	Status PackageGroupStatus `json:"status"`
-	// The date the package group was last updated
+	// Timestamp of when the record was last updated
 	UpdatedAt string `json:"updatedAt"`
 	// The version number of the package group
 	VersionNumber int64 `json:"versionNumber"`
@@ -4324,11 +5146,15 @@ type PackageGroupSumAggregate struct {
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
+// Package Price
 type PackagePrice struct {
-	PackageID   string      `json:"packageId"`
+	// The package id of the price
+	PackageID string `json:"packageId"`
+	// The pricing type of the package price
 	PricingType PricingType `json:"pricingType"`
 }
 
+// Package price change
 type PackagePriceChange struct {
 	// The value after the change
 	After *Price `json:"after"`
@@ -4338,16 +5164,24 @@ type PackagePriceChange struct {
 	ChangeType *ChangeType `json:"changeType"`
 }
 
+// Package Pricing Input
 type PackagePricingInput struct {
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The minimum spend configuration per each billing period
-	MinimumSpend         []*MinimumSpendInput              `json:"minimumSpend,omitempty"`
-	OverageBillingPeriod *OverageBillingPeriod             `json:"overageBillingPeriod,omitempty"`
+	MinimumSpend []*MinimumSpendInput `json:"minimumSpend,omitempty"`
+	// The overage billing period of the package pricing
+	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod,omitempty"`
+	// The list of overage pricing models of the package pricing
 	OveragePricingModels []*OveragePricingModelCreateInput `json:"overagePricingModels,omitempty"`
-	PackageID            string                            `json:"packageId"`
-	PricingModel         *PricingModelCreateInput          `json:"pricingModel,omitempty"`
-	PricingModels        []*PricingModelCreateInput        `json:"pricingModels,omitempty"`
-	PricingType          PricingType                       `json:"pricingType"`
+	// The package id of the price
+	PackageID string `json:"packageId"`
+	// The pricing model of the package pricing
+	PricingModel *PricingModelCreateInput `json:"pricingModel,omitempty"`
+	// The list of pricing models of the package pricing
+	PricingModels []*PricingModelCreateInput `json:"pricingModels,omitempty"`
+	// The pricing type of the package pricing
+	PricingType PricingType `json:"pricingType"`
 }
 
 type PackagePricingTypeNotSetError struct {
@@ -4356,18 +5190,28 @@ type PackagePricingTypeNotSetError struct {
 	RefID             string `json:"refId"`
 }
 
+// Package Publish Input
 type PackagePublishInput struct {
-	ID            string               `json:"id"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// The migration type of the package
 	MigrationType PublishMigrationType `json:"migrationType"`
 }
 
+// Package Published
 type PackagePublished struct {
-	AccountID      string               `json:"accountId"`
-	EnvironmentID  string               `json:"environmentId"`
-	MigrationType  PublishMigrationType `json:"migrationType"`
-	PackageRefID   string               `json:"packageRefId"`
-	PackageType    string               `json:"packageType"`
-	PackageVersion int64                `json:"packageVersion"`
+	// The unique identifier for the account
+	AccountID string `json:"accountId"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The migration type of the package
+	MigrationType PublishMigrationType `json:"migrationType"`
+	// The ref id of the package
+	PackageRefID string `json:"packageRefId"`
+	// The type of the package
+	PackageType string `json:"packageType"`
+	// The version number of the package
+	PackageVersion int64 `json:"packageVersion"`
 }
 
 type PackageStatusFilterComparison struct {
@@ -4415,34 +5259,54 @@ type PaymentCollectionFilterComparison struct {
 	NotLike  *PaymentCollection  `json:"notLike,omitempty"`
 }
 
+// DTO for the paywall
 type Paywall struct {
-	ActiveSubscriptions          []*CustomerSubscription `json:"activeSubscriptions"`
-	Configuration                *PaywallConfiguration   `json:"configuration"`
-	Currency                     PaywallCurrency         `json:"currency"`
-	Customer                     *Customer               `json:"customer"`
-	PaywallCalculatedPricePoints []*PaywallPricePoint    `json:"paywallCalculatedPricePoints"`
-	Plans                        []*Plan                 `json:"plans"`
-	Resource                     *CustomerResource       `json:"resource"`
+	// List of active subscriptions for the customer
+	ActiveSubscriptions []*CustomerSubscription `json:"activeSubscriptions"`
+	// Paywall configuration
+	Configuration *PaywallConfiguration `json:"configuration"`
+	// The currency used in the paywall, e.g. USD
+	Currency PaywallCurrency `json:"currency"`
+	// The customer for whom the paywall is being fetched
+	Customer *Customer `json:"customer"`
+	// Calculated price points for the paywall
+	PaywallCalculatedPricePoints []*PaywallPricePoint `json:"paywallCalculatedPricePoints"`
+	// List of plans available in the paywall
+	Plans []*Plan `json:"plans"`
+	// The resource for which the paywall is being fetched
+	Resource *CustomerResource `json:"resource"`
 }
 
+// DTO for an addon
 type PaywallAddon struct {
+	// Additional metadata for the addon, e.g. features or tags
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	BillingID          *string                `json:"billingId"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId"`
 	// List of addons this addon is dependant on
 	Dependencies []*PaywallAddon `json:"dependencies"`
-	Description  *string         `json:"description"`
-	DisplayName  string          `json:"displayName"`
-	Entitlements []*Entitlement  `json:"entitlements"`
+	// The description of the addon
+	Description *string `json:"description"`
+	// The display name of the addon
+	DisplayName string `json:"displayName"`
+	// List of entitlements for the addon
+	Entitlements []*Entitlement `json:"entitlements"`
 	// The maximum quantity of this addon that can be added to a subscription
-	MaxQuantity *float64        `json:"maxQuantity"`
-	Prices      []*PaywallPrice `json:"prices"`
-	PricingType *PricingType    `json:"pricingType"`
-	RefID       string          `json:"refId"`
+	MaxQuantity *float64 `json:"maxQuantity"`
+	// List of prices for the addon
+	Prices []*PaywallPrice `json:"prices"`
+	// The pricing type of the addon, e.g. "recurring" or "one-time"
+	PricingType *PricingType `json:"pricingType"`
+	// The unique reference ID of the addon
+	RefID string `json:"refId"`
 }
 
+// DTO for a base plan
 type PaywallBasePlan struct {
+	// The display name of the base plan
 	DisplayName string `json:"displayName"`
-	RefID       string `json:"refId"`
+	// The unique reference ID of the base plan
+	RefID string `json:"refId"`
 }
 
 type PaywallColorsPalette struct {
@@ -4475,9 +5339,12 @@ type PaywallConfigurationInput struct {
 	Typography *TypographyConfigurationInput    `json:"typography,omitempty"`
 }
 
+// DTO for a currency
 type PaywallCurrency struct {
-	Code   Currency `json:"code"`
-	Symbol string   `json:"symbol"`
+	// The currency code, e.g. USD
+	Code Currency `json:"code"`
+	// The currency symbol, e.g. $
+	Symbol string `json:"symbol"`
 }
 
 type PaywallLayoutConfiguration struct {
@@ -4494,26 +5361,41 @@ type PaywallLayoutConfigurationInput struct {
 	PlanWidth   *float64   `json:"planWidth,omitempty"`
 }
 
+// DTO for a plan
 type PaywallPlan struct {
+	// Additional metadata for the plan, e.g. features or tags
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	BasePlan           *PaywallBasePlan       `json:"basePlan"`
-	BillingID          *string                `json:"billingId"`
-	CompatibleAddons   []*PaywallAddon        `json:"compatibleAddons"`
+	// The base plan for the plan, if applicable
+	BasePlan *PaywallBasePlan `json:"basePlan"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId"`
+	// List of compatible addons for the plan
+	CompatibleAddons []*PaywallAddon `json:"compatibleAddons"`
 	// Plan's compatible package groups
 	CompatiblePackageGroups []*PaywallPlanCompatiblePackageGroup `json:"compatiblePackageGroups"`
-	DefaultTrialConfig      *DefaultTrialConfig                  `json:"defaultTrialConfig"`
-	Description             *string                              `json:"description"`
-	DisplayName             string                               `json:"displayName"`
-	Entitlements            []*Entitlement                       `json:"entitlements"`
-	InheritedEntitlements   []*Entitlement                       `json:"inheritedEntitlements"`
+	// Default trial configuration for the plan
+	DefaultTrialConfig *DefaultTrialConfig `json:"defaultTrialConfig"`
+	// The description of the plan
+	Description *string `json:"description"`
+	// The display name of the plan
+	DisplayName string `json:"displayName"`
+	// List of entitlements for the plan
+	Entitlements []*Entitlement `json:"entitlements"`
+	// List of inherited entitlements for the plan
+	InheritedEntitlements []*Entitlement `json:"inheritedEntitlements"`
 	// Minimum spend configuration
 	MinimumSpend []*MinimumSpend `json:"minimumSpend"`
-	Prices       []*PaywallPrice `json:"prices"`
-	PricingType  *PricingType    `json:"pricingType"`
-	Product      PaywallProduct  `json:"product"`
-	RefID        string          `json:"refId"`
+	// List of prices for the plan
+	Prices []*PaywallPrice `json:"prices"`
+	// The pricing type of the plan, e.g. "recurring" or "one-time"
+	PricingType *PricingType `json:"pricingType"`
+	// The product to which the plan belongs
+	Product PaywallProduct `json:"product"`
+	// The unique reference ID of the plan
+	RefID string `json:"refId"`
 }
 
+// DTO for a plan compatible package group
 type PaywallPlanCompatiblePackageGroup struct {
 	// Included addons in the package group
 	Addons []*PaywallAddon `json:"addons"`
@@ -4535,75 +5417,129 @@ type PaywallPlanCompatiblePackageGroupOptions struct {
 	MinItems *float64 `json:"minItems"`
 }
 
+// DTO for a price
 type PaywallPrice struct {
-	BillingCountryCode *string       `json:"billingCountryCode"`
-	BillingID          *string       `json:"billingId"`
-	BillingModel       BillingModel  `json:"billingModel"`
-	BillingPeriod      BillingPeriod `json:"billingPeriod"`
-	// The number of units per block. Defaults to 1 unit.
-	BlockSize       *float64            `json:"blockSize"`
-	Feature         *EntitlementFeature `json:"feature"`
-	FeatureID       *string             `json:"featureId"`
-	MaxUnitQuantity *float64            `json:"maxUnitQuantity"`
-	MinUnitQuantity *float64            `json:"minUnitQuantity"`
-	Price           *Money              `json:"price"`
-	Tiers           []*PriceTier        `json:"tiers"`
-	TiersMode       *TiersMode          `json:"tiersMode"`
+	// The country code for billing, e.g. "US"
+	BillingCountryCode *string `json:"billingCountryCode"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId"`
+	// The billing model for the price, e.g. "recurring" or "one-time"
+	BillingModel BillingModel `json:"billingModel"`
+	// The billing period for the price, e.g. "monthly" or "yearly"
+	BillingPeriod BillingPeriod `json:"billingPeriod"`
+	// The number of units per block. Defaults to 1 unit
+	BlockSize *float64 `json:"blockSize"`
+	// The feature associated with this price, if applicable
+	Feature *EntitlementFeature `json:"feature"`
+	// The ID of the feature associated with this price, if applicable
+	FeatureID *string `json:"featureId"`
+	// The maximum unit quantity for this price, if applicable
+	MaxUnitQuantity *float64 `json:"maxUnitQuantity"`
+	// The minimum unit quantity for this price, if applicable
+	MinUnitQuantity *float64 `json:"minUnitQuantity"`
+	// The price amount in the smallest currency unit (e.g. cents)
+	Price *Money `json:"price"`
+	// List of tiers for the price, if applicable
+	Tiers []*PriceTier `json:"tiers"`
+	// The tiers mode for the price, e.g. "graduated" or "volume"
+	TiersMode *TiersMode `json:"tiersMode"`
 }
 
+// DTO for a price point
 type PaywallPricePoint struct {
-	AdditionalChargesMayApply *bool         `json:"additionalChargesMayApply"`
-	Amount                    float64       `json:"amount"`
-	BillingCountryCode        *string       `json:"billingCountryCode"`
-	BillingPeriod             BillingPeriod `json:"billingPeriod"`
-	Currency                  Currency      `json:"currency"`
-	Feature                   *Feature      `json:"feature"`
-	PlanID                    string        `json:"planId"`
+	// Indicates if additional charges may apply for this price point
+	AdditionalChargesMayApply *bool `json:"additionalChargesMayApply"`
+	// The amount for the price point, in the smallest currency unit (e.g. cents)
+	Amount float64 `json:"amount"`
+	// The country code for billing, e.g. "US"
+	BillingCountryCode *string `json:"billingCountryCode"`
+	// The billing period for the price point, e.g. "monthly" or "yearly"
+	BillingPeriod BillingPeriod `json:"billingPeriod"`
+	// The currency of the price point, e.g. "USD"
+	Currency Currency `json:"currency"`
+	// The feature associated with this price point, if applicable
+	Feature *Feature `json:"feature"`
+	// The ID of the plan this price point belongs to
+	PlanID string `json:"planId"`
 }
 
+// DTO for a product
 type PaywallProduct struct {
+	// Additional metadata for the product, e.g. features or tags
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
-	Description        *string                `json:"description"`
-	DisplayName        *string                `json:"displayName"`
-	RefID              string                 `json:"refId"`
+	// The description of the product
+	Description *string `json:"description"`
+	// The display name of the product
+	DisplayName *string `json:"displayName"`
+	RefID       string  `json:"refId"`
 }
 
+// Plan Data Transfer Object
 type Plan struct {
-	AdditionalMetaData          map[string]interface{}         `json:"additionalMetaData"`
-	AwsMarketplacePlanDimension *string                        `json:"awsMarketplacePlanDimension"`
-	BasePlan                    *Plan                          `json:"basePlan"`
-	BillingID                   *string                        `json:"billingId"`
-	BillingLinkURL              *string                        `json:"billingLinkUrl"`
-	CompatibleAddons            []*Addon                       `json:"compatibleAddons"`
-	CompatiblePackageGroups     []*PlanCompatiblePackageGroups `json:"compatiblePackageGroups"`
-	CreatedAt                   *string                        `json:"createdAt"`
-	DefaultTrialConfig          *DefaultTrialConfig            `json:"defaultTrialConfig"`
-	Description                 *string                        `json:"description"`
-	DisplayName                 string                         `json:"displayName"`
-	DraftDetails                *PackageDraftDetails           `json:"draftDetails"`
-	DraftSummary                *PackageDraftSummary           `json:"draftSummary"`
-	Entitlements                []*PackageEntitlement          `json:"entitlements"`
-	Environment                 Environment                    `json:"environment"`
-	EnvironmentID               string                         `json:"environmentId"`
-	HiddenFromWidgets           []WidgetType                   `json:"hiddenFromWidgets"`
-	ID                          string                         `json:"id"`
-	InheritedEntitlements       []*PackageEntitlement          `json:"inheritedEntitlements"`
-	IsLatest                    *bool                          `json:"isLatest"`
-	IsParent                    bool                           `json:"isParent"`
+	// The additional meta data of the package
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	// The AWS Marketplace plan dimension, if applicable
+	AwsMarketplacePlanDimension *string `json:"awsMarketplacePlanDimension"`
+	BasePlan                    *Plan   `json:"basePlan"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId"`
+	// The billing link url of the package
+	BillingLinkURL   *string  `json:"billingLinkUrl"`
+	CompatibleAddons []*Addon `json:"compatibleAddons"`
+	// List of compatible package groups for the plan
+	CompatiblePackageGroups []*PlanCompatiblePackageGroups `json:"compatiblePackageGroups"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// Default trial configuration for the plan
+	DefaultTrialConfig *DefaultTrialConfig `json:"defaultTrialConfig"`
+	// The description of the package
+	Description *string `json:"description"`
+	// The display name of the package
+	DisplayName string `json:"displayName"`
+	// Detailed information about the plan draft
+	DraftDetails *PackageDraftDetails `json:"draftDetails"`
+	// Summary of the plan draft
+	DraftSummary *PackageDraftSummary `json:"draftSummary"`
+	// List of entitlements for the plan
+	Entitlements []*PackageEntitlement `json:"entitlements"`
+	Environment  Environment           `json:"environment"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// List of hidden widgets of the package
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// List of inherited entitlements for the plan
+	InheritedEntitlements []*PackageEntitlement `json:"inheritedEntitlements"`
+	// Indicates if the package is the latest version
+	IsLatest *bool `json:"isLatest"`
+	// Indicates if the plan is a parent plan
+	IsParent bool `json:"isParent"`
 	// Minimum spend configuration
-	MinimumSpend         []*MinimumSpend       `json:"minimumSpend"`
+	MinimumSpend []*MinimumSpend `json:"minimumSpend"`
+	// The overage billing period of the package
 	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
-	OveragePrices        []*Price              `json:"overagePrices"`
-	Prices               []*Price              `json:"prices"`
-	PricingType          *PricingType          `json:"pricingType"`
-	Product              Product               `json:"product"`
-	ProductID            *string               `json:"productId"`
-	RefID                string                `json:"refId"`
-	Status               PackageStatus         `json:"status"`
-	SyncStates           []*SyncState          `json:"syncStates"`
-	Type                 string                `json:"type"`
-	UpdatedAt            *string               `json:"updatedAt"`
-	VersionNumber        int64                 `json:"versionNumber"`
+	// List of overage prices of the package
+	OveragePrices []*Price `json:"overagePrices"`
+	// List of prices for the plan
+	Prices []*Price `json:"prices"`
+	// The pricing type of the package
+	PricingType *PricingType `json:"pricingType"`
+	Product     Product      `json:"product"`
+	// The product id of the package
+	ProductID *string `json:"productId"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
+	// The status of the package
+	Status PackageStatus `json:"status"`
+	// Sync states of the plan with external systems
+	SyncStates []*SyncState `json:"syncStates"`
+	// The type of the package
+	Type string `json:"type"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The version number of the package
+	VersionNumber int64 `json:"versionNumber"`
 }
 
 type PlanAggregateGroupBy struct {
@@ -4642,19 +5578,23 @@ type PlanChangeVariables struct {
 
 func (PlanChangeVariables) IsScheduleVariables() {}
 
+// Package group changed
 type PlanCompatibleAddonChange struct {
-	After      *Addon      `json:"after"`
-	Before     *Addon      `json:"before"`
+	// The value after the change
+	After *Addon `json:"after"`
+	// The value before the change
+	Before *Addon `json:"before"`
+	// The change type
 	ChangeType *ChangeType `json:"changeType"`
 }
 
-// Package group changed
+// Package group change
 type PlanCompatiblePackageGroupChange struct {
-	// Package group after change
+	// The value after the change
 	After *PackageGroup `json:"after"`
-	// Package group before change
+	// The value before the change
 	Before *PackageGroup `json:"before"`
-	// Type of change
+	// The change type
 	ChangeType *ChangeType `json:"changeType"`
 }
 
@@ -4668,15 +5608,15 @@ type PlanCompatiblePackageGroupOptions struct {
 
 // Plan compatible package group
 type PlanCompatiblePackageGroups struct {
-	// The addons that are a part of this group
+	// Included addons in the package group
 	Addons []*Addon `json:"addons"`
-	// The date the package group was created
+	// Timestamp of when the record was created
 	CreatedAt string `json:"createdAt"`
 	// The description of the package group
 	Description *string `json:"description"`
 	// The display name of the package group
 	DisplayName string `json:"displayName"`
-	// The environment id of the package group in
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// Indicates if this is the latest version of the package group
 	IsLatest bool `json:"isLatest"`
@@ -4685,10 +5625,11 @@ type PlanCompatiblePackageGroups struct {
 	// The id of the package group
 	PackageGroupID string  `json:"packageGroupId"`
 	Product        Product `json:"product"`
-	ProductID      *string `json:"productId"`
-	// The status of the package group
+	// The id of the related product
+	ProductID *string `json:"productId"`
+	// The status of the package group (draft, published, archived)
 	Status PackageGroupStatus `json:"status"`
-	// The date the package group was last updated
+	// Timestamp of when the record was last updated
 	UpdatedAt string `json:"updatedAt"`
 	// The version number of the package group
 	VersionNumber int64 `json:"versionNumber"`
@@ -4719,19 +5660,32 @@ type PlanCountAggregate struct {
 	VersionNumber *int64 `json:"versionNumber"`
 }
 
+// Input for creating a plan
 type PlanCreateInput struct {
-	AdditionalMetaData          map[string]interface{} `json:"additionalMetaData,omitempty"`
-	AwsMarketplacePlanDimension *string                `json:"awsMarketplacePlanDimension,omitempty"`
-	BillingID                   *string                `json:"billingId,omitempty"`
-	Description                 *string                `json:"description,omitempty"`
-	DisplayName                 string                 `json:"displayName"`
-	EnvironmentID               *string                `json:"environmentId,omitempty"`
-	HiddenFromWidgets           []WidgetType           `json:"hiddenFromWidgets,omitempty"`
-	ParentPlanID                *string                `json:"parentPlanId,omitempty"`
-	PricingType                 *PricingType           `json:"pricingType,omitempty"`
-	ProductID                   string                 `json:"productId"`
-	RefID                       *string                `json:"refId,omitempty"`
-	Status                      *PackageStatus         `json:"status,omitempty"`
+	// The additional meta data of the package
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// The AWS marketplace plan dimension of the package
+	AwsMarketplacePlanDimension *string `json:"awsMarketplacePlanDimension,omitempty"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
+	// The description of the package
+	Description *string `json:"description,omitempty"`
+	// The display name of the package
+	DisplayName string `json:"displayName"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// List of hidden widgets of the package
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	// The ID of the parent plan, if applicable
+	ParentPlanID *string `json:"parentPlanId,omitempty"`
+	// The pricing type of the package
+	PricingType *PricingType `json:"pricingType,omitempty"`
+	// The product id of the package
+	ProductID string `json:"productId"`
+	// The unique identifier for the entity
+	RefID *string `json:"refId,omitempty"`
+	// The status of the package
+	Status *PackageStatus `json:"status,omitempty"`
 }
 
 type PlanEdge struct {
@@ -4848,32 +5802,48 @@ type PlanSumAggregate struct {
 	VersionNumber *float64 `json:"versionNumber"`
 }
 
+// Input for updating a plan
 type PlanUpdateInput struct {
-	AdditionalMetaData map[string]interface{}      `json:"additionalMetaData,omitempty"`
-	BillingID          *string                     `json:"billingId,omitempty"`
+	// Additional metadata for the plan, e.g. features or tags
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
+	// Default trial configuration for the plan
 	DefaultTrialConfig *DefaultTrialConfigInputDto `json:"defaultTrialConfig,omitempty"`
-	Description        *string                     `json:"description,omitempty"`
-	DisplayName        *string                     `json:"displayName,omitempty"`
-	HiddenFromWidgets  []WidgetType                `json:"hiddenFromWidgets,omitempty"`
-	ID                 string                      `json:"id"`
+	// The description of the plan
+	Description *string `json:"description,omitempty"`
+	// The display name of the plan
+	DisplayName *string `json:"displayName,omitempty"`
+	// Indicates if the plan should be hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	// The ID of the plan to update
+	ID string `json:"id"`
 	// The minimum spend configuration per each billing period
 	MinimumSpend []*MinimumSpendInput `json:"minimumSpend,omitempty"`
-	ParentPlanID *string              `json:"parentPlanId,omitempty"`
-	Status       *PackageStatus       `json:"status,omitempty"`
+	// The ID of the parent plan, if applicable
+	ParentPlanID *string `json:"parentPlanId,omitempty"`
+	// The status of the plan, e.g. "active" or "archived"
+	Status *PackageStatus `json:"status,omitempty"`
 }
 
+// Input for preparing a payment method form
 type PreparePaymentMethodFormInput struct {
-	CustomerID    string  `json:"customerId"`
+	// Customer slug
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The billing integration to use for this payment method
 	IntegrationID *string `json:"integrationId,omitempty"`
 }
 
+// Response for preparing a payment method form
 type PreparedPaymentMethodForm struct {
 	// The integration id of the payment method
-	IntegrationID     string            `json:"integrationId"`
+	IntegrationID string `json:"integrationId"`
+	// The payment method form details
 	PaymentMethodForm PaymentMethodForm `json:"paymentMethodForm"`
-	VendorIdentifier  VendorIdentifier  `json:"vendorIdentifier"`
+	// The integration type to attach the payment method to
+	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
 // Input to preview the next invoice for a subscription
@@ -4906,33 +5876,55 @@ type PreviewSubscriptionInput struct {
 	UnitQuantity               *float64                         `json:"unitQuantity,omitempty"`
 }
 
+// Price
 type Price struct {
-	BillingCadence     BillingCadence `json:"billingCadence"`
-	BillingCountryCode *string        `json:"billingCountryCode"`
-	BillingID          *string        `json:"billingId"`
-	BillingModel       BillingModel   `json:"billingModel"`
-	BillingPeriod      BillingPeriod  `json:"billingPeriod"`
-	// The number of units per block. Defaults to 1 unit.
-	BlockSize     *float64 `json:"blockSize"`
-	CreatedAt     *string  `json:"createdAt"`
-	CrmID         *string  `json:"crmId"`
-	CrmLinkURL    *string  `json:"crmLinkUrl"`
-	EnvironmentID *string  `json:"environmentId"`
-	Feature       *Feature `json:"feature"`
-	FeatureID     *string  `json:"featureId"`
-	ID            string   `json:"id"`
+	// The billing cadence of the price
+	BillingCadence BillingCadence `json:"billingCadence"`
+	// The billing country code of the price
+	BillingCountryCode *string `json:"billingCountryCode"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId"`
+	// The billing model of the price
+	BillingModel BillingModel `json:"billingModel"`
+	// The billing period of the price
+	BillingPeriod BillingPeriod `json:"billingPeriod"`
+	// The number of units per block
+	BlockSize *float64 `json:"blockSize"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The CRM id of the price
+	CrmID *string `json:"crmId"`
+	// The CRM link url of the price
+	CrmLinkURL *string `json:"crmLinkUrl"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId"`
+	// Get the feature of the price
+	Feature *Feature `json:"feature"`
+	// The feature id of the price
+	FeatureID *string `json:"featureId"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
 	// Indication whether the subscription price is an override price
-	IsOverridePrice          bool                     `json:"isOverridePrice"`
-	MaxUnitQuantity          *float64                 `json:"maxUnitQuantity"`
-	MinUnitQuantity          *float64                 `json:"minUnitQuantity"`
-	Package                  PackageDto               `json:"package"`
-	PackageID                *string                  `json:"packageId"`
-	Price                    *Money                   `json:"price"`
-	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	IsOverridePrice bool `json:"isOverridePrice"`
+	// The maximum unit quantity of the price
+	MaxUnitQuantity *float64 `json:"maxUnitQuantity"`
+	// The minimum unit quantity of the price
+	MinUnitQuantity *float64   `json:"minUnitQuantity"`
+	Package         PackageDto `json:"package"`
+	// The package id of the price
+	PackageID *string `json:"packageId"`
+	// The price amount of the price
+	Price *Money `json:"price"`
+	// The reset period of the price
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// The reset period configuration of the price
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	Tiers                    []*PriceTier             `json:"tiers"`
-	TiersMode                *TiersMode               `json:"tiersMode"`
-	UsedInSubscriptions      *bool                    `json:"usedInSubscriptions"`
+	// List of tiers of the price
+	Tiers []*PriceTier `json:"tiers"`
+	// The tiers mode of the price
+	TiersMode *TiersMode `json:"tiersMode"`
+	// Indicates if the price is used in subscriptions
+	UsedInSubscriptions *bool `json:"usedInSubscriptions"`
 }
 
 type PriceAggregateGroupBy struct {
@@ -4956,29 +5948,50 @@ type PriceCountAggregate struct {
 }
 
 type PriceDeleteResponse struct {
-	BillingCadence     *BillingCadence `json:"billingCadence"`
-	BillingCountryCode *string         `json:"billingCountryCode"`
-	BillingID          *string         `json:"billingId"`
-	BillingModel       *BillingModel   `json:"billingModel"`
-	BillingPeriod      *BillingPeriod  `json:"billingPeriod"`
-	// The number of units per block. Defaults to 1 unit.
-	BlockSize                *float64                 `json:"blockSize"`
-	CreatedAt                *string                  `json:"createdAt"`
-	CrmID                    *string                  `json:"crmId"`
-	CrmLinkURL               *string                  `json:"crmLinkUrl"`
-	EnvironmentID            *string                  `json:"environmentId"`
-	Feature                  *Feature                 `json:"feature"`
-	FeatureID                *string                  `json:"featureId"`
-	ID                       *string                  `json:"id"`
-	MaxUnitQuantity          *float64                 `json:"maxUnitQuantity"`
-	MinUnitQuantity          *float64                 `json:"minUnitQuantity"`
-	PackageID                *string                  `json:"packageId"`
-	Price                    *Money                   `json:"price"`
-	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	// The billing cadence of the price
+	BillingCadence *BillingCadence `json:"billingCadence"`
+	// The billing country code of the price
+	BillingCountryCode *string `json:"billingCountryCode"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId"`
+	// The billing model of the price
+	BillingModel *BillingModel `json:"billingModel"`
+	// The billing period of the price
+	BillingPeriod *BillingPeriod `json:"billingPeriod"`
+	// The number of units per block
+	BlockSize *float64 `json:"blockSize"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The CRM id of the price
+	CrmID *string `json:"crmId"`
+	// The CRM link url of the price
+	CrmLinkURL *string `json:"crmLinkUrl"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId"`
+	// The feature of the price
+	Feature *Feature `json:"feature"`
+	// The feature id of the price
+	FeatureID *string `json:"featureId"`
+	// Unique identifier for the entity
+	ID *string `json:"id"`
+	// The maximum unit quantity of the price
+	MaxUnitQuantity *float64 `json:"maxUnitQuantity"`
+	// The minimum unit quantity of the price
+	MinUnitQuantity *float64 `json:"minUnitQuantity"`
+	// The package id of the price
+	PackageID *string `json:"packageId"`
+	// The price amount of the price
+	Price *Money `json:"price"`
+	// The reset period of the price
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// The reset period configuration of the price
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	Tiers                    []*PriceTier             `json:"tiers"`
-	TiersMode                *TiersMode               `json:"tiersMode"`
-	UsedInSubscriptions      *bool                    `json:"usedInSubscriptions"`
+	// List of tiers of the price
+	Tiers []*PriceTier `json:"tiers"`
+	// The tiers mode of the price
+	TiersMode *TiersMode `json:"tiersMode"`
+	// Indicates if the price is used in subscriptions
+	UsedInSubscriptions *bool `json:"usedInSubscriptions"`
 }
 
 type PriceEdge struct {
@@ -4998,8 +6011,9 @@ type PriceEntitlement struct {
 	PackageID                string                   `json:"packageId"`
 	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
-	UpdatedAt                *string                  `json:"updatedAt"`
-	UsageLimit               *float64                 `json:"usageLimit"`
+	// Timestamp of when the record was last updated
+	UpdatedAt  *string  `json:"updatedAt"`
+	UsageLimit *float64 `json:"usageLimit"`
 }
 
 type PriceFilter struct {
@@ -5069,21 +6083,28 @@ type PriceOverrideInput struct {
 	AddonID *string `json:"addonId,omitempty"`
 	// Whether the price is a base charge
 	BaseCharge *bool `json:"baseCharge,omitempty"`
-	// The number of units per block. Defaults to 1 unit.
+	// The number of units per block. Defaults to 1 unit
 	BlockSize *float64 `json:"blockSize,omitempty"`
 	// The corresponding feature id of the price
-	FeatureID *string           `json:"featureId,omitempty"`
-	Price     *MoneyInputDto    `json:"price,omitempty"`
-	Tiers     []*PriceTierInput `json:"tiers,omitempty"`
+	FeatureID *string `json:"featureId,omitempty"`
+	// The price of the price period
+	Price *MoneyInputDto `json:"price,omitempty"`
+	// List of tiers of the price period
+	Tiers []*PriceTierInput `json:"tiers,omitempty"`
 }
 
+// Price Period Input
 type PricePeriodInput struct {
-	BillingCountryCode *string       `json:"billingCountryCode,omitempty"`
-	BillingPeriod      BillingPeriod `json:"billingPeriod"`
-	// The number of units per block. Defaults to 1 unit.
-	BlockSize *float64          `json:"blockSize,omitempty"`
-	Price     *MoneyInputDto    `json:"price,omitempty"`
-	Tiers     []*PriceTierInput `json:"tiers,omitempty"`
+	// The billing country code of the price
+	BillingCountryCode *string `json:"billingCountryCode,omitempty"`
+	// The billing period of the price
+	BillingPeriod BillingPeriod `json:"billingPeriod"`
+	// The number of units per block. Defaults to 1 unit
+	BlockSize *float64 `json:"blockSize,omitempty"`
+	// The price of the price period
+	Price *MoneyInputDto `json:"price,omitempty"`
+	// List of tiers of the price period
+	Tiers []*PriceTierInput `json:"tiers,omitempty"`
 }
 
 type PriceSort struct {
@@ -5092,36 +6113,60 @@ type PriceSort struct {
 	Nulls     *SortNulls      `json:"nulls,omitempty"`
 }
 
+// Price Tier
 type PriceTier struct {
-	FlatPrice *Money   `json:"flatPrice"`
-	UnitPrice *Money   `json:"unitPrice"`
-	UpTo      *float64 `json:"upTo"`
+	// The flat fee price of the price tier
+	FlatPrice *Money `json:"flatPrice"`
+	// The unit price of the price tier
+	UnitPrice *Money `json:"unitPrice"`
+	// The up to quantity of the price tier
+	UpTo *float64 `json:"upTo"`
 }
 
+// Price Tier Input
 type PriceTierInput struct {
+	// The flat fee price of the price tier
 	FlatPrice *MoneyInputDto `json:"flatPrice,omitempty"`
+	// The unit price of the price tier
 	UnitPrice *MoneyInputDto `json:"unitPrice,omitempty"`
-	UpTo      *float64       `json:"upTo,omitempty"`
+	// The up to quantity of the price tier
+	UpTo *float64 `json:"upTo,omitempty"`
 }
 
+// Pricing Model Create Input
 type PricingModelCreateInput struct {
-	BillingCadence                  *BillingCadence                `json:"billingCadence,omitempty"`
-	BillingModel                    BillingModel                   `json:"billingModel"`
-	FeatureID                       *string                        `json:"featureId,omitempty"`
-	MaxUnitQuantity                 *float64                       `json:"maxUnitQuantity,omitempty"`
-	MinUnitQuantity                 *float64                       `json:"minUnitQuantity,omitempty"`
+	// The billing cadence of the base pricing model
+	BillingCadence *BillingCadence `json:"billingCadence,omitempty"`
+	// The billing model of the base pricing model
+	BillingModel BillingModel `json:"billingModel"`
+	// The feature id of the base pricing model
+	FeatureID *string `json:"featureId,omitempty"`
+	// The maximum unit quantity of the pricing model
+	MaxUnitQuantity *float64 `json:"maxUnitQuantity,omitempty"`
+	// The minimum unit quantity of the pricing model
+	MinUnitQuantity *float64 `json:"minUnitQuantity,omitempty"`
+	// The monthly reset period configuration of the pricing model
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	PricePeriods                    []*PricePeriodInput            `json:"pricePeriods"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	TiersMode                       *TiersMode                     `json:"tiersMode,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// The price periods of the base pricing model
+	PricePeriods []*PricePeriodInput `json:"pricePeriods"`
+	// The reset period of the pricing model
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The tiers mode of the pricing model
+	TiersMode *TiersMode `json:"tiersMode,omitempty"`
+	// The weekly reset period configuration of the pricing model
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the pricing model
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
+// Pricing type change
 type PricingTypeChange struct {
-	After      *PricingType `json:"after"`
-	Before     *PricingType `json:"before"`
-	ChangeType *ChangeType  `json:"changeType"`
+	// The value after the change
+	After *PricingType `json:"after"`
+	// The value before the change
+	Before *PricingType `json:"before"`
+	// The change type
+	ChangeType *ChangeType `json:"changeType"`
 }
 
 type PricingTypeFilterComparison struct {
@@ -5141,29 +6186,47 @@ type PricingTypeFilterComparison struct {
 	NotLike  *PricingType  `json:"notLike,omitempty"`
 }
 
-// A product object
+// Product object
 type Product struct {
-	AdditionalMetaData                     map[string]interface{}                 `json:"additionalMetaData"`
-	Addons                                 []*Addon                               `json:"addons"`
-	AutoCancellationRules                  []*AutoCancellationRule                `json:"autoCancellationRules"`
-	AwsMarketplaceProductCode              *string                                `json:"awsMarketplaceProductCode"`
-	AwsMarketplaceProductID                *string                                `json:"awsMarketplaceProductId"`
-	CreatedAt                              string                                 `json:"createdAt"`
-	Description                            *string                                `json:"description"`
-	DisplayName                            *string                                `json:"displayName"`
-	DowngradePlan                          *Plan                                  `json:"downgradePlan"`
-	Environment                            *Environment                           `json:"environment"`
-	EnvironmentID                          string                                 `json:"environmentId"`
-	HasSubscriptions                       bool                                   `json:"hasSubscriptions"`
-	ID                                     string                                 `json:"id"`
-	IsDefaultProduct                       bool                                   `json:"isDefaultProduct"`
-	MultipleSubscriptions                  bool                                   `json:"multipleSubscriptions"`
-	Plans                                  []*Plan                                `json:"plans"`
-	ProductSettings                        ProductSettings                        `json:"productSettings"`
-	RefID                                  string                                 `json:"refId"`
-	SubscriptionStartPlan                  *Plan                                  `json:"subscriptionStartPlan"`
+	// Additional metadata for the product
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	// Addons associated with the product
+	Addons []*Addon `json:"addons"`
+	// Method to get the auto cancellation rules for the product
+	AutoCancellationRules []*AutoCancellationRule `json:"autoCancellationRules"`
+	// AWS Marketplace product code
+	AwsMarketplaceProductCode *string `json:"awsMarketplaceProductCode"`
+	// AWS Marketplace product ID
+	AwsMarketplaceProductID *string `json:"awsMarketplaceProductId"`
+	// Timestamp of when the record was created
+	CreatedAt string `json:"createdAt"`
+	// Description of the product
+	Description *string `json:"description"`
+	// Display name of the product
+	DisplayName   *string      `json:"displayName"`
+	DowngradePlan *Plan        `json:"downgradePlan"`
+	Environment   *Environment `json:"environment"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Whether the product has subscriptions
+	HasSubscriptions bool `json:"hasSubscriptions"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Indicates if this is the default product for the account
+	IsDefaultProduct bool `json:"isDefaultProduct"`
+	// Indicates if multiple subscriptions to this product are allowed
+	MultipleSubscriptions bool `json:"multipleSubscriptions"`
+	// Plans associated with the product
+	Plans []*Plan `json:"plans"`
+	// Settings for the product
+	ProductSettings ProductSettings `json:"productSettings"`
+	// The unique identifier for the entity
+	RefID                 string `json:"refId"`
+	SubscriptionStartPlan *Plan  `json:"subscriptionStartPlan"`
+	// Method to get the rule for resetting usage cutoff on subscription update
 	SubscriptionUpdateUsageResetCutoffRule SubscriptionUpdateUsageResetCutoffRule `json:"subscriptionUpdateUsageResetCutoffRule"`
-	UpdatedAt                              string                                 `json:"updatedAt"`
+	// Timestamp of when the record was last updated
+	UpdatedAt string `json:"updatedAt"`
 }
 
 type ProductAggregateGroupBy struct {
@@ -5180,7 +6243,9 @@ type ProductAggregateGroupBy struct {
 	UpdatedAt                 *string `json:"updatedAt"`
 }
 
+// DTO representing a product catalog dump
 type ProductCatalogDump struct {
+	// The complete product catalog configuration dump
 	Dump map[string]interface{} `json:"dump"`
 }
 
@@ -5207,31 +6272,54 @@ type ProductCountAggregate struct {
 	UpdatedAt                 *int64 `json:"updatedAt"`
 }
 
+// Input for creating a product
 type ProductCreateInput struct {
-	AdditionalMetaData    map[string]interface{} `json:"additionalMetaData,omitempty"`
-	Description           *string                `json:"description,omitempty"`
-	DisplayName           *string                `json:"displayName,omitempty"`
-	EnvironmentID         string                 `json:"environmentId"`
-	MultipleSubscriptions *bool                  `json:"multipleSubscriptions,omitempty"`
-	RefID                 string                 `json:"refId"`
+	// Additional metadata for the product
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// Description of the product
+	Description *string `json:"description,omitempty"`
+	// Display name of the product
+	DisplayName *string `json:"displayName,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Indicates if multiple subscriptions to this product are allowed
+	MultipleSubscriptions *bool `json:"multipleSubscriptions,omitempty"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
 }
 
+// Product deletion response
 type ProductDeleteResponse struct {
-	AdditionalMetaData        map[string]interface{} `json:"additionalMetaData"`
-	Addons                    []*Addon               `json:"addons"`
-	AwsMarketplaceProductCode *string                `json:"awsMarketplaceProductCode"`
-	AwsMarketplaceProductID   *string                `json:"awsMarketplaceProductId"`
-	CreatedAt                 *string                `json:"createdAt"`
-	Description               *string                `json:"description"`
-	DisplayName               *string                `json:"displayName"`
-	EnvironmentID             *string                `json:"environmentId"`
-	ID                        *string                `json:"id"`
-	IsDefaultProduct          *bool                  `json:"isDefaultProduct"`
-	MultipleSubscriptions     *bool                  `json:"multipleSubscriptions"`
-	Plans                     []*Plan                `json:"plans"`
-	ProductSettings           *ProductSettings       `json:"productSettings"`
-	RefID                     *string                `json:"refId"`
-	UpdatedAt                 *string                `json:"updatedAt"`
+	// Additional metadata for the deleted product
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	// Addons associated with the deleted product
+	Addons []*Addon `json:"addons"`
+	// AWS Marketplace product code of the deleted product
+	AwsMarketplaceProductCode *string `json:"awsMarketplaceProductCode"`
+	// AWS Marketplace product ID of the deleted product
+	AwsMarketplaceProductID *string `json:"awsMarketplaceProductId"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// Description of the deleted product
+	Description *string `json:"description"`
+	// Display name of the deleted product
+	DisplayName *string `json:"displayName"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId"`
+	// Unique identifier for the entity
+	ID *string `json:"id"`
+	// Indicates if the deleted product was the default product
+	IsDefaultProduct *bool `json:"isDefaultProduct"`
+	// Indicates if multiple subscriptions to the deleted product were allowed
+	MultipleSubscriptions *bool `json:"multipleSubscriptions"`
+	// Plans associated with the deleted product
+	Plans []*Plan `json:"plans"`
+	// Settings for the deleted product
+	ProductSettings *ProductSettings `json:"productSettings"`
+	// The unique identifier for the entity
+	RefID *string `json:"refId"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
 }
 
 type ProductEdge struct {
@@ -5281,25 +6369,42 @@ type ProductMinAggregate struct {
 	UpdatedAt                 *string `json:"updatedAt"`
 }
 
+// Product settings object
 type ProductSettings struct {
-	DowngradePlan                *Plan                        `json:"downgradePlan"`
-	DowngradePlanID              *string                      `json:"downgradePlanId"`
-	ProrateAtEndOfBillingPeriod  *bool                        `json:"prorateAtEndOfBillingPeriod"`
+	// Plan to downgrade to at the end of the billing period
+	DowngradePlan *Plan `json:"downgradePlan"`
+	// ID of the plan to downgrade to at the end of the billing period
+	DowngradePlanID *string `json:"downgradePlanId"`
+	// Indicates if the subscription should be prorated at the end of the billing period
+	ProrateAtEndOfBillingPeriod *bool `json:"prorateAtEndOfBillingPeriod"`
+	// Time when the subscription will be cancelled
 	SubscriptionCancellationTime SubscriptionCancellationTime `json:"subscriptionCancellationTime"`
-	SubscriptionEndSetup         SubscriptionEndSetup         `json:"subscriptionEndSetup"`
-	SubscriptionStartPlan        *Plan                        `json:"subscriptionStartPlan"`
-	SubscriptionStartPlanID      *string                      `json:"subscriptionStartPlanId"`
-	SubscriptionStartSetup       SubscriptionStartSetup       `json:"subscriptionStartSetup"`
+	// Setup for the end of the subscription
+	SubscriptionEndSetup SubscriptionEndSetup `json:"subscriptionEndSetup"`
+	// Plan to start the subscription with
+	SubscriptionStartPlan *Plan `json:"subscriptionStartPlan"`
+	// ID of the plan to start the subscription with
+	SubscriptionStartPlanID *string `json:"subscriptionStartPlanId"`
+	// Setup for the start of the subscription
+	SubscriptionStartSetup SubscriptionStartSetup `json:"subscriptionStartSetup"`
 }
 
+// Input for product settings
 type ProductSettingsInput struct {
-	DowngradeAtEndOfBillingPeriod *string                      `json:"downgradeAtEndOfBillingPeriod,omitempty"`
-	DowngradePlanID               *string                      `json:"downgradePlanId,omitempty"`
-	ProrateAtEndOfBillingPeriod   *bool                        `json:"prorateAtEndOfBillingPeriod,omitempty"`
-	SubscriptionCancellationTime  SubscriptionCancellationTime `json:"subscriptionCancellationTime"`
-	SubscriptionEndSetup          SubscriptionEndSetup         `json:"subscriptionEndSetup"`
-	SubscriptionStartPlanID       *string                      `json:"subscriptionStartPlanId,omitempty"`
-	SubscriptionStartSetup        SubscriptionStartSetup       `json:"subscriptionStartSetup"`
+	// Indicates if the subscription should be downgraded at the end of the billing period
+	DowngradeAtEndOfBillingPeriod *string `json:"downgradeAtEndOfBillingPeriod,omitempty"`
+	// ID of the plan to downgrade to at the end of the billing period
+	DowngradePlanID *string `json:"downgradePlanId,omitempty"`
+	// Indicates if the subscription should be prorated at the end of the billing period
+	ProrateAtEndOfBillingPeriod *bool `json:"prorateAtEndOfBillingPeriod,omitempty"`
+	// Time when the subscription will be cancelled
+	SubscriptionCancellationTime SubscriptionCancellationTime `json:"subscriptionCancellationTime"`
+	// Setup for the end of the subscription
+	SubscriptionEndSetup SubscriptionEndSetup `json:"subscriptionEndSetup"`
+	// ID of the plan to start the subscription with
+	SubscriptionStartPlanID *string `json:"subscriptionStartPlanId,omitempty"`
+	// Setup for the start of the subscription
+	SubscriptionStartSetup SubscriptionStartSetup `json:"subscriptionStartSetup"`
 }
 
 type ProductSort struct {
@@ -5308,14 +6413,20 @@ type ProductSort struct {
 	Nulls     *SortNulls        `json:"nulls,omitempty"`
 }
 
+// Input for updating a product
 type ProductUpdateInput struct {
+	// Additional metadata for the product
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	// Auto cancellation rules
 	AutoCancellationRules []*AutoCancellationRuleInput `json:"autoCancellationRules,omitempty"`
-	Description           *string                      `json:"description,omitempty"`
-	DisplayName           *string                      `json:"displayName,omitempty"`
-	MultipleSubscriptions *bool                        `json:"multipleSubscriptions,omitempty"`
-	ProductSettings       *ProductSettingsInput        `json:"productSettings,omitempty"`
+	// Description of the product
+	Description *string `json:"description,omitempty"`
+	// Display name of the product
+	DisplayName *string `json:"displayName,omitempty"`
+	// Indicates if multiple subscriptions to this product are allowed
+	MultipleSubscriptions *bool `json:"multipleSubscriptions,omitempty"`
+	// Settings for the product
+	ProductSettings *ProductSettingsInput `json:"productSettings,omitempty"`
 	// Usage reset cutoff rule
 	UsageResetCutoffRule *SubscriptionUpdateUsageResetCutoffRuleInput `json:"usageResetCutoffRule,omitempty"`
 }
@@ -5350,27 +6461,44 @@ type PromotionCodeNotFound struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// Promotional entitlement
 type PromotionalEntitlement struct {
-	CreatedAt                *string                      `json:"createdAt"`
-	Customer                 Customer                     `json:"customer"`
-	Description              *string                      `json:"description"`
-	EndDate                  *string                      `json:"endDate"`
-	EnvironmentID            string                       `json:"environmentId"`
-	Feature                  Feature                      `json:"feature"`
-	FeatureID                string                       `json:"featureId"`
-	HasSoftLimit             *bool                        `json:"hasSoftLimit"`
-	HasUnlimitedUsage        *bool                        `json:"hasUnlimitedUsage"`
-	ID                       string                       `json:"id"`
-	IsVisible                bool                         `json:"isVisible"`
-	Meter                    *Meter                       `json:"meter"`
-	Period                   PromotionalEntitlementPeriod `json:"period"`
-	ResetPeriod              *EntitlementResetPeriod      `json:"resetPeriod"`
-	ResetPeriodConfiguration ResetPeriodConfiguration     `json:"resetPeriodConfiguration"`
-	StartDate                string                       `json:"startDate"`
-	Status                   PromotionalEntitlementStatus `json:"status"`
-	Unlimited                *bool                        `json:"unlimited"`
-	UpdatedAt                *string                      `json:"updatedAt"`
-	UsageLimit               *float64                     `json:"usageLimit"`
+	// Timestamp of when the record was created
+	CreatedAt *string  `json:"createdAt"`
+	Customer  Customer `json:"customer"`
+	// The description of the entitlement
+	Description *string `json:"description"`
+	// The end date of the promotional entitlement
+	EndDate *string `json:"endDate"`
+	// The unique identifier for the environment
+	EnvironmentID string  `json:"environmentId"`
+	Feature       Feature `json:"feature"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool  `json:"hasUnlimitedUsage"`
+	ID                string `json:"id"`
+	// Whether the entitlement is visible
+	IsVisible bool   `json:"isVisible"`
+	Meter     *Meter `json:"meter"`
+	// The grant period of the promotional entitlement
+	Period PromotionalEntitlementPeriod `json:"period"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// The reset period configuration of the entitlement
+	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
+	// The start date of the entitlement
+	StartDate string `json:"startDate"`
+	// The status of the entitlement
+	Status PromotionalEntitlementStatus `json:"status"`
+	// Whether the entitlement has an unlimited usage
+	Unlimited *bool `json:"unlimited"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit"`
 }
 
 type PromotionalEntitlementAggregateGroupBy struct {
@@ -5399,23 +6527,39 @@ type PromotionalEntitlementCountAggregate struct {
 }
 
 type PromotionalEntitlementDeleteResponse struct {
-	CreatedAt                *string                       `json:"createdAt"`
-	Description              *string                       `json:"description"`
-	EndDate                  *string                       `json:"endDate"`
-	EnvironmentID            *string                       `json:"environmentId"`
-	FeatureID                *string                       `json:"featureId"`
-	HasSoftLimit             *bool                         `json:"hasSoftLimit"`
-	HasUnlimitedUsage        *bool                         `json:"hasUnlimitedUsage"`
-	ID                       *string                       `json:"id"`
-	IsVisible                *bool                         `json:"isVisible"`
-	Period                   *PromotionalEntitlementPeriod `json:"period"`
-	ResetPeriod              *EntitlementResetPeriod       `json:"resetPeriod"`
-	ResetPeriodConfiguration ResetPeriodConfiguration      `json:"resetPeriodConfiguration"`
-	StartDate                *string                       `json:"startDate"`
-	Status                   *PromotionalEntitlementStatus `json:"status"`
-	Unlimited                *bool                         `json:"unlimited"`
-	UpdatedAt                *string                       `json:"updatedAt"`
-	UsageLimit               *float64                      `json:"usageLimit"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The description of the entitlement
+	Description *string `json:"description"`
+	// The end date of the promotional entitlement
+	EndDate *string `json:"endDate"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId"`
+	// The unique identifier of the entitlement feature
+	FeatureID *string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool   `json:"hasUnlimitedUsage"`
+	ID                *string `json:"id"`
+	// Whether the entitlement is visible
+	IsVisible *bool `json:"isVisible"`
+	// The grant period of the promotional entitlement
+	Period *PromotionalEntitlementPeriod `json:"period"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// The reset period configuration of the entitlement
+	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
+	// The start date of the entitlement
+	StartDate *string `json:"startDate"`
+	// The status of the entitlement
+	Status *PromotionalEntitlementStatus `json:"status"`
+	// Whether the entitlement has an unlimited usage
+	Unlimited *bool `json:"unlimited"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit"`
 }
 
 type PromotionalEntitlementEdge struct {
@@ -5435,21 +6579,36 @@ type PromotionalEntitlementFilter struct {
 	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
 }
 
+// Promotional entitlement input
 type PromotionalEntitlementInput struct {
-	CustomerID                      string                         `json:"customerId"`
-	Description                     *string                        `json:"description,omitempty"`
-	EndDate                         *string                        `json:"endDate,omitempty"`
-	EnvironmentID                   string                         `json:"environmentId"`
-	FeatureID                       string                         `json:"featureId"`
-	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	IsVisible                       bool                           `json:"isVisible"`
+	// The unique identifier of the entitlement customer
+	CustomerID string `json:"customerId"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The end date of the promotional entitlement
+	EndDate *string `json:"endDate,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Whether the entitlement is visible
+	IsVisible bool `json:"isVisible"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	Period                          PromotionalEntitlementPeriod   `json:"period"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// The grant period of the promotional entitlement
+	Period PromotionalEntitlementPeriod `json:"period"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type PromotionalEntitlementMaxAggregate struct {
@@ -5491,38 +6650,67 @@ type PromotionalEntitlementStatusFilterComparison struct {
 	NotLike  *PromotionalEntitlementStatus  `json:"notLike,omitempty"`
 }
 
+// Promotional entitlement update input
 type PromotionalEntitlementUpdateInput struct {
-	Description                     *string                        `json:"description,omitempty"`
-	EndDate                         *string                        `json:"endDate,omitempty"`
-	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	IsVisible                       bool                           `json:"isVisible"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The end date of the promotional entitlement
+	EndDate *string `json:"endDate,omitempty"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Whether the entitlement is visible
+	IsVisible bool `json:"isVisible"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	Period                          PromotionalEntitlementPeriod   `json:"period"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The grant period of the promotional entitlement
+	Period PromotionalEntitlementPeriod `json:"period"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
 }
 
+// Input to provision a customer and subscription
 type ProvisionCustomerInput struct {
-	AdditionalMetaData       map[string]interface{}              `json:"additionalMetaData,omitempty"`
-	AwsMarketplaceCustomerID *string                             `json:"awsMarketplaceCustomerId,omitempty"`
-	BillingID                *string                             `json:"billingId,omitempty"`
-	BillingInformation       *CustomerBillingInfo                `json:"billingInformation,omitempty"`
-	CouponRefID              *string                             `json:"couponRefId,omitempty"`
-	CreatedAt                *string                             `json:"createdAt,omitempty"`
-	CrmID                    *string                             `json:"crmId,omitempty"`
-	CustomerID               *string                             `json:"customerId,omitempty"`
-	Email                    *string                             `json:"email,omitempty"`
-	EnvironmentID            *string                             `json:"environmentId,omitempty"`
-	ExcludeFromExperiment    *bool                               `json:"excludeFromExperiment,omitempty"`
-	Name                     *string                             `json:"name,omitempty"`
-	RefID                    *string                             `json:"refId,omitempty"`
-	SalesforceID             *string                             `json:"salesforceId,omitempty"`
-	ShouldSyncFree           *bool                               `json:"shouldSyncFree,omitempty"`
-	SubscriptionParams       *ProvisionCustomerSubscriptionInput `json:"subscriptionParams,omitempty"`
+	// Additional metadata
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// The AWS Marketplace integration id
+	AwsMarketplaceCustomerID *string `json:"awsMarketplaceCustomerId,omitempty"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
+	// Customer billing information
+	BillingInformation *CustomerBillingInfo `json:"billingInformation,omitempty"`
+	// Customer level coupon
+	CouponRefID *string `json:"couponRefId,omitempty"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// The unique identifier for the customer in Hubspot integration
+	CrmID *string `json:"crmId,omitempty"`
+	// Customer slug
+	CustomerID *string `json:"customerId,omitempty"`
+	// The email of the customer
+	Email *string `json:"email,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Wether the customer should be excluded from the experiment
+	ExcludeFromExperiment *bool `json:"excludeFromExperiment,omitempty"`
+	// The name of the customer
+	Name *string `json:"name,omitempty"`
+	// Customer slug
+	RefID *string `json:"refId,omitempty"`
+	// The unique identifier for the customer in Salesforce integration
+	SalesforceID *string `json:"salesforceId,omitempty"`
+	// Wether or not to sync free subscriptions to the billing provider
+	ShouldSyncFree *bool `json:"shouldSyncFree,omitempty"`
+	// Subscription parameters
+	SubscriptionParams *ProvisionCustomerSubscriptionInput `json:"subscriptionParams,omitempty"`
 }
 
+// Provision a new subscription for a customer
 type ProvisionCustomerSubscriptionInput struct {
 	AdditionalMetaData map[string]interface{}    `json:"additionalMetaData,omitempty"`
 	Addons             []*SubscriptionAddonInput `json:"addons,omitempty"`
@@ -5555,9 +6743,12 @@ type ProvisionCustomerSubscriptionInput struct {
 	UnitQuantity               *float64                         `json:"unitQuantity,omitempty"`
 }
 
+// Input for provisioning a sandbox environment
 type ProvisionSandboxInput struct {
+	// The billing model to use for the sandbox environment
 	BillingModel BillingModel `json:"billingModel"`
-	DisplayName  string       `json:"displayName"`
+	// The name of the sandbox environment
+	DisplayName string `json:"displayName"`
 }
 
 type ProvisionSubscription struct {
@@ -5644,15 +6835,23 @@ type ProvisionSubscriptionResult struct {
 	Subscription      *CustomerSubscription       `json:"subscription"`
 }
 
+// Response for provisioning a customer and subscription
 type ProvisionedCustomer struct {
-	Customer                     Customer                     `json:"customer"`
-	Entitlements                 []*Entitlement               `json:"entitlements"`
-	Subscription                 *CustomerSubscription        `json:"subscription"`
+	// Customer slg
+	Customer Customer `json:"customer"`
+	// Entitlements
+	Entitlements []*Entitlement `json:"entitlements"`
+	// Provisioned subscription
+	Subscription *CustomerSubscription `json:"subscription"`
+	// Wether the subscription should be provision based on customer journey or input
 	SubscriptionDecisionStrategy SubscriptionDecisionStrategy `json:"subscriptionDecisionStrategy"`
+	// Wether the subscription should be provision based on customer journey or input
 	SubscriptionStrategyDecision SubscriptionDecisionStrategy `json:"subscriptionStrategyDecision"`
 }
 
+// Publish Package Result
 type PublishPackageResult struct {
+	// The task id for the publish package operation
 	TaskID *string `json:"taskId"`
 }
 
@@ -5709,43 +6908,65 @@ type RemoveExperimentFromCustomerSubscriptionInput struct {
 	RelationID string `json:"relationId"`
 }
 
+// Report usage base input
 type ReportUsageBaseInput struct {
-	CreatedAt      *string                `json:"createdAt,omitempty"`
-	CustomerID     string                 `json:"customerId"`
-	Dimensions     map[string]interface{} `json:"dimensions,omitempty"`
-	FeatureID      string                 `json:"featureId"`
-	ResourceID     *string                `json:"resourceId,omitempty"`
-	UpdateBehavior *UsageUpdateBehavior   `json:"updateBehavior,omitempty"`
-	Value          float64                `json:"value"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// Additional dimensions for the usage report
+	Dimensions map[string]interface{} `json:"dimensions,omitempty"`
+	// Feature id
+	FeatureID string `json:"featureId"`
+	// Resource id
+	ResourceID *string `json:"resourceId,omitempty"`
+	// The method by which the usage value should be updated
+	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
+	// The value to report for usage
+	Value float64 `json:"value"`
 }
 
+// Input for reporting usage in bulk
 type ReportUsageBulkInput struct {
-	EnvironmentID *string                 `json:"environmentId,omitempty"`
-	Usages        []*ReportUsageBaseInput `json:"usages"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// A list of usage reports to be submitted in bulk
+	Usages []*ReportUsageBaseInput `json:"usages"`
 }
 
+// Input parameters for reporting usage
 type ReportUsageInput struct {
-	CreatedAt      *string                `json:"createdAt,omitempty"`
-	CustomerID     string                 `json:"customerId"`
-	Dimensions     map[string]interface{} `json:"dimensions,omitempty"`
-	EnvironmentID  *string                `json:"environmentId,omitempty"`
-	FeatureID      string                 `json:"featureId"`
-	ResourceID     *string                `json:"resourceId,omitempty"`
-	UpdateBehavior *UsageUpdateBehavior   `json:"updateBehavior,omitempty"`
-	Value          float64                `json:"value"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// Additional dimensions for the usage report
+	Dimensions map[string]interface{} `json:"dimensions,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Feature id
+	FeatureID string `json:"featureId"`
+	// Resource id
+	ResourceID *string `json:"resourceId,omitempty"`
+	// The method by which the usage value should be updated
+	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
+	// The value to report for usage
+	Value float64 `json:"value"`
 }
 
+// Input for re-syncing an integration
 type ResyncIntegrationInput struct {
-	// ID of the environment to re-sync
+	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// Internal ID of the integration to re-sync
 	IntegrationID string `json:"integrationId"`
 	// Allow skipping entitlement recalculation
 	RecalculateEntitlements *bool `json:"recalculateEntitlements,omitempty"`
-	// Type of integration to re-sync
+	// The vendor identifier of integration
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier,omitempty"`
 }
 
+// Result of the re-sync operation
 type ResyncIntegrationResult struct {
 	// ID of the integration that was re-synced
 	IntegrationID string `json:"integrationId"`
@@ -5753,19 +6974,27 @@ type ResyncIntegrationResult struct {
 	TaskID *string `json:"taskId"`
 }
 
+// Revoke promotional entitlement input
 type RevokePromotionalEntitlementInput struct {
-	CustomerID    string  `json:"customerId"`
+	// The unique identifier of the entitlement customer
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	FeatureID     string  `json:"featureId"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
 }
 
+// Salesforce integration configuration object
 type SalesforceCredentials struct {
+	// Domain of the Salesforce account
 	Domain *string `json:"domain"`
 }
 
 func (SalesforceCredentials) IsCredentials() {}
 
+// Input configuration for Salesforce Integration
 type SalesforceCredentialsInput struct {
+	// Domain of the Salesforce account
 	Domain *string `json:"domain,omitempty"`
 }
 
@@ -5774,6 +7003,7 @@ type SdkConfiguration struct {
 	SentryDsn                *string `json:"sentryDsn"`
 }
 
+// Input for setting access roles for a user
 type SetAccessRolesInput struct {
 	// Account level access of the user
 	AccountRole AccountAccessRole `json:"accountRole"`
@@ -5824,13 +7054,13 @@ type SetExperimentOnCustomerSubscriptionInput struct {
 type SetPackageGroupAddons struct {
 	// The addons to set on the package group
 	Addons []string `json:"addons"`
-	// The environment id to set the addons of the package group in
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The id of the package group
 	PackageGroupID string `json:"packageGroupId"`
 }
 
-// Set plan compatible package group input
+// Set plan compatible package groups input
 type SetPlanCompatiblePackageGroup struct {
 	// The options for the package group
 	Options *SetPlanCompatiblePackageGroupOptions `json:"options,omitempty"`
@@ -5838,7 +7068,7 @@ type SetPlanCompatiblePackageGroup struct {
 	PackageGroupID string `json:"packageGroupId"`
 }
 
-// Set plan compatible package group options input
+// Set plan compatible package groups input
 type SetPlanCompatiblePackageGroupOptions struct {
 	// Number of free items from packageGroup
 	FreeItems *float64 `json:"freeItems,omitempty"`
@@ -5848,7 +7078,7 @@ type SetPlanCompatiblePackageGroupOptions struct {
 
 // Set plan compatible package groups input
 type SetPlanCompatiblePackageGroups struct {
-	// The environment id
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The id of the plan
 	ID string `json:"id"`
@@ -5856,39 +7086,63 @@ type SetPlanCompatiblePackageGroups struct {
 	PackageGroups []*SetPlanCompatiblePackageGroup `json:"packageGroups"`
 }
 
+// Snowflake integration configuration object
 type SnowflakeCredentials struct {
-	AirbyteConnectionID  *string `json:"airbyteConnectionId"`
+	// Airbyte connection ID for Snowflake
+	AirbyteConnectionID *string `json:"airbyteConnectionId"`
+	// Airbyte destination ID for Snowflake
 	AirbyteDestinationID *string `json:"airbyteDestinationId"`
-	Database             string  `json:"database"`
-	Host                 string  `json:"host"`
-	Role                 string  `json:"role"`
-	SchemaName           string  `json:"schemaName"`
-	Username             string  `json:"username"`
-	Warehouse            string  `json:"warehouse"`
+	// The database you specified when creating the Stigg entities in Snowflake, for example: STIGG_DATABASE
+	Database string `json:"database"`
+	// The Snowflake account URL, for example: https://ab12345.us-east-2.aws.snowflakecomputing.com
+	Host string `json:"host"`
+	// The role you specified when creating the Stigg entities in Snowflake, for example: STIGG_ROLE
+	Role string `json:"role"`
+	// The schema you specified when creating the Stigg entities in Snowflake, for example: STIGG_SCHEMA
+	SchemaName string `json:"schemaName"`
+	// The username you specified when creating the Stigg entities in Snowflake, for example: STIGG_USER
+	Username string `json:"username"`
+	// The warehouse you specified when creating the Stigg entities in Snowflake, for example: STIGG_WAREHOUSE
+	Warehouse string `json:"warehouse"`
 }
 
 func (SnowflakeCredentials) IsCredentials() {}
 
+// Input configuration for Snowflake integration
 type SnowflakeCredentialsInput struct {
-	Database   string `json:"database"`
-	Host       string `json:"host"`
-	Password   string `json:"password"`
-	Role       string `json:"role"`
+	// The database you specified when creating the Stigg entities in Snowflake, for example: STIGG_DATABASE
+	Database string `json:"database"`
+	// The Snowflake account URL, for example: https://ab12345.us-east-2.aws.snowflakecomputing.com
+	Host string `json:"host"`
+	// The password you specified when creating the Stigg entities in Snowflake
+	Password string `json:"password"`
+	// The role you specified when creating the Stigg entities in Snowflake, for example: STIGG_ROLE
+	Role string `json:"role"`
+	// The schema you specified when creating the Stigg entities in Snowflake, for example: STIGG_SCHEMA
 	SchemaName string `json:"schemaName"`
-	Username   string `json:"username"`
-	Warehouse  string `json:"warehouse"`
+	// The username you specified when creating the Stigg entities in Snowflake, for example: STIGG_USER
+	Username string `json:"username"`
+	// The warehouse you specified when creating the Stigg entities in Snowflake, for example: STIGG_WAREHOUSE
+	Warehouse string `json:"warehouse"`
 }
 
+// Input parameters for starting an experiment
 type StartExperimentInput struct {
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	RefID         string  `json:"refId"`
+	// The unique identifier for the experiment
+	RefID string `json:"refId"`
 }
 
+// Input parameters for stopping an experiment
 type StopExperimentInput struct {
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	RefID         string  `json:"refId"`
+	// The unique identifier for the experiment
+	RefID string `json:"refId"`
 }
 
+// String change
 type StringChangeDto struct {
 	// The value after the change
 	After *string `json:"after"`
@@ -5915,31 +7169,50 @@ type StringFieldComparison struct {
 	NotLike  *string  `json:"notLike,omitempty"`
 }
 
+// Stripe integration configuration object
 type StripeCredentials struct {
+	// Display name of the Stripe account
 	AccountDisplayName string `json:"accountDisplayName"`
-	AccountID          string `json:"accountId"`
-	IsTaxEnabled       bool   `json:"isTaxEnabled"`
-	IsTestMode         bool   `json:"isTestMode"`
+	// ID of the Stripe account
+	AccountID string `json:"accountId"`
+	// Whether tax is enabled for the Stripe account
+	IsTaxEnabled bool `json:"isTaxEnabled"`
+	// Whether the Stripe account is in test mode
+	IsTestMode bool `json:"isTestMode"`
 }
 
 func (StripeCredentials) IsCredentials() {}
 
+// Input configuration for Stripe integration
 type StripeCredentialsInput struct {
-	AccountID         *string `json:"accountId,omitempty"`
-	AuthorizationCode string  `json:"authorizationCode"`
-	IsTaxEnabled      *bool   `json:"isTaxEnabled,omitempty"`
-	IsTestMode        bool    `json:"isTestMode"`
+	// ID of the Stripe account
+	AccountID *string `json:"accountId,omitempty"`
+	// Authorization code for Stripe
+	AuthorizationCode string `json:"authorizationCode"`
+	// Whether tax is enabled for the Stripe account
+	IsTaxEnabled *bool `json:"isTaxEnabled,omitempty"`
+	// Whether the Stripe account is in test mode
+	IsTestMode bool `json:"isTestMode"`
 }
 
+// Stripe customer information
 type StripeCustomer struct {
-	CreatedAt            string  `json:"createdAt"`
-	Email                string  `json:"email"`
-	EnvironmentID        *string `json:"environmentId"`
-	ID                   string  `json:"id"`
-	IsSynced             bool    `json:"isSynced"`
-	Name                 string  `json:"name"`
+	// Timestamp of when the record was created
+	CreatedAt string `json:"createdAt"`
+	// Customer email address
+	Email string `json:"email"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Indicates if the customer is synced with Stigg
+	IsSynced bool `json:"isSynced"`
+	// Customer name
+	Name string `json:"name"`
+	// Name of the subscription plan
 	SubscriptionPlanName *string `json:"subscriptionPlanName"`
-	SubscriptionsCount   float64 `json:"subscriptionsCount"`
+	// Number of active subscriptions
+	SubscriptionsCount float64 `json:"subscriptionsCount"`
 }
 
 type StripeCustomerIsDeleted struct {
@@ -5948,66 +7221,106 @@ type StripeCustomerIsDeleted struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// Input parameters for searching Stripe customers
 type StripeCustomerSearchInput struct {
-	CustomerName  *string `json:"customerName,omitempty"`
-	EnvironmentID string  `json:"environmentId"`
-	NextPage      *string `json:"nextPage,omitempty"`
+	// Name of the customer to search for
+	CustomerName *string `json:"customerName,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Token for retrieving the next page of results
+	NextPage *string `json:"nextPage,omitempty"`
 }
 
+// Results from searching Stripe customers
 type StripeCustomerSearchResult struct {
-	Customers  []*StripeCustomer `json:"customers"`
-	NextPage   *string           `json:"nextPage"`
-	TotalCount int64             `json:"totalCount"`
+	// List of found Stripe customers
+	Customers []*StripeCustomer `json:"customers"`
+	// Token for the next page of results
+	NextPage *string `json:"nextPage"`
+	// Total number of customers found
+	TotalCount int64 `json:"totalCount"`
 }
 
+// Response for preparing a Stripe payment method form
 type StripePaymentMethodForm struct {
-	ClientSecret         string  `json:"clientSecret"`
+	// The client secret for the payment method form
+	ClientSecret string `json:"clientSecret"`
+	// The Stripe publishable key
 	StripePublishableKey *string `json:"stripePublishableKey"`
 }
 
 func (StripePaymentMethodForm) IsPaymentMethodForm() {}
 
+// Stripe product information
 type StripeProduct struct {
-	EnvironmentID         *string               `json:"environmentId"`
-	ID                    string                `json:"id"`
-	IsSynced              bool                  `json:"isSynced"`
-	Name                  string                `json:"name"`
-	NotSupportedForImport bool                  `json:"notSupportedForImport"`
-	Prices                []*StripeProductPrice `json:"prices"`
-	UpdatedAt             string                `json:"updatedAt"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Indicates if the product is synced with Stigg
+	IsSynced bool `json:"isSynced"`
+	// Product name
+	Name string `json:"name"`
+	// Indicates if the product cannot be imported
+	NotSupportedForImport bool `json:"notSupportedForImport"`
+	// List of prices associated with the product
+	Prices []*StripeProductPrice `json:"prices"`
+	// Timestamp of when the record was last updated
+	UpdatedAt string `json:"updatedAt"`
 }
 
+// Price information for a Stripe product
 type StripeProductPrice struct {
-	Amount        float64        `json:"amount"`
+	// Price amount
+	Amount float64 `json:"amount"`
+	// Billing period for the price
 	BillingPeriod *BillingPeriod `json:"billingPeriod"`
 }
 
+// Input parameters for searching Stripe products
 type StripeProductSearchInput struct {
-	EnvironmentID string  `json:"environmentId"`
-	NextPage      *string `json:"nextPage,omitempty"`
-	ProductName   *string `json:"productName,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Token for retrieving the next page of results
+	NextPage *string `json:"nextPage,omitempty"`
+	// Name of the product to search for
+	ProductName *string `json:"productName,omitempty"`
 }
 
+// Results from searching Stripe products
 type StripeProductSearchResult struct {
-	NextPage                 *string          `json:"nextPage"`
-	Products                 []*StripeProduct `json:"products"`
-	TotalCount               int64            `json:"totalCount"`
-	UsageBasedProductPresent *bool            `json:"usageBasedProductPresent"`
+	// Token for the next page of results
+	NextPage *string `json:"nextPage"`
+	// List of found Stripe products
+	Products []*StripeProduct `json:"products"`
+	// Total number of products found
+	TotalCount int64 `json:"totalCount"`
+	// Indicates if any usage-based products were found
+	UsageBasedProductPresent *bool `json:"usageBasedProductPresent"`
 }
 
+// Stripe subscription information
 type StripeSubscription struct {
+	// Unique identifier for the entity
 	ID string `json:"id"`
 }
 
+// Input parameters for searching Stripe subscriptions
 type StripeSubscriptionSearchInput struct {
-	EnvironmentID string  `json:"environmentId"`
-	NextPage      *string `json:"nextPage,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Token for retrieving the next page of results
+	NextPage *string `json:"nextPage,omitempty"`
 }
 
+// Results from searching Stripe subscriptions
 type StripeSubscriptionSearchResult struct {
-	NextPage      *string               `json:"nextPage"`
+	// Token for the next page of results
+	NextPage *string `json:"nextPage"`
+	// List of found Stripe subscriptions
 	Subscriptions []*StripeSubscription `json:"subscriptions"`
-	TotalCount    int64                 `json:"totalCount"`
+	// Total number of subscriptions found
+	TotalCount int64 `json:"totalCount"`
 }
 
 type SubscriptionAddon struct {
@@ -6177,25 +7490,32 @@ type SubscriptionCancellationInput struct {
 	SubscriptionRefID              string                          `json:"subscriptionRefId"`
 }
 
+// Subscription coupons
 type SubscriptionCoupon struct {
-	// Discount amounts off
-	AmountsOff    []*Money `json:"amountsOff"`
-	DiscountValue float64  `json:"discountValue"`
-	// The duration of the coupon in months
+	// Fixed amount discounts in different currencies
+	AmountsOff []*Money `json:"amountsOff"`
+	// Discount value of the coupon (deprecated)
+	DiscountValue float64 `json:"discountValue"`
+	// Duration of the coupon validity in months
 	DurationInMonths *float64 `json:"durationInMonths"`
-	EnvironmentID    string   `json:"environmentId"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
 	// The expiration date of this coupon
 	ExpirationDate *string `json:"expirationDate"`
-	ID             string  `json:"id"`
-	Name           string  `json:"name"`
-	// Discount percent off
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Name of the coupon
+	Name string `json:"name"`
+	// Percentage discount off the original price
 	PercentOff *float64 `json:"percentOff"`
-	RefID      string   `json:"refId"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
 	// The start date of this coupon
 	StartDate *string `json:"startDate"`
-	// The status of this coupon
+	// Current status of the coupon
 	Status SubscriptionCouponStatus `json:"status"`
-	Type   CouponType               `json:"type"`
+	// Type of the coupon (percentage or fixed amount)
+	Type CouponType `json:"type"`
 }
 
 // Subscription coupon configuration input
@@ -6232,22 +7552,34 @@ type SubscriptionCouponInput struct {
 	PromotionCode *string `json:"promotionCode,omitempty"`
 }
 
+// Subscription entitlement
 type SubscriptionEntitlement struct {
-	CreatedAt                *string                  `json:"createdAt"`
-	Description              *string                  `json:"description"`
-	EnvironmentID            string                   `json:"environmentId"`
-	Feature                  Feature                  `json:"feature"`
-	FeatureID                string                   `json:"featureId"`
-	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
-	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
-	ID                       string                   `json:"id"`
-	Meter                    *Meter                   `json:"meter"`
-	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// Subscription entitlement
+	Description *string `json:"description"`
+	// The unique identifier for the environment
+	EnvironmentID string  `json:"environmentId"`
+	Feature       Feature `json:"feature"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool  `json:"hasUnlimitedUsage"`
+	ID                string `json:"id"`
+	Meter             *Meter `json:"meter"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// The reset period configuration of the entitlement
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
 	Subscription             CustomerSubscription     `json:"subscription"`
-	SubscriptionID           string                   `json:"subscriptionId"`
-	UpdatedAt                *string                  `json:"updatedAt"`
-	UsageLimit               *float64                 `json:"usageLimit"`
+	// The unique identifier of the entitlement subscription
+	SubscriptionID string `json:"subscriptionId"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit"`
 }
 
 type SubscriptionEntitlementAggregateGroupBy struct {
@@ -6336,16 +7668,26 @@ type SubscriptionEntitlementFilterFeatureFilter struct {
 	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
 }
 
+// Subscription entitlement input
 type SubscriptionEntitlementInput struct {
-	Description                     *string                        `json:"description,omitempty"`
-	FeatureID                       string                         `json:"featureId"`
-	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type SubscriptionEntitlementMaxAggregate struct {
@@ -6569,19 +7911,31 @@ type SubscriptionMigrationInput struct {
 	SubscriptionMigrationTime *SubscriptionMigrationTime `json:"subscriptionMigrationTime,omitempty"`
 }
 
+// Subscription migration task
 type SubscriptionMigrationTask struct {
-	AffectedCustomersCount *int64        `json:"affectedCustomersCount"`
-	CreatedAt              *string       `json:"createdAt"`
-	EndDate                *string       `json:"endDate"`
-	EnvironmentID          string        `json:"environmentId"`
-	ID                     string        `json:"id"`
-	InitiatedPackageID     *string       `json:"initiatedPackageId"`
+	// The number of customers that are affected by the subscription migration task
+	AffectedCustomersCount *int64 `json:"affectedCustomersCount"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The end date of the task
+	EndDate *string `json:"endDate"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// The id of the package that was initiated
+	InitiatedPackageID *string `json:"initiatedPackageId"`
+	// The number of customers that have been migrated
 	MigratedCustomersCount *int64        `json:"migratedCustomersCount"`
 	Packages               []*PackageDto `json:"packages"`
-	Progress               int64         `json:"progress"`
-	StartDate              *string       `json:"startDate"`
-	Status                 TaskStatus    `json:"status"`
-	TaskType               TaskType      `json:"taskType"`
+	// The progress of the task as a percentage, a number between 0 and 100
+	Progress int64 `json:"progress"`
+	// The start date of the task
+	StartDate *string `json:"startDate"`
+	// The status of the task
+	Status TaskStatus `json:"status"`
+	// The type of the task
+	TaskType TaskType `json:"taskType"`
 }
 
 type SubscriptionMigrationTaskAggregateGroupBy struct {
@@ -6654,9 +8008,9 @@ type SubscriptionMinimumSpend struct {
 	Minimum *Money `json:"minimum"`
 }
 
-// Subscription minimum spend
+// Subscription minimum spend input
 type SubscriptionMinimumSpendValueInput struct {
-	// The minimum spend
+	// The subscription minimum spend
 	Minimum *MoneyInputDto `json:"minimum,omitempty"`
 }
 
@@ -6926,21 +8280,21 @@ type SubscriptionUpdateScheduleCancellationInput struct {
 
 // Usage reset cutoff rule - when does the usage for a feature should be reset
 type SubscriptionUpdateUsageResetCutoffRule struct {
-	// The behavior to reset according to
+	// Behavior to reset according to
 	Behavior SubscriptionUpdateUsageCutoffBehavior `json:"behavior"`
 }
 
-// The input of the usage reset cutoff rule.
+// Input for usage reset cutoff rule
 type SubscriptionUpdateUsageResetCutoffRuleInput struct {
-	// The behavior of the usage reset cutoff rule.
+	// Behavior of the usage reset cutoff rule
 	Behavior SubscriptionUpdateUsageCutoffBehavior `json:"behavior"`
 }
 
 // Data of billing sync revision
 type SyncRevisionBillingData struct {
-	// The billing integration id
+	// Billing integration id
 	BillingID string `json:"billingId"`
-	// The billing integration url
+	// Billing integration url
 	BillingLinkURL string `json:"billingLinkUrl"`
 }
 
@@ -6948,7 +8302,7 @@ func (SyncRevisionBillingData) IsSyncRevisionData() {}
 
 // Data of marketplace sync revision
 type SyncRevisionMarketplaceData struct {
-	// The dimensions of the marketplace sync revision
+	// Dimensions of the marketplace sync revision
 	Dimensions string `json:"dimensions"`
 }
 
@@ -6956,11 +8310,11 @@ func (SyncRevisionMarketplaceData) IsSyncRevisionData() {}
 
 // Data of price billing sync revision
 type SyncRevisionPriceBillingData struct {
-	// The billing integration id
+	// Billing integration id
 	BillingID string `json:"billingId"`
-	// The billing integration url
+	// Billing integration url
 	BillingLinkURL string `json:"billingLinkUrl"`
-	// The price group package billing id
+	// Price group package billing id
 	PriceGroupPackageBillingID string `json:"priceGroupPackageBillingId"`
 }
 
@@ -6978,7 +8332,7 @@ type SyncState struct {
 	Status SyncStatus `json:"status"`
 	// Synced entity id
 	SyncedEntityID *string `json:"syncedEntityId"`
-	// Vendor identifier
+	// The vendor identifier of integration
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
@@ -7025,28 +8379,39 @@ type TaxExempt struct {
 	Value string `json:"value"`
 }
 
+// TestHook object
 type TestHook struct {
+	// The event log type to test
 	TestHookEventType string `json:"testHookEventType"`
-	TestHookPayload   string `json:"testHookPayload"`
+	// The payload for the event log type
+	TestHookPayload string `json:"testHookPayload"`
 }
 
+// TestHookInput object
 type TestHookInput struct {
-	EndpointURL   string       `json:"endpointUrl"`
-	EnvironmentID string       `json:"environmentId"`
+	// The endpoint URL for the webhook
+	EndpointURL string `json:"endpointUrl"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The event log type to test
 	HookEventType EventLogType `json:"hookEventType"`
 }
 
+// TestHookResult object
 type TestHookResult struct {
+	// The status code of the response
 	ResponseStatusCode *float64 `json:"responseStatusCode"`
-	ResponseStatusText *string  `json:"responseStatusText"`
-	ResponseSuccess    bool     `json:"responseSuccess"`
+	// The status text of the response
+	ResponseStatusText *string `json:"responseStatusText"`
+	// Whether the response was successful
+	ResponseSuccess bool `json:"responseSuccess"`
 }
 
-// Trigger workflow with test eventinput
+// Trigger workflow with test event input
 type TestWorkflowInput struct {
-	// The endpoint url of the trigger
+	// Workflow trigger endpoint
 	EndpointURL string `json:"endpointUrl"`
-	// The environment id to trigger the workflow on
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The event type to trigger the workflow on
 	HookEventType EventLogType `json:"hookEventType"`
@@ -7098,10 +8463,15 @@ type TrialOverrideConfigurationInput struct {
 	TrialEndDate     *string           `json:"trialEndDate,omitempty"`
 }
 
+// Information on a plan this customer already trialed
 type TrialedPlan struct {
-	PlanID       *string `json:"planId"`
-	PlanRefID    *string `json:"planRefId"`
-	ProductID    *string `json:"productId"`
+	// Internal plan id
+	PlanID *string `json:"planId"`
+	// Plan slug, as defined by the user
+	PlanRefID *string `json:"planRefId"`
+	// Internal product id
+	ProductID *string `json:"productId"`
+	// Product slug, as defined by the user
 	ProductRefID *string `json:"productRefId"`
 }
 
@@ -7111,13 +8481,19 @@ type TriggerSubscriptionBillingMonthEndsSoonWebhookInput struct {
 	SubscriptionID string `json:"subscriptionId"`
 }
 
+// Trigger a subscription migration
 type TriggerSubscriptionMigrationInput struct {
-	EnvironmentID string  `json:"environmentId"`
-	RefID         string  `json:"refId"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
+	// The version number of the plan to migrate
 	VersionNumber float64 `json:"versionNumber"`
 }
 
+// The result of triggering a subscription migration
 type TriggerSubscriptionMigrationResult struct {
+	// The id of the task that was created
 	TaskID *string `json:"taskId"`
 }
 
@@ -7167,15 +8543,15 @@ type TypographyConfigurationInput struct {
 
 // Input for un-archiving a feature
 type UnArchiveFeatureInput struct {
-	// Environment ID to unarchive the feature in
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	// Feature ID to unarchive
+	// Unique identifier for the entity
 	ID string `json:"id"`
 }
 
 // Input for un-archiving a plan
 type UnArchivePlanInput struct {
-	// Environment ID to unarchive the plan in
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Plan ID to unarchive
 	ID string `json:"id"`
@@ -7188,13 +8564,19 @@ type UnPublishedPackageError struct {
 	PackageType            string   `json:"packageType"`
 }
 
+// Unarchive a customer
 type UnarchiveCustomerInput struct {
-	CustomerID    string  `json:"customerId"`
+	// Customer slug
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// Input for unarchiving an environment
 type UnarchiveEnvironmentInput struct {
-	ID   *string `json:"id,omitempty"`
+	// Unique identifier for the entity
+	ID *string `json:"id,omitempty"`
+	// A unique identifier for the environment
 	Slug *string `json:"slug,omitempty"`
 }
 
@@ -7239,68 +8621,115 @@ type UnsupportedVendorIdentifierError struct {
 	VendorIdentifier string `json:"vendorIdentifier"`
 }
 
+// Input type for updating an account
 type UpdateAccountInput struct {
 	// The method of adding new members to this account
 	AccessMethod *AccountAccessMethod `json:"accessMethod,omitempty"`
 	// Email domain to be used for sso and authorized domain configuration
-	AccountEmailDomain            *string               `json:"accountEmailDomain,omitempty"`
-	DefaultSSORoles               *DefaultSSORolesInput `json:"defaultSSORoles,omitempty"`
-	DisplayName                   string                `json:"displayName"`
-	SubscriptionBillingAnchor     *BillingAnchor        `json:"subscriptionBillingAnchor,omitempty"`
-	SubscriptionProrationBehavior *ProrationBehavior    `json:"subscriptionProrationBehavior,omitempty"`
-	Timezone                      *string               `json:"timezone,omitempty"`
+	AccountEmailDomain *string `json:"accountEmailDomain,omitempty"`
+	// Default SSO roles for the account
+	DefaultSSORoles *DefaultSSORolesInput `json:"defaultSSORoles,omitempty"`
+	// The display name of the account
+	DisplayName string `json:"displayName"`
+	// The billing anchor for the subscription, e.g. "START_OF_THE_MONTH"
+	SubscriptionBillingAnchor *BillingAnchor `json:"subscriptionBillingAnchor,omitempty"`
+	// The proration behavior for the subscription, e.g. "CREATE_PRORATIONS"
+	SubscriptionProrationBehavior *ProrationBehavior `json:"subscriptionProrationBehavior,omitempty"`
+	// The timezone of the account, e.g. "America/New_York"
+	Timezone *string `json:"timezone,omitempty"`
 }
 
+// Update a coupon input
 type UpdateCouponInput struct {
+	// Metadata associated with the entity
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	EnvironmentID      *string                `json:"environmentId,omitempty"`
-	Name               string                 `json:"name"`
-	RefID              string                 `json:"refId"`
+	// Description of the coupon
+	Description *string `json:"description,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Name of the coupon
+	Name *string `json:"name,omitempty"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
 }
 
+// Update customer information
 type UpdateCustomerInput struct {
-	AdditionalMetaData       map[string]interface{} `json:"additionalMetaData,omitempty"`
-	AwsMarketplaceCustomerID *string                `json:"awsMarketplaceCustomerId,omitempty"`
-	BillingID                *string                `json:"billingId,omitempty"`
-	BillingInformation       *CustomerBillingInfo   `json:"billingInformation,omitempty"`
-	CouponRefID              *string                `json:"couponRefId,omitempty"`
-	CrmID                    *string                `json:"crmId,omitempty"`
-	CustomerID               *string                `json:"customerId,omitempty"`
-	Email                    *string                `json:"email,omitempty"`
-	EnvironmentID            *string                `json:"environmentId,omitempty"`
-	Name                     *string                `json:"name,omitempty"`
-	RefID                    *string                `json:"refId,omitempty"`
-	SalesforceID             *string                `json:"salesforceId,omitempty"`
-	ShouldWaitSync           *bool                  `json:"shouldWaitSync,omitempty"`
+	// Additional metadata update
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// The AWS Marketplace integration id
+	AwsMarketplaceCustomerID *string `json:"awsMarketplaceCustomerId,omitempty"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
+	// Billing information update
+	BillingInformation *CustomerBillingInfo `json:"billingInformation,omitempty"`
+	// Update a customer level coupon
+	CouponRefID *string `json:"couponRefId,omitempty"`
+	// The unique identifier for the customer in Hubspot integration
+	CrmID *string `json:"crmId,omitempty"`
+	// Customer slug
+	CustomerID *string `json:"customerId,omitempty"`
+	// The email of the customer
+	Email *string `json:"email,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The name of the customer
+	Name *string `json:"name,omitempty"`
+	// Customer slug
+	RefID *string `json:"refId,omitempty"`
+	// The unique identifier for the customer in Salesforce integration
+	SalesforceID *string `json:"salesforceId,omitempty"`
+	// Should wait for sync to complete before returning a response
+	ShouldWaitSync *bool `json:"shouldWaitSync,omitempty"`
 }
 
+// Update entitlements order
 type UpdateEntitlementsOrderDto struct {
-	ID    string   `json:"id"`
+	ID string `json:"id"`
+	// The order of the entitlement in the entitlement list
 	Order *float64 `json:"order"`
 }
 
+// Input parameters for updating an existing experiment
 type UpdateExperimentInput struct {
-	ControlGroupName  *string               `json:"controlGroupName,omitempty"`
-	Description       *string               `json:"description,omitempty"`
-	EnvironmentID     *string               `json:"environmentId,omitempty"`
-	Name              *string               `json:"name,omitempty"`
-	ProductID         *string               `json:"productId,omitempty"`
-	ProductSettings   *ProductSettingsInput `json:"productSettings,omitempty"`
-	RefID             string                `json:"refId"`
-	VariantGroupName  *string               `json:"variantGroupName,omitempty"`
-	VariantPercentage *float64              `json:"variantPercentage,omitempty"`
+	// Name for the control group
+	ControlGroupName *string `json:"controlGroupName,omitempty"`
+	// Description of the experiements
+	Description *string `json:"description,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Name of the experiment
+	Name *string `json:"name,omitempty"`
+	// Internal identifier for the product experiment is associated with
+	ProductID *string `json:"productId,omitempty"`
+	// Product settings for the variant group
+	ProductSettings *ProductSettingsInput `json:"productSettings,omitempty"`
+	// The unique identifier for the experiment
+	RefID string `json:"refId"`
+	// Name for the variant group
+	VariantGroupName *string `json:"variantGroupName,omitempty"`
+	// Percentage of users in the variant group
+	VariantPercentage *float64 `json:"variantPercentage,omitempty"`
 }
 
+// Input for updating a feature
 type UpdateFeatureInput struct {
+	// The additional metadata for the feature
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
-	Description        *string                `json:"description,omitempty"`
-	DisplayName        *string                `json:"displayName,omitempty"`
-	EnvironmentID      string                 `json:"environmentId"`
-	FeatureUnits       *string                `json:"featureUnits,omitempty"`
-	FeatureUnitsPlural *string                `json:"featureUnitsPlural,omitempty"`
-	Meter              *CreateMeter           `json:"meter,omitempty"`
-	RefID              string                 `json:"refId"`
+	// The description for the feature
+	Description *string `json:"description,omitempty"`
+	// The display name for the feature
+	DisplayName *string `json:"displayName,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The units for the feature
+	FeatureUnits *string `json:"featureUnits,omitempty"`
+	// The plural units for the feature
+	FeatureUnitsPlural *string `json:"featureUnitsPlural,omitempty"`
+	// Input for creating a meter
+	Meter *CreateMeter `json:"meter,omitempty"`
+	// The unique identifier for the feature
+	RefID string `json:"refId"`
 	// Unit transformation to be applied to the reported usage
 	UnitTransformation *UnitTransformationInput `json:"unitTransformation,omitempty"`
 }
@@ -7308,28 +8737,42 @@ type UpdateFeatureInput struct {
 type UpdateHook struct {
 	// A JSON containing the configuration for each event log type
 	Configuration map[string]interface{} `json:"configuration,omitempty"`
-	CreatedAt     *string                `json:"createdAt,omitempty"`
-	Description   *string                `json:"description,omitempty"`
-	Endpoint      *string                `json:"endpoint,omitempty"`
-	EnvironmentID *string                `json:"environmentId,omitempty"`
-	EventLogTypes []EventLogType         `json:"eventLogTypes,omitempty"`
-	ID            *string                `json:"id,omitempty"`
-	SecretKey     *string                `json:"secretKey,omitempty"`
-	Status        *HookStatus            `json:"status,omitempty"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// Webhook description
+	Description *string `json:"description,omitempty"`
+	// The Webhook endpoint URL
+	Endpoint *string `json:"endpoint,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The event types that the webhook will be triggered on
+	EventLogTypes []EventLogType `json:"eventLogTypes,omitempty"`
+	// Unique identifier for the entity
+	ID *string `json:"id,omitempty"`
+	// Secret key for the webhook
+	SecretKey *string `json:"secretKey,omitempty"`
+	// The status of the webhook
+	Status *HookStatus `json:"status,omitempty"`
 }
 
+// Update integration input
 type UpdateIntegrationInput struct {
+	// Auth0 integration configuration
 	Auth0Credentials *Auth0CredentialsInput `json:"auth0Credentials,omitempty"`
 	// The reference ID for the integration
 	IntegrationID *string `json:"integrationId,omitempty"`
 	// Whether the integration is the default integration
-	IsDefault          *bool                    `json:"isDefault,omitempty"`
+	IsDefault *bool `json:"isDefault,omitempty"`
+	// OpenFGA integration configuration
 	OpenFGACredentials *OpenFGACredentialsInput `json:"openFGACredentials,omitempty"`
 	// Salesforce integration configuration
-	SalesforceCredentials *SalesforceCredentialsInput   `json:"salesforceCredentials,omitempty"`
-	StripeCredentials     *UpdateStripeCredentialsInput `json:"stripeCredentials,omitempty"`
-	VendorIdentifier      VendorIdentifier              `json:"vendorIdentifier"`
-	ZuoraCredentials      *ZuoraCredentialsInput        `json:"zuoraCredentials,omitempty"`
+	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
+	// Stripe integration configuration
+	StripeCredentials *UpdateStripeCredentialsInput `json:"stripeCredentials,omitempty"`
+	// The vendor identifier of integration
+	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
+	// Zuora integration configuration
+	ZuoraCredentials *ZuoraCredentialsInput `json:"zuoraCredentials,omitempty"`
 }
 
 type UpdateOneEnvironmentInput struct {
@@ -7374,31 +8817,50 @@ type UpdateOnePromotionalEntitlementInput struct {
 	Update PromotionalEntitlementUpdateInput `json:"update"`
 }
 
+// Update package entitlement order input
 type UpdatePackageEntitlementOrderInput struct {
-	Entitlements  []*UpdatePackageEntitlementOrderItemInput `json:"entitlements"`
-	EnvironmentID *string                                   `json:"environmentId,omitempty"`
-	PackageID     string                                    `json:"packageId"`
+	// Entitlements to update
+	Entitlements []*UpdatePackageEntitlementOrderItemInput `json:"entitlements"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The unique identifier of the entitlement package
+	PackageID string `json:"packageId"`
 }
 
+// Update package entitlement order item input
 type UpdatePackageEntitlementOrderItemInput struct {
-	ID    string   `json:"id"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// The order of the entitlement in the entitlement list
 	Order *float64 `json:"order,omitempty"`
 }
 
+// Input configuration for updating Stripe integration
 type UpdateStripeCredentialsInput struct {
+	// Whether tax is enabled for the Stripe account
 	IsTaxEnabled *bool `json:"isTaxEnabled,omitempty"`
 }
 
+// Update subscription entitlement input
 type UpdateSubscriptionEntitlementInput struct {
-	FeatureID                       *string                        `json:"featureId,omitempty"`
-	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
-	ID                              *string                        `json:"id,omitempty"`
+	// The unique identifier of the entitlement feature
+	FeatureID *string `json:"featureId,omitempty"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Unique identifier for the entity
+	ID *string `json:"id,omitempty"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type UpdateSubscriptionInput struct {
@@ -7426,9 +8888,12 @@ type UpdateSubscriptionInput struct {
 	UnitQuantity             *float64                              `json:"unitQuantity,omitempty"`
 }
 
+// Update the users information
 type UpdateUserInput struct {
+	// User selected department
 	Department *Department `json:"department,omitempty"`
-	Name       string      `json:"name"`
+	// User first and last name
+	Name string `json:"name"`
 }
 
 // An object representing the usage charged
@@ -7439,34 +8904,43 @@ type UsageCharged struct {
 	UsageAmount float64 `json:"usageAmount"`
 }
 
+// A usage event record
 type UsageEvent struct {
-	// The customer object reported
+	// Customer
 	Customer *Customer `json:"customer"`
-	// The customer id reported
+	// Customer id
 	CustomerID string `json:"customerId"`
-	// The dimensions reported
+	// Dimensions associated with the usage event
 	Dimensions map[string]interface{} `json:"dimensions"`
-	// The event name reported
+	// The name of the usage event
 	EventName string `json:"eventName"`
-	// The id of the event
+	// Unique identifier for the entity
 	ID string `json:"id"`
-	// The idempotency key reported
+	// Idempotency key
 	IdempotencyKey string `json:"idempotencyKey"`
-	// The resource id reported
+	// Resource id
 	ResourceID *string `json:"resourceId"`
-	// The timestamp reported
+	// Timestamp
 	Timestamp string `json:"timestamp"`
 }
 
+// Input parameters for reporting usage events
 type UsageEventReportInput struct {
-	CustomerID     string                 `json:"customerId"`
-	Dimensions     map[string]interface{} `json:"dimensions,omitempty"`
-	EventName      string                 `json:"eventName"`
-	IdempotencyKey string                 `json:"idempotencyKey"`
-	ResourceID     *string                `json:"resourceId,omitempty"`
-	Timestamp      *string                `json:"timestamp,omitempty"`
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// Dimensions to include in the events fields
+	Dimensions map[string]interface{} `json:"dimensions,omitempty"`
+	// Name of the event
+	EventName string `json:"eventName"`
+	// Idempotency key
+	IdempotencyKey string `json:"idempotencyKey"`
+	// Resource id
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Timestamp
+	Timestamp *string `json:"timestamp,omitempty"`
 }
 
+// Input for usage events
 type UsageEventsInput struct {
 	// Customer id filter
 	CustomerID *string `json:"customerId,omitempty"`
@@ -7476,37 +8950,58 @@ type UsageEventsInput struct {
 	Filters []*MeterFilterDefinitionInput `json:"filters,omitempty"`
 }
 
+// Usage events preview
 type UsageEventsPreview struct {
-	// List of events
+	// A usage event record
 	Events []*UsageEvent `json:"events"`
 }
 
+// Input parameters for reporting usage events
 type UsageEventsReportInput struct {
-	EnvironmentID *string                  `json:"environmentId,omitempty"`
-	UsageEvents   []*UsageEventReportInput `json:"usageEvents"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// A list of usage events to report
+	UsageEvents []*UsageEventReportInput `json:"usageEvents"`
 }
 
+// Usage history
 type UsageHistory struct {
-	EndDate *string              `json:"endDate"`
-	Groups  []*GroupUsageHistory `json:"groups"`
-	// Markers for events that affecting feature usage
-	Markers           []*UsageMarker           `json:"markers"`
-	StartDate         string                   `json:"startDate"`
+	// The end date of the usage history period
+	EndDate *string `json:"endDate"`
+	// Groups included in the usage history
+	Groups []*GroupUsageHistory `json:"groups"`
+	// Markers indicating events that affect feature usage
+	Markers []*UsageMarker `json:"markers"`
+	// The start date of the usage history period
+	StartDate string `json:"startDate"`
+	// List of usage measurements within the period
 	UsageMeasurements []*UsageMeasurementPoint `json:"usageMeasurements"`
 }
 
+// Input parameters for retrieving usage history
 type UsageHistoryInput struct {
-	CustomerRefID                   string                         `json:"customerRefId"`
-	EndDate                         *string                        `json:"endDate,omitempty"`
-	EnvironmentID                   *string                        `json:"environmentId,omitempty"`
-	FeatureRefID                    string                         `json:"featureRefId"`
-	GroupBy                         []string                       `json:"groupBy,omitempty"`
+	// Reference identifier for the customer
+	CustomerRefID string `json:"customerRefId"`
+	// The end date of the range
+	EndDate *string `json:"endDate,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Reference identifier for the feature
+	FeatureRefID string `json:"featureRefId"`
+	// Criteria by which to group the usage history
+	GroupBy []string `json:"groupBy,omitempty"`
+	// Monthly reset period configuration
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	ResourceRefID                   *string                        `json:"resourceRefId,omitempty"`
-	StartDate                       string                         `json:"startDate"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// Reset period
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// Reference identifier for the resource
+	ResourceRefID *string `json:"resourceRefId,omitempty"`
+	// The start date of the range
+	StartDate string `json:"startDate"`
+	// Weekly reset period configuration
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// Yearly reset period configuration
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 // Point in the usage history
@@ -7543,20 +9038,21 @@ type UsageHistoryV2 struct {
 	Series []*UsageHistorySeries `json:"series"`
 }
 
-// Input for fetching usage history
+// Input parameters for retrieving usage history
 type UsageHistoryV2Input struct {
-	// Customer ID
+	// Customer id
 	CustomerID string `json:"customerId"`
-	// End date of the usage history
-	EndDate       *string `json:"endDate,omitempty"`
+	// The end date of the range
+	EndDate *string `json:"endDate,omitempty"`
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	// Feature ID
+	// Feature id
 	FeatureID string `json:"featureId"`
-	// Group usage per keys
+	// Criteria by which to group the usage history
 	GroupBy []string `json:"groupBy,omitempty"`
-	// Resource ID
+	// Resource id
 	ResourceID *string `json:"resourceId,omitempty"`
-	// Start date of the usage history
+	// The start date of the range
 	StartDate string `json:"startDate"`
 }
 
@@ -7568,16 +9064,23 @@ type UsageMarker struct {
 	Type UsageMarkerType `json:"type"`
 }
 
+// Usage measurement
 type UsageMeasurement struct {
-	CreatedAt     string      `json:"createdAt"`
-	Customer      Customer    `json:"customer"`
-	CustomerID    string      `json:"customerId"`
-	Environment   Environment `json:"environment"`
-	EnvironmentID string      `json:"environmentId"`
-	Feature       Feature     `json:"feature"`
-	FeatureID     string      `json:"featureId"`
-	ID            string      `json:"id"`
-	Value         float64     `json:"value"`
+	// Timestamp of when the record was created
+	CreatedAt string   `json:"createdAt"`
+	Customer  Customer `json:"customer"`
+	// Customer id
+	CustomerID  string      `json:"customerId"`
+	Environment Environment `json:"environment"`
+	// The unique identifier for the environment
+	EnvironmentID string  `json:"environmentId"`
+	Feature       Feature `json:"feature"`
+	// Feature id
+	FeatureID string `json:"featureId"`
+	// Unique identifier for the usage measurement
+	ID string `json:"id"`
+	// Measured usage value
+	Value float64 `json:"value"`
 }
 
 type UsageMeasurementAggregateGroupBy struct {
@@ -7605,15 +9108,24 @@ type UsageMeasurementCountAggregate struct {
 	ID            *int64 `json:"id"`
 }
 
+// Input for creating a usage measurement
 type UsageMeasurementCreateInput struct {
-	CreatedAt      *string                `json:"createdAt,omitempty"`
-	CustomerID     string                 `json:"customerId"`
-	Dimensions     map[string]interface{} `json:"dimensions,omitempty"`
-	EnvironmentID  *string                `json:"environmentId,omitempty"`
-	FeatureID      string                 `json:"featureId"`
-	ResourceID     *string                `json:"resourceId,omitempty"`
-	UpdateBehavior *UsageUpdateBehavior   `json:"updateBehavior,omitempty"`
-	Value          float64                `json:"value"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// Additional dimensions for the usage report
+	Dimensions map[string]interface{} `json:"dimensions,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Feature id
+	FeatureID string `json:"featureId"`
+	// Resource id
+	ResourceID *string `json:"resourceId,omitempty"`
+	// The method by which the usage value should be updated
+	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
+	// The value to report for usage
+	Value float64 `json:"value"`
 }
 
 type UsageMeasurementEdge struct {
@@ -7679,12 +9191,13 @@ type UsageMeasurementMinAggregate struct {
 	ID            *string `json:"id"`
 }
 
+// Usage measurement point
 type UsageMeasurementPoint struct {
-	// Timestamp of the measurement point
+	// The date and time of this measurement point
 	Date string `json:"date"`
-	// Indicates whether there was usage reset in this point, see `markers` for details
+	// Indicates whether usage was reset at this point; see markers for further details
 	IsResetPoint bool `json:"isResetPoint"`
-	// Value of the measurement point
+	// The recorded value at this measurement point
 	Value float64 `json:"value"`
 }
 
@@ -7698,66 +9211,99 @@ type UsageMeasurementSumAggregate struct {
 	ID *float64 `json:"id"`
 }
 
+// Usage measurement updated
 type UsageMeasurementUpdated struct {
-	AccountID     string   `json:"accountId"`
-	CurrentUsage  float64  `json:"currentUsage"`
-	CustomerID    string   `json:"customerId"`
-	EnvironmentID string   `json:"environmentId"`
-	FeatureID     string   `json:"featureId"`
+	// The unique identifier for the account
+	AccountID string `json:"accountId"`
+	// The current measured usage value
+	CurrentUsage float64 `json:"currentUsage"`
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Feature id
+	FeatureID string `json:"featureId"`
+	// The date when the next usage reset will occur
 	NextResetDate *float64 `json:"nextResetDate"`
-	ResourceID    *string  `json:"resourceId"`
-	// The end date of the usage period that the measurement resides in (for entitlement with reset period)
+	// Resource id
+	ResourceID *string `json:"resourceId"`
+	// The end date of the usage period in which this measurement resides (for entitlements with a reset period)
 	UsagePeriodEnd *float64 `json:"usagePeriodEnd"`
-	// The start date of the usage period that the measurement resides in (for entitlement with reset period)
+	// The start date of the usage period in which this measurement resides (for entitlements with a reset period)
 	UsagePeriodStart *float64 `json:"usagePeriodStart"`
 }
 
+// Usage measurement with current usage
 type UsageMeasurementWithCurrentUsage struct {
-	CreatedAt     string   `json:"createdAt"`
-	CurrentUsage  *float64 `json:"currentUsage"`
-	CustomerID    string   `json:"customerId"`
-	EnvironmentID string   `json:"environmentId"`
-	FeatureID     string   `json:"featureId"`
-	ID            string   `json:"id"`
-	NextResetDate *string  `json:"nextResetDate"`
-	ResourceID    *string  `json:"resourceId"`
-	Timestamp     string   `json:"timestamp"`
-	// The end date of the usage period that the measurement resides in (for entitlement with reset period)
+	// Timestamp of when the record was created
+	CreatedAt string `json:"createdAt"`
+	// The current measured usage value
+	CurrentUsage *float64 `json:"currentUsage"`
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Feature id
+	FeatureID string `json:"featureId"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// The date when the next usage reset will occur
+	NextResetDate *string `json:"nextResetDate"`
+	// Resource id
+	ResourceID *string `json:"resourceId"`
+	// Timestamp
+	Timestamp string `json:"timestamp"`
+	// The end date of the usage period in which this measurement resides (for entitlements with a reset period)
 	UsagePeriodEnd *string `json:"usagePeriodEnd"`
-	// The start date of the usage period that the measurement resides in (for entitlement with reset period)
+	// The start date of the usage period in which this measurement resides (for entitlements with a reset period)
 	UsagePeriodStart *string `json:"usagePeriodStart"`
-	Value            float64 `json:"value"`
+	// The usage measurement record
+	Value float64 `json:"value"`
 }
 
+// Usage updated event
 type UsageUpdated struct {
-	Entitlement Entitlement             `json:"entitlement"`
-	Usage       UsageMeasurementUpdated `json:"usage"`
+	// Entitlement
+	Entitlement Entitlement `json:"entitlement"`
+	// Usage
+	Usage UsageMeasurementUpdated `json:"usage"`
 }
 
+// Stigg user
 type User struct {
-	Department      *Department `json:"department"`
-	Email           *string     `json:"email"`
-	ID              string      `json:"id"`
-	LastSeenAt      *string     `json:"lastSeenAt"`
-	Memberships     []*Member   `json:"memberships"`
-	Name            *string     `json:"name"`
-	ProfileImageURL *string     `json:"profileImageUrl"`
+	// User selected department
+	Department *Department `json:"department"`
+	// User email
+	Email *string `json:"email"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Last time the user logged in
+	LastSeenAt *string `json:"lastSeenAt"`
+	// Environments this user is a member of
+	Memberships []*Member `json:"memberships"`
+	// User first and last name
+	Name *string `json:"name"`
+	// Link to the profile image
+	ProfileImageURL *string `json:"profileImageUrl"`
 	// support chat user identity token
 	SupportChatToken *string `json:"supportChatToken"`
 }
 
+// DTO representing the result of an environment merge validation
 type ValidateMergeEnvironment struct {
-	Errors  []string `json:"errors"`
-	IsValid bool     `json:"isValid"`
+	// List of errors or warnings found during the validation. Empty if isValid is true
+	Errors []string `json:"errors"`
+	// Boolean indicating whether the merge is valid and can proceed without issues
+	IsValid bool `json:"isValid"`
 }
 
-// Input type for validateMergeEnvironment query.
+// Input type for validateMergeEnvironment query
 type ValidateMergeEnvironmentInput struct {
-	// The slug of the environment to copy to.
+	// Slug of the destination environment
 	DestinationEnvironmentSlug string `json:"destinationEnvironmentSlug"`
-	// Merge configuration
+	// Optional configuration to customize how the validation is performed
 	MergeConfiguration *EnvironmentMergeConfigurationInput `json:"mergeConfiguration,omitempty"`
-	// The slug of the environment to copy from.
+	// Slug of the source environment
 	SourceEnvironmentSlug string `json:"sourceEnvironmentSlug"`
 }
 
@@ -7778,13 +9324,17 @@ type VendorIdentifierFilterComparison struct {
 	NotLike  *VendorIdentifier  `json:"notLike,omitempty"`
 }
 
+// Weekly reset period config
 type WeeklyResetPeriodConfig struct {
+	// Weekly according to configuration
 	WeeklyAccordingTo *WeeklyAccordingTo `json:"weeklyAccordingTo"`
 }
 
 func (WeeklyResetPeriodConfig) IsResetPeriodConfiguration() {}
 
+// Weekly reset period config input
 type WeeklyResetPeriodConfigInput struct {
+	// Weekly according to configuration
 	AccordingTo WeeklyAccordingTo `json:"accordingTo"`
 }
 
@@ -7797,8 +9347,9 @@ type WidgetConfiguration struct {
 type WidgetConfigurationUpdateInput struct {
 	CheckoutConfiguration       *CheckoutConfigurationInput       `json:"checkoutConfiguration,omitempty"`
 	CustomerPortalConfiguration *CustomerPortalConfigurationInput `json:"customerPortalConfiguration,omitempty"`
-	EnvironmentID               *string                           `json:"environmentId,omitempty"`
-	PaywallConfiguration        *PaywallConfigurationInput        `json:"paywallConfiguration,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID        *string                    `json:"environmentId,omitempty"`
+	PaywallConfiguration *PaywallConfigurationInput `json:"paywallConfiguration,omitempty"`
 }
 
 // Workflow trigger
@@ -7807,9 +9358,9 @@ type WorkflowTriggerDto struct {
 	Endpoint string `json:"endpoint"`
 	// Event log types
 	EventLogTypes []EventLogType `json:"eventLogTypes"`
-	// Workflow id
+	// Unique identifier for the entity
 	ID string `json:"id"`
-	// Workflow trigger id
+	// Trigger id
 	TriggerID string `json:"triggerId"`
 }
 
@@ -7823,59 +9374,90 @@ type WorkflowsLoginDto struct {
 
 // Workflow login input
 type WorkflowsLoginInput struct {
-	// Environment id
+	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// Yearly reset period config
 type YearlyResetPeriodConfig struct {
+	// Yearly according to configuration
 	YearlyAccordingTo *YearlyAccordingTo `json:"yearlyAccordingTo"`
 }
 
 func (YearlyResetPeriodConfig) IsResetPeriodConfiguration() {}
 
+// Yearly reset period config input
 type YearlyResetPeriodConfigInput struct {
+	// Yearly according to configuration
 	AccordingTo YearlyAccordingTo `json:"accordingTo"`
 }
 
+// Zuora integration configuration object
 type ZuoraCredentials struct {
-	BaseURL              string  `json:"baseUrl"`
-	ClientID             string  `json:"clientId"`
-	ClientSecret         string  `json:"clientSecret"`
-	PaymentPageID        *string `json:"paymentPageId"`
+	// REST Base URL of the Zuora account
+	BaseURL string `json:"baseUrl"`
+	// Client ID for the Zuora account
+	ClientID string `json:"clientId"`
+	// Client secret for the Zuora account
+	ClientSecret string `json:"clientSecret"`
+	// The ID of the payment page to use
+	PaymentPageID *string `json:"paymentPageId"`
+	// Stripe publishable key for the Zuora payment page
 	StripePublishableKey *string `json:"stripePublishableKey"`
-	StripeSecretKey      *string `json:"stripeSecretKey"`
-	WebhookSecret        *string `json:"webhookSecret"`
+	// Stripe secret key for the Zuora payment page
+	StripeSecretKey *string `json:"stripeSecretKey"`
+	// Webhook secret to insert on Zuora callouts
+	WebhookSecret *string `json:"webhookSecret"`
 }
 
 func (ZuoraCredentials) IsCredentials() {}
 
+// Input configuration for Zuora integration
 type ZuoraCredentialsInput struct {
-	BaseURL      string `json:"baseUrl"`
-	ClientID     string `json:"clientId"`
+	// REST Base URL of the Zuora account
+	BaseURL string `json:"baseUrl"`
+	// Client ID for the Zuora account
+	ClientID string `json:"clientId"`
+	// Client secret for the Zuora account
 	ClientSecret string `json:"clientSecret"`
 	// The ID of the payment page to use
-	PaymentPageID        *string `json:"paymentPageId,omitempty"`
+	PaymentPageID *string `json:"paymentPageId,omitempty"`
+	// Stripe publishable key for the Zuora payment page
 	StripePublishableKey *string `json:"stripePublishableKey,omitempty"`
-	StripeSecretKey      *string `json:"stripeSecretKey,omitempty"`
+	// Stripe secret key for the Zuora payment page
+	StripeSecretKey *string `json:"stripeSecretKey,omitempty"`
 }
 
+// Response for preparing a Zuora payment method form
 type ZuoraPaymentMethodForm struct {
-	Key       string `json:"key"`
-	PageID    string `json:"pageId"`
-	PageURL   string `json:"pageUrl"`
+	// Form key
+	Key string `json:"key"`
+	// Form page id
+	PageID string `json:"pageId"`
+	// Form page url
+	PageURL string `json:"pageUrl"`
+	// Form signature
 	Signature string `json:"signature"`
-	TenantID  string `json:"tenantId"`
-	Token     string `json:"token"`
+	// Zuora tenant id
+	TenantID string `json:"tenantId"`
+	// Form token
+	Token string `json:"token"`
 }
 
 func (ZuoraPaymentMethodForm) IsPaymentMethodForm() {}
 
+// Detailed information about the experiment
 type ExperimentInfo struct {
-	GroupName string              `json:"groupName"`
+	// Name of the group in the experiment
+	GroupName string `json:"groupName"`
+	// Type of group (control or variant)
 	GroupType ExperimentGroupType `json:"groupType"`
-	ID        string              `json:"id"`
-	Name      string              `json:"name"`
-	Status    ExperimentStatus    `json:"status"`
+	// The unique identifier for the experiment
+	ID string `json:"id"`
+	// Name of the experiment
+	Name string `json:"name"`
+	// The status of the experiment
+	Status ExperimentStatus `json:"status"`
 }
 
 // DenyReason of get access policy
@@ -7985,8 +9567,10 @@ func (e AccountAccessMethod) MarshalGQL(w io.Writer) {
 type AccountAccessRole string
 
 const (
+	// User can view and manage environments they have been granted access to
 	AccountAccessRoleMember AccountAccessRole = "MEMBER"
-	AccountAccessRoleOwner  AccountAccessRole = "OWNER"
+	// User has full ownership and control over the account
+	AccountAccessRoleOwner AccountAccessRole = "OWNER"
 )
 
 var AllAccountAccessRole = []AccountAccessRole{
@@ -8023,10 +9607,13 @@ func (e AccountAccessRole) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Account status
 type AccountStatus string
 
 const (
-	AccountStatusActive  AccountStatus = "ACTIVE"
+	// The account is active and in use
+	AccountStatusActive AccountStatus = "ACTIVE"
+	// The account is blocked and cannot be used
 	AccountStatusBlocked AccountStatus = "BLOCKED"
 )
 
@@ -8131,11 +9718,17 @@ func (e AddonSortFields) MarshalGQL(w io.Writer) {
 type AggregationFunction string
 
 const (
-	AggregationFunctionAvg    AggregationFunction = "AVG"
-	AggregationFunctionCount  AggregationFunction = "COUNT"
-	AggregationFunctionMax    AggregationFunction = "MAX"
-	AggregationFunctionMin    AggregationFunction = "MIN"
-	AggregationFunctionSum    AggregationFunction = "SUM"
+	// Average value
+	AggregationFunctionAvg AggregationFunction = "AVG"
+	// Count of the values
+	AggregationFunctionCount AggregationFunction = "COUNT"
+	// Maximum value
+	AggregationFunctionMax AggregationFunction = "MAX"
+	// Minimum value
+	AggregationFunctionMin AggregationFunction = "MIN"
+	// Sum of the values
+	AggregationFunctionSum AggregationFunction = "SUM"
+	// Unique values
 	AggregationFunctionUnique AggregationFunction = "UNIQUE"
 )
 
@@ -8260,13 +9853,18 @@ func (e APIKeySortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// The type of API key
 type APIKeyType string
 
 const (
-	APIKeyTypeClient     APIKeyType = "CLIENT"
+	// Client-side API key
+	APIKeyTypeClient APIKeyType = "CLIENT"
+	// Salesforce API key
 	APIKeyTypeSalesforce APIKeyType = "SALESFORCE"
-	APIKeyTypeServer     APIKeyType = "SERVER"
-	APIKeyTypeWorkflow   APIKeyType = "WORKFLOW"
+	// Server-side API key
+	APIKeyTypeServer APIKeyType = "SERVER"
+	// Workflow API key
+	APIKeyTypeWorkflow APIKeyType = "WORKFLOW"
 )
 
 var AllAPIKeyType = []APIKeyType{
@@ -8305,12 +9903,15 @@ func (e APIKeyType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Auth0 application type.
+// Auth0 application type
 type Auth0ApplicationType string
 
 const (
-	Auth0ApplicationTypeBoth         Auth0ApplicationType = "BOTH"
-	Auth0ApplicationTypeIndividual   Auth0ApplicationType = "INDIVIDUAL"
+	// Both individual and organization Auth0 application types
+	Auth0ApplicationTypeBoth Auth0ApplicationType = "BOTH"
+	// Individual Auth0 application type
+	Auth0ApplicationTypeIndividual Auth0ApplicationType = "INDIVIDUAL"
+	// Organization Auth0 application type
 	Auth0ApplicationTypeOrganization Auth0ApplicationType = "ORGANIZATION"
 )
 
@@ -8349,12 +9950,16 @@ func (e Auth0ApplicationType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Billing anchor for subscription billing
 type BillingAnchor string
 
 const (
-	BillingAnchorStartOfTheMonth                 BillingAnchor = "START_OF_THE_MONTH"
+	// Billing will be anchored to the start of the month
+	BillingAnchorStartOfTheMonth BillingAnchor = "START_OF_THE_MONTH"
+	// Subscriptions will consolidate billing to the start of the month
 	BillingAnchorSubscriptionsConsolidateBilling BillingAnchor = "SUBSCRIPTIONS_CONSOLIDATE_BILLING"
-	BillingAnchorSubscriptionStart               BillingAnchor = "SUBSCRIPTION_START"
+	// Billing will be anchored to the start of the subscription
+	BillingAnchorSubscriptionStart BillingAnchor = "SUBSCRIPTION_START"
 )
 
 var AllBillingAnchor = []BillingAnchor{
@@ -8392,11 +9997,13 @@ func (e BillingAnchor) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Billing Cadence.
+// Billing Cadence
 type BillingCadence string
 
 const (
-	BillingCadenceOneOff    BillingCadence = "ONE_OFF"
+	// One off
+	BillingCadenceOneOff BillingCadence = "ONE_OFF"
+	// Recurring
 	BillingCadenceRecurring BillingCadence = "RECURRING"
 )
 
@@ -8434,14 +10041,18 @@ func (e BillingCadence) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Billing model.
+// Billing model
 type BillingModel string
 
 const (
-	BillingModelFlatFee      BillingModel = "FLAT_FEE"
+	// Flat fee
+	BillingModelFlatFee BillingModel = "FLAT_FEE"
+	// Minimum spend
 	BillingModelMinimumSpend BillingModel = "MINIMUM_SPEND"
-	BillingModelPerUnit      BillingModel = "PER_UNIT"
-	BillingModelUsageBased   BillingModel = "USAGE_BASED"
+	// Per unit
+	BillingModelPerUnit BillingModel = "PER_UNIT"
+	// Usage based
+	BillingModelUsageBased BillingModel = "USAGE_BASED"
 )
 
 var AllBillingModel = []BillingModel{
@@ -8480,12 +10091,14 @@ func (e BillingModel) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Billing period.
+// Billing period
 type BillingPeriod string
 
 const (
+	// Annually
 	BillingPeriodAnnually BillingPeriod = "ANNUALLY"
-	BillingPeriodMonthly  BillingPeriod = "MONTHLY"
+	// Monthly
+	BillingPeriodMonthly BillingPeriod = "MONTHLY"
 )
 
 var AllBillingPeriod = []BillingPeriod{
@@ -8526,7 +10139,7 @@ func (e BillingPeriod) MarshalGQL(w io.Writer) {
 type BillingVendorIdentifier string
 
 const (
-	// Stripe billing vendor
+	// Stripe
 	BillingVendorIdentifierStripe BillingVendorIdentifier = "STRIPE"
 )
 
@@ -8563,12 +10176,17 @@ func (e BillingVendorIdentifier) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Change type enum
 type ChangeType string
 
 const (
-	ChangeTypeAdded     ChangeType = "ADDED"
-	ChangeTypeDeleted   ChangeType = "DELETED"
-	ChangeTypeModified  ChangeType = "MODIFIED"
+	// Added
+	ChangeTypeAdded ChangeType = "ADDED"
+	// Deleted
+	ChangeTypeDeleted ChangeType = "DELETED"
+	// Modified
+	ChangeTypeModified ChangeType = "MODIFIED"
+	// Reordered
 	ChangeTypeReordered ChangeType = "REORDERED"
 )
 
@@ -8612,14 +10230,22 @@ func (e ChangeType) MarshalGQL(w io.Writer) {
 type ConditionOperation string
 
 const (
-	ConditionOperationEquals             ConditionOperation = "EQUALS"
-	ConditionOperationGreaterThan        ConditionOperation = "GREATER_THAN"
+	// Equals operation
+	ConditionOperationEquals ConditionOperation = "EQUALS"
+	// Greater than operation
+	ConditionOperationGreaterThan ConditionOperation = "GREATER_THAN"
+	// Greater than or equal operation
 	ConditionOperationGreaterThanOrEqual ConditionOperation = "GREATER_THAN_OR_EQUAL"
-	ConditionOperationIsNotNull          ConditionOperation = "IS_NOT_NULL"
-	ConditionOperationIsNull             ConditionOperation = "IS_NULL"
-	ConditionOperationLessThan           ConditionOperation = "LESS_THAN"
-	ConditionOperationLessThanOrEqual    ConditionOperation = "LESS_THAN_OR_EQUAL"
-	ConditionOperationNotEquals          ConditionOperation = "NOT_EQUALS"
+	// Is not null operation
+	ConditionOperationIsNotNull ConditionOperation = "IS_NOT_NULL"
+	// Is null operation
+	ConditionOperationIsNull ConditionOperation = "IS_NULL"
+	// Less than operation
+	ConditionOperationLessThan ConditionOperation = "LESS_THAN"
+	// Less than or equal operation
+	ConditionOperationLessThanOrEqual ConditionOperation = "LESS_THAN_OR_EQUAL"
+	// Not equals operation
+	ConditionOperationNotEquals ConditionOperation = "NOT_EQUALS"
 )
 
 var AllConditionOperation = []ConditionOperation{
@@ -8725,9 +10351,12 @@ func (e CouponSortFields) MarshalGQL(w io.Writer) {
 type CouponSource string
 
 const (
-	CouponSourceStigg      CouponSource = "STIGG"
+	// Stigg
+	CouponSourceStigg CouponSource = "STIGG"
+	// Stigg adhoc
 	CouponSourceStiggAdhoc CouponSource = "STIGG_ADHOC"
-	CouponSourceStripe     CouponSource = "STRIPE"
+	// Stripe
+	CouponSourceStripe CouponSource = "STRIPE"
 )
 
 var AllCouponSource = []CouponSource{
@@ -8769,7 +10398,9 @@ func (e CouponSource) MarshalGQL(w io.Writer) {
 type CouponStatus string
 
 const (
-	CouponStatusActive   CouponStatus = "ACTIVE"
+	// Active
+	CouponStatusActive CouponStatus = "ACTIVE"
+	// Archived
 	CouponStatusArchived CouponStatus = "ARCHIVED"
 )
 
@@ -8811,7 +10442,9 @@ func (e CouponStatus) MarshalGQL(w io.Writer) {
 type CouponType string
 
 const (
-	CouponTypeFixed      CouponType = "FIXED"
+	// Fixed
+	CouponTypeFixed CouponType = "FIXED"
+	// Percentage
 	CouponTypePercentage CouponType = "PERCENTAGE"
 )
 
@@ -9310,16 +10943,24 @@ func (e CustomerSubscriptionSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// The department the user belongs to
 type Department string
 
 const (
+	// CEO or Founder
 	DepartmentCeoOrFounder Department = "CEO_OR_FOUNDER"
-	DepartmentEngineering  Department = "ENGINEERING"
-	DepartmentGrowth       Department = "GROWTH"
-	DepartmentMarketing    Department = "MARKETING"
+	// Engineering
+	DepartmentEngineering Department = "ENGINEERING"
+	// Growth
+	DepartmentGrowth Department = "GROWTH"
+	// Marketing
+	DepartmentMarketing Department = "MARKETING"
+	// Monetization
 	DepartmentMonetization Department = "MONETIZATION"
-	DepartmentOther        Department = "OTHER"
-	DepartmentProduct      Department = "PRODUCT"
+	// Other
+	DepartmentOther Department = "OTHER"
+	// Product
+	DepartmentProduct Department = "PRODUCT"
 )
 
 var AllDepartment = []Department{
@@ -9491,15 +11132,20 @@ func (e EntitlementBehavior) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Entitlement reset period.
+// Entitlement reset period
 type EntitlementResetPeriod string
 
 const (
-	EntitlementResetPeriodDay   EntitlementResetPeriod = "DAY"
-	EntitlementResetPeriodHour  EntitlementResetPeriod = "HOUR"
+	// Day
+	EntitlementResetPeriodDay EntitlementResetPeriod = "DAY"
+	// Hour
+	EntitlementResetPeriodHour EntitlementResetPeriod = "HOUR"
+	// Month
 	EntitlementResetPeriodMonth EntitlementResetPeriod = "MONTH"
-	EntitlementResetPeriodWeek  EntitlementResetPeriod = "WEEK"
-	EntitlementResetPeriodYear  EntitlementResetPeriod = "YEAR"
+	// Week
+	EntitlementResetPeriodWeek EntitlementResetPeriod = "WEEK"
+	// Year
+	EntitlementResetPeriodYear EntitlementResetPeriod = "YEAR"
 )
 
 var AllEntitlementResetPeriod = []EntitlementResetPeriod{
@@ -9539,10 +11185,13 @@ func (e EntitlementResetPeriod) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Mode for selecting which entities to import
 type EntitySelectionMode string
 
 const (
+	// Exclude specified entities from import
 	EntitySelectionModeBlackList EntitySelectionMode = "BLACK_LIST"
+	// Only import specified entities
 	EntitySelectionModeWhiteList EntitySelectionMode = "WHITE_LIST"
 )
 
@@ -9584,10 +11233,14 @@ func (e EntitySelectionMode) MarshalGQL(w io.Writer) {
 type EnvironmentAccessRole string
 
 const (
-	EnvironmentAccessRoleAdmin   EnvironmentAccessRole = "ADMIN"
-	EnvironmentAccessRoleNone    EnvironmentAccessRole = "NONE"
+	// User has administrative access to the environment
+	EnvironmentAccessRoleAdmin EnvironmentAccessRole = "ADMIN"
+	// User has no access to the environment
+	EnvironmentAccessRoleNone EnvironmentAccessRole = "NONE"
+	// User has support-level access to the environment to manage customers and subscriptions
 	EnvironmentAccessRoleSupport EnvironmentAccessRole = "SUPPORT"
-	EnvironmentAccessRoleViewer  EnvironmentAccessRole = "VIEWER"
+	// User has read-only access to the environment
+	EnvironmentAccessRoleViewer EnvironmentAccessRole = "VIEWER"
 )
 
 var AllEnvironmentAccessRole = []EnvironmentAccessRole{
@@ -9626,13 +11279,17 @@ func (e EnvironmentAccessRole) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// EnvironmentProvisionStatus.
+// Represents the provisioning status of an environment
 type EnvironmentProvisionStatus string
 
 const (
-	EnvironmentProvisionStatusDone           EnvironmentProvisionStatus = "DONE"
-	EnvironmentProvisionStatusFailed         EnvironmentProvisionStatus = "FAILED"
-	EnvironmentProvisionStatusInProgress     EnvironmentProvisionStatus = "IN_PROGRESS"
+	// The environment has been successfully provisioned
+	EnvironmentProvisionStatusDone EnvironmentProvisionStatus = "DONE"
+	// The environment provisioning process has failed
+	EnvironmentProvisionStatusFailed EnvironmentProvisionStatus = "FAILED"
+	// The environment provisioning process is currently in progress
+	EnvironmentProvisionStatusInProgress EnvironmentProvisionStatus = "IN_PROGRESS"
+	// The environment has not yet started the provisioning process
 	EnvironmentProvisionStatusNotProvisioned EnvironmentProvisionStatus = "NOT_PROVISIONED"
 )
 
@@ -9719,13 +11376,16 @@ func (e EnvironmentSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// EnvironmentType.
+// EnvironmentType
 type EnvironmentType string
 
 const (
+	// Development environment, used for testing and development purposes
 	EnvironmentTypeDevelopment EnvironmentType = "DEVELOPMENT"
-	EnvironmentTypeProduction  EnvironmentType = "PRODUCTION"
-	EnvironmentTypeSandbox     EnvironmentType = "SANDBOX"
+	// Production environment, used for live applications and services
+	EnvironmentTypeProduction EnvironmentType = "PRODUCTION"
+	// Sandbox environment, used for isolated testing and experimentation
+	EnvironmentTypeSandbox EnvironmentType = "SANDBOX"
 )
 
 var AllEnvironmentType = []EnvironmentType{
@@ -10327,73 +11987,136 @@ func (e EventLogSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// EventLogType
+// Event log type
 type EventLogType string
 
 const (
-	EventLogTypeAddonCreated                                    EventLogType = "ADDON_CREATED"
-	EventLogTypeAddonDeleted                                    EventLogType = "ADDON_DELETED"
-	EventLogTypeAddonUpdated                                    EventLogType = "ADDON_UPDATED"
-	EventLogTypeCouponArchived                                  EventLogType = "COUPON_ARCHIVED"
-	EventLogTypeCouponCreated                                   EventLogType = "COUPON_CREATED"
-	EventLogTypeCouponUpdated                                   EventLogType = "COUPON_UPDATED"
-	EventLogTypeCreateSubscriptionFailed                        EventLogType = "CREATE_SUBSCRIPTION_FAILED"
-	EventLogTypeCustomerCreated                                 EventLogType = "CUSTOMER_CREATED"
-	EventLogTypeCustomerDeleted                                 EventLogType = "CUSTOMER_DELETED"
-	EventLogTypeCustomerEntitlementCalculationTriggered         EventLogType = "CUSTOMER_ENTITLEMENT_CALCULATION_TRIGGERED"
-	EventLogTypeCustomerPaymentFailed                           EventLogType = "CUSTOMER_PAYMENT_FAILED"
+	// Addon created
+	EventLogTypeAddonCreated EventLogType = "ADDON_CREATED"
+	// Addon deleted
+	EventLogTypeAddonDeleted EventLogType = "ADDON_DELETED"
+	// Addon updated
+	EventLogTypeAddonUpdated EventLogType = "ADDON_UPDATED"
+	// Coupon archived
+	EventLogTypeCouponArchived EventLogType = "COUPON_ARCHIVED"
+	// Coupon created
+	EventLogTypeCouponCreated EventLogType = "COUPON_CREATED"
+	// Coupon updated
+	EventLogTypeCouponUpdated EventLogType = "COUPON_UPDATED"
+	// Create subscription failed
+	EventLogTypeCreateSubscriptionFailed EventLogType = "CREATE_SUBSCRIPTION_FAILED"
+	// Customer created
+	EventLogTypeCustomerCreated EventLogType = "CUSTOMER_CREATED"
+	// Customer deleted
+	EventLogTypeCustomerDeleted EventLogType = "CUSTOMER_DELETED"
+	// Customer entitlement calculation triggered
+	EventLogTypeCustomerEntitlementCalculationTriggered EventLogType = "CUSTOMER_ENTITLEMENT_CALCULATION_TRIGGERED"
+	// Customer payment failed
+	EventLogTypeCustomerPaymentFailed EventLogType = "CUSTOMER_PAYMENT_FAILED"
+	// Customer resource entitlement calculation triggered
 	EventLogTypeCustomerResourceEntitlementCalculationTriggered EventLogType = "CUSTOMER_RESOURCE_ENTITLEMENT_CALCULATION_TRIGGERED"
-	EventLogTypeCustomerUpdated                                 EventLogType = "CUSTOMER_UPDATED"
-	EventLogTypeEdgeAPICustomerDataResync                       EventLogType = "EDGE_API_CUSTOMER_DATA_RESYNC"
-	EventLogTypeEdgeAPIDataResync                               EventLogType = "EDGE_API_DATA_RESYNC"
-	EventLogTypeEdgeAPIDoggoResync                              EventLogType = "EDGE_API_DOGGO_RESYNC"
-	EventLogTypeEdgeAPIPackageEntitlementsDataResync            EventLogType = "EDGE_API_PACKAGE_ENTITLEMENTS_DATA_RESYNC"
-	EventLogTypeEdgeAPISubscriptionsDataResync                  EventLogType = "EDGE_API_SUBSCRIPTIONS_DATA_RESYNC"
-	EventLogTypeEntitlementsUpdated                             EventLogType = "ENTITLEMENTS_UPDATED"
-	EventLogTypeEntitlementDenied                               EventLogType = "ENTITLEMENT_DENIED"
-	EventLogTypeEntitlementGranted                              EventLogType = "ENTITLEMENT_GRANTED"
-	EventLogTypeEntitlementRequested                            EventLogType = "ENTITLEMENT_REQUESTED"
-	EventLogTypeEntitlementUsageExceeded                        EventLogType = "ENTITLEMENT_USAGE_EXCEEDED"
-	EventLogTypeEnvironmentDeleted                              EventLogType = "ENVIRONMENT_DELETED"
-	EventLogTypeFeatureArchived                                 EventLogType = "FEATURE_ARCHIVED"
-	EventLogTypeFeatureCreated                                  EventLogType = "FEATURE_CREATED"
-	EventLogTypeFeatureDeleted                                  EventLogType = "FEATURE_DELETED"
-	EventLogTypeFeatureUpdated                                  EventLogType = "FEATURE_UPDATED"
-	EventLogTypeImportIntegrationCatalogTriggered               EventLogType = "IMPORT_INTEGRATION_CATALOG_TRIGGERED"
-	EventLogTypeImportIntegrationCustomersTriggered             EventLogType = "IMPORT_INTEGRATION_CUSTOMERS_TRIGGERED"
-	EventLogTypeImportSubscriptionsBulkTriggered                EventLogType = "IMPORT_SUBSCRIPTIONS_BULK_TRIGGERED"
-	EventLogTypeMeasurementReported                             EventLogType = "MEASUREMENT_REPORTED"
-	EventLogTypePackageGroupCreated                             EventLogType = "PACKAGE_GROUP_CREATED"
-	EventLogTypePackageGroupUpdated                             EventLogType = "PACKAGE_GROUP_UPDATED"
-	EventLogTypePackagePublished                                EventLogType = "PACKAGE_PUBLISHED"
-	EventLogTypePlanCreated                                     EventLogType = "PLAN_CREATED"
-	EventLogTypePlanDeleted                                     EventLogType = "PLAN_DELETED"
-	EventLogTypePlanUpdated                                     EventLogType = "PLAN_UPDATED"
-	EventLogTypeProductCreated                                  EventLogType = "PRODUCT_CREATED"
-	EventLogTypeProductDeleted                                  EventLogType = "PRODUCT_DELETED"
-	EventLogTypeProductUpdated                                  EventLogType = "PRODUCT_UPDATED"
-	EventLogTypePromotionalEntitlementExpired                   EventLogType = "PROMOTIONAL_ENTITLEMENT_EXPIRED"
-	EventLogTypePromotionalEntitlementGranted                   EventLogType = "PROMOTIONAL_ENTITLEMENT_GRANTED"
-	EventLogTypePromotionalEntitlementRevoked                   EventLogType = "PROMOTIONAL_ENTITLEMENT_REVOKED"
-	EventLogTypePromotionalEntitlementUpdated                   EventLogType = "PROMOTIONAL_ENTITLEMENT_UPDATED"
-	EventLogTypeRecalculateEntitlementsTriggered                EventLogType = "RECALCULATE_ENTITLEMENTS_TRIGGERED"
-	EventLogTypeResyncIntegrationTriggered                      EventLogType = "RESYNC_INTEGRATION_TRIGGERED"
-	EventLogTypeSubscriptionsMigrated                           EventLogType = "SUBSCRIPTIONS_MIGRATED"
-	EventLogTypeSubscriptionsMigrationTriggered                 EventLogType = "SUBSCRIPTIONS_MIGRATION_TRIGGERED"
-	EventLogTypeSubscriptionBillingMonthEndsSoon                EventLogType = "SUBSCRIPTION_BILLING_MONTH_ENDS_SOON"
-	EventLogTypeSubscriptionCanceled                            EventLogType = "SUBSCRIPTION_CANCELED"
-	EventLogTypeSubscriptionCreated                             EventLogType = "SUBSCRIPTION_CREATED"
-	EventLogTypeSubscriptionExpired                             EventLogType = "SUBSCRIPTION_EXPIRED"
-	EventLogTypeSubscriptionSpentLimitExceeded                  EventLogType = "SUBSCRIPTION_SPENT_LIMIT_EXCEEDED"
-	EventLogTypeSubscriptionTrialConverted                      EventLogType = "SUBSCRIPTION_TRIAL_CONVERTED"
-	EventLogTypeSubscriptionTrialEndsSoon                       EventLogType = "SUBSCRIPTION_TRIAL_ENDS_SOON"
-	EventLogTypeSubscriptionTrialExpired                        EventLogType = "SUBSCRIPTION_TRIAL_EXPIRED"
-	EventLogTypeSubscriptionTrialStarted                        EventLogType = "SUBSCRIPTION_TRIAL_STARTED"
-	EventLogTypeSubscriptionUpdated                             EventLogType = "SUBSCRIPTION_UPDATED"
-	EventLogTypeSubscriptionUsageChargeTriggered                EventLogType = "SUBSCRIPTION_USAGE_CHARGE_TRIGGERED"
-	EventLogTypeSubscriptionUsageUpdated                        EventLogType = "SUBSCRIPTION_USAGE_UPDATED"
-	EventLogTypeSyncFailed                                      EventLogType = "SYNC_FAILED"
-	EventLogTypeWidgetConfigurationUpdated                      EventLogType = "WIDGET_CONFIGURATION_UPDATED"
+	// Customer updated
+	EventLogTypeCustomerUpdated EventLogType = "CUSTOMER_UPDATED"
+	// Edge API customer data resync
+	EventLogTypeEdgeAPICustomerDataResync EventLogType = "EDGE_API_CUSTOMER_DATA_RESYNC"
+	// Edge API data resync
+	EventLogTypeEdgeAPIDataResync EventLogType = "EDGE_API_DATA_RESYNC"
+	// Edge API Doggo resync
+	EventLogTypeEdgeAPIDoggoResync EventLogType = "EDGE_API_DOGGO_RESYNC"
+	// Edge API package entitlements data resync
+	EventLogTypeEdgeAPIPackageEntitlementsDataResync EventLogType = "EDGE_API_PACKAGE_ENTITLEMENTS_DATA_RESYNC"
+	// Edge API subscriptions data resync
+	EventLogTypeEdgeAPISubscriptionsDataResync EventLogType = "EDGE_API_SUBSCRIPTIONS_DATA_RESYNC"
+	// Entitlements updated
+	EventLogTypeEntitlementsUpdated EventLogType = "ENTITLEMENTS_UPDATED"
+	// Entitlement denied
+	EventLogTypeEntitlementDenied EventLogType = "ENTITLEMENT_DENIED"
+	// Entitlement granted
+	EventLogTypeEntitlementGranted EventLogType = "ENTITLEMENT_GRANTED"
+	// Entitlement requested
+	EventLogTypeEntitlementRequested EventLogType = "ENTITLEMENT_REQUESTED"
+	// Entitlement usage exceeded
+	EventLogTypeEntitlementUsageExceeded EventLogType = "ENTITLEMENT_USAGE_EXCEEDED"
+	// Environment deleted
+	EventLogTypeEnvironmentDeleted EventLogType = "ENVIRONMENT_DELETED"
+	// Feature archived
+	EventLogTypeFeatureArchived EventLogType = "FEATURE_ARCHIVED"
+	// Feature created
+	EventLogTypeFeatureCreated EventLogType = "FEATURE_CREATED"
+	// Feature deleted
+	EventLogTypeFeatureDeleted EventLogType = "FEATURE_DELETED"
+	// Feature updated
+	EventLogTypeFeatureUpdated EventLogType = "FEATURE_UPDATED"
+	// Import integration catalog triggered
+	EventLogTypeImportIntegrationCatalogTriggered EventLogType = "IMPORT_INTEGRATION_CATALOG_TRIGGERED"
+	// Import integration customers triggered
+	EventLogTypeImportIntegrationCustomersTriggered EventLogType = "IMPORT_INTEGRATION_CUSTOMERS_TRIGGERED"
+	// Import subscriptions bulk triggered
+	EventLogTypeImportSubscriptionsBulkTriggered EventLogType = "IMPORT_SUBSCRIPTIONS_BULK_TRIGGERED"
+	// Measurement reported
+	EventLogTypeMeasurementReported EventLogType = "MEASUREMENT_REPORTED"
+	// Package group created
+	EventLogTypePackageGroupCreated EventLogType = "PACKAGE_GROUP_CREATED"
+	// Package group updated
+	EventLogTypePackageGroupUpdated EventLogType = "PACKAGE_GROUP_UPDATED"
+	// Package published
+	EventLogTypePackagePublished EventLogType = "PACKAGE_PUBLISHED"
+	// Plan created
+	EventLogTypePlanCreated EventLogType = "PLAN_CREATED"
+	// Plan deleted
+	EventLogTypePlanDeleted EventLogType = "PLAN_DELETED"
+	// Plan updated
+	EventLogTypePlanUpdated EventLogType = "PLAN_UPDATED"
+	// Product created
+	EventLogTypeProductCreated EventLogType = "PRODUCT_CREATED"
+	// Product deleted
+	EventLogTypeProductDeleted EventLogType = "PRODUCT_DELETED"
+	// Product updated
+	EventLogTypeProductUpdated EventLogType = "PRODUCT_UPDATED"
+	// Promotional entitlement expired
+	EventLogTypePromotionalEntitlementExpired EventLogType = "PROMOTIONAL_ENTITLEMENT_EXPIRED"
+	// Promotional entitlement granted
+	EventLogTypePromotionalEntitlementGranted EventLogType = "PROMOTIONAL_ENTITLEMENT_GRANTED"
+	// Promotional entitlement revoked
+	EventLogTypePromotionalEntitlementRevoked EventLogType = "PROMOTIONAL_ENTITLEMENT_REVOKED"
+	// Promotional entitlement updated
+	EventLogTypePromotionalEntitlementUpdated EventLogType = "PROMOTIONAL_ENTITLEMENT_UPDATED"
+	// Recalculate entitlements triggered
+	EventLogTypeRecalculateEntitlementsTriggered EventLogType = "RECALCULATE_ENTITLEMENTS_TRIGGERED"
+	// Resync integration triggered
+	EventLogTypeResyncIntegrationTriggered EventLogType = "RESYNC_INTEGRATION_TRIGGERED"
+	// Subscriptions migrated
+	EventLogTypeSubscriptionsMigrated EventLogType = "SUBSCRIPTIONS_MIGRATED"
+	// Subscriptions migration triggered
+	EventLogTypeSubscriptionsMigrationTriggered EventLogType = "SUBSCRIPTIONS_MIGRATION_TRIGGERED"
+	// Subscription billing month ends soon
+	EventLogTypeSubscriptionBillingMonthEndsSoon EventLogType = "SUBSCRIPTION_BILLING_MONTH_ENDS_SOON"
+	// Subscription canceled
+	EventLogTypeSubscriptionCanceled EventLogType = "SUBSCRIPTION_CANCELED"
+	// Subscription created
+	EventLogTypeSubscriptionCreated EventLogType = "SUBSCRIPTION_CREATED"
+	// Subscription expired
+	EventLogTypeSubscriptionExpired EventLogType = "SUBSCRIPTION_EXPIRED"
+	// Subscription spent limit exceeded
+	EventLogTypeSubscriptionSpentLimitExceeded EventLogType = "SUBSCRIPTION_SPENT_LIMIT_EXCEEDED"
+	// Subscription trial converted
+	EventLogTypeSubscriptionTrialConverted EventLogType = "SUBSCRIPTION_TRIAL_CONVERTED"
+	// Subscription trial ends soon
+	EventLogTypeSubscriptionTrialEndsSoon EventLogType = "SUBSCRIPTION_TRIAL_ENDS_SOON"
+	// Subscription trial expired
+	EventLogTypeSubscriptionTrialExpired EventLogType = "SUBSCRIPTION_TRIAL_EXPIRED"
+	// Subscription trial started
+	EventLogTypeSubscriptionTrialStarted EventLogType = "SUBSCRIPTION_TRIAL_STARTED"
+	// Subscription updated
+	EventLogTypeSubscriptionUpdated EventLogType = "SUBSCRIPTION_UPDATED"
+	// Subscription usage charge triggered
+	EventLogTypeSubscriptionUsageChargeTriggered EventLogType = "SUBSCRIPTION_USAGE_CHARGE_TRIGGERED"
+	// Subscription usage updated
+	EventLogTypeSubscriptionUsageUpdated EventLogType = "SUBSCRIPTION_USAGE_UPDATED"
+	// Sync failed
+	EventLogTypeSyncFailed EventLogType = "SYNC_FAILED"
+	// Widget configuration updated
+	EventLogTypeWidgetConfigurationUpdated EventLogType = "WIDGET_CONFIGURATION_UPDATED"
 )
 
 var AllEventLogType = []EventLogType{
@@ -10542,12 +12265,15 @@ func (e ExperimentSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// The status of the EXPERIMENT
+// The status of the experiment
 type ExperimentStatus string
 
 const (
-	ExperimentStatusCompleted  ExperimentStatus = "COMPLETED"
-	ExperimentStatusDraft      ExperimentStatus = "DRAFT"
+	// Experiment has been completed
+	ExperimentStatusCompleted ExperimentStatus = "COMPLETED"
+	// Experiment is in draft state
+	ExperimentStatusDraft ExperimentStatus = "DRAFT"
+	// Experiment is currently running
 	ExperimentStatusInProgress ExperimentStatus = "IN_PROGRESS"
 )
 
@@ -10643,12 +12369,15 @@ func (e FeatureSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Feature status.
+// Feature status
 type FeatureStatus string
 
 const (
-	FeatureStatusActive    FeatureStatus = "ACTIVE"
-	FeatureStatusNew       FeatureStatus = "NEW"
+	// Active feature
+	FeatureStatusActive FeatureStatus = "ACTIVE"
+	// New feature
+	FeatureStatusNew FeatureStatus = "NEW"
+	// Suspended feature
 	FeatureStatusSuspended FeatureStatus = "SUSPENDED"
 )
 
@@ -10691,8 +12420,10 @@ func (e FeatureStatus) MarshalGQL(w io.Writer) {
 type FeatureType string
 
 const (
+	// Boolean feature type
 	FeatureTypeBoolean FeatureType = "BOOLEAN"
-	FeatureTypeNumber  FeatureType = "NUMBER"
+	// Numeric feature type
+	FeatureTypeNumber FeatureType = "NUMBER"
 )
 
 var AllFeatureType = []FeatureType{
@@ -10818,11 +12549,13 @@ func (e HookSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// HookStatus.
+// Hook status
 type HookStatus string
 
 const (
-	HookStatusActive   HookStatus = "ACTIVE"
+	// Active
+	HookStatusActive HookStatus = "ACTIVE"
+	// Inactive
 	HookStatusInactive HookStatus = "INACTIVE"
 )
 
@@ -11055,11 +12788,13 @@ func (e MemberSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Member Status.
+// Member Status
 type MemberStatus string
 
 const (
-	MemberStatusInvited    MemberStatus = "INVITED"
+	// User has been invited to the environment
+	MemberStatusInvited MemberStatus = "INVITED"
+	// User is a member of this environment
 	MemberStatusRegistered MemberStatus = "REGISTERED"
 )
 
@@ -11101,9 +12836,12 @@ func (e MemberStatus) MarshalGQL(w io.Writer) {
 type MeterType string
 
 const (
+	// Fluctuating
 	MeterTypeFluctuating MeterType = "Fluctuating"
+	// Incremental
 	MeterTypeIncremental MeterType = "Incremental"
-	MeterTypeNone        MeterType = "None"
+	// None
+	MeterTypeNone MeterType = "None"
 )
 
 var AllMeterType = []MeterType{
@@ -11145,7 +12883,9 @@ func (e MeterType) MarshalGQL(w io.Writer) {
 type MonthlyAccordingTo string
 
 const (
-	MonthlyAccordingToStartOfTheMonth   MonthlyAccordingTo = "StartOfTheMonth"
+	// Start of the month
+	MonthlyAccordingToStartOfTheMonth MonthlyAccordingTo = "StartOfTheMonth"
+	// Subscription start
 	MonthlyAccordingToSubscriptionStart MonthlyAccordingTo = "SubscriptionStart"
 )
 
@@ -11390,15 +13130,15 @@ func (e PackageGroupSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Package group status.
+// Package group status
 type PackageGroupStatus string
 
 const (
-	// The package group is archived.
+	// The package group is archived
 	PackageGroupStatusArchived PackageGroupStatus = "ARCHIVED"
-	// The package group is a draft.
+	// The package group is a draft
 	PackageGroupStatusDraft PackageGroupStatus = "DRAFT"
-	// The package group is published.
+	// The package group is published
 	PackageGroupStatusPublished PackageGroupStatus = "PUBLISHED"
 )
 
@@ -11578,8 +13318,11 @@ func (e PaymentCollectionMethod) MarshalGQL(w io.Writer) {
 type PaymentMethodType string
 
 const (
-	PaymentMethodTypeBank    PaymentMethodType = "BANK"
-	PaymentMethodTypeCard    PaymentMethodType = "CARD"
+	// Bank Transfer
+	PaymentMethodTypeBank PaymentMethodType = "BANK"
+	// Credit Card
+	PaymentMethodTypeCard PaymentMethodType = "CARD"
+	// Cash App
 	PaymentMethodTypeCashApp PaymentMethodType = "CASH_APP"
 )
 
@@ -11886,11 +13629,16 @@ func (e ProductSortFields) MarshalGQL(w io.Writer) {
 type PromotionalEntitlementPeriod string
 
 const (
-	PromotionalEntitlementPeriodCustom   PromotionalEntitlementPeriod = "CUSTOM"
+	PromotionalEntitlementPeriodCustom PromotionalEntitlementPeriod = "CUSTOM"
+	// Lifetime
 	PromotionalEntitlementPeriodLifetime PromotionalEntitlementPeriod = "LIFETIME"
+	// One month
 	PromotionalEntitlementPeriodOneMonth PromotionalEntitlementPeriod = "ONE_MONTH"
-	PromotionalEntitlementPeriodOneWeek  PromotionalEntitlementPeriod = "ONE_WEEK"
-	PromotionalEntitlementPeriodOneYear  PromotionalEntitlementPeriod = "ONE_YEAR"
+	// One week
+	PromotionalEntitlementPeriodOneWeek PromotionalEntitlementPeriod = "ONE_WEEK"
+	// One year
+	PromotionalEntitlementPeriodOneYear PromotionalEntitlementPeriod = "ONE_YEAR"
+	// Six months
 	PromotionalEntitlementPeriodSixMonth PromotionalEntitlementPeriod = "SIX_MONTH"
 )
 
@@ -11983,9 +13731,12 @@ func (e PromotionalEntitlementSortFields) MarshalGQL(w io.Writer) {
 type PromotionalEntitlementStatus string
 
 const (
-	PromotionalEntitlementStatusActive  PromotionalEntitlementStatus = "Active"
+	// Active
+	PromotionalEntitlementStatusActive PromotionalEntitlementStatus = "Active"
+	// Expired
 	PromotionalEntitlementStatusExpired PromotionalEntitlementStatus = "Expired"
-	PromotionalEntitlementStatusPaused  PromotionalEntitlementStatus = "Paused"
+	// Paused
+	PromotionalEntitlementStatusPaused PromotionalEntitlementStatus = "Paused"
 )
 
 var AllPromotionalEntitlementStatus = []PromotionalEntitlementStatus{
@@ -12023,10 +13774,13 @@ func (e PromotionalEntitlementStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Proration behavior for subscription billing
 type ProrationBehavior string
 
 const (
-	ProrationBehaviorCreateProrations   ProrationBehavior = "CREATE_PRORATIONS"
+	// Create proration invoice items for changes in the subscription
+	ProrationBehaviorCreateProrations ProrationBehavior = "CREATE_PRORATIONS"
+	// Invoice immediately for changes in the subscription without proration
 	ProrationBehaviorInvoiceImmediately ProrationBehavior = "INVOICE_IMMEDIATELY"
 )
 
@@ -12106,11 +13860,13 @@ func (e ProvisionSubscriptionStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// PublishMigrationType
+// The migration type, either publish the new version to new customers or all customers
 type PublishMigrationType string
 
 const (
+	// Publish to all customers
 	PublishMigrationTypeAllCustomers PublishMigrationType = "ALL_CUSTOMERS"
+	// Publish only to new customers
 	PublishMigrationTypeNewCustomers PublishMigrationType = "NEW_CUSTOMERS"
 )
 
@@ -12427,10 +14183,13 @@ func (e SubscriptionCancelReason) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Action to take when a subscription is cancelled
 type SubscriptionCancellationAction string
 
 const (
-	SubscriptionCancellationActionDefault            SubscriptionCancellationAction = "DEFAULT"
+	// Default action
+	SubscriptionCancellationActionDefault SubscriptionCancellationAction = "DEFAULT"
+	// Revoke entitlements action
 	SubscriptionCancellationActionRevokeEntitlements SubscriptionCancellationAction = "REVOKE_ENTITLEMENTS"
 )
 
@@ -12468,12 +14227,16 @@ func (e SubscriptionCancellationAction) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// When the subscription will be cancelled
 type SubscriptionCancellationTime string
 
 const (
+	// At the end of the billing period
 	SubscriptionCancellationTimeEndOfBillingPeriod SubscriptionCancellationTime = "END_OF_BILLING_PERIOD"
-	SubscriptionCancellationTimeImmediate          SubscriptionCancellationTime = "IMMEDIATE"
-	SubscriptionCancellationTimeSpecificDate       SubscriptionCancellationTime = "SPECIFIC_DATE"
+	// Immediately
+	SubscriptionCancellationTimeImmediate SubscriptionCancellationTime = "IMMEDIATE"
+	// On a specific date
+	SubscriptionCancellationTimeSpecificDate SubscriptionCancellationTime = "SPECIFIC_DATE"
 )
 
 var AllSubscriptionCancellationTime = []SubscriptionCancellationTime{
@@ -12601,11 +14364,14 @@ func (e SubscriptionDecisionStrategy) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Setup for the end of the subscription
 type SubscriptionEndSetup string
 
 const (
+	// Cancel subscription
 	SubscriptionEndSetupCancelSubscription SubscriptionEndSetup = "CANCEL_SUBSCRIPTION"
-	SubscriptionEndSetupDowngradeToFree    SubscriptionEndSetup = "DOWNGRADE_TO_FREE"
+	// Downgrade to free plan
+	SubscriptionEndSetupDowngradeToFree SubscriptionEndSetup = "DOWNGRADE_TO_FREE"
 )
 
 var AllSubscriptionEndSetup = []SubscriptionEndSetup{
@@ -13045,12 +14811,16 @@ func (e SubscriptionScheduleType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Setup for the start of the subscription
 type SubscriptionStartSetup string
 
 const (
-	SubscriptionStartSetupFreePlan      SubscriptionStartSetup = "FREE_PLAN"
+	// Start with a free plan
+	SubscriptionStartSetupFreePlan SubscriptionStartSetup = "FREE_PLAN"
+	// Select a plan
 	SubscriptionStartSetupPlanSelection SubscriptionStartSetup = "PLAN_SELECTION"
-	SubscriptionStartSetupTrialPeriod   SubscriptionStartSetup = "TRIAL_PERIOD"
+	// Start with a trial period
+	SubscriptionStartSetupTrialPeriod SubscriptionStartSetup = "TRIAL_PERIOD"
 )
 
 var AllSubscriptionStartSetup = []SubscriptionStartSetup{
@@ -13189,10 +14959,14 @@ func (e SubscriptionUpdateUsageCutoffBehavior) MarshalGQL(w io.Writer) {
 type SyncStatus string
 
 const (
-	SyncStatusError          SyncStatus = "ERROR"
+	// Error sync status
+	SyncStatusError SyncStatus = "ERROR"
+	// No sync required status
 	SyncStatusNoSyncRequired SyncStatus = "NO_SYNC_REQUIRED"
-	SyncStatusPending        SyncStatus = "PENDING"
-	SyncStatusSuccess        SyncStatus = "SUCCESS"
+	// Pending sync status
+	SyncStatusPending SyncStatus = "PENDING"
+	// Successful sync status
+	SyncStatusSuccess SyncStatus = "SUCCESS"
 )
 
 var AllSyncStatus = []SyncStatus{
@@ -13231,15 +15005,22 @@ func (e SyncStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// The status of the task
 type TaskStatus string
 
 const (
-	TaskStatusCanceled        TaskStatus = "CANCELED"
-	TaskStatusCompleted       TaskStatus = "COMPLETED"
-	TaskStatusFailed          TaskStatus = "FAILED"
-	TaskStatusInProgress      TaskStatus = "IN_PROGRESS"
+	// The task is canceled
+	TaskStatusCanceled TaskStatus = "CANCELED"
+	// The task is completed
+	TaskStatusCompleted TaskStatus = "COMPLETED"
+	// The task is failed
+	TaskStatusFailed TaskStatus = "FAILED"
+	// The task is in progress
+	TaskStatusInProgress TaskStatus = "IN_PROGRESS"
+	// The task is partially failed
 	TaskStatusPartiallyFailed TaskStatus = "PARTIALLY_FAILED"
-	TaskStatusPending         TaskStatus = "PENDING"
+	// The task is pending
+	TaskStatusPending TaskStatus = "PENDING"
 )
 
 var AllTaskStatus = []TaskStatus{
@@ -13280,17 +15061,26 @@ func (e TaskStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// The type of the task
 type TaskType string
 
 const (
-	TaskTypeImportIntegrationCatalog     TaskType = "IMPORT_INTEGRATION_CATALOG"
-	TaskTypeImportIntegrationCustomers   TaskType = "IMPORT_INTEGRATION_CUSTOMERS"
-	TaskTypeImportSubscriptionsBulk      TaskType = "IMPORT_SUBSCRIPTIONS_BULK"
+	// The task is an import of product catalog from integration
+	TaskTypeImportIntegrationCatalog TaskType = "IMPORT_INTEGRATION_CATALOG"
+	// The task is an import of customers from integration
+	TaskTypeImportIntegrationCustomers TaskType = "IMPORT_INTEGRATION_CUSTOMERS"
+	// The task is an import of subscriptions in bulk
+	TaskTypeImportSubscriptionsBulk TaskType = "IMPORT_SUBSCRIPTIONS_BULK"
+	// The task is a batch recalculation of entitlements
 	TaskTypeRecalculateBatchEntitlements TaskType = "RECALCULATE_BATCH_ENTITLEMENTS"
-	TaskTypeRecalculateEntitlements      TaskType = "RECALCULATE_ENTITLEMENTS"
-	TaskTypeResyncIntegration            TaskType = "RESYNC_INTEGRATION"
-	TaskTypeSubscriptionMigration        TaskType = "SUBSCRIPTION_MIGRATION"
-	TaskTypeSubscriptionMigrationV2      TaskType = "SUBSCRIPTION_MIGRATION_V2"
+	// The task is a recalculation of entitlements
+	TaskTypeRecalculateEntitlements TaskType = "RECALCULATE_ENTITLEMENTS"
+	// The task is a resync integration
+	TaskTypeResyncIntegration TaskType = "RESYNC_INTEGRATION"
+	// The task is a subscription migration v1
+	TaskTypeSubscriptionMigration TaskType = "SUBSCRIPTION_MIGRATION"
+	// The task is a subscription migration v2
+	TaskTypeSubscriptionMigrationV2 TaskType = "SUBSCRIPTION_MIGRATION_V2"
 )
 
 var AllTaskType = []TaskType{
@@ -13333,12 +15123,14 @@ func (e TaskType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// Tiers mode.
+// Tiers mode
 type TiersMode string
 
 const (
+	// Tiered
 	TiersModeGraduated TiersMode = "GRADUATED"
-	TiersModeVolume    TiersMode = "VOLUME"
+	// Volume
+	TiersModeVolume TiersMode = "VOLUME"
 )
 
 var AllTiersMode = []TiersMode{
@@ -13592,11 +15384,14 @@ func (e UsageMeasurementSortFields) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Update behavior
 type UsageUpdateBehavior string
 
 const (
+	// Delta update
 	UsageUpdateBehaviorDelta UsageUpdateBehavior = "DELTA"
-	UsageUpdateBehaviorSet   UsageUpdateBehavior = "SET"
+	// Set update
+	UsageUpdateBehaviorSet UsageUpdateBehavior = "SET"
 )
 
 var AllUsageUpdateBehavior = []UsageUpdateBehavior{
@@ -13633,18 +15428,28 @@ func (e UsageUpdateBehavior) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// A vendor identifier object
 type VendorIdentifier string
 
 const (
-	VendorIdentifierAuth0          VendorIdentifier = "AUTH0"
+	// Auth0 integration vendor identifier
+	VendorIdentifierAuth0 VendorIdentifier = "AUTH0"
+	// AWS Marketplace integration vendor identifier
 	VendorIdentifierAwsMarketplace VendorIdentifier = "AWS_MARKETPLACE"
-	VendorIdentifierBigQuery       VendorIdentifier = "BIG_QUERY"
-	VendorIdentifierHubspot        VendorIdentifier = "HUBSPOT"
-	VendorIdentifierOpenFga        VendorIdentifier = "OPEN_FGA"
-	VendorIdentifierSalesforce     VendorIdentifier = "SALESFORCE"
-	VendorIdentifierSnowflake      VendorIdentifier = "SNOWFLAKE"
-	VendorIdentifierStripe         VendorIdentifier = "STRIPE"
-	VendorIdentifierZuora          VendorIdentifier = "ZUORA"
+	// Google BigQuery integration vendor identifier
+	VendorIdentifierBigQuery VendorIdentifier = "BIG_QUERY"
+	// HubSpot integration vendor identifier
+	VendorIdentifierHubspot VendorIdentifier = "HUBSPOT"
+	// OpenFGA integration vendor identifier
+	VendorIdentifierOpenFga VendorIdentifier = "OPEN_FGA"
+	// Salesforce integration vendor identifier
+	VendorIdentifierSalesforce VendorIdentifier = "SALESFORCE"
+	// Snowflake integration vendor identifier
+	VendorIdentifierSnowflake VendorIdentifier = "SNOWFLAKE"
+	// Stripe integration vendor identifier
+	VendorIdentifierStripe VendorIdentifier = "STRIPE"
+	// Zuora integration vendor identifier
+	VendorIdentifierZuora VendorIdentifier = "ZUORA"
 )
 
 var AllVendorIdentifier = []VendorIdentifier{
@@ -13745,13 +15550,19 @@ func (e VendorType) MarshalGQL(w io.Writer) {
 type WeeklyAccordingTo string
 
 const (
-	WeeklyAccordingToEveryFriday       WeeklyAccordingTo = "EveryFriday"
-	WeeklyAccordingToEveryMonday       WeeklyAccordingTo = "EveryMonday"
-	WeeklyAccordingToEverySaturday     WeeklyAccordingTo = "EverySaturday"
-	WeeklyAccordingToEverySunday       WeeklyAccordingTo = "EverySunday"
-	WeeklyAccordingToEveryThursday     WeeklyAccordingTo = "EveryThursday"
-	WeeklyAccordingToEveryTuesday      WeeklyAccordingTo = "EveryTuesday"
-	WeeklyAccordingToEveryWednesday    WeeklyAccordingTo = "EveryWednesday"
+	WeeklyAccordingToEveryFriday WeeklyAccordingTo = "EveryFriday"
+	// Every Monday
+	WeeklyAccordingToEveryMonday   WeeklyAccordingTo = "EveryMonday"
+	WeeklyAccordingToEverySaturday WeeklyAccordingTo = "EverySaturday"
+	// Every Sunday
+	WeeklyAccordingToEverySunday WeeklyAccordingTo = "EverySunday"
+	// Every Thursday
+	WeeklyAccordingToEveryThursday WeeklyAccordingTo = "EveryThursday"
+	// Every Tuesday
+	WeeklyAccordingToEveryTuesday WeeklyAccordingTo = "EveryTuesday"
+	// Every Wednesday
+	WeeklyAccordingToEveryWednesday WeeklyAccordingTo = "EveryWednesday"
+	// Subscription start
 	WeeklyAccordingToSubscriptionStart WeeklyAccordingTo = "SubscriptionStart"
 )
 
@@ -13843,6 +15654,7 @@ func (e WidgetType) MarshalGQL(w io.Writer) {
 type YearlyAccordingTo string
 
 const (
+	// Subscription start
 	YearlyAccordingToSubscriptionStart YearlyAccordingTo = "SubscriptionStart"
 )
 
@@ -13879,11 +15691,13 @@ func (e YearlyAccordingTo) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-// The group of the experiment
+// The group type of the experiment
 type ExperimentGroupType string
 
 const (
+	// Control group of the experiment
 	ExperimentGroupTypeControl ExperimentGroupType = "CONTROL"
+	// Variant group of the experiment
 	ExperimentGroupTypeVariant ExperimentGroupType = "VARIANT"
 )
 
