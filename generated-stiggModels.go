@@ -1118,6 +1118,7 @@ type CouponFilterCustomerFilter struct {
 	Name                 *StringFieldComparison               `json:"name,omitempty"`
 	Or                   []*CouponFilterCustomerFilter        `json:"or,omitempty"`
 	RefID                *StringFieldComparison               `json:"refId,omitempty"`
+	SalesforceID         *StringFieldComparison               `json:"salesforceId,omitempty"`
 	SearchQuery          *CustomerSearchQueryFilterComparison `json:"searchQuery,omitempty"`
 	UpdatedAt            *DateFieldComparison                 `json:"updatedAt,omitempty"`
 }
@@ -1517,6 +1518,7 @@ type CustomerAggregateGroupBy struct {
 	ID                   *string `json:"id"`
 	Name                 *string `json:"name"`
 	RefID                *string `json:"refId"`
+	SalesforceID         *string `json:"salesforceId"`
 	SearchQuery          *string `json:"searchQuery"`
 	UpdatedAt            *string `json:"updatedAt"`
 }
@@ -1577,6 +1579,7 @@ type CustomerCountAggregate struct {
 	ID                   *int64 `json:"id"`
 	Name                 *int64 `json:"name"`
 	RefID                *int64 `json:"refId"`
+	SalesforceID         *int64 `json:"salesforceId"`
 	SearchQuery          *int64 `json:"searchQuery"`
 	UpdatedAt            *int64 `json:"updatedAt"`
 }
@@ -1604,6 +1607,7 @@ type CustomerFilter struct {
 	Or                      []*CustomerFilter                           `json:"or,omitempty"`
 	PromotionalEntitlements *CustomerFilterPromotionalEntitlementFilter `json:"promotionalEntitlements,omitempty"`
 	RefID                   *StringFieldComparison                      `json:"refId,omitempty"`
+	SalesforceID            *StringFieldComparison                      `json:"salesforceId,omitempty"`
 	SearchQuery             *CustomerSearchQueryFilterComparison        `json:"searchQuery,omitempty"`
 	Subscriptions           *CustomerFilterCustomerSubscriptionFilter   `json:"subscriptions,omitempty"`
 	UpdatedAt               *DateFieldComparison                        `json:"updatedAt,omitempty"`
@@ -1632,6 +1636,7 @@ type CustomerFilterCustomerSubscriptionFilter struct {
 	PricingType               *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                      `json:"refId,omitempty"`
 	ResourceID                *StringFieldComparison                      `json:"resourceId,omitempty"`
+	SalesforceID              *StringFieldComparison                      `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                        `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison         `json:"status,omitempty"`
 	SubscriptionID            *StringFieldComparison                      `json:"subscriptionId,omitempty"`
@@ -1693,6 +1698,7 @@ type CustomerMaxAggregate struct {
 	ID                   *string `json:"id"`
 	Name                 *string `json:"name"`
 	RefID                *string `json:"refId"`
+	SalesforceID         *string `json:"salesforceId"`
 	SearchQuery          *string `json:"searchQuery"`
 	UpdatedAt            *string `json:"updatedAt"`
 }
@@ -1710,6 +1716,7 @@ type CustomerMinAggregate struct {
 	ID                   *string `json:"id"`
 	Name                 *string `json:"name"`
 	RefID                *string `json:"refId"`
+	SalesforceID         *string `json:"salesforceId"`
 	SearchQuery          *string `json:"searchQuery"`
 	UpdatedAt            *string `json:"updatedAt"`
 }
@@ -1930,6 +1937,7 @@ type CustomerResourceFilterCustomerFilter struct {
 	Name                 *StringFieldComparison                  `json:"name,omitempty"`
 	Or                   []*CustomerResourceFilterCustomerFilter `json:"or,omitempty"`
 	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
+	SalesforceID         *StringFieldComparison                  `json:"salesforceId,omitempty"`
 	SearchQuery          *CustomerSearchQueryFilterComparison    `json:"searchQuery,omitempty"`
 	UpdatedAt            *DateFieldComparison                    `json:"updatedAt,omitempty"`
 }
@@ -1957,6 +1965,7 @@ type CustomerResourceFilterCustomerSubscriptionFilter struct {
 	PricingType               *PricingTypeFilterComparison                        `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                              `json:"refId,omitempty"`
 	ResourceID                *StringFieldComparison                              `json:"resourceId,omitempty"`
+	SalesforceID              *StringFieldComparison                              `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                 `json:"status,omitempty"`
 	SubscriptionID            *StringFieldComparison                              `json:"subscriptionId,omitempty"`
@@ -2084,6 +2093,7 @@ type CustomerSubscriptionAggregateGroupBy struct {
 	PricingType               *PricingType              `json:"pricingType"`
 	RefID                     *string                   `json:"refId"`
 	ResourceID                *string                   `json:"resourceId"`
+	SalesforceID              *string                   `json:"salesforceId"`
 	StartDate                 *string                   `json:"startDate"`
 	Status                    *SubscriptionStatus       `json:"status"`
 	SubscriptionID            *string                   `json:"subscriptionId"`
@@ -2120,6 +2130,7 @@ type CustomerSubscriptionCountAggregate struct {
 	PricingType               *int64 `json:"pricingType"`
 	RefID                     *int64 `json:"refId"`
 	ResourceID                *int64 `json:"resourceId"`
+	SalesforceID              *int64 `json:"salesforceId"`
 	StartDate                 *int64 `json:"startDate"`
 	Status                    *int64 `json:"status"`
 	SubscriptionID            *int64 `json:"subscriptionId"`
@@ -2162,6 +2173,7 @@ type CustomerSubscriptionFilter struct {
 	RefID                     *StringFieldComparison                                   `json:"refId,omitempty"`
 	Resource                  *CustomerSubscriptionFilterCustomerResourceFilter        `json:"resource,omitempty"`
 	ResourceID                *StringFieldComparison                                   `json:"resourceId,omitempty"`
+	SalesforceID              *StringFieldComparison                                   `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                     `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                      `json:"status,omitempty"`
 	SubscriptionEntitlements  *CustomerSubscriptionFilterSubscriptionEntitlementFilter `json:"subscriptionEntitlements,omitempty"`
@@ -2184,6 +2196,7 @@ type CustomerSubscriptionFilterCustomerFilter struct {
 	Name                 *StringFieldComparison                      `json:"name,omitempty"`
 	Or                   []*CustomerSubscriptionFilterCustomerFilter `json:"or,omitempty"`
 	RefID                *StringFieldComparison                      `json:"refId,omitempty"`
+	SalesforceID         *StringFieldComparison                      `json:"salesforceId,omitempty"`
 	SearchQuery          *CustomerSearchQueryFilterComparison        `json:"searchQuery,omitempty"`
 	UpdatedAt            *DateFieldComparison                        `json:"updatedAt,omitempty"`
 }
@@ -2266,6 +2279,7 @@ type CustomerSubscriptionMaxAggregate struct {
 	PricingType               *PricingType              `json:"pricingType"`
 	RefID                     *string                   `json:"refId"`
 	ResourceID                *string                   `json:"resourceId"`
+	SalesforceID              *string                   `json:"salesforceId"`
 	StartDate                 *string                   `json:"startDate"`
 	Status                    *SubscriptionStatus       `json:"status"`
 	SubscriptionID            *string                   `json:"subscriptionId"`
@@ -2293,6 +2307,7 @@ type CustomerSubscriptionMinAggregate struct {
 	PricingType               *PricingType              `json:"pricingType"`
 	RefID                     *string                   `json:"refId"`
 	ResourceID                *string                   `json:"resourceId"`
+	SalesforceID              *string                   `json:"salesforceId"`
 	StartDate                 *string                   `json:"startDate"`
 	Status                    *SubscriptionStatus       `json:"status"`
 	SubscriptionID            *string                   `json:"subscriptionId"`
@@ -3129,6 +3144,7 @@ type ExperimentFilterCustomerFilter struct {
 	Name                 *StringFieldComparison               `json:"name,omitempty"`
 	Or                   []*ExperimentFilterCustomerFilter    `json:"or,omitempty"`
 	RefID                *StringFieldComparison               `json:"refId,omitempty"`
+	SalesforceID         *StringFieldComparison               `json:"salesforceId,omitempty"`
 	SearchQuery          *CustomerSearchQueryFilterComparison `json:"searchQuery,omitempty"`
 	UpdatedAt            *DateFieldComparison                 `json:"updatedAt,omitempty"`
 }
@@ -7395,6 +7411,7 @@ type SubscriptionAddonFilterCustomerSubscriptionFilter struct {
 	PricingType               *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                               `json:"refId,omitempty"`
 	ResourceID                *StringFieldComparison                               `json:"resourceId,omitempty"`
+	SalesforceID              *StringFieldComparison                               `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                 `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
 	SubscriptionID            *StringFieldComparison                               `json:"subscriptionId,omitempty"`
@@ -7647,6 +7664,7 @@ type SubscriptionEntitlementFilterCustomerSubscriptionFilter struct {
 	PricingType               *PricingTypeFilterComparison                               `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                                     `json:"refId,omitempty"`
 	ResourceID                *StringFieldComparison                                     `json:"resourceId,omitempty"`
+	SalesforceID              *StringFieldComparison                                     `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                       `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                        `json:"status,omitempty"`
 	SubscriptionID            *StringFieldComparison                                     `json:"subscriptionId,omitempty"`
@@ -8183,6 +8201,7 @@ type SubscriptionPriceFilterCustomerSubscriptionFilter struct {
 	PricingType               *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                               `json:"refId,omitempty"`
 	ResourceID                *StringFieldComparison                               `json:"resourceId,omitempty"`
+	SalesforceID              *StringFieldComparison                               `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                 `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
 	SubscriptionID            *StringFieldComparison                               `json:"subscriptionId,omitempty"`
@@ -9160,6 +9179,7 @@ type UsageMeasurementFilterCustomerFilter struct {
 	Name                 *StringFieldComparison                  `json:"name,omitempty"`
 	Or                   []*UsageMeasurementFilterCustomerFilter `json:"or,omitempty"`
 	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
+	SalesforceID         *StringFieldComparison                  `json:"salesforceId,omitempty"`
 	SearchQuery          *CustomerSearchQueryFilterComparison    `json:"searchQuery,omitempty"`
 	UpdatedAt            *DateFieldComparison                    `json:"updatedAt,omitempty"`
 }
@@ -10812,6 +10832,7 @@ const (
 	CustomerSortFieldsID                   CustomerSortFields = "id"
 	CustomerSortFieldsName                 CustomerSortFields = "name"
 	CustomerSortFieldsRefID                CustomerSortFields = "refId"
+	CustomerSortFieldsSalesforceID         CustomerSortFields = "salesforceId"
 	CustomerSortFieldsSearchQuery          CustomerSortFields = "searchQuery"
 	CustomerSortFieldsUpdatedAt            CustomerSortFields = "updatedAt"
 )
@@ -10829,13 +10850,14 @@ var AllCustomerSortFields = []CustomerSortFields{
 	CustomerSortFieldsID,
 	CustomerSortFieldsName,
 	CustomerSortFieldsRefID,
+	CustomerSortFieldsSalesforceID,
 	CustomerSortFieldsSearchQuery,
 	CustomerSortFieldsUpdatedAt,
 }
 
 func (e CustomerSortFields) IsValid() bool {
 	switch e {
-	case CustomerSortFieldsBillingID, CustomerSortFieldsCreatedAt, CustomerSortFieldsCrmHubspotCompanyID, CustomerSortFieldsCrmHubspotCompanyURL, CustomerSortFieldsCrmID, CustomerSortFieldsCustomerID, CustomerSortFieldsDeletedAt, CustomerSortFieldsEmail, CustomerSortFieldsEnvironmentID, CustomerSortFieldsID, CustomerSortFieldsName, CustomerSortFieldsRefID, CustomerSortFieldsSearchQuery, CustomerSortFieldsUpdatedAt:
+	case CustomerSortFieldsBillingID, CustomerSortFieldsCreatedAt, CustomerSortFieldsCrmHubspotCompanyID, CustomerSortFieldsCrmHubspotCompanyURL, CustomerSortFieldsCrmID, CustomerSortFieldsCustomerID, CustomerSortFieldsDeletedAt, CustomerSortFieldsEmail, CustomerSortFieldsEnvironmentID, CustomerSortFieldsID, CustomerSortFieldsName, CustomerSortFieldsRefID, CustomerSortFieldsSalesforceID, CustomerSortFieldsSearchQuery, CustomerSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -10885,6 +10907,7 @@ const (
 	CustomerSubscriptionSortFieldsPricingType               CustomerSubscriptionSortFields = "pricingType"
 	CustomerSubscriptionSortFieldsRefID                     CustomerSubscriptionSortFields = "refId"
 	CustomerSubscriptionSortFieldsResourceID                CustomerSubscriptionSortFields = "resourceId"
+	CustomerSubscriptionSortFieldsSalesforceID              CustomerSubscriptionSortFields = "salesforceId"
 	CustomerSubscriptionSortFieldsStartDate                 CustomerSubscriptionSortFields = "startDate"
 	CustomerSubscriptionSortFieldsStatus                    CustomerSubscriptionSortFields = "status"
 	CustomerSubscriptionSortFieldsSubscriptionID            CustomerSubscriptionSortFields = "subscriptionId"
@@ -10912,6 +10935,7 @@ var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
 	CustomerSubscriptionSortFieldsPricingType,
 	CustomerSubscriptionSortFieldsRefID,
 	CustomerSubscriptionSortFieldsResourceID,
+	CustomerSubscriptionSortFieldsSalesforceID,
 	CustomerSubscriptionSortFieldsStartDate,
 	CustomerSubscriptionSortFieldsStatus,
 	CustomerSubscriptionSortFieldsSubscriptionID,
@@ -10920,7 +10944,7 @@ var AllCustomerSubscriptionSortFields = []CustomerSubscriptionSortFields{
 
 func (e CustomerSubscriptionSortFields) IsValid() bool {
 	switch e {
-	case CustomerSubscriptionSortFieldsBillingCycleAnchor, CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd, CustomerSubscriptionSortFieldsCurrentBillingPeriodStart, CustomerSubscriptionSortFieldsCustomerID, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPayingCustomerID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
+	case CustomerSubscriptionSortFieldsBillingCycleAnchor, CustomerSubscriptionSortFieldsBillingID, CustomerSubscriptionSortFieldsCancelReason, CustomerSubscriptionSortFieldsCancellationDate, CustomerSubscriptionSortFieldsCreatedAt, CustomerSubscriptionSortFieldsCrmID, CustomerSubscriptionSortFieldsCrmLinkURL, CustomerSubscriptionSortFieldsCurrentBillingPeriodEnd, CustomerSubscriptionSortFieldsCurrentBillingPeriodStart, CustomerSubscriptionSortFieldsCustomerID, CustomerSubscriptionSortFieldsEffectiveEndDate, CustomerSubscriptionSortFieldsEndDate, CustomerSubscriptionSortFieldsEnvironmentID, CustomerSubscriptionSortFieldsID, CustomerSubscriptionSortFieldsOldBillingID, CustomerSubscriptionSortFieldsPayingCustomerID, CustomerSubscriptionSortFieldsPaymentCollection, CustomerSubscriptionSortFieldsPricingType, CustomerSubscriptionSortFieldsRefID, CustomerSubscriptionSortFieldsResourceID, CustomerSubscriptionSortFieldsSalesforceID, CustomerSubscriptionSortFieldsStartDate, CustomerSubscriptionSortFieldsStatus, CustomerSubscriptionSortFieldsSubscriptionID, CustomerSubscriptionSortFieldsTrialEndDate:
 		return true
 	}
 	return false
