@@ -10524,6 +10524,7 @@ const (
 	CurrencyBif Currency = "BIF"
 	CurrencyBmd Currency = "BMD"
 	CurrencyBnd Currency = "BND"
+	CurrencyBrl Currency = "BRL"
 	CurrencyBsd Currency = "BSD"
 	CurrencyBwp Currency = "BWP"
 	CurrencyByn Currency = "BYN"
@@ -10642,6 +10643,7 @@ var AllCurrency = []Currency{
 	CurrencyBif,
 	CurrencyBmd,
 	CurrencyBnd,
+	CurrencyBrl,
 	CurrencyBsd,
 	CurrencyBwp,
 	CurrencyByn,
@@ -10747,7 +10749,7 @@ var AllCurrency = []Currency{
 
 func (e Currency) IsValid() bool {
 	switch e {
-	case CurrencyAed, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBdt, CurrencyBgn, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBsd, CurrencyBwp, CurrencyByn, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClp, CurrencyCny, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEgp, CurrencyEtb, CurrencyEur, CurrencyFjd, CurrencyGbp, CurrencyGel, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGyd, CurrencyHkd, CurrencyHrk, CurrencyHtg, CurrencyIDR, CurrencyIls, CurrencyInr, CurrencyIsk, CurrencyJmd, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKrw, CurrencyKyd, CurrencyKzt, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySek, CurrencySgd, CurrencySle, CurrencySll, CurrencySos, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUzs, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXcd, CurrencyXof, CurrencyXpf, CurrencyYer, CurrencyZar, CurrencyZmw:
+	case CurrencyAed, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBdt, CurrencyBgn, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBrl, CurrencyBsd, CurrencyBwp, CurrencyByn, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClp, CurrencyCny, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEgp, CurrencyEtb, CurrencyEur, CurrencyFjd, CurrencyGbp, CurrencyGel, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGyd, CurrencyHkd, CurrencyHrk, CurrencyHtg, CurrencyIDR, CurrencyIls, CurrencyInr, CurrencyIsk, CurrencyJmd, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKrw, CurrencyKyd, CurrencyKzt, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySek, CurrencySgd, CurrencySle, CurrencySll, CurrencySos, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUzs, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXcd, CurrencyXof, CurrencyXpf, CurrencyYer, CurrencyZar, CurrencyZmw:
 		return true
 	}
 	return false
