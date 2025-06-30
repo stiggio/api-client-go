@@ -898,33 +898,53 @@ type CheckoutBillingIntegration struct {
 	Credentials CheckoutCredentials `json:"credentials"`
 }
 
+// Color settings for the checkout widget.
 type CheckoutColorPalette struct {
-	BackgroundColor        *string `json:"backgroundColor"`
-	BorderColor            *string `json:"borderColor"`
-	Primary                *string `json:"primary"`
+	// Main background color of the checkout UI.
+	BackgroundColor *string `json:"backgroundColor"`
+	// Color used for borders and dividers in the checkout widget.
+	BorderColor *string `json:"borderColor"`
+	// Primary accent color used in the checkout UI.
+	Primary *string `json:"primary"`
+	// Background color for the order summary section.
 	SummaryBackgroundColor *string `json:"summaryBackgroundColor"`
-	TextColor              *string `json:"textColor"`
+	// Text color used throughout the checkout widget.
+	TextColor *string `json:"textColor"`
 }
 
+// Checkout-specific widget configuration.
 type CheckoutConfiguration struct {
-	Content    *CheckoutContent         `json:"content"`
-	CustomCSS  *string                  `json:"customCss"`
-	Palette    *CheckoutColorPalette    `json:"palette"`
+	// Dynamic content configuration like optional data fields.
+	Content *CheckoutContent `json:"content"`
+	// Custom CSS styles to override default checkout UI styles.
+	CustomCSS *string `json:"customCss"`
+	// Custom color palette used in the checkout UI.
+	Palette *CheckoutColorPalette `json:"palette"`
+	// Font and text styling used in the checkout widget.
 	Typography *TypographyConfiguration `json:"typography"`
 }
 
+// Input for setting up the checkout widget’s design.
 type CheckoutConfigurationInput struct {
-	Content    *CheckoutContentInput         `json:"content,omitempty"`
-	CustomCSS  *string                       `json:"customCss,omitempty"`
-	Palette    *CheckoutPaletteInput         `json:"palette,omitempty"`
+	// Additional content settings such as form fields.
+	Content *CheckoutContentInput `json:"content,omitempty"`
+	// Custom styles to override default checkout appearance.
+	CustomCSS *string `json:"customCss,omitempty"`
+	// Color palette settings for the checkout process.
+	Palette *CheckoutPaletteInput `json:"palette,omitempty"`
+	// Typography options for headings and text in checkout.
 	Typography *TypographyConfigurationInput `json:"typography,omitempty"`
 }
 
+// Content-related settings for the checkout experience.
 type CheckoutContent struct {
+	// Specifies whether the customers phone number should be collected during checkout.
 	CollectPhoneNumber *bool `json:"collectPhoneNumber"`
 }
 
+// Input for content customization in the checkout process.
 type CheckoutContentInput struct {
+	// Indicates whether the checkout form should ask for a phone number.
 	CollectPhoneNumber *bool `json:"collectPhoneNumber,omitempty"`
 }
 
@@ -946,12 +966,18 @@ type CheckoutOptions struct {
 	SuccessURL            string  `json:"successUrl"`
 }
 
+// Input for customizing checkout color scheme.
 type CheckoutPaletteInput struct {
-	BackgroundColor        *string `json:"backgroundColor,omitempty"`
-	BorderColor            *string `json:"borderColor,omitempty"`
-	Primary                *string `json:"primary,omitempty"`
+	// Background color of the widget.
+	BackgroundColor *string `json:"backgroundColor,omitempty"`
+	// Color applied to widget borders or separators.
+	BorderColor *string `json:"borderColor,omitempty"`
+	// Primary accent color used throughout the widget.
+	Primary *string `json:"primary,omitempty"`
+	// Background color for the order summary section during checkout.
 	SummaryBackgroundColor *string `json:"summaryBackgroundColor,omitempty"`
-	TextColor              *string `json:"textColor,omitempty"`
+	// Default color used for text content.
+	TextColor *string `json:"textColor,omitempty"`
 }
 
 // Checkout state response
@@ -986,11 +1012,14 @@ type CheckoutStateInput struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
+// Input for clearing a customers persistent cache.
 type ClearCustomerPersistentCacheInput struct {
+	// The unique identifier of the customer whose cache should be cleared.
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	ResourceID    *string `json:"resourceId,omitempty"`
+	// The resource ID scoped to the customer.
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 // Coupons
@@ -1733,16 +1762,26 @@ type CustomerNotFoundError struct {
 	RefID             string `json:"refId"`
 }
 
+// A brief explanation of the specific customer portal session.
 type CustomerPortal struct {
-	BillingInformation      CustomerPortalBillingInformation        `json:"billingInformation"`
-	BillingPortalURL        *string                                 `json:"billingPortalUrl"`
-	CanUpgradeSubscription  bool                                    `json:"canUpgradeSubscription"`
-	Configuration           *CustomerPortalConfiguration            `json:"configuration"`
-	Entitlements            []*Entitlement                          `json:"entitlements"`
+	// The customers billing contact and payment method details.
+	BillingInformation CustomerPortalBillingInformation `json:"billingInformation"`
+	// A link to the external billing portal.
+	BillingPortalURL *string `json:"billingPortalUrl"`
+	// Indicates whether the customer is allowed to upgrade their subscription.
+	CanUpgradeSubscription bool `json:"canUpgradeSubscription"`
+	// Optional configuration object for customizing how the customer portal behaves or appears
+	Configuration *CustomerPortalConfiguration `json:"configuration"`
+	// All effective entitlements granted through the customers subscription.
+	Entitlements []*Entitlement `json:"entitlements"`
+	// A list of promotional entitlements granted directly to the customer. These provide bonus or trial access to features.
 	PromotionalEntitlements []*CustomerPortalPromotionalEntitlement `json:"promotionalEntitlements"`
-	Resource                *CustomerResource                       `json:"resource"`
-	ShowWatermark           bool                                    `json:"showWatermark"`
-	Subscriptions           []*CustomerPortalSubscription           `json:"subscriptions"`
+	// The ID of the resource that the portal session is scoped to.
+	Resource *CustomerResource `json:"resource"`
+	// Indicates whether to show the Stigg watermark on the checkout widget.
+	ShowWatermark bool `json:"showWatermark"`
+	// List of the customers active subscriptions.
+	Subscriptions []*CustomerPortalSubscription `json:"subscriptions"`
 }
 
 type CustomerPortalAddon struct {
@@ -1752,6 +1791,7 @@ type CustomerPortalAddon struct {
 	Quantity    int64   `json:"quantity"`
 }
 
+// A brief explanation of the specific billing profile.
 type CustomerPortalBillingInformation struct {
 	// The expiration month of the default payment method
 	DefaultPaymentExpirationMonth *int64 `json:"defaultPaymentExpirationMonth"`
@@ -1769,41 +1809,69 @@ type CustomerPortalBillingInformation struct {
 	Name *string `json:"name"`
 }
 
+// Color palette settings for the customer portal.
 type CustomerPortalColorsPalette struct {
-	BackgroundColor        *string `json:"backgroundColor"`
-	BorderColor            *string `json:"borderColor"`
-	CurrentPlanBackground  *string `json:"currentPlanBackground"`
-	IconsColor             *string `json:"iconsColor"`
+	// Main background color of the customer portal.
+	BackgroundColor *string `json:"backgroundColor"`
+	// Color used for UI borders.
+	BorderColor *string `json:"borderColor"`
+	// Background color for the current plan section.
+	CurrentPlanBackground *string `json:"currentPlanBackground"`
+	// Background color for the current plan section.
+	IconsColor *string `json:"iconsColor"`
+	// Background color used in the paywall section inside the customer portal.
 	PaywallBackgroundColor *string `json:"paywallBackgroundColor"`
-	Primary                *string `json:"primary"`
-	TextColor              *string `json:"textColor"`
+	// Primary accent color for the portal.
+	Primary *string `json:"primary"`
+	// Color used for text in the customer portal.
+	TextColor *string `json:"textColor"`
 }
 
+// Input for customizing customer portal color palette.
 type CustomerPortalColorsPaletteInput struct {
-	BackgroundColor        *string `json:"backgroundColor,omitempty"`
-	BorderColor            *string `json:"borderColor,omitempty"`
-	CurrentPlanBackground  *string `json:"currentPlanBackground,omitempty"`
-	IconsColor             *string `json:"iconsColor,omitempty"`
+	// Background color of the widget.
+	BackgroundColor *string `json:"backgroundColor,omitempty"`
+	// Color applied to widget borders or separators.
+	BorderColor *string `json:"borderColor,omitempty"`
+	// Background color for the customer’s current plan section in the paywall.
+	CurrentPlanBackground *string `json:"currentPlanBackground,omitempty"`
+	// Color used for icons in the customer portal.
+	IconsColor *string `json:"iconsColor,omitempty"`
+	// Background color for embedded paywall sections inside the customer portal.
 	PaywallBackgroundColor *string `json:"paywallBackgroundColor,omitempty"`
-	Primary                *string `json:"primary,omitempty"`
-	TextColor              *string `json:"textColor,omitempty"`
+	// Primary accent color used throughout the widget.
+	Primary *string `json:"primary,omitempty"`
+	// Default color used for text content.
+	TextColor *string `json:"textColor,omitempty"`
 }
 
+// Styling and layout configuration for the customer portal widget.
 type CustomerPortalConfiguration struct {
-	CustomCSS  *string                      `json:"customCss"`
-	Palette    *CustomerPortalColorsPalette `json:"palette"`
-	Typography *TypographyConfiguration     `json:"typography"`
+	// Custom CSS overrides for the customer portal widget.
+	CustomCSS *string `json:"customCss"`
+	// Custom color palette for the customer portal UI.
+	Palette *CustomerPortalColorsPalette `json:"palette"`
+	// Font and text style settings for the customer portal.
+	Typography *TypographyConfiguration `json:"typography"`
 }
 
+// Input for configuring the customer portal appearance.
 type CustomerPortalConfigurationInput struct {
-	CustomCSS  *string                           `json:"customCss,omitempty"`
-	Palette    *CustomerPortalColorsPaletteInput `json:"palette,omitempty"`
-	Typography *TypographyConfigurationInput     `json:"typography,omitempty"`
+	// Custom CSS rules to override default styling in the portal.
+	CustomCSS *string `json:"customCss,omitempty"`
+	// Color palette customization for the portal UI.
+	Palette *CustomerPortalColorsPaletteInput `json:"palette,omitempty"`
+	// Font styling settings for the customer portal.
+	Typography *TypographyConfigurationInput `json:"typography,omitempty"`
 }
 
+// Optional explanation or context for why this portal session is being initialized.
 type CustomerPortalInput struct {
-	CustomerID string  `json:"customerId"`
-	ProductID  *string `json:"productId,omitempty"`
+	// Unique identifier of the customer.
+	CustomerID string `json:"customerId"`
+	// The ID of the product context under which the portal is rendered.
+	ProductID *string `json:"productId,omitempty"`
+	// Unique identifier of a resource if the subscription or entitlements are scoped to a specific resource.
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
@@ -1826,15 +1894,24 @@ type CustomerPortalPricingFeature struct {
 	RefID string `json:"refId"`
 }
 
+// General description of the promotional entitlement. Use descriptionField instead to avoid key collisions.
 type CustomerPortalPromotionalEntitlement struct {
-	Description       *string                      `json:"description"`
-	DisplayName       string                       `json:"displayName"`
-	EndDate           *string                      `json:"endDate"`
-	HasSoftLimit      *bool                        `json:"hasSoftLimit"`
-	HasUnlimitedUsage *bool                        `json:"hasUnlimitedUsage"`
-	Period            PromotionalEntitlementPeriod `json:"period"`
-	StartDate         string                       `json:"startDate"`
-	UsageLimit        *float64                     `json:"usageLimit"`
+	// The main descriptive text for the entitlement, explaining what benefit is granted.
+	Description *string `json:"description"`
+	// The name of the promotional entitlement as it should appear in the Stigg portal.
+	DisplayName string `json:"displayName"`
+	// The date and time when the promotional entitlement expires and is no longer effective.
+	EndDate *string `json:"endDate"`
+	// Indicates that the entitlements usage limit is not strictly enforced — customers can exceed it, but their usage is still tracked.
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Indicates whether this promotional entitlement grants unlimited usage.
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage"`
+	// The time interval after which usage resets automatically.
+	Period PromotionalEntitlementPeriod `json:"period"`
+	// The date and time when the promotional entitlement becomes active.
+	StartDate string `json:"startDate"`
+	// The maximum allowed usage for this promotional entitlement, which only applies to metered features.
+	UsageLimit *float64 `json:"usageLimit"`
 }
 
 type CustomerPortalSubscription struct {
@@ -2572,69 +2649,113 @@ type EligibleForTrial struct {
 	ProductRefID *string `json:"productRefId"`
 }
 
+// Represents an entitlement granted to a customer, including its usage and reset configuration.
 type Entitlement struct {
-	AccessDeniedReason       *AccessDeniedReason      `json:"accessDeniedReason"`
-	CurrentUsage             *float64                 `json:"currentUsage"`
-	CustomerID               *string                  `json:"customerId"`
-	DisplayNameOverride      *string                  `json:"displayNameOverride"`
-	EntitlementUpdatedAt     *string                  `json:"entitlementUpdatedAt"`
-	Feature                  *EntitlementFeature      `json:"feature"`
-	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
-	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
-	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
-	IsGranted                bool                     `json:"isGranted"`
-	MeterID                  *string                  `json:"meterId"`
-	NextResetDate            *string                  `json:"nextResetDate"`
-	RequestedUsage           *float64                 `json:"requestedUsage"`
-	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	// Optional message explaining why access to the feature is denied.
+	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason"`
+	// The amount of the feature the customer has used so far in the current period.
+	CurrentUsage *float64 `json:"currentUsage"`
+	CustomerID   *string  `json:"customerId"`
+	// A custom name to override the default display name for this entitlement.
+	DisplayNameOverride *string `json:"displayNameOverride"`
+	// Timestamp of the last update to the entitlement grant or configuration.
+	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// The feature this entitlement corresponds to.
+	Feature *EntitlementFeature `json:"feature"`
+	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Indicates whether this entitlement grants unlimited usage with no enforced cap.
+	HasUnlimitedUsage bool `json:"hasUnlimitedUsage"`
+	// Indicates whether this entitlement should be hidden in customer-facing widgets.
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
+	// Indicates whether the entitlement is currently granted to the customer.
+	IsGranted bool `json:"isGranted"`
+	// The ID of the meter tracking usage for this entitlement.
+	MeterID       *string `json:"meterId"`
+	NextResetDate *string `json:"nextResetDate"`
+	// The amount of usage requested by the customer.
+	RequestedUsage *float64 `json:"requestedUsage"`
+	// The interval at which usage resets automatically, such as monthly or yearly.
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// Detailed configuration object specifying the usage reset schedule.
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
 	ResourceID               *string                  `json:"resourceId"`
-	UsageLimit               *float64                 `json:"usageLimit"`
+	// The maximum allowed usage for this entitlement before restrictions apply.
+	UsageLimit *float64 `json:"usageLimit"`
 	// The anchor for calculating the usage period for metered entitlements with a reset period configured
 	UsagePeriodAnchor *string `json:"usagePeriodAnchor"`
 	// The end date of the usage period for metered entitlements with a reset period configured
 	UsagePeriodEnd *string `json:"usagePeriodEnd"`
 	// The start date of the usage period for metered entitlements with a reset period configured
 	UsagePeriodStart *string `json:"usagePeriodStart"`
-	UsageUpdatedAt   *string `json:"usageUpdatedAt"`
+	// Timestamp of the last update to the usage value.
+	UsageUpdatedAt *string `json:"usageUpdatedAt"`
 }
 
+// Input used to report that an entitlement check was performed for a customer.
 type EntitlementCheckRequested struct {
-	CustomerID             string                 `json:"customerId"`
+	// Identifier of the customer for whom the entitlement check was made.
+	CustomerID string `json:"customerId"`
+	// Result object of an entitlement access check.
 	EntitlementCheckResult EntitlementCheckResult `json:"entitlementCheckResult"`
-	EnvironmentID          *string                `json:"environmentId,omitempty"`
-	FeatureID              string                 `json:"featureId"`
-	RequestedUsage         *float64               `json:"requestedUsage,omitempty"`
-	ResourceID             *string                `json:"resourceId,omitempty"`
+	// The environment context in which the check occurred.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The internal ID of the feature linked to this entitlement.
+	FeatureID string `json:"featureId"`
+	// The amount of usage requested by the customer.
+	RequestedUsage *float64 `json:"requestedUsage,omitempty"`
+	// The specific resource identifier scoped for the entitlement check.
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
+// Result object of an entitlement access check.
 type EntitlementCheckResult struct {
-	AccessDeniedReason              *AccessDeniedReason            `json:"accessDeniedReason,omitempty"`
-	CurrentUsage                    *float64                       `json:"currentUsage,omitempty"`
-	HasAccess                       bool                           `json:"hasAccess"`
-	HasSoftLimit                    *bool                          `json:"hasSoftLimit,omitempty"`
-	HasUnlimitedUsage               *bool                          `json:"hasUnlimitedUsage,omitempty"`
+	// Optional message explaining why access to the feature is denied.
+	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason,omitempty"`
+	// The amount of the feature the customer has used so far in the current period.
+	CurrentUsage *float64 `json:"currentUsage,omitempty"`
+	// Indicates whether the customer currently has access to the feature.
+	HasAccess bool `json:"hasAccess"`
+	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Indicates whether this entitlement grants unlimited usage with no enforced cap.
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Configuration for monthly usage reset.
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
-	NextResetDate                   *string                        `json:"nextResetDate,omitempty"`
-	RequestedUsage                  *float64                       `json:"requestedUsage,omitempty"`
-	ResetPeriod                     *EntitlementResetPeriod        `json:"resetPeriod,omitempty"`
-	UsageLimit                      *float64                       `json:"usageLimit,omitempty"`
-	WeeklyResetPeriodConfiguration  *WeeklyResetPeriodConfigInput  `json:"weeklyResetPeriodConfiguration,omitempty"`
-	YearlyResetPeriodConfiguration  *YearlyResetPeriodConfigInput  `json:"yearlyResetPeriodConfiguration,omitempty"`
+	// The next date when the entitlement usage resets.
+	NextResetDate *string `json:"nextResetDate,omitempty"`
+	// The amount of usage requested by the customer.
+	RequestedUsage *float64 `json:"requestedUsage,omitempty"`
+	// The interval at which usage resets automatically, such as monthly or yearly.
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The maximum allowed usage for this entitlement before restrictions apply.
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// Configuration for weekly usage reset.
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// Configuration for yearly usage reset.
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type EntitlementFeature struct {
+	// Any additional metadata attached to this entitlement.
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	Description        *string                `json:"description"`
-	DisplayName        string                 `json:"displayName"`
-	FeatureStatus      FeatureStatus          `json:"featureStatus"`
-	FeatureType        FeatureType            `json:"featureType"`
-	FeatureUnits       *string                `json:"featureUnits"`
-	FeatureUnitsPlural *string                `json:"featureUnitsPlural"`
+	// The human-readable name of the entitlement, shown in UI elements.
+	DisplayName string `json:"displayName"`
+	// The current status of the feature.
+	FeatureStatus FeatureStatus `json:"featureStatus"`
+	// The type of feature associated with the entitlement.
+	FeatureType FeatureType `json:"featureType"`
+	// The singular unit label for the feature.
+	FeatureUnits *string `json:"featureUnits"`
+	// The plural unit label for the feature.
+	FeatureUnitsPlural *string `json:"featureUnitsPlural"`
 	// Unique identifier for the entity
-	ID        string     `json:"id"`
+	ID string `json:"id"`
+	// The type of meter associated with the entitlement.
 	MeterType *MeterType `json:"meterType"`
-	RefID     string     `json:"refId"`
+	// The unique reference ID of the entitlement.
+	RefID string `json:"refId"`
 	// Unit transformation to be applied to the reported usage
 	UnitTransformation *UnitTransformation `json:"unitTransformation"`
 }
@@ -2645,58 +2766,89 @@ type EntitlementLimitExceededError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// Options for configuring how an entitlement is tracked or applied.
 type EntitlementOptions struct {
+	// The amount of usage requested by the customer.
 	RequestedUsage *float64 `json:"requestedUsage,omitempty"`
 	// Not in use anymore
 	ShouldTrack *bool `json:"shouldTrack,omitempty"`
 }
 
+// Summary of all entitlements affecting a given feature for a customer.
 type EntitlementSummary struct {
-	AddonQuantity                 *float64                `json:"addonQuantity"`
-	FeaturePackageEntitlement     *PackageEntitlement     `json:"featurePackageEntitlement"`
+	// The number of addon units applied to the feature entitlement.
+	AddonQuantity *float64 `json:"addonQuantity"`
+	// The entitlement granted through a feature package.
+	FeaturePackageEntitlement *PackageEntitlement `json:"featurePackageEntitlement"`
+	// The entitlement granted via a promotional offer or override.
 	FeaturePromotionalEntitlement *PromotionalEntitlement `json:"featurePromotionalEntitlement"`
-	IsEffectiveEntitlement        bool                    `json:"isEffectiveEntitlement"`
-	Plan                          *Plan                   `json:"plan"`
-	PriceEntitlement              *PriceEntitlement       `json:"priceEntitlement"`
-	Subscription                  *CustomerSubscription   `json:"subscription"`
+	// Indicates whether this entitlement is currently active and in effect.
+	IsEffectiveEntitlement bool `json:"isEffectiveEntitlement"`
+	// The subscription plan associated with the entitlement.
+	Plan *Plan `json:"plan"`
+	// The entitlement derived from the pricing configuration of the subscription.
+	PriceEntitlement *PriceEntitlement `json:"priceEntitlement"`
+	// The customer subscription context in which the entitlement was granted.
+	Subscription *CustomerSubscription `json:"subscription"`
 }
 
+// A data structure that combines raw entitlement data with its computed summary.
 type EntitlementWithSummary struct {
-	AccessDeniedReason       *AccessDeniedReason      `json:"accessDeniedReason"`
-	CurrentUsage             *float64                 `json:"currentUsage"`
-	CustomerID               *string                  `json:"customerId"`
-	DisplayNameOverride      *string                  `json:"displayNameOverride"`
-	EntitlementUpdatedAt     *string                  `json:"entitlementUpdatedAt"`
-	Feature                  *EntitlementFeature      `json:"feature"`
-	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
-	HasUnlimitedUsage        bool                     `json:"hasUnlimitedUsage"`
-	HiddenFromWidgets        []WidgetType             `json:"hiddenFromWidgets"`
-	IsGranted                bool                     `json:"isGranted"`
-	MeterID                  *string                  `json:"meterId"`
-	NextResetDate            *string                  `json:"nextResetDate"`
-	RequestedUsage           *float64                 `json:"requestedUsage"`
-	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	// Optional message explaining why access to the feature is denied.
+	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason"`
+	// The amount of the feature the customer has used so far in the current period.
+	CurrentUsage *float64 `json:"currentUsage"`
+	CustomerID   *string  `json:"customerId"`
+	// A custom name to override the default display name for this entitlement.
+	DisplayNameOverride *string `json:"displayNameOverride"`
+	// Timestamp of the last update to the entitlement grant or configuration.
+	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// The feature this entitlement corresponds to.
+	Feature *EntitlementFeature `json:"feature"`
+	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Indicates whether this entitlement grants unlimited usage with no enforced cap.
+	HasUnlimitedUsage bool `json:"hasUnlimitedUsage"`
+	// Indicates whether this entitlement should be hidden in customer-facing widgets.
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
+	// Indicates whether the entitlement is currently granted to the customer.
+	IsGranted bool `json:"isGranted"`
+	// The ID of the meter tracking usage for this entitlement.
+	MeterID       *string `json:"meterId"`
+	NextResetDate *string `json:"nextResetDate"`
+	// The amount of usage requested by the customer.
+	RequestedUsage *float64 `json:"requestedUsage"`
+	// The interval at which usage resets automatically, such as monthly or yearly.
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// Detailed configuration object specifying the usage reset schedule.
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
 	ResourceID               *string                  `json:"resourceId"`
-	Summaries                []*EntitlementSummary    `json:"summaries"`
-	UsageLimit               *float64                 `json:"usageLimit"`
+	// List of entitlement summaries per feature, including source and effective values.
+	Summaries []*EntitlementSummary `json:"summaries"`
+	// The maximum allowed usage for this entitlement before restrictions apply.
+	UsageLimit *float64 `json:"usageLimit"`
 	// The anchor for calculating the usage period for metered entitlements with a reset period configured
 	UsagePeriodAnchor *string `json:"usagePeriodAnchor"`
 	// The end date of the usage period for metered entitlements with a reset period configured
 	UsagePeriodEnd *string `json:"usagePeriodEnd"`
 	// The start date of the usage period for metered entitlements with a reset period configured
 	UsagePeriodStart *string `json:"usagePeriodStart"`
-	UsageUpdatedAt   *string `json:"usageUpdatedAt"`
+	// Timestamp of the last update to the usage value.
+	UsageUpdatedAt *string `json:"usageUpdatedAt"`
 }
 
+// Event payload for when entitlements are updated for a customer.
 type EntitlementsUpdated struct {
 	// The unique identifier for the account
-	AccountID    string         `json:"accountId"`
-	CustomerID   string         `json:"customerId"`
+	AccountID string `json:"accountId"`
+	// Identifier of the customer whose entitlements have changed.
+	CustomerID string `json:"customerId"`
+	// The updated list of entitlements for the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
 	// The unique identifier for the environment
-	EnvironmentID string  `json:"environmentId"`
-	ResourceID    *string `json:"resourceId"`
+	EnvironmentID string `json:"environmentId"`
+	// The resource the entitlement update is scoped to.
+	ResourceID *string `json:"resourceId"`
 }
 
 // An environment object
@@ -3429,27 +3581,43 @@ type FeatureTypeFilterComparison struct {
 	NotLike  *FeatureType  `json:"notLike,omitempty"`
 }
 
+// Query for fetching a single entitlement for a specific feature and customer.
 type FetchEntitlementQuery struct {
-	CustomerID    string              `json:"customerId"`
-	EnvironmentID *string             `json:"environmentId,omitempty"`
-	FeatureID     string              `json:"featureId"`
-	Options       *EntitlementOptions `json:"options,omitempty"`
-	ResourceID    *string             `json:"resourceId,omitempty"`
-}
-
-type FetchEntitlementsQuery struct {
-	CustomerID    string  `json:"customerId"`
+	// Identifier of the customer.
+	CustomerID string `json:"customerId"`
+	// The environment identifier used to resolve the entitlement context.
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	ResourceID    *string `json:"resourceId,omitempty"`
+	// The internal ID of the feature linked to this entitlement.
+	FeatureID string `json:"featureId"`
+	// Options for configuring how an entitlement is tracked or applied.
+	Options *EntitlementOptions `json:"options,omitempty"`
+	// The scoped resource Identifier.
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
+// Query for retrieving all entitlements for a customer in a specific environment.
+type FetchEntitlementsQuery struct {
+	// Identifier of the customer.
+	CustomerID string `json:"customerId"`
+	// The environment context for entitlement resolution.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The scoped resource Identifier.
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// Typography settings for a single font variant.
 type FontVariant struct {
-	FontSize   *float64    `json:"fontSize"`
+	// Font size for the variant.
+	FontSize *float64 `json:"fontSize"`
+	// Font weight, such as normal or bold.
 	FontWeight *FontWeight `json:"fontWeight"`
 }
 
+// Input for defining font style for a text variant.
 type FontVariantInput struct {
-	FontSize   *float64    `json:"fontSize,omitempty"`
+	// Size of the text in px or rem.
+	FontSize *float64 `json:"fontSize,omitempty"`
+	// Weight of the font, such as normal or bold.
 	FontWeight *FontWeight `json:"fontWeight,omitempty"`
 }
 
@@ -3542,6 +3710,7 @@ type GetSubscriptionInput struct {
 	SubscriptionID string `json:"subscriptionId"`
 }
 
+// Input object used to retrieve current widget configuration for the environment.
 type GetWidgetConfigurationInput struct {
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
@@ -5307,6 +5476,8 @@ type PaywallAddon struct {
 	DisplayName string `json:"displayName"`
 	// List of entitlements for the addon
 	Entitlements []*Entitlement `json:"entitlements"`
+	// List of hidden widgets of the package
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
 	// The maximum quantity of this addon that can be added to a subscription
 	MaxQuantity *float64 `json:"maxQuantity"`
 	// List of prices for the addon
@@ -5325,34 +5496,56 @@ type PaywallBasePlan struct {
 	RefID string `json:"refId"`
 }
 
+// Color palette for customizing the paywall.
 type PaywallColorsPalette struct {
-	BackgroundColor       *string `json:"backgroundColor"`
-	BorderColor           *string `json:"borderColor"`
+	// Background color for the paywall area.
+	BackgroundColor *string `json:"backgroundColor"`
+	// Color used for UI dividers or borders.
+	BorderColor *string `json:"borderColor"`
+	// Background color for highlighting the customers current plan.
 	CurrentPlanBackground *string `json:"currentPlanBackground"`
-	Primary               *string `json:"primary"`
-	TextColor             *string `json:"textColor"`
+	// Primary highlight color used across the paywall.
+	Primary *string `json:"primary"`
+	// Default text color within the paywall.
+	TextColor *string `json:"textColor"`
 }
 
+// Input for customizing paywall-specific color elements.
 type PaywallColorsPaletteInput struct {
-	BackgroundColor       *string `json:"backgroundColor,omitempty"`
-	BorderColor           *string `json:"borderColor,omitempty"`
+	// Background color of the widget.
+	BackgroundColor *string `json:"backgroundColor,omitempty"`
+	// Color applied to widget borders or separators.
+	BorderColor *string `json:"borderColor,omitempty"`
+	// Background color for the customer’s current plan section in the paywall.
 	CurrentPlanBackground *string `json:"currentPlanBackground,omitempty"`
-	Primary               *string `json:"primary,omitempty"`
-	TextColor             *string `json:"textColor,omitempty"`
+	// Primary accent color used throughout the widget.
+	Primary *string `json:"primary,omitempty"`
+	// Default color used for text content.
+	TextColor *string `json:"textColor,omitempty"`
 }
 
+// Styling and layout configuration for the paywall widget.
 type PaywallConfiguration struct {
-	CustomCSS  *string                     `json:"customCss"`
-	Layout     *PaywallLayoutConfiguration `json:"layout"`
-	Palette    *PaywallColorsPalette       `json:"palette"`
-	Typography *TypographyConfiguration    `json:"typography"`
+	// Custom CSS styles to override default paywall appearance.
+	CustomCSS *string `json:"customCss"`
+	// Layout parameters for displaying plans in the paywall.
+	Layout *PaywallLayoutConfiguration `json:"layout"`
+	// Color settings applied to the paywall UI.
+	Palette *PaywallColorsPalette `json:"palette"`
+	// Typography settings for the paywall interface.
+	Typography *TypographyConfiguration `json:"typography"`
 }
 
+// Input for updating the paywall configuration.
 type PaywallConfigurationInput struct {
-	CustomCSS  *string                          `json:"customCss,omitempty"`
-	Layout     *PaywallLayoutConfigurationInput `json:"layout,omitempty"`
-	Palette    *PaywallColorsPaletteInput       `json:"palette,omitempty"`
-	Typography *TypographyConfigurationInput    `json:"typography,omitempty"`
+	// Custom CSS overrides for additional visual customization.
+	CustomCSS *string `json:"customCss,omitempty"`
+	// Layout settings for plan display in the paywall.
+	Layout *PaywallLayoutConfigurationInput `json:"layout,omitempty"`
+	// Color palette settings for the paywall UI.
+	Palette *PaywallColorsPaletteInput `json:"palette,omitempty"`
+	// Typography configuration used in the paywall widget.
+	Typography *TypographyConfigurationInput `json:"typography,omitempty"`
 }
 
 // DTO for a currency
@@ -5363,18 +5556,28 @@ type PaywallCurrency struct {
 	Symbol string `json:"symbol"`
 }
 
+// Layout configuration for arranging plans in the paywall UI.
 type PaywallLayoutConfiguration struct {
-	Alignment   *Alignment `json:"alignment"`
-	PlanMargin  *float64   `json:"planMargin"`
-	PlanPadding *float64   `json:"planPadding"`
-	PlanWidth   *float64   `json:"planWidth"`
+	// Horizontal alignment of the plan cards, such as left, center, right.
+	Alignment *Alignment `json:"alignment"`
+	// Outer spacing around each plan card.
+	PlanMargin *float64 `json:"planMargin"`
+	// Inner spacing inside each plan card.
+	PlanPadding *float64 `json:"planPadding"`
+	// Width setting for each individual plan card.
+	PlanWidth *float64 `json:"planWidth"`
 }
 
+// Input for controlling the layout of pricing plans in the paywall.
 type PaywallLayoutConfigurationInput struct {
-	Alignment   *Alignment `json:"alignment,omitempty"`
-	PlanMargin  *float64   `json:"planMargin,omitempty"`
-	PlanPadding *float64   `json:"planPadding,omitempty"`
-	PlanWidth   *float64   `json:"planWidth,omitempty"`
+	// Horizontal alignment of pricing plans, such as left, center, or right.
+	Alignment *Alignment `json:"alignment,omitempty"`
+	// Outer spacing around each plan.
+	PlanMargin *float64 `json:"planMargin,omitempty"`
+	// Inner spacing inside each plan card.
+	PlanPadding *float64 `json:"planPadding,omitempty"`
+	// Width of each plan card displayed in the paywall.
+	PlanWidth *float64 `json:"planWidth,omitempty"`
 }
 
 // DTO for a plan
@@ -6017,18 +6220,29 @@ type PriceEdge struct {
 	Node Price `json:"node"`
 }
 
+// Entitlement that is granted as part of a price component.
 type PriceEntitlement struct {
-	Description              *string                  `json:"description"`
-	Feature                  Feature                  `json:"feature"`
-	FeatureID                string                   `json:"featureId"`
-	HasSoftLimit             *bool                    `json:"hasSoftLimit"`
-	HasUnlimitedUsage        *bool                    `json:"hasUnlimitedUsage"`
-	Package                  PackageDto               `json:"package"`
-	PackageID                string                   `json:"packageId"`
-	ResetPeriod              *EntitlementResetPeriod  `json:"resetPeriod"`
+	// Detailed description of the entitlement associated with the pricing component.
+	Description *string `json:"description"`
+	// The feature this entitlement corresponds to.
+	Feature Feature `json:"feature"`
+	// The internal ID of the feature linked to this entitlement.
+	FeatureID string `json:"featureId"`
+	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Indicates whether this entitlement grants unlimited usage with no enforced cap.
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage"`
+	// The package that this entitlement is associated with.
+	Package PackageDto `json:"package"`
+	// The internal ID of the package or plan that granted this entitlement.
+	PackageID string `json:"packageId"`
+	// The interval at which usage resets automatically, such as monthly or yearly.
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// Detailed configuration object specifying the usage reset schedule.
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
 	// Timestamp of when the record was last updated
-	UpdatedAt  *string  `json:"updatedAt"`
+	UpdatedAt *string `json:"updatedAt"`
+	// The maximum allowed usage for this entitlement before restrictions apply.
 	UsageLimit *float64 `json:"usageLimit"`
 }
 
@@ -6871,22 +7085,34 @@ type PublishPackageResult struct {
 	TaskID *string `json:"taskId"`
 }
 
+// Input object for triggering entitlement recalculation for one or more customers.
 type RecalculateEntitlementsInput struct {
-	CustomerIds        []string                                        `json:"customerIds,omitempty"`
-	EnvironmentID      string                                          `json:"environmentId"`
-	ForAllCustomers    *bool                                           `json:"forAllCustomers,omitempty"`
+	// List of customer IDs for which to recalculate entitlements.
+	CustomerIds []string `json:"customerIds,omitempty"`
+	// Identifier of the environment where recalculation should occur.
+	EnvironmentID string `json:"environmentId"`
+	// If true, recalculates entitlements for all customers in the environment.
+	ForAllCustomers *bool `json:"forAllCustomers,omitempty"`
+	// Optional flags to control recalculation side effects.
 	SideEffectsOptions *RecalculateEntitlementsSideEffectsOptionsInput `json:"sideEffectsOptions,omitempty"`
 }
 
+// Output of the entitlement recalculation operation.
 type RecalculateEntitlementsResult struct {
+	// Identifier for the background task handling the recalculation.
 	TaskID string `json:"taskId"`
 }
 
+// Flags to control side effects triggered during entitlement recalculation.
 type RecalculateEntitlementsSideEffectsOptionsInput struct {
+	// Prevents publishing entitlement updates to subscribers.
 	SkipPublishToSubscribers *bool `json:"skipPublishToSubscribers,omitempty"`
-	SkipWriteToCache         *bool `json:"skipWriteToCache,omitempty"`
-	SkipWriteToDataCatalog   *bool `json:"skipWriteToDataCatalog,omitempty"`
-	SkipWriteToEventLog      *bool `json:"skipWriteToEventLog,omitempty"`
+	// Skips cache updates for recalculated entitlements.
+	SkipWriteToCache *bool `json:"skipWriteToCache,omitempty"`
+	// Skips updating the data catalog during recalculation.
+	SkipWriteToDataCatalog *bool `json:"skipWriteToDataCatalog,omitempty"`
+	// Skips writing entitlement recalculation events to the event log.
+	SkipWriteToEventLog *bool `json:"skipWriteToEventLog,omitempty"`
 }
 
 type RemoveBasePlanFromPlanInput struct {
@@ -7014,9 +7240,12 @@ type SalesforceCredentialsInput struct {
 	Domain *string `json:"domain,omitempty"`
 }
 
+// Overall SDK configuration for the current environment.
 type SdkConfiguration struct {
-	IsWidgetWatermarkEnabled *bool   `json:"isWidgetWatermarkEnabled"`
-	SentryDsn                *string `json:"sentryDsn"`
+	// Flag to determine whether the Stigg watermark should be displayed in widgets.
+	IsWidgetWatermarkEnabled *bool `json:"isWidgetWatermarkEnabled"`
+	// Sentry DSN (Data Source Name) used for error logging and monitoring.
+	SentryDsn *string `json:"sentryDsn"`
 }
 
 // Input for setting access roles for a user
@@ -8492,7 +8721,9 @@ type SyncState struct {
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
+// Input for triggering a sync of tax rates from the billing provider.
 type SyncTaxRatesInput struct {
+	// The ID of the environment for which tax rates should be synced.
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
@@ -8530,8 +8761,11 @@ type TaskTypeFilterComparison struct {
 	NotLike  *TaskType  `json:"notLike,omitempty"`
 }
 
+// Information on the tax exemption.
 type TaxExempt struct {
-	Type  string `json:"type"`
+	// The type of tax exemption identifier, such as VAT.
+	Type string `json:"type"`
+	// The actual tax identifier value
 	Value string `json:"value"`
 }
 
@@ -8681,20 +8915,32 @@ type TriggerWorkflowInput struct {
 	TriggerID string `json:"triggerId"`
 }
 
+// Typography settings for various text elements.
 type TypographyConfiguration struct {
-	Body       *FontVariant `json:"body"`
-	FontFamily *string      `json:"fontFamily"`
-	H1         *FontVariant `json:"h1"`
-	H2         *FontVariant `json:"h2"`
-	H3         *FontVariant `json:"h3"`
+	// Font styling for body text.
+	Body *FontVariant `json:"body"`
+	// Primary font family used across the widget.
+	FontFamily *string `json:"fontFamily"`
+	// Font styling for level-1 headings.
+	H1 *FontVariant `json:"h1"`
+	// Font styling for level-2 headings.
+	H2 *FontVariant `json:"h2"`
+	// Font styling for level-3 headings.
+	H3 *FontVariant `json:"h3"`
 }
 
+// Input for setting typography styles for widgets.
 type TypographyConfigurationInput struct {
-	Body       *FontVariantInput `json:"body,omitempty"`
-	FontFamily *string           `json:"fontFamily,omitempty"`
-	H1         *FontVariantInput `json:"h1,omitempty"`
-	H2         *FontVariantInput `json:"h2,omitempty"`
-	H3         *FontVariantInput `json:"h3,omitempty"`
+	// Style applied to general text content.
+	Body *FontVariantInput `json:"body,omitempty"`
+	// Font family to be used throughout the widget.
+	FontFamily *string `json:"fontFamily,omitempty"`
+	// Style applied to top-level headings.
+	H1 *FontVariantInput `json:"h1,omitempty"`
+	// Style applied to second-level headings.
+	H2 *FontVariantInput `json:"h2,omitempty"`
+	// Style applied to third-level headings.
+	H3 *FontVariantInput `json:"h3,omitempty"`
 }
 
 // Input for un-archiving a feature
@@ -9495,17 +9741,25 @@ type WeeklyResetPeriodConfigInput struct {
 	AccordingTo WeeklyAccordingTo `json:"accordingTo"`
 }
 
+// Configuration settings for all embeddable widgets.
 type WidgetConfiguration struct {
-	Checkout       *CheckoutConfiguration       `json:"checkout"`
+	// Custom UI configuration for the checkout widget.
+	Checkout *CheckoutConfiguration `json:"checkout"`
+	// Custom UI configuration for the customer portal widget.
 	CustomerPortal *CustomerPortalConfiguration `json:"customerPortal"`
-	Paywall        *PaywallConfiguration        `json:"paywall"`
+	// Custom UI configuration for the paywall widget.
+	Paywall *PaywallConfiguration `json:"paywall"`
 }
 
+// Input for updating configuration settings across all widgets.
 type WidgetConfigurationUpdateInput struct {
-	CheckoutConfiguration       *CheckoutConfigurationInput       `json:"checkoutConfiguration,omitempty"`
+	// Updated configuration for the checkout widget.
+	CheckoutConfiguration *CheckoutConfigurationInput `json:"checkoutConfiguration,omitempty"`
+	// Updated configuration for the customer portal widget.
 	CustomerPortalConfiguration *CustomerPortalConfigurationInput `json:"customerPortalConfiguration,omitempty"`
 	// The unique identifier for the environment
-	EnvironmentID        *string                    `json:"environmentId,omitempty"`
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Updated configuration for the paywall widget.
 	PaywallConfiguration *PaywallConfigurationInput `json:"paywallConfiguration,omitempty"`
 }
 
@@ -9625,15 +9879,24 @@ type ExperimentInfo struct {
 type AccessDeniedReason string
 
 const (
-	AccessDeniedReasonBudgetExceeded                     AccessDeniedReason = "BudgetExceeded"
-	AccessDeniedReasonCustomerIsArchived                 AccessDeniedReason = "CustomerIsArchived"
-	AccessDeniedReasonCustomerNotFound                   AccessDeniedReason = "CustomerNotFound"
-	AccessDeniedReasonCustomerResourceNotFound           AccessDeniedReason = "CustomerResourceNotFound"
-	AccessDeniedReasonFeatureNotFound                    AccessDeniedReason = "FeatureNotFound"
-	AccessDeniedReasonNoActiveSubscription               AccessDeniedReason = "NoActiveSubscription"
+	// The customer has exceeded their usage budget for the feature.
+	AccessDeniedReasonBudgetExceeded AccessDeniedReason = "BudgetExceeded"
+	// The customer is archived and no longer eligible for entitlements.
+	AccessDeniedReasonCustomerIsArchived AccessDeniedReason = "CustomerIsArchived"
+	// The customer making the request could not be found.
+	AccessDeniedReasonCustomerNotFound AccessDeniedReason = "CustomerNotFound"
+	// The resource associated with the customer could not be found.
+	AccessDeniedReasonCustomerResourceNotFound AccessDeniedReason = "CustomerResourceNotFound"
+	// The requested feature does not exist or is not defined in the current environment.
+	AccessDeniedReasonFeatureNotFound AccessDeniedReason = "FeatureNotFound"
+	// The customer does not have any active subscription linked to the feature.
+	AccessDeniedReasonNoActiveSubscription AccessDeniedReason = "NoActiveSubscription"
+	// The current subscription does not include entitlement to the requested feature.
 	AccessDeniedReasonNoFeatureEntitlementInSubscription AccessDeniedReason = "NoFeatureEntitlementInSubscription"
-	AccessDeniedReasonRequestedUsageExceedingLimit       AccessDeniedReason = "RequestedUsageExceedingLimit"
-	AccessDeniedReasonUnknown                            AccessDeniedReason = "Unknown"
+	// The customers usage request exceeds their entitled limit.
+	AccessDeniedReasonRequestedUsageExceedingLimit AccessDeniedReason = "RequestedUsageExceedingLimit"
+	// The access denial occurred for an unknown or unexpected reason.
+	AccessDeniedReasonUnknown AccessDeniedReason = "Unknown"
 )
 
 var AllAccessDeniedReason = []AccessDeniedReason{
@@ -9935,9 +10198,12 @@ func (e AggregationFunction) MarshalGQL(w io.Writer) {
 type Alignment string
 
 const (
+	// Align content to the horizontal center of the container.
 	AlignmentCenter Alignment = "CENTER"
-	AlignmentLeft   Alignment = "LEFT"
-	AlignmentRight  Alignment = "RIGHT"
+	// Align content to the left edge of the container.
+	AlignmentLeft Alignment = "LEFT"
+	// Align content to the right edge of the container.
+	AlignmentRight Alignment = "RIGHT"
 )
 
 var AllAlignment = []Alignment{
@@ -10647,121 +10913,237 @@ func (e CouponType) MarshalGQL(w io.Writer) {
 type Currency string
 
 const (
+	// UAE Dirham
 	CurrencyAed Currency = "AED"
+	// Lek
 	CurrencyAll Currency = "ALL"
+	// Armenian Dram
 	CurrencyAmd Currency = "AMD"
+	// Netherlands Antillean Guilder
 	CurrencyAng Currency = "ANG"
+	// Australian Dollar
 	CurrencyAud Currency = "AUD"
+	// Aruban Florin
 	CurrencyAwg Currency = "AWG"
+	// Azerbaijanian Manat
 	CurrencyAzn Currency = "AZN"
+	// Convertible Mark
 	CurrencyBam Currency = "BAM"
+	// Barbados Dollar
 	CurrencyBbd Currency = "BBD"
+	// Taka
 	CurrencyBdt Currency = "BDT"
+	// Bulgarian Lev
 	CurrencyBgn Currency = "BGN"
+	// Burundi Franc
 	CurrencyBif Currency = "BIF"
+	// Bermudian Dollar
 	CurrencyBmd Currency = "BMD"
+	// Brunei Dollar
 	CurrencyBnd Currency = "BND"
+	// Brazilian Real
 	CurrencyBrl Currency = "BRL"
+	// Bahamian Dollar
 	CurrencyBsd Currency = "BSD"
+	// Pula
 	CurrencyBwp Currency = "BWP"
+	// Belarusian Ruble
 	CurrencyByn Currency = "BYN"
+	// Belize Dollar
 	CurrencyBzd Currency = "BZD"
+	// Canadian Dollar
 	CurrencyCad Currency = "CAD"
+	// Congolese Franc
 	CurrencyCdf Currency = "CDF"
+	// Swiss Franc
 	CurrencyChf Currency = "CHF"
+	// Chilean Peso
 	CurrencyClp Currency = "CLP"
+	// Yuan Renminbi
 	CurrencyCny Currency = "CNY"
+	// Czech Koruna
 	CurrencyCzk Currency = "CZK"
+	// Djibouti Franc
 	CurrencyDjf Currency = "DJF"
+	// Danish Krone
 	CurrencyDkk Currency = "DKK"
+	// Dominican Peso
 	CurrencyDop Currency = "DOP"
+	// Algerian Dinar
 	CurrencyDzd Currency = "DZD"
+	// Egyptian Pound
 	CurrencyEgp Currency = "EGP"
+	// Ethiopian Birr
 	CurrencyEtb Currency = "ETB"
+	// Euro
 	CurrencyEur Currency = "EUR"
+	// Fiji Dollar
 	CurrencyFjd Currency = "FJD"
+	// Pound Sterling
 	CurrencyGbp Currency = "GBP"
+	// Lari
 	CurrencyGel Currency = "GEL"
+	// Gibraltar Pound
 	CurrencyGip Currency = "GIP"
+	// Dalasi
 	CurrencyGmd Currency = "GMD"
+	// Guinea Franc
 	CurrencyGnf Currency = "GNF"
+	// Guyana Dollar
 	CurrencyGyd Currency = "GYD"
+	// Hong Kong Dollar
 	CurrencyHkd Currency = "HKD"
+	// Kuna
 	CurrencyHrk Currency = "HRK"
+	// Gourde
 	CurrencyHtg Currency = "HTG"
+	// Rupiah
 	CurrencyIDR Currency = "IDR"
+	// New Israeli Sheqel
 	CurrencyIls Currency = "ILS"
+	// Indian Rupee
 	CurrencyInr Currency = "INR"
+	// Iceland Krona
 	CurrencyIsk Currency = "ISK"
+	// Jamaican Dollar
 	CurrencyJmd Currency = "JMD"
+	// Yen
 	CurrencyJpy Currency = "JPY"
+	// Kenyan Shilling
 	CurrencyKes Currency = "KES"
+	// Som
 	CurrencyKgs Currency = "KGS"
+	// Riel
 	CurrencyKhr Currency = "KHR"
+	// Comoro Franc
 	CurrencyKmf Currency = "KMF"
+	// Won
 	CurrencyKrw Currency = "KRW"
+	// Cayman Islands Dollar
 	CurrencyKyd Currency = "KYD"
+	// Tenge
 	CurrencyKzt Currency = "KZT"
+	// Lebanese Pound
 	CurrencyLbp Currency = "LBP"
+	// Sri Lanka Rupee
 	CurrencyLkr Currency = "LKR"
+	// Liberian Dollar
 	CurrencyLrd Currency = "LRD"
+	// Loti
 	CurrencyLsl Currency = "LSL"
+	// Moroccan Dirham
 	CurrencyMad Currency = "MAD"
+	// Moldovan Leu
 	CurrencyMdl Currency = "MDL"
+	// Malagasy Ariary
 	CurrencyMga Currency = "MGA"
+	// Denar
 	CurrencyMkd Currency = "MKD"
+	// Kyat
 	CurrencyMmk Currency = "MMK"
+	// Tugrik
 	CurrencyMnt Currency = "MNT"
+	// Pataca
 	CurrencyMop Currency = "MOP"
+	// Ouguiya
 	CurrencyMro Currency = "MRO"
+	// Rufiyaa
 	CurrencyMvr Currency = "MVR"
+	// Malawi Kwacha
 	CurrencyMwk Currency = "MWK"
+	// Mexican Peso
 	CurrencyMxn Currency = "MXN"
+	// Malaysian Ringgit
 	CurrencyMyr Currency = "MYR"
+	// Mozambique Metical
 	CurrencyMzn Currency = "MZN"
+	// Namibia Dollar
 	CurrencyNad Currency = "NAD"
+	// Naira
 	CurrencyNgn Currency = "NGN"
+	// Norwegian Krone
 	CurrencyNok Currency = "NOK"
+	// Nepalese Rupee
 	CurrencyNpr Currency = "NPR"
+	// New Zealand Dollar
 	CurrencyNzd Currency = "NZD"
+	// Kina
 	CurrencyPgk Currency = "PGK"
+	// Philippine Peso
 	CurrencyPhp Currency = "PHP"
+	// Pakistan Rupee
 	CurrencyPkr Currency = "PKR"
+	// Zloty
 	CurrencyPln Currency = "PLN"
+	// Guarani
 	CurrencyPyg Currency = "PYG"
+	// Qatari Rial
 	CurrencyQar Currency = "QAR"
+	// Romanian Leu
 	CurrencyRon Currency = "RON"
+	// Serbian Dinar
 	CurrencyRsd Currency = "RSD"
+	// Russian Ruble
 	CurrencyRub Currency = "RUB"
+	// Rwanda Franc
 	CurrencyRwf Currency = "RWF"
+	// Saudi Riyal
 	CurrencySar Currency = "SAR"
+	// Solomon Islands Dollar
 	CurrencySbd Currency = "SBD"
+	// Seychelles Rupee
 	CurrencyScr Currency = "SCR"
+	// Swedish Krona
 	CurrencySek Currency = "SEK"
+	// Singapore Dollar
 	CurrencySgd Currency = "SGD"
+	// Unknown or special currency code
 	CurrencySle Currency = "SLE"
+	// Leone
 	CurrencySll Currency = "SLL"
+	// Somali Shilling
 	CurrencySos Currency = "SOS"
+	// Lilangeni
 	CurrencySzl Currency = "SZL"
+	// Baht
 	CurrencyThb Currency = "THB"
+	// Somoni
 	CurrencyTjs Currency = "TJS"
+	// Paanga
 	CurrencyTop Currency = "TOP"
+	// Turkish Lira
 	CurrencyTry Currency = "TRY"
+	// Trinidad and Tobago Dollar
 	CurrencyTtd Currency = "TTD"
+	// Tanzanian Shilling
 	CurrencyTzs Currency = "TZS"
+	// Hryvnia
 	CurrencyUah Currency = "UAH"
+	// Uganda Shilling
 	CurrencyUgx Currency = "UGX"
+	// US Dollar
 	CurrencyUsd Currency = "USD"
+	// Uzbekistan Sum
 	CurrencyUzs Currency = "UZS"
+	// Dong
 	CurrencyVnd Currency = "VND"
+	// Vatu
 	CurrencyVuv Currency = "VUV"
+	// Tala
 	CurrencyWst Currency = "WST"
+	// CFA Franc BEAC
 	CurrencyXaf Currency = "XAF"
+	// East Caribbean Dollar
 	CurrencyXcd Currency = "XCD"
+	// CFA Franc BCEAO
 	CurrencyXof Currency = "XOF"
+	// CFP Franc
 	CurrencyXpf Currency = "XPF"
+	// Yemeni Rial
 	CurrencyYer Currency = "YER"
+	// Rand
 	CurrencyZar Currency = "ZAR"
+	// Zambian Kwacha
 	CurrencyZmw Currency = "ZMW"
 )
 
@@ -12631,7 +13013,9 @@ func (e FeatureType) MarshalGQL(w io.Writer) {
 type FontWeight string
 
 const (
-	FontWeightBold   FontWeight = "BOLD"
+	// Bold font weight.
+	FontWeightBold FontWeight = "BOLD"
+	// Standard font weight.
 	FontWeightNormal FontWeight = "NORMAL"
 )
 
