@@ -1653,18 +1653,18 @@ type CustomerFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                      `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                        `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                        `json:"currentBillingPeriodStart,omitempty"`
-	CustomerID                *StringFieldComparison                      `json:"customerId,omitempty"`
+	CustomerID                *UUIDFilterComparison                       `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                        `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                        `json:"endDate,omitempty"`
-	EnvironmentID             *StringFieldComparison                      `json:"environmentId,omitempty"`
-	ID                        *StringFieldComparison                      `json:"id,omitempty"`
+	EnvironmentID             *UUIDFilterComparison                       `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison                       `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                      `json:"oldBillingId,omitempty"`
 	Or                        []*CustomerFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PayingCustomerID          *StringFieldComparison                      `json:"payingCustomerId,omitempty"`
+	PayingCustomerID          *UUIDFilterComparison                       `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison          `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                      `json:"refId,omitempty"`
-	ResourceID                *StringFieldComparison                      `json:"resourceId,omitempty"`
+	ResourceID                *UUIDFilterComparison                       `json:"resourceId,omitempty"`
 	SalesforceID              *StringFieldComparison                      `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                        `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison         `json:"status,omitempty"`
@@ -2030,18 +2030,18 @@ type CustomerResourceFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                              `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                                `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                `json:"currentBillingPeriodStart,omitempty"`
-	CustomerID                *StringFieldComparison                              `json:"customerId,omitempty"`
+	CustomerID                *UUIDFilterComparison                               `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                `json:"endDate,omitempty"`
-	EnvironmentID             *StringFieldComparison                              `json:"environmentId,omitempty"`
-	ID                        *StringFieldComparison                              `json:"id,omitempty"`
+	EnvironmentID             *UUIDFilterComparison                               `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison                               `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                              `json:"oldBillingId,omitempty"`
 	Or                        []*CustomerResourceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PayingCustomerID          *StringFieldComparison                              `json:"payingCustomerId,omitempty"`
+	PayingCustomerID          *UUIDFilterComparison                               `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                  `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                        `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                              `json:"refId,omitempty"`
-	ResourceID                *StringFieldComparison                              `json:"resourceId,omitempty"`
+	ResourceID                *UUIDFilterComparison                               `json:"resourceId,omitempty"`
 	SalesforceID              *StringFieldComparison                              `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                 `json:"status,omitempty"`
@@ -2234,22 +2234,22 @@ type CustomerSubscriptionFilter struct {
 	CurrentBillingPeriodEnd   *DateFieldComparison                                     `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                     `json:"currentBillingPeriodStart,omitempty"`
 	Customer                  *CustomerSubscriptionFilterCustomerFilter                `json:"customer,omitempty"`
-	CustomerID                *StringFieldComparison                                   `json:"customerId,omitempty"`
+	CustomerID                *UUIDFilterComparison                                    `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                     `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                     `json:"endDate,omitempty"`
-	EnvironmentID             *StringFieldComparison                                   `json:"environmentId,omitempty"`
-	ID                        *StringFieldComparison                                   `json:"id,omitempty"`
+	EnvironmentID             *UUIDFilterComparison                                    `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison                                    `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                                   `json:"oldBillingId,omitempty"`
 	Or                        []*CustomerSubscriptionFilter                            `json:"or,omitempty"`
 	PayingCustomer            *CustomerSubscriptionFilterCustomerFilter                `json:"payingCustomer,omitempty"`
-	PayingCustomerID          *StringFieldComparison                                   `json:"payingCustomerId,omitempty"`
+	PayingCustomerID          *UUIDFilterComparison                                    `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                       `json:"paymentCollection,omitempty"`
 	Plan                      *CustomerSubscriptionFilterPlanFilter                    `json:"plan,omitempty"`
 	Prices                    *CustomerSubscriptionFilterSubscriptionPriceFilter       `json:"prices,omitempty"`
 	PricingType               *PricingTypeFilterComparison                             `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                                   `json:"refId,omitempty"`
 	Resource                  *CustomerSubscriptionFilterCustomerResourceFilter        `json:"resource,omitempty"`
-	ResourceID                *StringFieldComparison                                   `json:"resourceId,omitempty"`
+	ResourceID                *UUIDFilterComparison                                    `json:"resourceId,omitempty"`
 	SalesforceID              *StringFieldComparison                                   `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                     `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                      `json:"status,omitempty"`
@@ -7628,18 +7628,18 @@ type SubscriptionAddonFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                                 `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                 `json:"currentBillingPeriodStart,omitempty"`
-	CustomerID                *StringFieldComparison                               `json:"customerId,omitempty"`
+	CustomerID                *UUIDFilterComparison                                `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                 `json:"endDate,omitempty"`
-	EnvironmentID             *StringFieldComparison                               `json:"environmentId,omitempty"`
-	ID                        *StringFieldComparison                               `json:"id,omitempty"`
+	EnvironmentID             *UUIDFilterComparison                                `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison                                `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                               `json:"oldBillingId,omitempty"`
 	Or                        []*SubscriptionAddonFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PayingCustomerID          *StringFieldComparison                               `json:"payingCustomerId,omitempty"`
+	PayingCustomerID          *UUIDFilterComparison                                `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                               `json:"refId,omitempty"`
-	ResourceID                *StringFieldComparison                               `json:"resourceId,omitempty"`
+	ResourceID                *UUIDFilterComparison                                `json:"resourceId,omitempty"`
 	SalesforceID              *StringFieldComparison                               `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                 `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
@@ -7881,18 +7881,18 @@ type SubscriptionEntitlementFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                                     `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                                       `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                       `json:"currentBillingPeriodStart,omitempty"`
-	CustomerID                *StringFieldComparison                                     `json:"customerId,omitempty"`
+	CustomerID                *UUIDFilterComparison                                      `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                       `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                       `json:"endDate,omitempty"`
-	EnvironmentID             *StringFieldComparison                                     `json:"environmentId,omitempty"`
-	ID                        *StringFieldComparison                                     `json:"id,omitempty"`
+	EnvironmentID             *UUIDFilterComparison                                      `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison                                      `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                                     `json:"oldBillingId,omitempty"`
 	Or                        []*SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PayingCustomerID          *StringFieldComparison                                     `json:"payingCustomerId,omitempty"`
+	PayingCustomerID          *UUIDFilterComparison                                      `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                         `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                               `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                                     `json:"refId,omitempty"`
-	ResourceID                *StringFieldComparison                                     `json:"resourceId,omitempty"`
+	ResourceID                *UUIDFilterComparison                                      `json:"resourceId,omitempty"`
 	SalesforceID              *StringFieldComparison                                     `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                       `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                        `json:"status,omitempty"`
@@ -8418,18 +8418,18 @@ type SubscriptionPriceFilterCustomerSubscriptionFilter struct {
 	CrmLinkURL                *StringFieldComparison                               `json:"crmLinkUrl,omitempty"`
 	CurrentBillingPeriodEnd   *DateFieldComparison                                 `json:"currentBillingPeriodEnd,omitempty"`
 	CurrentBillingPeriodStart *DateFieldComparison                                 `json:"currentBillingPeriodStart,omitempty"`
-	CustomerID                *StringFieldComparison                               `json:"customerId,omitempty"`
+	CustomerID                *UUIDFilterComparison                                `json:"customerId,omitempty"`
 	EffectiveEndDate          *DateFieldComparison                                 `json:"effectiveEndDate,omitempty"`
 	EndDate                   *DateFieldComparison                                 `json:"endDate,omitempty"`
-	EnvironmentID             *StringFieldComparison                               `json:"environmentId,omitempty"`
-	ID                        *StringFieldComparison                               `json:"id,omitempty"`
+	EnvironmentID             *UUIDFilterComparison                                `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison                                `json:"id,omitempty"`
 	OldBillingID              *StringFieldComparison                               `json:"oldBillingId,omitempty"`
 	Or                        []*SubscriptionPriceFilterCustomerSubscriptionFilter `json:"or,omitempty"`
-	PayingCustomerID          *StringFieldComparison                               `json:"payingCustomerId,omitempty"`
+	PayingCustomerID          *UUIDFilterComparison                                `json:"payingCustomerId,omitempty"`
 	PaymentCollection         *PaymentCollectionFilterComparison                   `json:"paymentCollection,omitempty"`
 	PricingType               *PricingTypeFilterComparison                         `json:"pricingType,omitempty"`
 	RefID                     *StringFieldComparison                               `json:"refId,omitempty"`
-	ResourceID                *StringFieldComparison                               `json:"resourceId,omitempty"`
+	ResourceID                *UUIDFilterComparison                                `json:"resourceId,omitempty"`
 	SalesforceID              *StringFieldComparison                               `json:"salesforceId,omitempty"`
 	StartDate                 *DateFieldComparison                                 `json:"startDate,omitempty"`
 	Status                    *SubscriptionStatusFilterComparison                  `json:"status,omitempty"`
@@ -8598,7 +8598,7 @@ type SubscriptionQueryFilter struct {
 	And           []*SubscriptionQueryFilter          `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison                `json:"createdAt,omitempty"`
 	CustomerID    *StringFieldComparison              `json:"customerId,omitempty"`
-	EnvironmentID *StringFieldComparison              `json:"environmentId,omitempty"`
+	EnvironmentID *UUIDFilterComparison               `json:"environmentId,omitempty"`
 	Or            []*SubscriptionQueryFilter          `json:"or,omitempty"`
 	ProductID     *StringFieldComparison              `json:"productId,omitempty"`
 	ResourceID    *StringFieldComparison              `json:"resourceId,omitempty"`
@@ -8941,6 +8941,23 @@ type TypographyConfigurationInput struct {
 	H2 *FontVariantInput `json:"h2,omitempty"`
 	// Style applied to third-level headings.
 	H3 *FontVariantInput `json:"h3,omitempty"`
+}
+
+type UUIDFilterComparison struct {
+	Eq       *string  `json:"eq,omitempty"`
+	Gt       *string  `json:"gt,omitempty"`
+	Gte      *string  `json:"gte,omitempty"`
+	ILike    *string  `json:"iLike,omitempty"`
+	In       []string `json:"in,omitempty"`
+	Is       *bool    `json:"is,omitempty"`
+	IsNot    *bool    `json:"isNot,omitempty"`
+	Like     *string  `json:"like,omitempty"`
+	Lt       *string  `json:"lt,omitempty"`
+	Lte      *string  `json:"lte,omitempty"`
+	Neq      *string  `json:"neq,omitempty"`
+	NotILike *string  `json:"notILike,omitempty"`
+	NotIn    []string `json:"notIn,omitempty"`
+	NotLike  *string  `json:"notLike,omitempty"`
 }
 
 // Input for un-archiving a feature
