@@ -2742,6 +2742,8 @@ type EntitlementFeature struct {
 	Description        *string                `json:"description"`
 	// The human-readable name of the entitlement, shown in UI elements.
 	DisplayName string `json:"displayName"`
+	// The configuration data for the enum feature
+	EnumConfiguration []*EnumConfigurationEntity `json:"enumConfiguration"`
 	// The current status of the feature.
 	FeatureStatus FeatureStatus `json:"featureStatus"`
 	// The type of feature associated with the entitlement.
@@ -2849,6 +2851,24 @@ type EntitlementsUpdated struct {
 	EnvironmentID string `json:"environmentId"`
 	// The resource the entitlement update is scoped to.
 	ResourceID *string `json:"resourceId"`
+}
+
+// Feature enum configuration entity
+type EnumConfigurationEntity struct {
+	// The deletion date for soft-deleted enum configuration entities
+	DeletedAt *string `json:"deletedAt"`
+	// The display name for the enum configuration entity
+	DisplayName string `json:"displayName"`
+	// The unique value identifier for the enum configuration entity
+	Value string `json:"value"`
+}
+
+// Feature enum configuration entity
+type EnumConfigurationEntityInput struct {
+	// The display name for the enum configuration entity
+	DisplayName string `json:"displayName"`
+	// The unique value identifier for the enum configuration entity
+	Value string `json:"value"`
 }
 
 // An environment object
@@ -3386,8 +3406,10 @@ type Feature struct {
 	// The description for the feature
 	Description *string `json:"description"`
 	// The display name for the feature
-	DisplayName string       `json:"displayName"`
-	Environment *Environment `json:"environment"`
+	DisplayName string `json:"displayName"`
+	// The configuration data for the enum feature
+	EnumConfiguration []*EnumConfigurationEntity `json:"enumConfiguration"`
+	Environment       *Environment               `json:"environment"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The status of the feature
@@ -3489,6 +3511,8 @@ type FeatureInput struct {
 	Description *string `json:"description,omitempty"`
 	// The display name for the feature
 	DisplayName string `json:"displayName"`
+	// The configuration data for the feature
+	EnumConfiguration []*EnumConfigurationEntityInput `json:"enumConfiguration,omitempty"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The status of the feature
@@ -4749,6 +4773,8 @@ type OverageEntitlementCreateInput struct {
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
 	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues,omitempty"`
 	// The unique identifier of the entitlement feature
 	FeatureID string `json:"featureId"`
 	// Whether the entitlement has a soft limit
@@ -4940,6 +4966,8 @@ type PackageEntitlement struct {
 	Description *string `json:"description"`
 	// The display name override of the entitlement
 	DisplayNameOverride *string `json:"displayNameOverride"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues"`
 	// The unique identifier for the environment
 	EnvironmentID string  `json:"environmentId"`
 	Feature       Feature `json:"feature"`
@@ -5014,6 +5042,8 @@ type PackageEntitlementDeleteResponse struct {
 	Description *string `json:"description"`
 	// The display name override of the entitlement
 	DisplayNameOverride *string `json:"displayNameOverride"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId"`
 	// The unique identifier of the entitlement feature
@@ -5101,6 +5131,8 @@ type PackageEntitlementInput struct {
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
 	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues,omitempty"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The unique identifier of the entitlement feature
@@ -5159,6 +5191,8 @@ type PackageEntitlementUpdateInput struct {
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
 	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues,omitempty"`
 	// Whether the entitlement has a soft limit
 	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
 	// Whether the entitlement has an unlimited usage
@@ -9139,6 +9173,8 @@ type UpdateFeatureInput struct {
 	Description *string `json:"description,omitempty"`
 	// The display name for the feature
 	DisplayName *string `json:"displayName,omitempty"`
+	// The configuration data for the feature
+	EnumConfiguration []*EnumConfigurationEntityInput `json:"enumConfiguration,omitempty"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The units for the feature
@@ -12071,9 +12107,10 @@ const (
 	// Failed to import subscriptions
 	ErrorCodeFailedToImportSubscriptions ErrorCode = "FailedToImportSubscriptions"
 	// Failed to resolve billing integration
-	ErrorCodeFailedToResolveBillingIntegration ErrorCode = "FailedToResolveBillingIntegration"
-	ErrorCodeFeatureNotFound                   ErrorCode = "FeatureNotFound"
-	ErrorCodeFetchAllCountriesPricesNotAllowed ErrorCode = "FetchAllCountriesPricesNotAllowed"
+	ErrorCodeFailedToResolveBillingIntegration      ErrorCode = "FailedToResolveBillingIntegration"
+	ErrorCodeFeatureConfigurationExceededLimitError ErrorCode = "FeatureConfigurationExceededLimitError"
+	ErrorCodeFeatureNotFound                        ErrorCode = "FeatureNotFound"
+	ErrorCodeFetchAllCountriesPricesNotAllowed      ErrorCode = "FetchAllCountriesPricesNotAllowed"
 	// Free plan can't have compatible package groups error
 	ErrorCodeFreePlanCantHaveCompatiblePackageGroupError ErrorCode = "FreePlanCantHaveCompatiblePackageGroupError"
 	// Too many graphql aliases were used in a single request
@@ -12231,6 +12268,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeFailedToImportCustomer,
 	ErrorCodeFailedToImportSubscriptions,
 	ErrorCodeFailedToResolveBillingIntegration,
+	ErrorCodeFeatureConfigurationExceededLimitError,
 	ErrorCodeFeatureNotFound,
 	ErrorCodeFetchAllCountriesPricesNotAllowed,
 	ErrorCodeFreePlanCantHaveCompatiblePackageGroupError,
@@ -12320,7 +12358,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeWorkflowTriggerNotFound:
+	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeWorkflowTriggerNotFound:
 		return true
 	}
 	return false
@@ -12988,18 +13026,21 @@ type FeatureType string
 const (
 	// Boolean feature type
 	FeatureTypeBoolean FeatureType = "BOOLEAN"
+	// Enum feature type
+	FeatureTypeEnum FeatureType = "ENUM"
 	// Numeric feature type
 	FeatureTypeNumber FeatureType = "NUMBER"
 )
 
 var AllFeatureType = []FeatureType{
 	FeatureTypeBoolean,
+	FeatureTypeEnum,
 	FeatureTypeNumber,
 }
 
 func (e FeatureType) IsValid() bool {
 	switch e {
-	case FeatureTypeBoolean, FeatureTypeNumber:
+	case FeatureTypeBoolean, FeatureTypeEnum, FeatureTypeNumber:
 		return true
 	}
 	return false
