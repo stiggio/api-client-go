@@ -2682,6 +2682,8 @@ type Entitlement struct {
 	DisplayNameOverride *string `json:"displayNameOverride"`
 	// Timestamp of the last update to the entitlement grant or configuration.
 	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// List of enum values applicable to this entitlement, if it is an enum feature.
+	EnumValues []string `json:"enumValues"`
 	// The feature this entitlement corresponds to.
 	Feature *EntitlementFeature `json:"feature"`
 	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
@@ -2827,6 +2829,8 @@ type EntitlementWithSummary struct {
 	DisplayNameOverride *string `json:"displayNameOverride"`
 	// Timestamp of the last update to the entitlement grant or configuration.
 	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// List of enum values applicable to this entitlement, if it is an enum feature.
+	EnumValues []string `json:"enumValues"`
 	// The feature this entitlement corresponds to.
 	Feature *EntitlementFeature `json:"feature"`
 	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
