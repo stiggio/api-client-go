@@ -514,6 +514,14 @@ type ArchiveEnvironmentInput struct {
 	Slug *string `json:"slug,omitempty"`
 }
 
+// Input for archiving a feature group
+type ArchiveFeatureGroupInput struct {
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The feature group id
+	FeatureGroupID string `json:"featureGroupId"`
+}
+
 // Input for archiving a feature
 type ArchiveFeatureInput struct {
 	// The unique identifier for the environment
@@ -1295,6 +1303,20 @@ type CreateExperimentInput struct {
 	VariantGroupName string `json:"variantGroupName"`
 	// Percentage of users in the variant group
 	VariantPercentage float64 `json:"variantPercentage"`
+}
+
+// Input for creating a feature group
+type CreateFeatureGroupInput struct {
+	// The description of the feature group
+	Description *string `json:"description,omitempty"`
+	// The display name of the feature group
+	DisplayName string `json:"displayName"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The feature group id
+	FeatureGroupID string `json:"featureGroupId"`
+	// The features in the feature group
+	Features []string `json:"features"`
 }
 
 type CreateHook struct {
@@ -3501,6 +3523,139 @@ type FeatureFilter struct {
 	Or            []*FeatureFilter               `json:"or,omitempty"`
 	RefID         *StringFieldComparison         `json:"refId,omitempty"`
 	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
+}
+
+// A set of features grouped together
+type FeatureGroup struct {
+	// Timestamp of when the record was created
+	CreatedAt string `json:"createdAt"`
+	// The description of the feature group
+	Description *string `json:"description"`
+	// The display name of the feature group
+	DisplayName string `json:"displayName"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The feature group id
+	FeatureGroupID string `json:"featureGroupId"`
+	// The features in the feature group
+	Features []*Feature `json:"features"`
+	// The internal id of the feature group
+	ID string `json:"id"`
+	// Indicates if this is the latest version of the feature group
+	IsLatest bool `json:"isLatest"`
+	// The status of the feature group (published, archived)
+	Status FeatureGroupStatus `json:"status"`
+	// Timestamp of when the record was last updated
+	UpdatedAt string `json:"updatedAt"`
+	// The version number of the feature group
+	VersionNumber int64 `json:"versionNumber"`
+}
+
+type FeatureGroupAggregateGroupBy struct {
+	CreatedAt      *string             `json:"createdAt"`
+	DisplayName    *string             `json:"displayName"`
+	EnvironmentID  *string             `json:"environmentId"`
+	FeatureGroupID *string             `json:"featureGroupId"`
+	ID             *string             `json:"id"`
+	IsLatest       *bool               `json:"isLatest"`
+	Status         *FeatureGroupStatus `json:"status"`
+	UpdatedAt      *string             `json:"updatedAt"`
+	VersionNumber  *int64              `json:"versionNumber"`
+}
+
+type FeatureGroupAvgAggregate struct {
+	VersionNumber *float64 `json:"versionNumber"`
+}
+
+type FeatureGroupConnection struct {
+	// Array of edges.
+	Edges []*FeatureGroupEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
+	// Fetch total count of records
+	TotalCount int64 `json:"totalCount"`
+}
+
+type FeatureGroupCountAggregate struct {
+	CreatedAt      *int64 `json:"createdAt"`
+	DisplayName    *int64 `json:"displayName"`
+	EnvironmentID  *int64 `json:"environmentId"`
+	FeatureGroupID *int64 `json:"featureGroupId"`
+	ID             *int64 `json:"id"`
+	IsLatest       *int64 `json:"isLatest"`
+	Status         *int64 `json:"status"`
+	UpdatedAt      *int64 `json:"updatedAt"`
+	VersionNumber  *int64 `json:"versionNumber"`
+}
+
+type FeatureGroupEdge struct {
+	// Cursor for this node.
+	Cursor string `json:"cursor"`
+	// The node containing the FeatureGroup
+	Node FeatureGroup `json:"node"`
+}
+
+type FeatureGroupFilter struct {
+	And            []*FeatureGroupFilter               `json:"and,omitempty"`
+	CreatedAt      *DateFieldComparison                `json:"createdAt,omitempty"`
+	DisplayName    *StringFieldComparison              `json:"displayName,omitempty"`
+	EnvironmentID  *UUIDFilterComparison               `json:"environmentId,omitempty"`
+	FeatureGroupID *StringFieldComparison              `json:"featureGroupId,omitempty"`
+	ID             *UUIDFilterComparison               `json:"id,omitempty"`
+	IsLatest       *BooleanFieldComparison             `json:"isLatest,omitempty"`
+	Or             []*FeatureGroupFilter               `json:"or,omitempty"`
+	Status         *FeatureGroupStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt      *DateFieldComparison                `json:"updatedAt,omitempty"`
+	VersionNumber  *IntFieldComparison                 `json:"versionNumber,omitempty"`
+}
+
+type FeatureGroupMaxAggregate struct {
+	CreatedAt      *string             `json:"createdAt"`
+	DisplayName    *string             `json:"displayName"`
+	EnvironmentID  *string             `json:"environmentId"`
+	FeatureGroupID *string             `json:"featureGroupId"`
+	ID             *string             `json:"id"`
+	Status         *FeatureGroupStatus `json:"status"`
+	UpdatedAt      *string             `json:"updatedAt"`
+	VersionNumber  *int64              `json:"versionNumber"`
+}
+
+type FeatureGroupMinAggregate struct {
+	CreatedAt      *string             `json:"createdAt"`
+	DisplayName    *string             `json:"displayName"`
+	EnvironmentID  *string             `json:"environmentId"`
+	FeatureGroupID *string             `json:"featureGroupId"`
+	ID             *string             `json:"id"`
+	Status         *FeatureGroupStatus `json:"status"`
+	UpdatedAt      *string             `json:"updatedAt"`
+	VersionNumber  *int64              `json:"versionNumber"`
+}
+
+type FeatureGroupSort struct {
+	Direction SortDirection          `json:"direction"`
+	Field     FeatureGroupSortFields `json:"field"`
+	Nulls     *SortNulls             `json:"nulls,omitempty"`
+}
+
+type FeatureGroupStatusFilterComparison struct {
+	Eq       *FeatureGroupStatus  `json:"eq,omitempty"`
+	Gt       *FeatureGroupStatus  `json:"gt,omitempty"`
+	Gte      *FeatureGroupStatus  `json:"gte,omitempty"`
+	ILike    *FeatureGroupStatus  `json:"iLike,omitempty"`
+	In       []FeatureGroupStatus `json:"in,omitempty"`
+	Is       *bool                `json:"is,omitempty"`
+	IsNot    *bool                `json:"isNot,omitempty"`
+	Like     *FeatureGroupStatus  `json:"like,omitempty"`
+	Lt       *FeatureGroupStatus  `json:"lt,omitempty"`
+	Lte      *FeatureGroupStatus  `json:"lte,omitempty"`
+	Neq      *FeatureGroupStatus  `json:"neq,omitempty"`
+	NotILike *FeatureGroupStatus  `json:"notILike,omitempty"`
+	NotIn    []FeatureGroupStatus `json:"notIn,omitempty"`
+	NotLike  *FeatureGroupStatus  `json:"notLike,omitempty"`
+}
+
+type FeatureGroupSumAggregate struct {
+	VersionNumber *float64 `json:"versionNumber"`
 }
 
 // Input for creating a feature
@@ -8994,6 +9149,14 @@ type UUIDFilterComparison struct {
 	NotLike  *string  `json:"notLike,omitempty"`
 }
 
+// Input for unarchiving a feature group
+type UnArchiveFeatureGroupInput struct {
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The feature group id
+	FeatureGroupID string `json:"featureGroupId"`
+}
+
 // Input for un-archiving a feature
 type UnArchiveFeatureInput struct {
 	// The unique identifier for the environment
@@ -12059,6 +12222,7 @@ const (
 	// Cannot add override entitlement to a plan
 	ErrorCodeCannotAddOverrideEntitlementToPlan ErrorCode = "CannotAddOverrideEntitlementToPlan"
 	ErrorCodeCannotArchiveFeatureError          ErrorCode = "CannotArchiveFeatureError"
+	ErrorCodeCannotArchiveFeatureGroupError     ErrorCode = "CannotArchiveFeatureGroupError"
 	// Cannot change billing integration at current customer state
 	ErrorCodeCannotChangeBillingIntegration ErrorCode = "CannotChangeBillingIntegration"
 	ErrorCodeCannotDeleteCustomerError      ErrorCode = "CannotDeleteCustomerError"
@@ -12109,6 +12273,7 @@ const (
 	// Failed to resolve billing integration
 	ErrorCodeFailedToResolveBillingIntegration      ErrorCode = "FailedToResolveBillingIntegration"
 	ErrorCodeFeatureConfigurationExceededLimitError ErrorCode = "FeatureConfigurationExceededLimitError"
+	ErrorCodeFeatureGroupNotFoundError              ErrorCode = "FeatureGroupNotFoundError"
 	ErrorCodeFeatureNotFound                        ErrorCode = "FeatureNotFound"
 	ErrorCodeFetchAllCountriesPricesNotAllowed      ErrorCode = "FetchAllCountriesPricesNotAllowed"
 	// Free plan can't have compatible package groups error
@@ -12201,6 +12366,7 @@ const (
 	ErrorCodeUnsupportedSubscriptionScheduleType                 ErrorCode = "UnsupportedSubscriptionScheduleType"
 	ErrorCodeUnsupportedVendorIdentifier                         ErrorCode = "UnsupportedVendorIdentifier"
 	ErrorCodeUsageMeasurementDiffOutOfRangeError                 ErrorCode = "UsageMeasurementDiffOutOfRangeError"
+	ErrorCodeVersionExceedsMaxValueError                         ErrorCode = "VersionExceedsMaxValueError"
 	// Workflow trigger not found
 	ErrorCodeWorkflowTriggerNotFound ErrorCode = "WorkflowTriggerNotFound"
 )
@@ -12228,6 +12394,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeBillingPeriodMissingError,
 	ErrorCodeCannotAddOverrideEntitlementToPlan,
 	ErrorCodeCannotArchiveFeatureError,
+	ErrorCodeCannotArchiveFeatureGroupError,
 	ErrorCodeCannotChangeBillingIntegration,
 	ErrorCodeCannotDeleteCustomerError,
 	ErrorCodeCannotDeleteDefaultIntegration,
@@ -12269,6 +12436,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeFailedToImportSubscriptions,
 	ErrorCodeFailedToResolveBillingIntegration,
 	ErrorCodeFeatureConfigurationExceededLimitError,
+	ErrorCodeFeatureGroupNotFoundError,
 	ErrorCodeFeatureNotFound,
 	ErrorCodeFetchAllCountriesPricesNotAllowed,
 	ErrorCodeFreePlanCantHaveCompatiblePackageGroupError,
@@ -12353,12 +12521,13 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeUnsupportedSubscriptionScheduleType,
 	ErrorCodeUnsupportedVendorIdentifier,
 	ErrorCodeUsageMeasurementDiffOutOfRangeError,
+	ErrorCodeVersionExceedsMaxValueError,
 	ErrorCodeWorkflowTriggerNotFound,
 }
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeWorkflowTriggerNotFound:
+	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
 		return true
 	}
 	return false
@@ -12913,6 +13082,105 @@ func (e *ExperimentStatus) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ExperimentStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type FeatureGroupSortFields string
+
+const (
+	FeatureGroupSortFieldsCreatedAt      FeatureGroupSortFields = "createdAt"
+	FeatureGroupSortFieldsDisplayName    FeatureGroupSortFields = "displayName"
+	FeatureGroupSortFieldsEnvironmentID  FeatureGroupSortFields = "environmentId"
+	FeatureGroupSortFieldsFeatureGroupID FeatureGroupSortFields = "featureGroupId"
+	FeatureGroupSortFieldsID             FeatureGroupSortFields = "id"
+	FeatureGroupSortFieldsIsLatest       FeatureGroupSortFields = "isLatest"
+	FeatureGroupSortFieldsStatus         FeatureGroupSortFields = "status"
+	FeatureGroupSortFieldsUpdatedAt      FeatureGroupSortFields = "updatedAt"
+	FeatureGroupSortFieldsVersionNumber  FeatureGroupSortFields = "versionNumber"
+)
+
+var AllFeatureGroupSortFields = []FeatureGroupSortFields{
+	FeatureGroupSortFieldsCreatedAt,
+	FeatureGroupSortFieldsDisplayName,
+	FeatureGroupSortFieldsEnvironmentID,
+	FeatureGroupSortFieldsFeatureGroupID,
+	FeatureGroupSortFieldsID,
+	FeatureGroupSortFieldsIsLatest,
+	FeatureGroupSortFieldsStatus,
+	FeatureGroupSortFieldsUpdatedAt,
+	FeatureGroupSortFieldsVersionNumber,
+}
+
+func (e FeatureGroupSortFields) IsValid() bool {
+	switch e {
+	case FeatureGroupSortFieldsCreatedAt, FeatureGroupSortFieldsDisplayName, FeatureGroupSortFieldsEnvironmentID, FeatureGroupSortFieldsFeatureGroupID, FeatureGroupSortFieldsID, FeatureGroupSortFieldsIsLatest, FeatureGroupSortFieldsStatus, FeatureGroupSortFieldsUpdatedAt, FeatureGroupSortFieldsVersionNumber:
+		return true
+	}
+	return false
+}
+
+func (e FeatureGroupSortFields) String() string {
+	return string(e)
+}
+
+func (e *FeatureGroupSortFields) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = FeatureGroupSortFields(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid FeatureGroupSortFields", str)
+	}
+	return nil
+}
+
+func (e FeatureGroupSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Feature group status
+type FeatureGroupStatus string
+
+const (
+	// The feature group is archived
+	FeatureGroupStatusArchived FeatureGroupStatus = "ARCHIVED"
+	// The feature group is published
+	FeatureGroupStatusPublished FeatureGroupStatus = "PUBLISHED"
+)
+
+var AllFeatureGroupStatus = []FeatureGroupStatus{
+	FeatureGroupStatusArchived,
+	FeatureGroupStatusPublished,
+}
+
+func (e FeatureGroupStatus) IsValid() bool {
+	switch e {
+	case FeatureGroupStatusArchived, FeatureGroupStatusPublished:
+		return true
+	}
+	return false
+}
+
+func (e FeatureGroupStatus) String() string {
+	return string(e)
+}
+
+func (e *FeatureGroupStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = FeatureGroupStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid FeatureGroupStatus", str)
+	}
+	return nil
+}
+
+func (e FeatureGroupStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
