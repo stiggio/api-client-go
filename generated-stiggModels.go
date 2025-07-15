@@ -10109,6 +10109,8 @@ const (
 	AccessDeniedReasonCustomerResourceNotFound AccessDeniedReason = "CustomerResourceNotFound"
 	// The requested feature does not exist or is not defined in the current environment.
 	AccessDeniedReasonFeatureNotFound AccessDeniedReason = "FeatureNotFound"
+	// The requested entitlement type does not match the feature type
+	AccessDeniedReasonFeatureTypeMismatch AccessDeniedReason = "FeatureTypeMismatch"
 	// The customer does not have any active subscription linked to the feature.
 	AccessDeniedReasonNoActiveSubscription AccessDeniedReason = "NoActiveSubscription"
 	// The current subscription does not include entitlement to the requested feature.
@@ -10125,6 +10127,7 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 	AccessDeniedReasonCustomerNotFound,
 	AccessDeniedReasonCustomerResourceNotFound,
 	AccessDeniedReasonFeatureNotFound,
+	AccessDeniedReasonFeatureTypeMismatch,
 	AccessDeniedReasonNoActiveSubscription,
 	AccessDeniedReasonNoFeatureEntitlementInSubscription,
 	AccessDeniedReasonRequestedUsageExceedingLimit,
@@ -10133,7 +10136,7 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 
 func (e AccessDeniedReason) IsValid() bool {
 	switch e {
-	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonUnknown:
+	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonFeatureTypeMismatch, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonUnknown:
 		return true
 	}
 	return false
