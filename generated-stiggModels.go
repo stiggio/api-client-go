@@ -2699,6 +2699,8 @@ type Entitlement struct {
 	NextResetDate *string `json:"nextResetDate"`
 	// The amount of usage requested by the customer.
 	RequestedUsage *float64 `json:"requestedUsage"`
+	// The values requested by the customer, if applicable.
+	RequestedValues []string `json:"requestedValues"`
 	// The interval at which usage resets automatically, such as monthly or yearly.
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
 	// Detailed configuration object specifying the usage reset schedule.
@@ -2728,6 +2730,8 @@ type EntitlementCheckRequested struct {
 	FeatureID string `json:"featureId"`
 	// The amount of usage requested by the customer.
 	RequestedUsage *float64 `json:"requestedUsage,omitempty"`
+	// The values requested by the customer, if applicable.
+	RequestedValues []string `json:"requestedValues,omitempty"`
 	// The specific resource identifier scoped for the entitlement check.
 	ResourceID *string `json:"resourceId,omitempty"`
 }
@@ -2738,6 +2742,8 @@ type EntitlementCheckResult struct {
 	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason,omitempty"`
 	// The amount of the feature the customer has used so far in the current period.
 	CurrentUsage *float64 `json:"currentUsage,omitempty"`
+	// List of enum values applicable to this entitlement, if it is an enum feature.
+	EnumValues []string `json:"enumValues,omitempty"`
 	// Indicates whether the customer currently has access to the feature.
 	HasAccess bool `json:"hasAccess"`
 	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
@@ -2750,6 +2756,8 @@ type EntitlementCheckResult struct {
 	NextResetDate *string `json:"nextResetDate,omitempty"`
 	// The amount of usage requested by the customer.
 	RequestedUsage *float64 `json:"requestedUsage,omitempty"`
+	// The values requested by the customer, if applicable.
+	RequestedValues []string `json:"requestedValues,omitempty"`
 	// The interval at which usage resets automatically, such as monthly or yearly.
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
 	// The maximum allowed usage for this entitlement before restrictions apply.
@@ -2796,6 +2804,8 @@ type EntitlementLimitExceededError struct {
 type EntitlementOptions struct {
 	// The amount of usage requested by the customer.
 	RequestedUsage *float64 `json:"requestedUsage,omitempty"`
+	// The values requested by the customer, if applicable.
+	RequestedValues []string `json:"requestedValues,omitempty"`
 	// Not in use anymore
 	ShouldTrack *bool `json:"shouldTrack,omitempty"`
 }
@@ -2846,6 +2856,8 @@ type EntitlementWithSummary struct {
 	NextResetDate *string `json:"nextResetDate"`
 	// The amount of usage requested by the customer.
 	RequestedUsage *float64 `json:"requestedUsage"`
+	// The values requested by the customer, if applicable.
+	RequestedValues []string `json:"requestedValues"`
 	// The interval at which usage resets automatically, such as monthly or yearly.
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
 	// Detailed configuration object specifying the usage reset schedule.
@@ -10101,6 +10113,8 @@ const (
 	AccessDeniedReasonNoFeatureEntitlementInSubscription AccessDeniedReason = "NoFeatureEntitlementInSubscription"
 	// The customers usage request exceeds their entitled limit.
 	AccessDeniedReasonRequestedUsageExceedingLimit AccessDeniedReason = "RequestedUsageExceedingLimit"
+	// The requested values do not match the expected values for the feature.
+	AccessDeniedReasonRequestedValuesMismatch AccessDeniedReason = "RequestedValuesMismatch"
 	// The access denial occurred for an unknown or unexpected reason.
 	AccessDeniedReasonUnknown AccessDeniedReason = "Unknown"
 )
@@ -10115,12 +10129,13 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 	AccessDeniedReasonNoActiveSubscription,
 	AccessDeniedReasonNoFeatureEntitlementInSubscription,
 	AccessDeniedReasonRequestedUsageExceedingLimit,
+	AccessDeniedReasonRequestedValuesMismatch,
 	AccessDeniedReasonUnknown,
 }
 
 func (e AccessDeniedReason) IsValid() bool {
 	switch e {
-	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonFeatureTypeMismatch, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonUnknown:
+	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonFeatureTypeMismatch, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonRequestedValuesMismatch, AccessDeniedReasonUnknown:
 		return true
 	}
 	return false
