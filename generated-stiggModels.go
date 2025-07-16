@@ -297,8 +297,8 @@ type AddonFilter struct {
 	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison          `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison          `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
 	Or            []*AddonFilter                 `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
@@ -433,9 +433,9 @@ type APIKey struct {
 }
 
 type APIKeyFilter struct {
-	And []*APIKeyFilter        `json:"and,omitempty"`
-	ID  *StringFieldComparison `json:"id,omitempty"`
-	Or  []*APIKeyFilter        `json:"or,omitempty"`
+	And []*APIKeyFilter       `json:"and,omitempty"`
+	ID  *UUIDFilterComparison `json:"id,omitempty"`
+	Or  []*APIKeyFilter       `json:"or,omitempty"`
 }
 
 type APIKeySort struct {
@@ -1129,8 +1129,8 @@ type CouponFilter struct {
 	CreatedAt     *DateFieldComparison          `json:"createdAt,omitempty"`
 	Customers     *CouponFilterCustomerFilter   `json:"customers,omitempty"`
 	Description   *StringFieldComparison        `json:"description,omitempty"`
-	EnvironmentID *StringFieldComparison        `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison        `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison         `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison         `json:"id,omitempty"`
 	Name          *StringFieldComparison        `json:"name,omitempty"`
 	Or            []*CouponFilter               `json:"or,omitempty"`
 	RefID         *StringFieldComparison        `json:"refId,omitempty"`
@@ -1150,8 +1150,8 @@ type CouponFilterCustomerFilter struct {
 	CustomerID           *StringFieldComparison               `json:"customerId,omitempty"`
 	DeletedAt            *DateFieldComparison                 `json:"deletedAt,omitempty"`
 	Email                *StringFieldComparison               `json:"email,omitempty"`
-	EnvironmentID        *StringFieldComparison               `json:"environmentId,omitempty"`
-	ID                   *StringFieldComparison               `json:"id,omitempty"`
+	EnvironmentID        *UUIDFilterComparison                `json:"environmentId,omitempty"`
+	ID                   *UUIDFilterComparison                `json:"id,omitempty"`
 	Name                 *StringFieldComparison               `json:"name,omitempty"`
 	Or                   []*CouponFilterCustomerFilter        `json:"or,omitempty"`
 	RefID                *StringFieldComparison               `json:"refId,omitempty"`
@@ -1652,8 +1652,8 @@ type CustomerFilter struct {
 	CustomerID              *StringFieldComparison                      `json:"customerId,omitempty"`
 	DeletedAt               *DateFieldComparison                        `json:"deletedAt,omitempty"`
 	Email                   *StringFieldComparison                      `json:"email,omitempty"`
-	EnvironmentID           *StringFieldComparison                      `json:"environmentId,omitempty"`
-	ID                      *StringFieldComparison                      `json:"id,omitempty"`
+	EnvironmentID           *UUIDFilterComparison                       `json:"environmentId,omitempty"`
+	ID                      *UUIDFilterComparison                       `json:"id,omitempty"`
 	Name                    *StringFieldComparison                      `json:"name,omitempty"`
 	Or                      []*CustomerFilter                           `json:"or,omitempty"`
 	PromotionalEntitlements *CustomerFilterPromotionalEntitlementFilter `json:"promotionalEntitlements,omitempty"`
@@ -1697,8 +1697,8 @@ type CustomerFilterCustomerSubscriptionFilter struct {
 type CustomerFilterPromotionalEntitlementFilter struct {
 	And           []*CustomerFilterPromotionalEntitlementFilter `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison                          `json:"createdAt,omitempty"`
-	EnvironmentID *StringFieldComparison                        `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison                        `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison                         `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison                         `json:"id,omitempty"`
 	Or            []*CustomerFilterPromotionalEntitlementFilter `json:"or,omitempty"`
 	Status        *PromotionalEntitlementStatusFilterComparison `json:"status,omitempty"`
 	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
@@ -2015,7 +2015,7 @@ type CustomerResourceFilter struct {
 	And           []*CustomerResourceFilter                         `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison                              `json:"createdAt,omitempty"`
 	Customer      *CustomerResourceFilterCustomerFilter             `json:"customer,omitempty"`
-	EnvironmentID *StringFieldComparison                            `json:"environmentId,omitempty"`
+	EnvironmentID *UUIDFilterComparison                             `json:"environmentId,omitempty"`
 	Or            []*CustomerResourceFilter                         `json:"or,omitempty"`
 	ResourceID    *StringFieldComparison                            `json:"resourceId,omitempty"`
 	Subscriptions *CustomerResourceFilterCustomerSubscriptionFilter `json:"subscriptions,omitempty"`
@@ -2031,8 +2031,8 @@ type CustomerResourceFilterCustomerFilter struct {
 	CustomerID           *StringFieldComparison                  `json:"customerId,omitempty"`
 	DeletedAt            *DateFieldComparison                    `json:"deletedAt,omitempty"`
 	Email                *StringFieldComparison                  `json:"email,omitempty"`
-	EnvironmentID        *StringFieldComparison                  `json:"environmentId,omitempty"`
-	ID                   *StringFieldComparison                  `json:"id,omitempty"`
+	EnvironmentID        *UUIDFilterComparison                   `json:"environmentId,omitempty"`
+	ID                   *UUIDFilterComparison                   `json:"id,omitempty"`
 	Name                 *StringFieldComparison                  `json:"name,omitempty"`
 	Or                   []*CustomerResourceFilterCustomerFilter `json:"or,omitempty"`
 	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
@@ -2290,8 +2290,8 @@ type CustomerSubscriptionFilterCustomerFilter struct {
 	CustomerID           *StringFieldComparison                      `json:"customerId,omitempty"`
 	DeletedAt            *DateFieldComparison                        `json:"deletedAt,omitempty"`
 	Email                *StringFieldComparison                      `json:"email,omitempty"`
-	EnvironmentID        *StringFieldComparison                      `json:"environmentId,omitempty"`
-	ID                   *StringFieldComparison                      `json:"id,omitempty"`
+	EnvironmentID        *UUIDFilterComparison                       `json:"environmentId,omitempty"`
+	ID                   *UUIDFilterComparison                       `json:"id,omitempty"`
 	Name                 *StringFieldComparison                      `json:"name,omitempty"`
 	Or                   []*CustomerSubscriptionFilterCustomerFilter `json:"or,omitempty"`
 	RefID                *StringFieldComparison                      `json:"refId,omitempty"`
@@ -2303,7 +2303,7 @@ type CustomerSubscriptionFilterCustomerFilter struct {
 type CustomerSubscriptionFilterCustomerResourceFilter struct {
 	And           []*CustomerSubscriptionFilterCustomerResourceFilter `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison                                `json:"createdAt,omitempty"`
-	EnvironmentID *StringFieldComparison                              `json:"environmentId,omitempty"`
+	EnvironmentID *UUIDFilterComparison                               `json:"environmentId,omitempty"`
 	Or            []*CustomerSubscriptionFilterCustomerResourceFilter `json:"or,omitempty"`
 	ResourceID    *StringFieldComparison                              `json:"resourceId,omitempty"`
 }
@@ -2314,8 +2314,8 @@ type CustomerSubscriptionFilterPlanFilter struct {
 	CreatedAt     *DateFieldComparison                    `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison                  `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison                  `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison                  `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison                  `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison                   `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison                   `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison                 `json:"isLatest,omitempty"`
 	Or            []*CustomerSubscriptionFilterPlanFilter `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison            `json:"pricingType,omitempty"`
@@ -2329,7 +2329,7 @@ type CustomerSubscriptionFilterPlanFilter struct {
 type CustomerSubscriptionFilterSubscriptionAddonFilter struct {
 	And       []*CustomerSubscriptionFilterSubscriptionAddonFilter `json:"and,omitempty"`
 	CreatedAt *DateFieldComparison                                 `json:"createdAt,omitempty"`
-	ID        *StringFieldComparison                               `json:"id,omitempty"`
+	ID        *UUIDFilterComparison                                `json:"id,omitempty"`
 	Or        []*CustomerSubscriptionFilterSubscriptionAddonFilter `json:"or,omitempty"`
 	Quantity  *NumberFieldComparison                               `json:"quantity,omitempty"`
 	UpdatedAt *DateFieldComparison                                 `json:"updatedAt,omitempty"`
@@ -2338,8 +2338,8 @@ type CustomerSubscriptionFilterSubscriptionAddonFilter struct {
 type CustomerSubscriptionFilterSubscriptionEntitlementFilter struct {
 	And            []*CustomerSubscriptionFilterSubscriptionEntitlementFilter `json:"and,omitempty"`
 	CreatedAt      *DateFieldComparison                                       `json:"createdAt,omitempty"`
-	EnvironmentID  *StringFieldComparison                                     `json:"environmentId,omitempty"`
-	ID             *StringFieldComparison                                     `json:"id,omitempty"`
+	EnvironmentID  *UUIDFilterComparison                                      `json:"environmentId,omitempty"`
+	ID             *UUIDFilterComparison                                      `json:"id,omitempty"`
 	Or             []*CustomerSubscriptionFilterSubscriptionEntitlementFilter `json:"or,omitempty"`
 	SubscriptionID *StringFieldComparison                                     `json:"subscriptionId,omitempty"`
 	UpdatedAt      *DateFieldComparison                                       `json:"updatedAt,omitempty"`
@@ -2351,7 +2351,7 @@ type CustomerSubscriptionFilterSubscriptionPriceFilter struct {
 	CreatedAt    *DateFieldComparison                                 `json:"createdAt,omitempty"`
 	FeatureID    *StringFieldComparison                               `json:"featureId,omitempty"`
 	HasSoftLimit *BooleanFieldComparison                              `json:"hasSoftLimit,omitempty"`
-	ID           *StringFieldComparison                               `json:"id,omitempty"`
+	ID           *UUIDFilterComparison                                `json:"id,omitempty"`
 	Or           []*CustomerSubscriptionFilterSubscriptionPriceFilter `json:"or,omitempty"`
 	UpdatedAt    *DateFieldComparison                                 `json:"updatedAt,omitempty"`
 	UsageLimit   *NumberFieldComparison                               `json:"usageLimit,omitempty"`
@@ -2961,7 +2961,7 @@ type EnvironmentFilter struct {
 	And                   []*EnvironmentFilter   `json:"and,omitempty"`
 	CreatedAt             *DateFieldComparison   `json:"createdAt,omitempty"`
 	DisplayName           *StringFieldComparison `json:"displayName,omitempty"`
-	ID                    *StringFieldComparison `json:"id,omitempty"`
+	ID                    *UUIDFilterComparison  `json:"id,omitempty"`
 	Or                    []*EnvironmentFilter   `json:"or,omitempty"`
 	PermanentDeletionDate *DateFieldComparison   `json:"permanentDeletionDate,omitempty"`
 	Slug                  *StringFieldComparison `json:"slug,omitempty"`
@@ -3284,10 +3284,6 @@ type ExperimentAggregateGroupBy struct {
 	Status        *ExperimentStatus `json:"status"`
 }
 
-type ExperimentAvgAggregate struct {
-	ID *float64 `json:"id"`
-}
-
 type ExperimentConnection struct {
 	// Array of edges.
 	Edges []*ExperimentEdge `json:"edges"`
@@ -3318,8 +3314,8 @@ type ExperimentFilter struct {
 	And           []*ExperimentFilter               `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison              `json:"createdAt,omitempty"`
 	Customers     *ExperimentFilterCustomerFilter   `json:"customers,omitempty"`
-	EnvironmentID *StringFieldComparison            `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison            `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison             `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison             `json:"id,omitempty"`
 	Name          *StringFieldComparison            `json:"name,omitempty"`
 	Or            []*ExperimentFilter               `json:"or,omitempty"`
 	ProductID     *StringFieldComparison            `json:"productId,omitempty"`
@@ -3337,8 +3333,8 @@ type ExperimentFilterCustomerFilter struct {
 	CustomerID           *StringFieldComparison               `json:"customerId,omitempty"`
 	DeletedAt            *DateFieldComparison                 `json:"deletedAt,omitempty"`
 	Email                *StringFieldComparison               `json:"email,omitempty"`
-	EnvironmentID        *StringFieldComparison               `json:"environmentId,omitempty"`
-	ID                   *StringFieldComparison               `json:"id,omitempty"`
+	EnvironmentID        *UUIDFilterComparison                `json:"environmentId,omitempty"`
+	ID                   *UUIDFilterComparison                `json:"id,omitempty"`
 	Name                 *StringFieldComparison               `json:"name,omitempty"`
 	Or                   []*ExperimentFilterCustomerFilter    `json:"or,omitempty"`
 	RefID                *StringFieldComparison               `json:"refId,omitempty"`
@@ -3408,10 +3404,6 @@ type ExperimentStatusFilterComparison struct {
 	NotILike *ExperimentStatus  `json:"notILike,omitempty"`
 	NotIn    []ExperimentStatus `json:"notIn,omitempty"`
 	NotLike  *ExperimentStatus  `json:"notLike,omitempty"`
-}
-
-type ExperimentSumAggregate struct {
-	ID *float64 `json:"id"`
 }
 
 type FailedToImportCustomerError struct {
@@ -3519,10 +3511,10 @@ type FeatureFilter struct {
 	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
+	EnvironmentID *UUIDFilterComparison          `json:"environmentId,omitempty"`
 	FeatureStatus *FeatureStatusFilterComparison `json:"featureStatus,omitempty"`
 	FeatureType   *FeatureTypeFilterComparison   `json:"featureType,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
+	ID            *UUIDFilterComparison          `json:"id,omitempty"`
 	MeterType     *MeterTypeFilterComparison     `json:"meterType,omitempty"`
 	Or            []*FeatureFilter               `json:"or,omitempty"`
 	RefID         *StringFieldComparison         `json:"refId,omitempty"`
@@ -4052,8 +4044,8 @@ type HookFilter struct {
 	And           []*HookFilter               `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison        `json:"createdAt,omitempty"`
 	Endpoint      *StringFieldComparison      `json:"endpoint,omitempty"`
-	EnvironmentID *StringFieldComparison      `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison      `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison       `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison       `json:"id,omitempty"`
 	Or            []*HookFilter               `json:"or,omitempty"`
 	Status        *HookStatusFilterComparison `json:"status,omitempty"`
 }
@@ -4274,7 +4266,7 @@ type ImportIntegrationTaskFilter struct {
 	And           []*ImportIntegrationTaskFilter `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
+	ID            *UUIDFilterComparison          `json:"id,omitempty"`
 	Or            []*ImportIntegrationTaskFilter `json:"or,omitempty"`
 	Status        *TaskStatusFilterComparison    `json:"status,omitempty"`
 	TaskType      *TaskTypeFilterComparison      `json:"taskType,omitempty"`
@@ -4458,8 +4450,8 @@ type IntegrationEdge struct {
 type IntegrationFilter struct {
 	And              []*IntegrationFilter                   `json:"and,omitempty"`
 	CreatedAt        *DateFieldComparison                   `json:"createdAt,omitempty"`
-	EnvironmentID    *StringFieldComparison                 `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison                 `json:"id,omitempty"`
+	EnvironmentID    *UUIDFilterComparison                  `json:"environmentId,omitempty"`
+	ID               *UUIDFilterComparison                  `json:"id,omitempty"`
 	Or               []*IntegrationFilter                   `json:"or,omitempty"`
 	VendorIdentifier *VendorIdentifierFilterComparison      `json:"vendorIdentifier,omitempty"`
 	VendorType       *IntegrationVendorTypeFilterComparison `json:"vendorType,omitempty"`
@@ -4632,7 +4624,7 @@ type MemberFilter struct {
 	And       []*MemberFilter         `json:"and,omitempty"`
 	CreatedAt *DateFieldComparison    `json:"createdAt,omitempty"`
 	Email     *StringFieldComparison  `json:"email,omitempty"`
-	ID        *StringFieldComparison  `json:"id,omitempty"`
+	ID        *UUIDFilterComparison   `json:"id,omitempty"`
 	Or        []*MemberFilter         `json:"or,omitempty"`
 	User      *MemberFilterUserFilter `json:"user,omitempty"`
 }
@@ -4640,7 +4632,7 @@ type MemberFilter struct {
 type MemberFilterUserFilter struct {
 	And   []*MemberFilterUserFilter `json:"and,omitempty"`
 	Email *StringFieldComparison    `json:"email,omitempty"`
-	ID    *StringFieldComparison    `json:"id,omitempty"`
+	ID    *UUIDFilterComparison     `json:"id,omitempty"`
 	Name  *StringFieldComparison    `json:"name,omitempty"`
 	Or    []*MemberFilterUserFilter `json:"or,omitempty"`
 }
@@ -5069,8 +5061,8 @@ type PackageDTOFilter struct {
 	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison          `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison          `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
 	Or            []*PackageDTOFilter            `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
@@ -5240,9 +5232,9 @@ type PackageEntitlementEdge struct {
 type PackageEntitlementFilter struct {
 	And           []*PackageEntitlementFilter               `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison                      `json:"createdAt,omitempty"`
-	EnvironmentID *StringFieldComparison                    `json:"environmentId,omitempty"`
+	EnvironmentID *UUIDFilterComparison                     `json:"environmentId,omitempty"`
 	Feature       *PackageEntitlementFilterFeatureFilter    `json:"feature,omitempty"`
-	ID            *StringFieldComparison                    `json:"id,omitempty"`
+	ID            *UUIDFilterComparison                     `json:"id,omitempty"`
 	Or            []*PackageEntitlementFilter               `json:"or,omitempty"`
 	Package       *PackageEntitlementFilterPackageDTOFilter `json:"package,omitempty"`
 	PackageID     *StringFieldComparison                    `json:"packageId,omitempty"`
@@ -5254,10 +5246,10 @@ type PackageEntitlementFilterFeatureFilter struct {
 	CreatedAt     *DateFieldComparison                     `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison                   `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison                   `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison                   `json:"environmentId,omitempty"`
+	EnvironmentID *UUIDFilterComparison                    `json:"environmentId,omitempty"`
 	FeatureStatus *FeatureStatusFilterComparison           `json:"featureStatus,omitempty"`
 	FeatureType   *FeatureTypeFilterComparison             `json:"featureType,omitempty"`
-	ID            *StringFieldComparison                   `json:"id,omitempty"`
+	ID            *UUIDFilterComparison                    `json:"id,omitempty"`
 	MeterType     *MeterTypeFilterComparison               `json:"meterType,omitempty"`
 	Or            []*PackageEntitlementFilterFeatureFilter `json:"or,omitempty"`
 	RefID         *StringFieldComparison                   `json:"refId,omitempty"`
@@ -5270,8 +5262,8 @@ type PackageEntitlementFilterPackageDTOFilter struct {
 	CreatedAt     *DateFieldComparison                        `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison                      `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison                      `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison                      `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison                      `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison                       `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison                       `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison                     `json:"isLatest,omitempty"`
 	Or            []*PackageEntitlementFilterPackageDTOFilter `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison                `json:"pricingType,omitempty"`
@@ -5448,7 +5440,7 @@ type PackageGroupFilter struct {
 	And            []*PackageGroupFilter               `json:"and,omitempty"`
 	CreatedAt      *DateFieldComparison                `json:"createdAt,omitempty"`
 	DisplayName    *StringFieldComparison              `json:"displayName,omitempty"`
-	EnvironmentID  *StringFieldComparison              `json:"environmentId,omitempty"`
+	EnvironmentID  *UUIDFilterComparison               `json:"environmentId,omitempty"`
 	IsLatest       *BooleanFieldComparison             `json:"isLatest,omitempty"`
 	Or             []*PackageGroupFilter               `json:"or,omitempty"`
 	PackageGroupID *StringFieldComparison              `json:"packageGroupId,omitempty"`
@@ -5466,8 +5458,8 @@ type PackageGroupFilterProductFilter struct {
 	CreatedAt                 *DateFieldComparison               `json:"createdAt,omitempty"`
 	Description               *StringFieldComparison             `json:"description,omitempty"`
 	DisplayName               *StringFieldComparison             `json:"displayName,omitempty"`
-	EnvironmentID             *StringFieldComparison             `json:"environmentId,omitempty"`
-	ID                        *StringFieldComparison             `json:"id,omitempty"`
+	EnvironmentID             *UUIDFilterComparison              `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison              `json:"id,omitempty"`
 	IsDefaultProduct          *BooleanFieldComparison            `json:"isDefaultProduct,omitempty"`
 	MultipleSubscriptions     *BooleanFieldComparison            `json:"multipleSubscriptions,omitempty"`
 	Or                        []*PackageGroupFilterProductFilter `json:"or,omitempty"`
@@ -6114,8 +6106,8 @@ type PlanFilter struct {
 	CreatedAt        *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description      *StringFieldComparison         `json:"description,omitempty"`
 	DisplayName      *StringFieldComparison         `json:"displayName,omitempty"`
-	EnvironmentID    *StringFieldComparison         `json:"environmentId,omitempty"`
-	ID               *StringFieldComparison         `json:"id,omitempty"`
+	EnvironmentID    *UUIDFilterComparison          `json:"environmentId,omitempty"`
+	ID               *UUIDFilterComparison          `json:"id,omitempty"`
 	IsLatest         *BooleanFieldComparison        `json:"isLatest,omitempty"`
 	Or               []*PlanFilter                  `json:"or,omitempty"`
 	PricingType      *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
@@ -6133,8 +6125,8 @@ type PlanFilterAddonFilter struct {
 	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison          `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison          `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
 	Or            []*PlanFilterAddonFilter       `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
@@ -6152,8 +6144,8 @@ type PlanFilterProductFilter struct {
 	CreatedAt                 *DateFieldComparison       `json:"createdAt,omitempty"`
 	Description               *StringFieldComparison     `json:"description,omitempty"`
 	DisplayName               *StringFieldComparison     `json:"displayName,omitempty"`
-	EnvironmentID             *StringFieldComparison     `json:"environmentId,omitempty"`
-	ID                        *StringFieldComparison     `json:"id,omitempty"`
+	EnvironmentID             *UUIDFilterComparison      `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison      `json:"id,omitempty"`
 	IsDefaultProduct          *BooleanFieldComparison    `json:"isDefaultProduct,omitempty"`
 	MultipleSubscriptions     *BooleanFieldComparison    `json:"multipleSubscriptions,omitempty"`
 	Or                        []*PlanFilterProductFilter `json:"or,omitempty"`
@@ -6446,7 +6438,7 @@ type PriceFilter struct {
 	BillingModel   *BillingModelFilterComparison   `json:"billingModel,omitempty"`
 	BillingPeriod  *BillingPeriodFilterComparison  `json:"billingPeriod,omitempty"`
 	CreatedAt      *DateFieldComparison            `json:"createdAt,omitempty"`
-	ID             *StringFieldComparison          `json:"id,omitempty"`
+	ID             *UUIDFilterComparison           `json:"id,omitempty"`
 	Or             []*PriceFilter                  `json:"or,omitempty"`
 	Package        *PriceFilterPackageDTOFilter    `json:"package,omitempty"`
 	TiersMode      *TiersModeFilterComparison      `json:"tiersMode,omitempty"`
@@ -6458,8 +6450,8 @@ type PriceFilterPackageDTOFilter struct {
 	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison         `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison         `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison         `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison         `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison          `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison          `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
 	Or            []*PriceFilterPackageDTOFilter `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
@@ -6759,8 +6751,8 @@ type ProductFilter struct {
 	CreatedAt                 *DateFieldComparison    `json:"createdAt,omitempty"`
 	Description               *StringFieldComparison  `json:"description,omitempty"`
 	DisplayName               *StringFieldComparison  `json:"displayName,omitempty"`
-	EnvironmentID             *StringFieldComparison  `json:"environmentId,omitempty"`
-	ID                        *StringFieldComparison  `json:"id,omitempty"`
+	EnvironmentID             *UUIDFilterComparison   `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison   `json:"id,omitempty"`
 	IsDefaultProduct          *BooleanFieldComparison `json:"isDefaultProduct,omitempty"`
 	MultipleSubscriptions     *BooleanFieldComparison `json:"multipleSubscriptions,omitempty"`
 	Or                        []*ProductFilter        `json:"or,omitempty"`
@@ -6995,8 +6987,8 @@ type PromotionalEntitlementEdge struct {
 type PromotionalEntitlementFilter struct {
 	And           []*PromotionalEntitlementFilter               `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison                          `json:"createdAt,omitempty"`
-	EnvironmentID *StringFieldComparison                        `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison                        `json:"id,omitempty"`
+	EnvironmentID *UUIDFilterComparison                         `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison                         `json:"id,omitempty"`
 	Or            []*PromotionalEntitlementFilter               `json:"or,omitempty"`
 	Status        *PromotionalEntitlementStatusFilterComparison `json:"status,omitempty"`
 	UpdatedAt     *DateFieldComparison                          `json:"updatedAt,omitempty"`
@@ -7802,7 +7794,7 @@ type SubscriptionAddonEdge struct {
 type SubscriptionAddonFilter struct {
 	And          []*SubscriptionAddonFilter                         `json:"and,omitempty"`
 	CreatedAt    *DateFieldComparison                               `json:"createdAt,omitempty"`
-	ID           *StringFieldComparison                             `json:"id,omitempty"`
+	ID           *UUIDFilterComparison                              `json:"id,omitempty"`
 	Or           []*SubscriptionAddonFilter                         `json:"or,omitempty"`
 	Price        *SubscriptionAddonFilterPriceFilter                `json:"price,omitempty"`
 	Quantity     *NumberFieldComparison                             `json:"quantity,omitempty"`
@@ -7847,7 +7839,7 @@ type SubscriptionAddonFilterPriceFilter struct {
 	BillingModel   *BillingModelFilterComparison         `json:"billingModel,omitempty"`
 	BillingPeriod  *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
 	CreatedAt      *DateFieldComparison                  `json:"createdAt,omitempty"`
-	ID             *StringFieldComparison                `json:"id,omitempty"`
+	ID             *UUIDFilterComparison                 `json:"id,omitempty"`
 	Or             []*SubscriptionAddonFilterPriceFilter `json:"or,omitempty"`
 	TiersMode      *TiersModeFilterComparison            `json:"tiersMode,omitempty"`
 }
@@ -8054,9 +8046,9 @@ type SubscriptionEntitlementEdge struct {
 type SubscriptionEntitlementFilter struct {
 	And            []*SubscriptionEntitlementFilter                         `json:"and,omitempty"`
 	CreatedAt      *DateFieldComparison                                     `json:"createdAt,omitempty"`
-	EnvironmentID  *StringFieldComparison                                   `json:"environmentId,omitempty"`
+	EnvironmentID  *UUIDFilterComparison                                    `json:"environmentId,omitempty"`
 	Feature        *SubscriptionEntitlementFilterFeatureFilter              `json:"feature,omitempty"`
-	ID             *StringFieldComparison                                   `json:"id,omitempty"`
+	ID             *UUIDFilterComparison                                    `json:"id,omitempty"`
 	Or             []*SubscriptionEntitlementFilter                         `json:"or,omitempty"`
 	Subscription   *SubscriptionEntitlementFilterCustomerSubscriptionFilter `json:"subscription,omitempty"`
 	SubscriptionID *StringFieldComparison                                   `json:"subscriptionId,omitempty"`
@@ -8098,10 +8090,10 @@ type SubscriptionEntitlementFilterFeatureFilter struct {
 	CreatedAt     *DateFieldComparison                          `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison                        `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison                        `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison                        `json:"environmentId,omitempty"`
+	EnvironmentID *UUIDFilterComparison                         `json:"environmentId,omitempty"`
 	FeatureStatus *FeatureStatusFilterComparison                `json:"featureStatus,omitempty"`
 	FeatureType   *FeatureTypeFilterComparison                  `json:"featureType,omitempty"`
-	ID            *StringFieldComparison                        `json:"id,omitempty"`
+	ID            *UUIDFilterComparison                         `json:"id,omitempty"`
 	MeterType     *MeterTypeFilterComparison                    `json:"meterType,omitempty"`
 	Or            []*SubscriptionEntitlementFilterFeatureFilter `json:"or,omitempty"`
 	RefID         *StringFieldComparison                        `json:"refId,omitempty"`
@@ -8412,7 +8404,7 @@ type SubscriptionMigrationTaskFilter struct {
 	And           []*SubscriptionMigrationTaskFilter `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison               `json:"createdAt,omitempty"`
 	EnvironmentID *StringFieldComparison             `json:"environmentId,omitempty"`
-	ID            *StringFieldComparison             `json:"id,omitempty"`
+	ID            *UUIDFilterComparison              `json:"id,omitempty"`
 	Or            []*SubscriptionMigrationTaskFilter `json:"or,omitempty"`
 	Status        *TaskStatusFilterComparison        `json:"status,omitempty"`
 	TaskType      *TaskTypeFilterComparison          `json:"taskType,omitempty"`
@@ -8592,7 +8584,7 @@ type SubscriptionPriceFilter struct {
 	CreatedAt    *DateFieldComparison                               `json:"createdAt,omitempty"`
 	FeatureID    *StringFieldComparison                             `json:"featureId,omitempty"`
 	HasSoftLimit *BooleanFieldComparison                            `json:"hasSoftLimit,omitempty"`
-	ID           *StringFieldComparison                             `json:"id,omitempty"`
+	ID           *UUIDFilterComparison                              `json:"id,omitempty"`
 	Or           []*SubscriptionPriceFilter                         `json:"or,omitempty"`
 	Price        *SubscriptionPriceFilterPriceFilter                `json:"price,omitempty"`
 	Subscription *SubscriptionPriceFilterCustomerSubscriptionFilter `json:"subscription,omitempty"`
@@ -8637,7 +8629,7 @@ type SubscriptionPriceFilterPriceFilter struct {
 	BillingModel   *BillingModelFilterComparison         `json:"billingModel,omitempty"`
 	BillingPeriod  *BillingPeriodFilterComparison        `json:"billingPeriod,omitempty"`
 	CreatedAt      *DateFieldComparison                  `json:"createdAt,omitempty"`
-	ID             *StringFieldComparison                `json:"id,omitempty"`
+	ID             *UUIDFilterComparison                 `json:"id,omitempty"`
 	Or             []*SubscriptionPriceFilterPriceFilter `json:"or,omitempty"`
 	TiersMode      *TiersModeFilterComparison            `json:"tiersMode,omitempty"`
 }
@@ -9711,10 +9703,6 @@ type UsageMeasurementAggregateGroupBy struct {
 	ID            *string `json:"id"`
 }
 
-type UsageMeasurementAvgAggregate struct {
-	ID *float64 `json:"id"`
-}
-
 type UsageMeasurementConnection struct {
 	// Array of edges.
 	Edges []*UsageMeasurementEdge `json:"edges"`
@@ -9761,9 +9749,9 @@ type UsageMeasurementFilter struct {
 	And           []*UsageMeasurementFilter             `json:"and,omitempty"`
 	CreatedAt     *DateFieldComparison                  `json:"createdAt,omitempty"`
 	Customer      *UsageMeasurementFilterCustomerFilter `json:"customer,omitempty"`
-	EnvironmentID *StringFieldComparison                `json:"environmentId,omitempty"`
+	EnvironmentID *UUIDFilterComparison                 `json:"environmentId,omitempty"`
 	Feature       *UsageMeasurementFilterFeatureFilter  `json:"feature,omitempty"`
-	ID            *StringFieldComparison                `json:"id,omitempty"`
+	ID            *UUIDFilterComparison                 `json:"id,omitempty"`
 	Or            []*UsageMeasurementFilter             `json:"or,omitempty"`
 }
 
@@ -9777,8 +9765,8 @@ type UsageMeasurementFilterCustomerFilter struct {
 	CustomerID           *StringFieldComparison                  `json:"customerId,omitempty"`
 	DeletedAt            *DateFieldComparison                    `json:"deletedAt,omitempty"`
 	Email                *StringFieldComparison                  `json:"email,omitempty"`
-	EnvironmentID        *StringFieldComparison                  `json:"environmentId,omitempty"`
-	ID                   *StringFieldComparison                  `json:"id,omitempty"`
+	EnvironmentID        *UUIDFilterComparison                   `json:"environmentId,omitempty"`
+	ID                   *UUIDFilterComparison                   `json:"id,omitempty"`
 	Name                 *StringFieldComparison                  `json:"name,omitempty"`
 	Or                   []*UsageMeasurementFilterCustomerFilter `json:"or,omitempty"`
 	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
@@ -9792,10 +9780,10 @@ type UsageMeasurementFilterFeatureFilter struct {
 	CreatedAt     *DateFieldComparison                   `json:"createdAt,omitempty"`
 	Description   *StringFieldComparison                 `json:"description,omitempty"`
 	DisplayName   *StringFieldComparison                 `json:"displayName,omitempty"`
-	EnvironmentID *StringFieldComparison                 `json:"environmentId,omitempty"`
+	EnvironmentID *UUIDFilterComparison                  `json:"environmentId,omitempty"`
 	FeatureStatus *FeatureStatusFilterComparison         `json:"featureStatus,omitempty"`
 	FeatureType   *FeatureTypeFilterComparison           `json:"featureType,omitempty"`
-	ID            *StringFieldComparison                 `json:"id,omitempty"`
+	ID            *UUIDFilterComparison                  `json:"id,omitempty"`
 	MeterType     *MeterTypeFilterComparison             `json:"meterType,omitempty"`
 	Or            []*UsageMeasurementFilterFeatureFilter `json:"or,omitempty"`
 	RefID         *StringFieldComparison                 `json:"refId,omitempty"`
@@ -9828,10 +9816,6 @@ type UsageMeasurementSort struct {
 	Direction SortDirection              `json:"direction"`
 	Field     UsageMeasurementSortFields `json:"field"`
 	Nulls     *SortNulls                 `json:"nulls,omitempty"`
-}
-
-type UsageMeasurementSumAggregate struct {
-	ID *float64 `json:"id"`
 }
 
 // Usage measurement updated
