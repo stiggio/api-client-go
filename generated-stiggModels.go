@@ -5134,6 +5134,10 @@ type PackageEntitlement struct {
 	// The unique identifier for the environment
 	EnvironmentID string  `json:"environmentId"`
 	Feature       Feature `json:"feature"`
+	// Primary feature group (first in the array) associated with this entitlement
+	FeatureGroup *FeatureGroup `json:"featureGroup"`
+	// Primary feature group ID (first in the array) associated with this entitlement
+	FeatureGroupID *string `json:"featureGroupId"`
 	// The unique identifier of the entitlement feature
 	FeatureID string `json:"featureId"`
 	// Whether the entitlement has a soft limit
@@ -5209,6 +5213,10 @@ type PackageEntitlementDeleteResponse struct {
 	EnumValues []string `json:"enumValues"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId"`
+	// Primary feature group (first in the array) associated with this entitlement
+	FeatureGroup *FeatureGroup `json:"featureGroup"`
+	// Primary feature group ID (first in the array) associated with this entitlement
+	FeatureGroupID *string `json:"featureGroupId"`
 	// The unique identifier of the entitlement feature
 	FeatureID *string `json:"featureId"`
 	// Whether the entitlement has a soft limit
