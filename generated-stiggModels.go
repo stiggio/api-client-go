@@ -3466,6 +3466,8 @@ type Feature struct {
 	UnitTransformation *UnitTransformation `json:"unitTransformation"`
 	// Timestamp of when the record was last updated
 	UpdatedAt string `json:"updatedAt"`
+	// The enum values used by plans or add-ons
+	UsedEnumValues []string `json:"usedEnumValues"`
 }
 
 type FeatureAggregateGroupBy struct {
