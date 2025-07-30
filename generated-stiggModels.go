@@ -5140,12 +5140,10 @@ type PackageEntitlement struct {
 	// The unique identifier for the environment
 	EnvironmentID string  `json:"environmentId"`
 	Feature       Feature `json:"feature"`
-	// Primary feature group (first in the array) associated with this entitlement
-	FeatureGroup *FeatureGroup `json:"featureGroup"`
-	// Primary feature group ID (first in the array) associated with this entitlement
-	FeatureGroupID *string `json:"featureGroupId"`
 	// Feature group IDs associated with this entitlement
 	FeatureGroupIds []string `json:"featureGroupIds"`
+	// Feature groups associated with this entitlement
+	FeatureGroups []*FeatureGroup `json:"featureGroups"`
 	// The unique identifier of the entitlement feature
 	FeatureID string `json:"featureId"`
 	// Whether the entitlement has a soft limit
@@ -5221,12 +5219,10 @@ type PackageEntitlementDeleteResponse struct {
 	EnumValues []string `json:"enumValues"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId"`
-	// Primary feature group (first in the array) associated with this entitlement
-	FeatureGroup *FeatureGroup `json:"featureGroup"`
-	// Primary feature group ID (first in the array) associated with this entitlement
-	FeatureGroupID *string `json:"featureGroupId"`
 	// Feature group IDs associated with this entitlement
 	FeatureGroupIds []string `json:"featureGroupIds"`
+	// Feature groups associated with this entitlement
+	FeatureGroups []*FeatureGroup `json:"featureGroups"`
 	// The unique identifier of the entitlement feature
 	FeatureID *string `json:"featureId"`
 	// Whether the entitlement has a soft limit
@@ -9274,7 +9270,7 @@ type UnitTransformationInput struct {
 }
 
 // Unlink feature group from package entitlements input
-type UnlinkFeatureGroupInput struct {
+type UnlinkFeatureGroupFromPackageInput struct {
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The group id to unlink
