@@ -3919,6 +3919,8 @@ type GetWorkflowTriggersInput struct {
 type GrantPromotionalEntitlementInput struct {
 	// The custom end date of the promotional entitlement
 	CustomEndDate *string `json:"customEndDate,omitempty"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues,omitempty"`
 	// The unique identifier of the entitlement feature
 	FeatureID string `json:"featureId"`
 	// Whether the entitlement has a soft limit
@@ -6915,6 +6917,8 @@ type PromotionalEntitlement struct {
 	Description *string `json:"description"`
 	// The end date of the promotional entitlement
 	EndDate *string `json:"endDate"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues"`
 	// The unique identifier for the environment
 	EnvironmentID string  `json:"environmentId"`
 	Feature       Feature `json:"feature"`
@@ -6978,6 +6982,8 @@ type PromotionalEntitlementDeleteResponse struct {
 	Description *string `json:"description"`
 	// The end date of the promotional entitlement
 	EndDate *string `json:"endDate"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId"`
 	// The unique identifier of the entitlement feature
@@ -7032,6 +7038,8 @@ type PromotionalEntitlementInput struct {
 	Description *string `json:"description,omitempty"`
 	// The end date of the promotional entitlement
 	EndDate *string `json:"endDate,omitempty"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues,omitempty"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The unique identifier of the entitlement feature
@@ -7101,6 +7109,8 @@ type PromotionalEntitlementUpdateInput struct {
 	Description *string `json:"description,omitempty"`
 	// The end date of the promotional entitlement
 	EndDate *string `json:"endDate,omitempty"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues,omitempty"`
 	// Whether the entitlement has a soft limit
 	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
 	// Whether the entitlement has an unlimited usage
