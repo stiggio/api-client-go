@@ -3671,6 +3671,14 @@ type FeatureGroupAggregateGroupBy struct {
 	VersionNumber  *int64              `json:"versionNumber"`
 }
 
+// Input for getting associated latest packages of a feature group
+type FeatureGroupAssociatedLatestPackagesInput struct {
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The feature group id
+	FeatureGroupID string `json:"featureGroupId"`
+}
+
 type FeatureGroupAvgAggregate struct {
 	VersionNumber *float64 `json:"versionNumber"`
 }
