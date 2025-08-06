@@ -1468,6 +1468,40 @@ type CreateWorkflowTriggerInput struct {
 	TriggerID *string `json:"triggerId,omitempty"`
 }
 
+// Credit balance information for a specific currency
+type CreditBalanceDto struct {
+	// The custom currency ID of the credit grant
+	CurrencyID string `json:"currencyId"`
+	// Current available balance
+	CurrentBalance float64 `json:"currentBalance"`
+	// Total amount consumed from all grants
+	TotalConsumed float64 `json:"totalConsumed"`
+	// Total amount granted across all active grants
+	TotalGranted float64 `json:"totalGranted"`
+}
+
+// Credit balance summary for a customer
+type CreditBalanceSummaryDto struct {
+	// List of credit balances for the customer
+	Balances []*CreditBalanceDto `json:"balances"`
+	// The customer ID of the credit grant
+	CustomerID string `json:"customerId"`
+	// The resource ID of the credit grant
+	ResourceID *string `json:"resourceId"`
+}
+
+// Input for retrieving credit balance
+type CreditBalanceSummaryInput struct {
+	// The custom currency ID of the credit grant
+	CurrencyID *string `json:"currencyId,omitempty"`
+	// The customer ID of the credit grant
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The resource ID of the credit grant
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
 // Stigg credit grant object
 type CreditGrant struct {
 	// Metadata associated with the entity
