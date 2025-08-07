@@ -4947,6 +4947,18 @@ type MeteringNotAvailableForFeatureTypeError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// Input for migrating package feature groups to latest version
+type MigratePackageFeatureGroupsToLatestInput struct {
+	// The unique identifier for the account
+	AccountID string `json:"accountId"`
+	// List of package entitlements that are new to the feature groups
+	Entitlements []*PackageEntitlementInput `json:"entitlements"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The unique identifier of the entitlement package
+	PackageID string `json:"packageId"`
+}
+
 // Minimum spend configuration
 type MinimumSpend struct {
 	// Minimum spend billing period
