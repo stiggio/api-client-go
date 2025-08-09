@@ -468,6 +468,8 @@ type ApplySubscriptionInput struct {
 	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
 	// Customer ID
 	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	// Paying customer ID
