@@ -312,18 +312,19 @@ type PriceTierFragment struct {
 	FlatPrice *PriceTierFragment_FlatPrice "json:\"flatPrice\" graphql:\"flatPrice\""
 }
 type PriceFragment struct {
-	BillingModel       BillingModel           "json:\"billingModel\" graphql:\"billingModel\""
-	BillingPeriod      BillingPeriod          "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	BillingCadence     BillingCadence         "json:\"billingCadence\" graphql:\"billingCadence\""
-	BillingID          *string                "json:\"billingId\" graphql:\"billingId\""
-	MinUnitQuantity    *float64               "json:\"minUnitQuantity\" graphql:\"minUnitQuantity\""
-	MaxUnitQuantity    *float64               "json:\"maxUnitQuantity\" graphql:\"maxUnitQuantity\""
-	BillingCountryCode *string                "json:\"billingCountryCode\" graphql:\"billingCountryCode\""
-	Price              *PriceFragment_Price   "json:\"price\" graphql:\"price\""
-	TiersMode          *TiersMode             "json:\"tiersMode\" graphql:\"tiersMode\""
-	Tiers              []*PriceTierFragment   "json:\"tiers\" graphql:\"tiers\""
-	Feature            *PriceFragment_Feature "json:\"feature\" graphql:\"feature\""
-	BlockSize          *float64               "json:\"blockSize\" graphql:\"blockSize\""
+	BillingModel       BillingModel              "json:\"billingModel\" graphql:\"billingModel\""
+	BillingPeriod      BillingPeriod             "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillingCadence     BillingCadence            "json:\"billingCadence\" graphql:\"billingCadence\""
+	BillingID          *string                   "json:\"billingId\" graphql:\"billingId\""
+	MinUnitQuantity    *float64                  "json:\"minUnitQuantity\" graphql:\"minUnitQuantity\""
+	MaxUnitQuantity    *float64                  "json:\"maxUnitQuantity\" graphql:\"maxUnitQuantity\""
+	BillingCountryCode *string                   "json:\"billingCountryCode\" graphql:\"billingCountryCode\""
+	Price              *PriceFragment_Price      "json:\"price\" graphql:\"price\""
+	CreditRate         *PriceFragment_CreditRate "json:\"creditRate\" graphql:\"creditRate\""
+	TiersMode          *TiersMode                "json:\"tiersMode\" graphql:\"tiersMode\""
+	Tiers              []*PriceTierFragment      "json:\"tiers\" graphql:\"tiers\""
+	Feature            *PriceFragment_Feature    "json:\"feature\" graphql:\"feature\""
+	BlockSize          *float64                  "json:\"blockSize\" graphql:\"blockSize\""
 }
 type OveragePriceFragment struct {
 	BillingModel       BillingModel                  "json:\"billingModel\" graphql:\"billingModel\""
@@ -789,11 +790,12 @@ type CustomerPortalConfigurationFragment struct {
 	CustomCSS  *string                                      "json:\"customCss\" graphql:\"customCss\""
 }
 type CustomerPortalSubscriptionPriceFragment struct {
-	BillingPeriod *BillingPeriod                                   "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	BillingModel  *BillingModel                                    "json:\"billingModel\" graphql:\"billingModel\""
-	BlockSize     *float64                                         "json:\"blockSize\" graphql:\"blockSize\""
-	Price         *CustomerPortalSubscriptionPriceFragment_Price   "json:\"price\" graphql:\"price\""
-	Feature       *CustomerPortalSubscriptionPriceFragment_Feature "json:\"feature\" graphql:\"feature\""
+	BillingPeriod *BillingPeriod                                      "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillingModel  *BillingModel                                       "json:\"billingModel\" graphql:\"billingModel\""
+	BlockSize     *float64                                            "json:\"blockSize\" graphql:\"blockSize\""
+	Price         *CustomerPortalSubscriptionPriceFragment_Price      "json:\"price\" graphql:\"price\""
+	CreditRate    *CustomerPortalSubscriptionPriceFragment_CreditRate "json:\"creditRate\" graphql:\"creditRate\""
+	Feature       *CustomerPortalSubscriptionPriceFragment_Feature    "json:\"feature\" graphql:\"feature\""
 }
 type CustomerPortalSubscriptionFragment struct {
 	SubscriptionID     string                                                   "json:\"subscriptionId\" graphql:\"subscriptionId\""
@@ -880,17 +882,18 @@ type MockPaywallPackageEntitlementFragment struct {
 	Feature             *MockPaywallPackageEntitlementFragment_Feature "json:\"feature\" graphql:\"feature\""
 }
 type MockPaywallPriceFragment struct {
-	BillingModel       BillingModel                      "json:\"billingModel\" graphql:\"billingModel\""
-	BillingPeriod      BillingPeriod                     "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	BillingID          *string                           "json:\"billingId\" graphql:\"billingId\""
-	MinUnitQuantity    *float64                          "json:\"minUnitQuantity\" graphql:\"minUnitQuantity\""
-	MaxUnitQuantity    *float64                          "json:\"maxUnitQuantity\" graphql:\"maxUnitQuantity\""
-	BillingCountryCode *string                           "json:\"billingCountryCode\" graphql:\"billingCountryCode\""
-	Price              *MockPaywallPriceFragment_Price   "json:\"price\" graphql:\"price\""
-	TiersMode          *TiersMode                        "json:\"tiersMode\" graphql:\"tiersMode\""
-	Tiers              []*PriceTierFragment              "json:\"tiers\" graphql:\"tiers\""
-	Feature            *MockPaywallPriceFragment_Feature "json:\"feature\" graphql:\"feature\""
-	BlockSize          *float64                          "json:\"blockSize\" graphql:\"blockSize\""
+	BillingModel       BillingModel                         "json:\"billingModel\" graphql:\"billingModel\""
+	BillingPeriod      BillingPeriod                        "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillingID          *string                              "json:\"billingId\" graphql:\"billingId\""
+	MinUnitQuantity    *float64                             "json:\"minUnitQuantity\" graphql:\"minUnitQuantity\""
+	MaxUnitQuantity    *float64                             "json:\"maxUnitQuantity\" graphql:\"maxUnitQuantity\""
+	BillingCountryCode *string                              "json:\"billingCountryCode\" graphql:\"billingCountryCode\""
+	Price              *MockPaywallPriceFragment_Price      "json:\"price\" graphql:\"price\""
+	CreditRate         *MockPaywallPriceFragment_CreditRate "json:\"creditRate\" graphql:\"creditRate\""
+	TiersMode          *TiersMode                           "json:\"tiersMode\" graphql:\"tiersMode\""
+	Tiers              []*PriceTierFragment                 "json:\"tiers\" graphql:\"tiers\""
+	Feature            *MockPaywallPriceFragment_Feature    "json:\"feature\" graphql:\"feature\""
+	BlockSize          *float64                             "json:\"blockSize\" graphql:\"blockSize\""
 }
 type PaywallCalculatedPricePointsFragment struct {
 	PlanID                    string                                        "json:\"planId\" graphql:\"planId\""
@@ -1004,6 +1007,10 @@ type PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -1069,6 +1076,10 @@ type AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 type AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -1149,6 +1160,10 @@ type PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Price stru
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -1197,6 +1212,10 @@ type PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Ad
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -1238,6 +1257,10 @@ type PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Op
 type PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -1295,6 +1318,10 @@ type PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Entitlements_Packa
 type PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -1389,6 +1416,10 @@ type SlimSubscriptionFragment_ExperimentInfo struct {
 type SlimSubscriptionFragment_Prices_Price_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -1573,6 +1604,10 @@ type SubscriptionFragment_Prices_Price_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -1645,6 +1680,10 @@ type SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Price
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -1693,6 +1732,10 @@ type SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatib
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -1734,6 +1777,10 @@ type SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatib
 type SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -1791,6 +1838,10 @@ type SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitle
 type SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -2051,6 +2102,10 @@ type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Prices
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -2123,6 +2178,10 @@ type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_P
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -2171,6 +2230,10 @@ type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_P
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -2212,6 +2275,10 @@ type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_P
 type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -2269,6 +2336,10 @@ type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Addons
 type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -2831,6 +2902,10 @@ type SubscriptionInvoicePreviewFragment_Lines_Price_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type SubscriptionInvoicePreviewFragment_Lines_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type SubscriptionInvoicePreviewFragment_Lines_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -2943,6 +3018,10 @@ type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pri
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Prices_CustomerPortalSubscriptionPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Prices_CustomerPortalSubscriptionPriceFragment_Feature struct {
 	ID                 string  "json:\"id\" graphql:\"id\""
 	RefID              string  "json:\"refId\" graphql:\"refId\""
@@ -2954,19 +3033,24 @@ type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pri
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Feature struct {
 	FeatureUnits       *string "json:\"featureUnits\" graphql:\"featureUnits\""
 	FeatureUnitsPlural *string "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
 	DisplayName        string  "json:\"displayName\" graphql:\"displayName\""
 }
 type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing struct {
-	UnitQuantity            *int64                                                                                   "json:\"unitQuantity\" graphql:\"unitQuantity\""
-	BillingPeriod           *BillingPeriod                                                                           "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	BillingModel            *BillingModel                                                                            "json:\"billingModel\" graphql:\"billingModel\""
-	PricingType             PricingType                                                                              "json:\"pricingType\" graphql:\"pricingType\""
-	UsageBasedEstimatedBill *float64                                                                                 "json:\"usageBasedEstimatedBill\" graphql:\"usageBasedEstimatedBill\""
-	Price                   *CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Price   "json:\"price\" graphql:\"price\""
-	Feature                 *CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Feature "json:\"feature\" graphql:\"feature\""
+	UnitQuantity            *int64                                                                                      "json:\"unitQuantity\" graphql:\"unitQuantity\""
+	BillingPeriod           *BillingPeriod                                                                              "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillingModel            *BillingModel                                                                               "json:\"billingModel\" graphql:\"billingModel\""
+	PricingType             PricingType                                                                                 "json:\"pricingType\" graphql:\"pricingType\""
+	UsageBasedEstimatedBill *float64                                                                                    "json:\"usageBasedEstimatedBill\" graphql:\"usageBasedEstimatedBill\""
+	Price                   *CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Price      "json:\"price\" graphql:\"price\""
+	CreditRate              *CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_CreditRate "json:\"creditRate\" graphql:\"creditRate\""
+	Feature                 *CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Feature    "json:\"feature\" graphql:\"feature\""
 }
 type CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_BillingPeriodRange struct {
 	Start *string "json:\"start\" graphql:\"start\""
@@ -3141,6 +3225,10 @@ type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Prices_Price_
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -3213,6 +3301,10 @@ type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFrag
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -3261,6 +3353,10 @@ type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFrag
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -3302,6 +3398,10 @@ type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFrag
 type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -3359,6 +3459,10 @@ type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Addons_Addon_
 type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -3574,6 +3678,10 @@ type CheckoutStateFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Pric
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CheckoutStateFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CheckoutStateFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -3622,6 +3730,10 @@ type CheckoutStateFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompati
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CheckoutStateFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CheckoutStateFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -3663,6 +3775,10 @@ type CheckoutStateFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompati
 type CheckoutStateFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type CheckoutStateFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type CheckoutStateFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -3747,6 +3863,10 @@ type CustomerPortalSubscriptionPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CustomerPortalSubscriptionPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CustomerPortalSubscriptionPriceFragment_Feature struct {
 	ID                 string  "json:\"id\" graphql:\"id\""
 	RefID              string  "json:\"refId\" graphql:\"refId\""
@@ -3757,6 +3877,10 @@ type CustomerPortalSubscriptionPriceFragment_Feature struct {
 type CustomerPortalSubscriptionFragment_Prices_CustomerPortalSubscriptionPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type CustomerPortalSubscriptionFragment_Prices_CustomerPortalSubscriptionPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type CustomerPortalSubscriptionFragment_Prices_CustomerPortalSubscriptionPriceFragment_Feature struct {
 	ID                 string  "json:\"id\" graphql:\"id\""
@@ -3769,19 +3893,24 @@ type CustomerPortalSubscriptionFragment_Pricing_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type CustomerPortalSubscriptionFragment_Pricing_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type CustomerPortalSubscriptionFragment_Pricing_Feature struct {
 	FeatureUnits       *string "json:\"featureUnits\" graphql:\"featureUnits\""
 	FeatureUnitsPlural *string "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
 	DisplayName        string  "json:\"displayName\" graphql:\"displayName\""
 }
 type CustomerPortalSubscriptionFragment_Pricing struct {
-	UnitQuantity            *int64                                              "json:\"unitQuantity\" graphql:\"unitQuantity\""
-	BillingPeriod           *BillingPeriod                                      "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	BillingModel            *BillingModel                                       "json:\"billingModel\" graphql:\"billingModel\""
-	PricingType             PricingType                                         "json:\"pricingType\" graphql:\"pricingType\""
-	UsageBasedEstimatedBill *float64                                            "json:\"usageBasedEstimatedBill\" graphql:\"usageBasedEstimatedBill\""
-	Price                   *CustomerPortalSubscriptionFragment_Pricing_Price   "json:\"price\" graphql:\"price\""
-	Feature                 *CustomerPortalSubscriptionFragment_Pricing_Feature "json:\"feature\" graphql:\"feature\""
+	UnitQuantity            *int64                                                 "json:\"unitQuantity\" graphql:\"unitQuantity\""
+	BillingPeriod           *BillingPeriod                                         "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillingModel            *BillingModel                                          "json:\"billingModel\" graphql:\"billingModel\""
+	PricingType             PricingType                                            "json:\"pricingType\" graphql:\"pricingType\""
+	UsageBasedEstimatedBill *float64                                               "json:\"usageBasedEstimatedBill\" graphql:\"usageBasedEstimatedBill\""
+	Price                   *CustomerPortalSubscriptionFragment_Pricing_Price      "json:\"price\" graphql:\"price\""
+	CreditRate              *CustomerPortalSubscriptionFragment_Pricing_CreditRate "json:\"creditRate\" graphql:\"creditRate\""
+	Feature                 *CustomerPortalSubscriptionFragment_Pricing_Feature    "json:\"feature\" graphql:\"feature\""
 }
 type CustomerPortalSubscriptionFragment_BillingPeriodRange struct {
 	Start *string "json:\"start\" graphql:\"start\""
@@ -3983,6 +4112,10 @@ type MockPaywallPlanFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type MockPaywallPlanFragment_Prices_MockPaywallPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type MockPaywallPlanFragment_Prices_MockPaywallPriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4020,6 +4153,10 @@ type MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_Prices_Mo
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4047,6 +4184,10 @@ type MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePa
 type MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -4079,6 +4220,10 @@ type MockPaywallPackageEntitlementFragment_Feature struct {
 type MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type MockPaywallPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type MockPaywallPriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -4115,6 +4260,10 @@ type MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragm
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4146,6 +4295,10 @@ type MockPaywallAddonFragment_Entitlements_MockPaywallPackageEntitlementFragment
 type MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -4206,6 +4359,10 @@ type PaywallFragment_Plans_PlanFragment_CompatibleAddons_AddonFragment_Prices_Pr
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type PaywallFragment_Plans_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type PaywallFragment_Plans_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4254,6 +4411,10 @@ type PaywallFragment_Plans_PlanFragment_CompatiblePackageGroups_PlanCompatiblePa
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type PaywallFragment_Plans_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type PaywallFragment_Plans_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4295,6 +4456,10 @@ type PaywallFragment_Plans_PlanFragment_CompatiblePackageGroups_PlanCompatiblePa
 type PaywallFragment_Plans_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type PaywallFragment_Plans_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type PaywallFragment_Plans_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -4391,6 +4556,10 @@ type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Prices_Price_Price
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4463,6 +4632,10 @@ type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4511,6 +4684,10 @@ type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4552,6 +4729,10 @@ type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_
 type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -4609,6 +4790,10 @@ type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Addons_Addon_Addon
 type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -4835,6 +5020,10 @@ type ProvisionCustomerFragment_Subscription_SlimSubscriptionFragment_Prices_Pric
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type ProvisionCustomerFragment_Subscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type ProvisionCustomerFragment_Subscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4900,6 +5089,10 @@ type ApplySubscriptionFragment_Subscription_SubscriptionFragment_ExperimentInfo 
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Prices_Price_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -4973,6 +5166,10 @@ type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragme
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -5021,6 +5218,10 @@ type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragme
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -5062,6 +5263,10 @@ type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragme
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -5119,6 +5324,10 @@ type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Addons_Addon_Ad
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -5312,6 +5521,10 @@ type ProvisionSubscriptionFragment_Subscription_SlimSubscriptionFragment_Prices_
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type ProvisionSubscriptionFragment_Subscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type ProvisionSubscriptionFragment_Subscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -5473,6 +5686,10 @@ type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscr
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -5545,6 +5762,10 @@ type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscr
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -5593,6 +5814,10 @@ type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscr
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -5634,6 +5859,10 @@ type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscr
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -5691,6 +5920,10 @@ type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscr
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -5878,6 +6111,10 @@ type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Prices_P
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -5950,6 +6187,10 @@ type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_Pla
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -5998,6 +6239,10 @@ type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_Pla
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -6039,6 +6284,10 @@ type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_Pla
 type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -6096,6 +6345,10 @@ type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Addons_A
 type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -6329,6 +6582,10 @@ type GetSubscription_GetSubscription_SubscriptionFragment_Prices_Price_PriceFrag
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetSubscription_GetSubscription_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetSubscription_GetSubscription_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -6401,6 +6658,10 @@ type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_Comp
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -6449,6 +6710,10 @@ type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_Comp
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -6490,6 +6755,10 @@ type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_Comp
 type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -6547,6 +6816,10 @@ type GetSubscription_GetSubscription_SubscriptionFragment_Addons_Addon_AddonFrag
 type GetSubscription_GetSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetSubscription_GetSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetSubscription_GetSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -6776,6 +7049,10 @@ type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_CompatibleAddons_Addo
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -6824,6 +7101,10 @@ type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_CompatiblePackageGrou
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -6865,6 +7146,10 @@ type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_CompatiblePackageGrou
 type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -6961,6 +7246,10 @@ type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -7033,6 +7322,10 @@ type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -7081,6 +7374,10 @@ type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -7122,6 +7419,10 @@ type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment
 type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -7179,6 +7480,10 @@ type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment
 type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -7403,6 +7708,10 @@ type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscription
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Prices_CustomerPortalSubscriptionPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Prices_CustomerPortalSubscriptionPriceFragment_Feature struct {
 	ID                 string  "json:\"id\" graphql:\"id\""
 	RefID              string  "json:\"refId\" graphql:\"refId\""
@@ -7414,19 +7723,24 @@ type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscription
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Feature struct {
 	FeatureUnits       *string "json:\"featureUnits\" graphql:\"featureUnits\""
 	FeatureUnitsPlural *string "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
 	DisplayName        string  "json:\"displayName\" graphql:\"displayName\""
 }
 type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing struct {
-	UnitQuantity            *int64                                                                                                                           "json:\"unitQuantity\" graphql:\"unitQuantity\""
-	BillingPeriod           *BillingPeriod                                                                                                                   "json:\"billingPeriod\" graphql:\"billingPeriod\""
-	BillingModel            *BillingModel                                                                                                                    "json:\"billingModel\" graphql:\"billingModel\""
-	PricingType             PricingType                                                                                                                      "json:\"pricingType\" graphql:\"pricingType\""
-	UsageBasedEstimatedBill *float64                                                                                                                         "json:\"usageBasedEstimatedBill\" graphql:\"usageBasedEstimatedBill\""
-	Price                   *GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Price   "json:\"price\" graphql:\"price\""
-	Feature                 *GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Feature "json:\"feature\" graphql:\"feature\""
+	UnitQuantity            *int64                                                                                                                              "json:\"unitQuantity\" graphql:\"unitQuantity\""
+	BillingPeriod           *BillingPeriod                                                                                                                      "json:\"billingPeriod\" graphql:\"billingPeriod\""
+	BillingModel            *BillingModel                                                                                                                       "json:\"billingModel\" graphql:\"billingModel\""
+	PricingType             PricingType                                                                                                                         "json:\"pricingType\" graphql:\"pricingType\""
+	UsageBasedEstimatedBill *float64                                                                                                                            "json:\"usageBasedEstimatedBill\" graphql:\"usageBasedEstimatedBill\""
+	Price                   *GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Price      "json:\"price\" graphql:\"price\""
+	CreditRate              *GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_CreditRate "json:\"creditRate\" graphql:\"creditRate\""
+	Feature                 *GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_Pricing_Feature    "json:\"feature\" graphql:\"feature\""
 }
 type GetCustomerPortalByRefId_CustomerPortal_CustomerPortalFragment_Subscriptions_CustomerPortalSubscriptionFragment_BillingPeriodRange struct {
 	Start *string "json:\"start\" graphql:\"start\""
@@ -7601,6 +7915,10 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_Sub
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -7673,6 +7991,10 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_Sub
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -7721,6 +8043,10 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_Sub
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -7762,6 +8088,10 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_Sub
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -7819,6 +8149,10 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_Sub
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -8034,6 +8368,10 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_Comp
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -8082,6 +8420,10 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_Comp
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -8123,6 +8465,10 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_Comp
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -8209,6 +8555,10 @@ type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_Prices_MockPaywall
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_Prices_MockPaywallPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_Prices_MockPaywallPriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -8246,6 +8596,10 @@ type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatibleAddons_M
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -8273,6 +8627,10 @@ type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageG
 type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -8351,6 +8709,10 @@ type ProvisionCustomer_ProvisionCustomer_ProvisionCustomerFragment_Subscription_
 type ProvisionCustomer_ProvisionCustomer_ProvisionCustomerFragment_Subscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ProvisionCustomer_ProvisionCustomer_ProvisionCustomerFragment_Subscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type ProvisionCustomer_ProvisionCustomer_ProvisionCustomerFragment_Subscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -8431,6 +8793,10 @@ type ProvisionSubscription_ProvisionSubscription_ProvisionSubscriptionFragment_S
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type ProvisionSubscription_ProvisionSubscription_ProvisionSubscriptionFragment_Subscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type ProvisionSubscription_ProvisionSubscription_ProvisionSubscriptionFragment_Subscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -8496,6 +8862,10 @@ type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Prices_Price_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -8569,6 +8939,10 @@ type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_CompatibleAddons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -8617,6 +8991,10 @@ type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_CompatiblePackageGroups_PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -8658,6 +9036,10 @@ type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -8715,6 +9097,10 @@ type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Addons_Addon_AddonFragment_Prices_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -8908,6 +9294,10 @@ type UpdateSubscription_UpdateSubscription_SlimSubscriptionFragment_Prices_Price
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type UpdateSubscription_UpdateSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type UpdateSubscription_UpdateSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -8960,6 +9350,10 @@ type CancelSubscription_CancelSubscription_SlimSubscriptionFragment_ExperimentIn
 type CancelSubscription_CancelSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type CancelSubscription_CancelSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type CancelSubscription_CancelSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -9403,6 +9797,10 @@ type PreviewNextInvoice_PreviewNextInvoice_SubscriptionInvoicePreviewFragment_Li
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type PreviewNextInvoice_PreviewNextInvoice_SubscriptionInvoicePreviewFragment_Lines_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type PreviewNextInvoice_PreviewNextInvoice_SubscriptionInvoicePreviewFragment_Lines_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -9454,6 +9852,10 @@ type CreateSubscription_CreateSubscription_SlimSubscriptionFragment_ExperimentIn
 type CreateSubscription_CreateSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type CreateSubscription_CreateSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type CreateSubscription_CreateSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -9514,6 +9916,10 @@ type TransferSubscription_TransferSubscription_SlimSubscriptionFragment_Prices_P
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type TransferSubscription_TransferSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type TransferSubscription_TransferSubscription_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -9567,6 +9973,10 @@ type DelegateSubscriptionToCustomer_DelegateSubscriptionToCustomer_SlimSubscript
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
+type DelegateSubscriptionToCustomer_DelegateSubscriptionToCustomer_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+}
 type DelegateSubscriptionToCustomer_DelegateSubscriptionToCustomer_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -9619,6 +10029,10 @@ type TransferSubscriptionToResource_TransferSubscriptionToResource_SlimSubscript
 type TransferSubscriptionToResource_TransferSubscriptionToResource_SlimSubscriptionFragment_Prices_Price_PriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
+}
+type TransferSubscriptionToResource_TransferSubscriptionToResource_SlimSubscriptionFragment_Prices_Price_PriceFragment_CreditRate struct {
+	Amount           float64 "json:\"amount\" graphql:\"amount\""
+	CustomCurrencyID string  "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
 }
 type TransferSubscriptionToResource_TransferSubscriptionToResource_SlimSubscriptionFragment_Prices_Price_PriceFragment_Tiers_PriceTierFragment_UnitPrice struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -9839,139 +10253,19 @@ const GetCustomerByIDDocument = `query GetCustomerById ($input: GetCustomerByRef
 		... CustomerWithSubscriptionsFragment
 	}
 }
-fragment ProductFragment on Product {
-	refId
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
 	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
 	}
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
 }
 fragment CustomerFragment on Customer {
 	... SlimCustomerFragment
@@ -10005,132 +10299,56 @@ fragment CustomerFragment on Customer {
 		... PromotionalEntitlementFragment
 	}
 }
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	percentOff
-	amountsOff {
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
 		amount
 		currency
 	}
-	type
-	additionalMetaData
-	refId
-	name
-	description
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PlanFragment on Plan {
-	id
+fragment ProductFragment on Product {
 	refId
 	displayName
 	description
-	billingId
-	versionNumber
 	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
 		}
-		trialEndBehavior
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment CustomerWithSubscriptionsFragment on Customer {
-	... CustomerFragment
-	subscriptions {
-		... SubscriptionFragment
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
 	}
 }
 fragment OveragePriceFragment on Price {
@@ -10154,15 +10372,93 @@ fragment OveragePriceFragment on Price {
 		description
 	}
 }
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
 	}
-	options {
-		minItems
-		freeItems
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
 	}
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
@@ -10222,8 +10518,66 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment CustomerWithSubscriptionsFragment on Customer {
+	... CustomerFragment
+	subscriptions {
+		... SubscriptionFragment
+	}
+}
+fragment CouponFragment on Coupon {
+	id
+	discountValue
+	percentOff
+	amountsOff {
+		amount
+		currency
+	}
+	type
+	additionalMetaData
+	refId
+	name
+	description
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+	syncStates {
+		vendorIdentifier
+		status
+	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -10285,6 +10639,70 @@ fragment SubscriptionFragment on CustomerSubscription {
 	}
 	trialConfiguration {
 		... SubscriptionTrialConfigurationFragment
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
 	}
 }
 `
@@ -10335,174 +10753,6 @@ const GetActiveSubscriptionsDocument = `query GetActiveSubscriptions ($input: Ge
 		... SubscriptionFragment
 	}
 }
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment ScheduleVariablesFragment on ScheduleVariables {
-	__typename
-	... on PlanChangeVariables {
-		planRefId
-		changeType
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on DowngradeChangeVariables {
-		downgradePlanRefId
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on BillingPeriodChangeVariables {
-		billingPeriod
-	}
-	... on UnitAmountChangeVariables {
-		newUnitAmount
-		featureId
-	}
-	... on AddonChangeVariables {
-		addonRefId
-		newQuantity
-	}
-	... on PlanPriceOverrideChangeVariables {
-		planRefId
-		featureId
-	}
-	... on AddonPriceOverrideChangeVariables {
-		addonRefId
-		featureId
-	}
-}
 fragment SlimCustomerFragment on Customer {
 	id
 	name
@@ -10514,6 +10764,17 @@ fragment SlimCustomerFragment on Customer {
 	billingId
 	additionalMetaData
 	awsMarketplaceCustomerId
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
 }
 fragment PlanFragment on Plan {
 	id
@@ -10559,71 +10820,6 @@ fragment PlanFragment on Plan {
 		trialEndBehavior
 	}
 }
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
 fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 	subscriptionScheduleType
 	scheduleStatus
@@ -10637,8 +10833,52 @@ fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 		... ScheduleVariablesFragment
 	}
 }
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -10701,6 +10941,188 @@ fragment SubscriptionFragment on CustomerSubscription {
 	trialConfiguration {
 		... SubscriptionTrialConfigurationFragment
 	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+	... on PlanPriceOverrideChangeVariables {
+		planRefId
+		featureId
+	}
+	... on AddonPriceOverrideChangeVariables {
+		addonRefId
+		featureId
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
 }
 `
 
@@ -10838,86 +11260,8 @@ const GetSubscriptionDocument = `query GetSubscription ($input: GetSubscriptionI
 		... SubscriptionFragment
 	}
 }
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
 fragment PlanFragment on Plan {
 	id
@@ -10963,6 +11307,18 @@ fragment PlanFragment on Plan {
 		trialEndBehavior
 	}
 }
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
 fragment AddonFragment on Addon {
 	id
 	refId
@@ -10986,11 +11342,17 @@ fragment AddonFragment on Addon {
 		... AddonDependencyFragment
 	}
 }
-fragment AddonDependencyFragment on Addon {
+fragment SlimCustomerFragment on Customer {
 	id
+	name
+	email
+	createdAt
+	updatedAt
 	refId
-	displayName
-	description
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -11054,9 +11416,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
 fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	subTotal {
 		amount
@@ -11065,66 +11424,6 @@ fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	total {
 		amount
 		currency
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
 	}
 }
 fragment PackageEntitlementFragment on PackageEntitlement {
@@ -11147,6 +11446,33 @@ fragment PackageEntitlementFragment on PackageEntitlement {
 		refId
 		additionalMetaData
 	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
 	__typename
@@ -11203,6 +11529,106 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 	... on AddonPriceOverrideChangeVariables {
 		addonRefId
 		featureId
+	}
+}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
 	}
 }
 `
@@ -11270,21 +11696,6 @@ const GetPaywallDocument = `query GetPaywall ($input: GetPaywallInput!) {
 		... PaywallFragment
 	}
 }
-fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
-	planId
-	additionalChargesMayApply
-	billingPeriod
-	amount
-	currency
-	billingCountryCode
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
 fragment PaywallFragment on Paywall {
 	plans {
 		... PlanFragment
@@ -11308,16 +11719,38 @@ fragment PaywallFragment on Paywall {
 		... PaywallCalculatedPricePointsFragment
 	}
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
 		amount
 		currency
 	}
-	flatPrice {
+	creditRate {
 		amount
-		currency
+		customCurrencyId
 	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PaywallCurrencyFragment on PaywallCurrency {
+	code
+	symbol
 }
 fragment PromotionalEntitlementFragment on PromotionalEntitlement {
 	status
@@ -11337,6 +11770,93 @@ fragment PromotionalEntitlementFragment on PromotionalEntitlement {
 		description
 		refId
 		additionalMetaData
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment CouponFragment on Coupon {
+	id
+	discountValue
+	percentOff
+	amountsOff {
+		amount
+		currency
+	}
+	type
+	additionalMetaData
+	refId
+	name
+	description
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+	syncStates {
+		vendorIdentifier
+		status
 	}
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
@@ -11396,16 +11916,29 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
 	}
 }
 fragment CustomerFragment on Customer {
@@ -11438,47 +11971,6 @@ fragment CustomerFragment on Customer {
 	}
 	promotionalEntitlements {
 		... PromotionalEntitlementFragment
-	}
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	percentOff
-	amountsOff {
-		amount
-		currency
-	}
-	type
-	additionalMetaData
-	refId
-	name
-	description
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -11543,23 +12035,98 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
 	}
 }
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
 }
 fragment AddonFragment on Addon {
 	id
@@ -11584,9 +12151,27 @@ fragment AddonFragment on Addon {
 		... AddonDependencyFragment
 	}
 }
-fragment PaywallCurrencyFragment on PaywallCurrency {
-	code
-	symbol
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
+}
+fragment PaywallConfigurationFragment on PaywallConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
+	}
+	typography {
+		... TypographyConfigurationFragment
+	}
+	layout {
+		... LayoutConfigurationFragment
+	}
+	customCss
 }
 fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
 	alignment
@@ -11597,92 +12182,19 @@ fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
 fragment CustomerResourceFragment on CustomerResource {
 	resourceId
 }
-fragment OveragePriceFragment on Price {
-	billingModel
+fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
+	planId
+	additionalChargesMayApply
 	billingPeriod
-	billingId
+	amount
+	currency
 	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
 	feature {
 		refId
 		featureUnits
 		featureUnitsPlural
 		displayName
 		description
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
 	}
 }
 fragment PackageEntitlementFragment on PackageEntitlement {
@@ -11706,94 +12218,12 @@ fragment PackageEntitlementFragment on PackageEntitlement {
 		additionalMetaData
 	}
 }
-fragment PaywallConfigurationFragment on PaywallConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-	}
-	typography {
-		... TypographyConfigurationFragment
-	}
-	layout {
-		... LayoutConfigurationFragment
-	}
-	customCss
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
 fragment FontVariantFragment on FontVariant {
 	fontSize
 	fontWeight
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
 }
 `
 
@@ -11888,32 +12318,6 @@ const GetEntitlementDocument = `query GetEntitlement ($query: FetchEntitlementQu
 		... EntitlementFragment
 	}
 }
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
-	}
-}
 fragment EntitlementFragment on Entitlement {
 	__typename
 	isGranted
@@ -11939,6 +12343,32 @@ fragment EntitlementFragment on Entitlement {
 	}
 	feature {
 		... FeatureFragment
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
 	}
 }
 `
@@ -12014,6 +12444,99 @@ const GetCustomerPortalByRefIDDocument = `query GetCustomerPortalByRefId ($input
 		... CustomerPortalFragment
 	}
 }
+fragment CustomerPortalFragment on CustomerPortal {
+	subscriptions {
+		... CustomerPortalSubscriptionFragment
+	}
+	entitlements {
+		... CustomerPortalEntitlementFragment
+	}
+	promotionalEntitlements {
+		... CustomerPortalPromotionalEntitlementFragment
+	}
+	billingInformation {
+		... CustomerPortalBillingInformationFragment
+	}
+	showWatermark
+	billingPortalUrl
+	canUpgradeSubscription
+	configuration {
+		... CustomerPortalConfigurationFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+}
+fragment CustomerPortalSubscriptionPriceFragment on CustomerPortalSubscriptionPrice {
+	billingPeriod
+	billingModel
+	blockSize
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	feature {
+		id
+		refId
+		displayName
+		featureUnits
+		featureUnitsPlural
+	}
+}
+fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
+	email
+	name
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodId
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodType
+}
+fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotionalEntitlement {
+	displayName
+	hasUnlimitedUsage
+	hasSoftLimit
+	usageLimit
+	period
+	startDate
+	endDate
+}
+fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
+		iconsColor
+		paywallBackgroundColor
+	}
+	typography {
+		... TypographyConfigurationFragment
+	}
+	customCss
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+		pricingType
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
 fragment ScheduleVariablesFragment on ScheduleVariables {
 	__typename
 	... on PlanChangeVariables {
@@ -12071,38 +12594,6 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment CustomerPortalSubscriptionAddonFragment on CustomerPortalAddon {
-	addonId
-	description
-	displayName
-	quantity
-}
-fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-		pricingType
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotionalEntitlement {
-	displayName
-	hasUnlimitedUsage
-	hasSoftLimit
-	usageLimit
-	period
-	startDate
-	endDate
-}
 fragment TypographyConfigurationFragment on TypographyConfiguration {
 	fontFamily
 	h1 {
@@ -12116,71 +12607,6 @@ fragment TypographyConfigurationFragment on TypographyConfiguration {
 	}
 	body {
 		... FontVariantFragment
-	}
-}
-fragment CustomerPortalSubscriptionPriceFragment on CustomerPortalSubscriptionPrice {
-	billingPeriod
-	billingModel
-	blockSize
-	price {
-		amount
-		currency
-	}
-	feature {
-		id
-		refId
-		displayName
-		featureUnits
-		featureUnitsPlural
-	}
-}
-fragment CustomerPortalEntitlementFragment on Entitlement {
-	isGranted
-	usageLimit
-	currentUsage
-	hasUnlimitedUsage
-	hasSoftLimit
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
-	email
-	name
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodId
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodType
-}
-fragment CustomerPortalFragment on CustomerPortal {
-	subscriptions {
-		... CustomerPortalSubscriptionFragment
-	}
-	entitlements {
-		... CustomerPortalEntitlementFragment
-	}
-	promotionalEntitlements {
-		... CustomerPortalPromotionalEntitlementFragment
-	}
-	billingInformation {
-		... CustomerPortalBillingInformationFragment
-	}
-	showWatermark
-	billingPortalUrl
-	canUpgradeSubscription
-	configuration {
-		... CustomerPortalConfigurationFragment
-	}
-	resource {
-		... CustomerResourceFragment
 	}
 }
 fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
@@ -12200,6 +12626,10 @@ fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
 		price {
 			amount
 			currency
+		}
+		creditRate {
+			amount
+			customCurrencyId
 		}
 		feature {
 			featureUnits
@@ -12234,6 +12664,29 @@ fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
 		... CustomerPortalSubscriptionScheduledUpdateDataFragment
 	}
 }
+fragment CustomerPortalSubscriptionAddonFragment on CustomerPortalAddon {
+	addonId
+	description
+	displayName
+	quantity
+}
+fragment CustomerPortalEntitlementFragment on Entitlement {
+	isGranted
+	usageLimit
+	currentUsage
+	hasUnlimitedUsage
+	hasSoftLimit
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
 fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
 	__typename
 	... on YearlyResetPeriodConfig {
@@ -12260,21 +12713,6 @@ fragment FeatureFragment on EntitlementFeature {
 		round
 	}
 }
-fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-		iconsColor
-		paywallBackgroundColor
-	}
-	typography {
-		... TypographyConfigurationFragment
-	}
-	customCss
-}
 fragment FontVariantFragment on FontVariant {
 	fontSize
 	fontWeight
@@ -12299,219 +12737,49 @@ const GetCheckoutStateDocument = `query GetCheckoutState ($input: CheckoutStateI
 		... CheckoutStateFragment
 	}
 }
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment AddonDependencyFragment on Addon {
+fragment PlanFragment on Plan {
 	id
 	refId
 	displayName
 	description
-}
-fragment CustomerFragment on Customer {
-	... SlimCustomerFragment
-	hasPaymentMethod
-	hasActiveSubscription
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodType
-	trialedPlans {
-		productId
-		productRefId
-		planRefId
-		planId
-	}
-	experimentInfo {
-		groupType
-		groupName
-		id
-		name
-	}
-	coupon {
-		... CouponFragment
-	}
-	eligibleForTrial {
-		productId
-		productRefId
-		eligible
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
 	billingId
+	versionNumber
 	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
+	hiddenFromWidgets
+	product {
+		... ProductFragment
 	}
-	flatPrice {
-		amount
-		currency
+	basePlan {
+		refId
+		displayName
 	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
+	entitlements {
+		... PackageEntitlementFragment
 	}
-	total {
-		amount
-		currency
+	inheritedEntitlements {
+		... PackageEntitlementFragment
 	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
 		}
+		trialEndBehavior
 	}
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment CheckoutConfigurationFragment on CheckoutConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		summaryBackgroundColor
-		__typename
-	}
-	typography {
-		... TypographyConfigurationFragment
-		__typename
-	}
-	customCss
-	content {
-		collectPhoneNumber
-	}
-	__typename
 }
 fragment CouponFragment on Coupon {
 	id
@@ -12534,6 +12802,17 @@ fragment CouponFragment on Coupon {
 	syncStates {
 		vendorIdentifier
 		status
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -12598,36 +12877,182 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
 }
-fragment PlanFragment on Plan {
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment AddonDependencyFragment on Addon {
 	id
 	refId
 	displayName
 	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
+}
+fragment CheckoutStateFragment on CheckoutState {
+	configuration {
+		... CheckoutConfigurationFragment
 	}
-	basePlan {
+	setupSecret
+	customer {
+		... CustomerFragment
+	}
+	activeSubscription {
+		... SubscriptionFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+	plan {
+		... PlanFragment
+	}
+	billingIntegration {
+		billingIdentifier
+		credentials {
+			accountId
+			publicKey
+		}
+	}
+}
+fragment CheckoutConfigurationFragment on CheckoutConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		summaryBackgroundColor
+		__typename
+	}
+	typography {
+		... TypographyConfigurationFragment
+		__typename
+	}
+	customCss
+	content {
+		collectPhoneNumber
+	}
+	__typename
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
 		refId
 		displayName
 	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
 	entitlements {
 		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
 	}
 	prices {
 		... PriceFragment
@@ -12636,13 +13061,61 @@ fragment PlanFragment on Plan {
 		... OveragePriceFragment
 	}
 	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
 	}
 }
 fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
@@ -12713,93 +13186,62 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
-fragment CheckoutStateFragment on CheckoutState {
-	configuration {
-		... CheckoutConfigurationFragment
-	}
-	setupSecret
-	customer {
-		... CustomerFragment
-	}
-	activeSubscription {
-		... SubscriptionFragment
-	}
-	resource {
-		... CustomerResourceFragment
-	}
-	plan {
-		... PlanFragment
-	}
-	billingIntegration {
-		billingIdentifier
-		credentials {
-			accountId
-			publicKey
-		}
-	}
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
 		refId
-		additionalMetaData
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
 	}
 }
-fragment AddonFragment on Addon {
+fragment CustomerFragment on Customer {
+	... SlimCustomerFragment
+	hasPaymentMethod
+	hasActiveSubscription
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodType
+	trialedPlans {
+		productId
+		productRefId
+		planRefId
+		planId
+	}
+	experimentInfo {
+		groupType
+		groupName
+		id
+		name
+	}
+	coupon {
+		... CouponFragment
+	}
+	eligibleForTrial {
+		productId
+		productRefId
+		eligible
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+}
+fragment SlimCustomerFragment on Customer {
 	id
+	name
+	email
+	createdAt
+	updatedAt
 	refId
+	customerId
 	billingId
-	displayName
-	description
 	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
+	awsMarketplaceCustomerId
 }
 fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
 	trialEndBehavior
@@ -12829,11 +13271,108 @@ const GetMockPaywallDocument = `query GetMockPaywall ($input: GetPaywallInput!) 
 		}
 	}
 }
+fragment MockPaywallAddonDependencyFragment on PaywallAddon {
+	refId
+	displayName
+	description
+}
+fragment MockPaywallPlanCompatiblePackageGroupsFragment on PaywallPlanCompatiblePackageGroup {
+	packageGroupId
+	displayName
+	description
+	addons {
+		... MockPaywallAddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
 fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
 	alignment
 	planWidth
 	planMargin
 	planPadding
+}
+fragment MockPaywallPackageEntitlementFragment on Entitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	hiddenFromWidgets
+	displayNameOverride
+	enumValues
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment MockPaywallPriceFragment on PaywallPrice {
+	billingModel
+	billingPeriod
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment MockPaywallAddonFragment on PaywallAddon {
+	refId
+	displayName
+	description
+	additionalMetaData
+	billingId
+	maxQuantity
+	hiddenFromWidgets
+	dependencies {
+		... MockPaywallAddonDependencyFragment
+	}
+	entitlements {
+		... MockPaywallPackageEntitlementFragment
+	}
+	prices {
+		... MockPaywallPriceFragment
+	}
+	pricingType
 }
 fragment MockPaywallPlanFragment on PaywallPlan {
 	refId
@@ -12876,110 +13415,6 @@ fragment MockPaywallPlanFragment on PaywallPlan {
 		... MockPaywallPlanCompatiblePackageGroupsFragment
 	}
 }
-fragment MockPaywallPackageEntitlementFragment on Entitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	hiddenFromWidgets
-	displayNameOverride
-	enumValues
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment MockPaywallPriceFragment on PaywallPrice {
-	billingModel
-	billingPeriod
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-	}
-	blockSize
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment MockPaywallPlanCompatiblePackageGroupsFragment on PaywallPlanCompatiblePackageGroup {
-	packageGroupId
-	displayName
-	description
-	addons {
-		... MockPaywallAddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment MockPaywallAddonFragment on PaywallAddon {
-	refId
-	displayName
-	description
-	additionalMetaData
-	billingId
-	maxQuantity
-	hiddenFromWidgets
-	dependencies {
-		... MockPaywallAddonDependencyFragment
-	}
-	entitlements {
-		... MockPaywallPackageEntitlementFragment
-	}
-	prices {
-		... MockPaywallPriceFragment
-	}
-	pricingType
-}
-fragment MockPaywallAddonDependencyFragment on PaywallAddon {
-	refId
-	displayName
-	description
-}
 fragment PaywallConfigurationFragment on PaywallConfiguration {
 	palette {
 		primary
@@ -12996,9 +13431,20 @@ fragment PaywallConfigurationFragment on PaywallConfiguration {
 	}
 	customCss
 }
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
 }
 `
 
@@ -13101,25 +13547,50 @@ const ProvisionCustomerDocument = `mutation ProvisionCustomer ($input: Provision
 		... ProvisionCustomerFragment
 	}
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
 		amount
 		currency
 	}
-	total {
+	creditRate {
 		amount
-		currency
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
 	}
 }
 fragment ProvisionCustomerFragment on ProvisionedCustomer {
@@ -13145,84 +13616,6 @@ fragment SlimCustomerFragment on Customer {
 	billingId
 	additionalMetaData
 	awsMarketplaceCustomerId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	requestedValues
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
-	}
 }
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
@@ -13275,6 +13668,45 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		refId
 	}
 }
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	requestedValues
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
 fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	billingId
 	status
@@ -13295,8 +13727,26 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	amountDue
 	attemptCount
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
 }
 `
 
@@ -13492,14 +13942,18 @@ const ProvisionSubscriptionDocument = `mutation ProvisionSubscription ($input: P
 		... ProvisionSubscriptionFragment
 	}
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
 	}
 }
 fragment ProvisionSubscriptionFragment on ProvisionSubscriptionResult {
@@ -13511,6 +13965,104 @@ fragment ProvisionSubscriptionFragment on ProvisionSubscriptionResult {
 	}
 	entitlements {
 		... EntitlementFragment
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	requestedValues
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
 	}
 }
 fragment SlimSubscriptionFragment on CustomerSubscription {
@@ -13564,25 +14116,8 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		refId
 	}
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
 fragment PriceTierFragment on PriceTier {
 	upTo
@@ -13593,87 +14128,6 @@ fragment PriceTierFragment on PriceTier {
 	flatPrice {
 		amount
 		currency
-	}
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	requestedValues
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
 	}
 }
 `
@@ -13702,218 +14156,6 @@ fragment ApplySubscriptionFragment on ApplySubscription {
 	}
 	entitlements {
 		... EntitlementFragment
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment ScheduleVariablesFragment on ScheduleVariables {
-	__typename
-	... on PlanChangeVariables {
-		planRefId
-		changeType
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on DowngradeChangeVariables {
-		downgradePlanRefId
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on BillingPeriodChangeVariables {
-		billingPeriod
-	}
-	... on UnitAmountChangeVariables {
-		newUnitAmount
-		featureId
-	}
-	... on AddonChangeVariables {
-		addonRefId
-		newQuantity
-	}
-	... on PlanPriceOverrideChangeVariables {
-		planRefId
-		featureId
-	}
-	... on AddonPriceOverrideChangeVariables {
-		addonRefId
-		featureId
-	}
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	requestedValues
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -13978,30 +14220,8 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
 fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	subTotal {
@@ -14057,25 +14277,27 @@ fragment PlanFragment on Plan {
 		trialEndBehavior
 	}
 }
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
+fragment AddonFragment on Addon {
+	id
+	refId
 	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
 	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
+	prices {
+		... PriceFragment
 	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
 	}
 }
 fragment AddonDependencyFragment on Addon {
@@ -14083,6 +14305,130 @@ fragment AddonDependencyFragment on Addon {
 	refId
 	displayName
 	description
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+	... on PlanPriceOverrideChangeVariables {
+		planRefId
+		featureId
+	}
+	... on AddonPriceOverrideChangeVariables {
+		addonRefId
+		featureId
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
 }
 fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
 	subscriptionScheduleType
@@ -14110,6 +14456,36 @@ fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 		... ScheduleVariablesFragment
 	}
 }
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	requestedValues
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
 fragment FeatureFragment on EntitlementFeature {
 	__typename
 	featureType
@@ -14122,6 +14498,88 @@ fragment FeatureFragment on EntitlementFeature {
 	unitTransformation {
 		divide
 		round
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
 	}
 }
 `
@@ -14162,17 +14620,6 @@ const UpdateSubscriptionDocument = `mutation UpdateSubscription ($input: UpdateS
 		... SlimSubscriptionFragment
 	}
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
 fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	subTotal {
 		amount
@@ -14269,6 +14716,10 @@ fragment PriceFragment on Price {
 		amount
 		currency
 	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
 	tiersMode
 	tiers {
 		... PriceTierFragment
@@ -14281,6 +14732,17 @@ fragment PriceFragment on Price {
 		description
 	}
 	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
 }
 `
 
@@ -14302,27 +14764,6 @@ const CancelSubscriptionDocument = `mutation CancelSubscription ($input: Subscri
 		... SlimSubscriptionFragment
 	}
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -14409,6 +14850,10 @@ fragment PriceFragment on Price {
 		amount
 		currency
 	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
 	tiersMode
 	tiers {
 		... PriceTierFragment
@@ -14421,6 +14866,27 @@ fragment PriceFragment on Price {
 		description
 	}
 	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
 }
 `
 
@@ -14818,17 +15284,6 @@ const PreviewNextInvoiceDocument = `mutation PreviewNextInvoice ($input: Preview
 		... SubscriptionInvoicePreviewFragment
 	}
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
 fragment SubscriptionInvoicePreviewFragment on SubscriptionInvoicePreview {
 	amountDue {
 		amount
@@ -14935,6 +15390,10 @@ fragment PriceFragment on Price {
 		amount
 		currency
 	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
 	tiersMode
 	tiers {
 		... PriceTierFragment
@@ -14947,6 +15406,17 @@ fragment PriceFragment on Price {
 		description
 	}
 	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
 }
 `
 
@@ -15084,55 +15554,6 @@ const CreateSubscriptionDocument = `mutation CreateSubscription ($input: Subscri
 		... SlimSubscriptionFragment
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -15203,6 +15624,59 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	tax
 	amountDue
 	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
 }
 `
 
@@ -15382,6 +15856,10 @@ fragment PriceFragment on Price {
 		amount
 		currency
 	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
 	tiersMode
 	tiers {
 		... PriceTierFragment
@@ -15436,6 +15914,27 @@ const DelegateSubscriptionToCustomerDocument = `mutation DelegateSubscriptionToC
 		... SlimSubscriptionFragment
 	}
 }
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -15522,6 +16021,10 @@ fragment PriceFragment on Price {
 		amount
 		currency
 	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
 	tiersMode
 	tiers {
 		... PriceTierFragment
@@ -15534,27 +16037,6 @@ fragment PriceFragment on Price {
 		description
 	}
 	blockSize
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
 }
 `
 
@@ -15576,6 +16058,58 @@ const TransferSubscriptionToResourceDocument = `mutation TransferSubscriptionToR
 		... SlimSubscriptionFragment
 	}
 }
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
 fragment PriceTierFragment on PriceTier {
 	upTo
 	unitPrice {
@@ -15647,54 +16181,6 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		id
 		refId
 	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
 }
 `
 
@@ -15794,6 +16280,23 @@ const OnUsageUpdatedDocument = `subscription OnUsageUpdated {
 		... EntitlementUsageUpdated
 	}
 }
+fragment EntitlementUsageUpdated on UsageUpdated {
+	usage {
+		... UsageUpdatedFragment
+	}
+	entitlement {
+		... EntitlementFragment
+	}
+}
+fragment UsageUpdatedFragment on UsageMeasurementUpdated {
+	customerId
+	resourceId
+	featureId
+	currentUsage
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+}
 fragment EntitlementFragment on Entitlement {
 	__typename
 	isGranted
@@ -15846,23 +16349,6 @@ fragment FeatureFragment on EntitlementFeature {
 		divide
 		round
 	}
-}
-fragment EntitlementUsageUpdated on UsageUpdated {
-	usage {
-		... UsageUpdatedFragment
-	}
-	entitlement {
-		... EntitlementFragment
-	}
-}
-fragment UsageUpdatedFragment on UsageMeasurementUpdated {
-	customerId
-	resourceId
-	featureId
-	currentUsage
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
 }
 `
 

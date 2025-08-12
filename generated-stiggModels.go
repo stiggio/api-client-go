@@ -1570,6 +1570,22 @@ type CreditGrantInput struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
+// Credit Rate
+type CreditRate struct {
+	// The credit rate amount
+	Amount float64 `json:"amount"`
+	// The custom currency ID for the credit rate
+	CustomCurrencyID string `json:"customCurrencyId"`
+}
+
+// Credit Rate Input
+type CreditRateInput struct {
+	// The credit rate amount
+	Amount float64 `json:"amount"`
+	// The custom currency ID for the credit rate
+	CustomCurrencyID string `json:"customCurrencyId"`
+}
+
 type CursorPaging struct {
 	// Paginate after opaque cursor
 	After *string `json:"after,omitempty"`
@@ -2071,33 +2087,52 @@ type CustomerPortalPromotionalEntitlement struct {
 }
 
 type CustomerPortalSubscription struct {
-	Addons             []*CustomerPortalAddon             `json:"addons"`
-	BillingPeriodRange *DateRange                         `json:"billingPeriodRange"`
-	PlanID             string                             `json:"planId"`
-	PlanName           string                             `json:"planName"`
-	Prices             []*CustomerPortalSubscriptionPrice `json:"prices"`
-	Pricing            CustomerPortalSubscriptionPricing  `json:"pricing"`
-	PricingType        PricingType                        `json:"pricingType"`
-	ScheduledUpdates   []*SubscriptionScheduledUpdate     `json:"scheduledUpdates"`
-	Status             SubscriptionStatus                 `json:"status"`
-	SubscriptionID     string                             `json:"subscriptionId"`
-	TotalPrice         *CustomerSubscriptionTotalPrice    `json:"totalPrice"`
-	TrialRemainingDays *int64                             `json:"trialRemainingDays"`
+	// List of add-ons currently attached to the subscription.
+	Addons []*CustomerPortalAddon `json:"addons"`
+	// An object representing the current billing cycle’s start and end dates.
+	BillingPeriodRange *DateRange `json:"billingPeriodRange"`
+	// The internal ID of the subscribed plan.
+	PlanID string `json:"planId"`
+	// The display name of the subscribed plan as shown to the customer.
+	PlanName string `json:"planName"`
+	// A list of individual price components.
+	Prices []*CustomerPortalSubscriptionPrice `json:"prices"`
+	// The aggregated pricing structure.
+	Pricing CustomerPortalSubscriptionPricing `json:"pricing"`
+	// Indicates if the subscription is FREE or PAID.
+	PricingType PricingType `json:"pricingType"`
+	// Any upcoming changes to the subscription that are scheduled to take effect.
+	ScheduledUpdates []*SubscriptionScheduledUpdate `json:"scheduledUpdates"`
+	// The current lifecycle status of the subscription.
+	Status SubscriptionStatus `json:"status"`
+	// Unique identifier for this specific subscription instance.
+	SubscriptionID string `json:"subscriptionId"`
+	// The combined total price of the plan and all active add-ons, excluding taxes.
+	TotalPrice *CustomerSubscriptionTotalPrice `json:"totalPrice"`
+	// Number of days left in the free trial, if applicable.
+	TrialRemainingDays *int64 `json:"trialRemainingDays"`
 }
 
 type CustomerPortalSubscriptionPrice struct {
-	BillingModel  *BillingModel  `json:"billingModel"`
+	// The pricing structure applied to this component - flat, per_unit, tiered, or volume.
+	BillingModel *BillingModel `json:"billingModel"`
+	// The billing frequency for this price entry, such as monthly or annual.
 	BillingPeriod *BillingPeriod `json:"billingPeriod"`
-	// The number of units per block
-	BlockSize *float64                      `json:"blockSize"`
-	Feature   *CustomerPortalPricingFeature `json:"feature"`
-	Price     *Money                        `json:"price"`
+	// The minimum billing unit applied to this charge. For example, a blockSize of 100 means usage is billed in increments of 100 units.
+	BlockSize *float64 `json:"blockSize"`
+	// The credit rate applied to this price, if applicable.
+	CreditRate *CreditRate `json:"creditRate"`
+	// The feature this pricing line refers to, such as api_calls, seats, storage.
+	Feature *CustomerPortalPricingFeature `json:"feature"`
+	// The monetary amount charged for this component.
+	Price *Money `json:"price"`
 }
 
 type CustomerPortalSubscriptionPricing struct {
 	BillingCountryCode      *string                       `json:"billingCountryCode"`
 	BillingModel            *BillingModel                 `json:"billingModel"`
 	BillingPeriod           *BillingPeriod                `json:"billingPeriod"`
+	CreditRate              *CreditRate                   `json:"creditRate"`
 	Feature                 *CustomerPortalPricingFeature `json:"feature"`
 	Price                   *Money                        `json:"price"`
 	PricingType             PricingType                   `json:"pricingType"`
@@ -6027,6 +6062,8 @@ type PaywallPrice struct {
 	BillingPeriod BillingPeriod `json:"billingPeriod"`
 	// The number of units per block. Defaults to 1 unit
 	BlockSize *float64 `json:"blockSize"`
+	// The credit rate for the price, if applicable
+	CreditRate *CreditRate `json:"creditRate"`
 	// The feature associated with this price, if applicable
 	Feature *EntitlementFeature `json:"feature"`
 	// The ID of the feature associated with this price, if applicable
@@ -6490,6 +6527,8 @@ type Price struct {
 	BlockSize *float64 `json:"blockSize"`
 	// Timestamp of when the record was created
 	CreatedAt *string `json:"createdAt"`
+	// The credit rate for this price
+	CreditRate *CreditRate `json:"creditRate"`
 	// The CRM id of the price
 	CrmID *string `json:"crmId"`
 	// The CRM link url of the price
@@ -6560,6 +6599,8 @@ type PriceDeleteResponse struct {
 	BlockSize *float64 `json:"blockSize"`
 	// Timestamp of when the record was created
 	CreatedAt *string `json:"createdAt"`
+	// The credit rate for this price
+	CreditRate *CreditRate `json:"creditRate"`
 	// The CRM id of the price
 	CrmID *string `json:"crmId"`
 	// The CRM link url of the price
@@ -6694,6 +6735,8 @@ type PriceOverrideInput struct {
 	BaseCharge *bool `json:"baseCharge,omitempty"`
 	// The number of units per block. Defaults to 1 unit
 	BlockSize *float64 `json:"blockSize,omitempty"`
+	// The credit rate for this period
+	CreditRate *CreditRateInput `json:"creditRate,omitempty"`
 	// The corresponding feature id of the price
 	FeatureID *string `json:"featureId,omitempty"`
 	// The price of the price period
@@ -6710,6 +6753,8 @@ type PricePeriodInput struct {
 	BillingPeriod BillingPeriod `json:"billingPeriod"`
 	// The number of units per block. Defaults to 1 unit
 	BlockSize *float64 `json:"blockSize,omitempty"`
+	// The credit rate for this period
+	CreditRate *CreditRateInput `json:"creditRate,omitempty"`
 	// The price of the price period
 	Price *MoneyInputDto `json:"price,omitempty"`
 	// List of tiers of the price period
@@ -10940,6 +10985,8 @@ func (e BillingCadence) MarshalGQL(w io.Writer) {
 type BillingModel string
 
 const (
+	// Credit based
+	BillingModelCreditBased BillingModel = "CREDIT_BASED"
 	// Flat fee
 	BillingModelFlatFee BillingModel = "FLAT_FEE"
 	// Minimum spend
@@ -10951,6 +10998,7 @@ const (
 )
 
 var AllBillingModel = []BillingModel{
+	BillingModelCreditBased,
 	BillingModelFlatFee,
 	BillingModelMinimumSpend,
 	BillingModelPerUnit,
@@ -10959,7 +11007,7 @@ var AllBillingModel = []BillingModel{
 
 func (e BillingModel) IsValid() bool {
 	switch e {
-	case BillingModelFlatFee, BillingModelMinimumSpend, BillingModelPerUnit, BillingModelUsageBased:
+	case BillingModelCreditBased, BillingModelFlatFee, BillingModelMinimumSpend, BillingModelPerUnit, BillingModelUsageBased:
 		return true
 	}
 	return false
