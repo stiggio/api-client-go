@@ -8102,8 +8102,10 @@ type SubscriptionBillingInfo struct {
 	IsBackdated         *bool                  `json:"isBackdated,omitempty"`
 	IsInvoicePaid       *bool                  `json:"isInvoicePaid,omitempty"`
 	Metadata            map[string]interface{} `json:"metadata,omitempty"`
-	TaxPercentage       *float64               `json:"taxPercentage,omitempty"`
-	TaxRateIds          []string               `json:"taxRateIds,omitempty"`
+	// Override the proration behavior for the subscription
+	ProrationBehavior *ProrationBehaviorExtended `json:"prorationBehavior,omitempty"`
+	TaxPercentage     *float64                   `json:"taxPercentage,omitempty"`
+	TaxRateIds        []string                   `json:"taxRateIds,omitempty"`
 }
 
 type SubscriptionCancelReasonFilterComparison struct {
@@ -15025,6 +15027,53 @@ func (e *ProrationBehavior) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ProrationBehavior) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Proration behavior for subscription billing
+type ProrationBehaviorExtended string
+
+const (
+	// Create proration invoice items for changes in the subscription
+	ProrationBehaviorExtendedCreateProrations ProrationBehaviorExtended = "CREATE_PRORATIONS"
+	// Invoice immediately for changes in the subscription without proration
+	ProrationBehaviorExtendedInvoiceImmediately ProrationBehaviorExtended = "INVOICE_IMMEDIATELY"
+	// No proration and no invoice for changes in the subscription
+	ProrationBehaviorExtendedNone ProrationBehaviorExtended = "NONE"
+)
+
+var AllProrationBehaviorExtended = []ProrationBehaviorExtended{
+	ProrationBehaviorExtendedCreateProrations,
+	ProrationBehaviorExtendedInvoiceImmediately,
+	ProrationBehaviorExtendedNone,
+}
+
+func (e ProrationBehaviorExtended) IsValid() bool {
+	switch e {
+	case ProrationBehaviorExtendedCreateProrations, ProrationBehaviorExtendedInvoiceImmediately, ProrationBehaviorExtendedNone:
+		return true
+	}
+	return false
+}
+
+func (e ProrationBehaviorExtended) String() string {
+	return string(e)
+}
+
+func (e *ProrationBehaviorExtended) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ProrationBehaviorExtended(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ProrationBehaviorExtended", str)
+	}
+	return nil
+}
+
+func (e ProrationBehaviorExtended) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
