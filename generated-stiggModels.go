@@ -1471,7 +1471,9 @@ type CreateWorkflowTriggerInput struct {
 }
 
 // Credit balance information for a specific currency
-type CreditBalanceDto struct {
+type CreditBalance struct {
+	// Stigg custom currency object with minimal fields
+	Currency SlimCustomCurrency `json:"currency"`
 	// The custom currency ID of the credit grant
 	CurrencyID string `json:"currencyId"`
 	// Current available balance
@@ -1483,9 +1485,9 @@ type CreditBalanceDto struct {
 }
 
 // Credit balance summary for a customer
-type CreditBalanceSummaryDto struct {
+type CreditBalanceSummary struct {
 	// List of credit balances for the customer
-	Balances []*CreditBalanceDto `json:"balances"`
+	Balances []*CreditBalance `json:"balances"`
 	// The customer ID of the credit grant
 	CustomerID string `json:"customerId"`
 	// The resource ID of the credit grant
@@ -7771,6 +7773,16 @@ type SetPlanCompatiblePackageGroups struct {
 	ID string `json:"id"`
 	// The package groups with optional options
 	PackageGroups []*SetPlanCompatiblePackageGroup `json:"packageGroups"`
+}
+
+// Stigg custom currency object with minimal fields
+type SlimCustomCurrency struct {
+	// The unique identifier for the custom currency
+	CurrencyID string `json:"currencyId"`
+	// The name of the custom currency
+	DisplayName string `json:"displayName"`
+	// The symbol of the custom currency
+	Symbol string `json:"symbol"`
 }
 
 // Snowflake integration configuration object
