@@ -13047,6 +13047,8 @@ const (
 	EventEntityTypeEntitlement EventEntityType = "ENTITLEMENT"
 	// Feature entity
 	EventEntityTypeFeature EventEntityType = "FEATURE"
+	// Feature Group Entity
+	EventEntityTypeFeatureGroup EventEntityType = "FEATURE_GROUP"
 	// Import entity
 	EventEntityTypeImport EventEntityType = "IMPORT"
 	// Measurement entity
@@ -13071,6 +13073,7 @@ var AllEventEntityType = []EventEntityType{
 	EventEntityTypeCustomer,
 	EventEntityTypeEntitlement,
 	EventEntityTypeFeature,
+	EventEntityTypeFeatureGroup,
 	EventEntityTypeImport,
 	EventEntityTypeMeasurement,
 	EventEntityTypePackage,
@@ -13083,7 +13086,7 @@ var AllEventEntityType = []EventEntityType{
 
 func (e EventEntityType) IsValid() bool {
 	switch e {
-	case EventEntityTypeAddon, EventEntityTypeCoupon, EventEntityTypeCustomer, EventEntityTypeEntitlement, EventEntityTypeFeature, EventEntityTypeImport, EventEntityTypeMeasurement, EventEntityTypePackage, EventEntityTypePackageGroup, EventEntityTypePlan, EventEntityTypeProduct, EventEntityTypePromotionalEntitlement, EventEntityTypeSubscription:
+	case EventEntityTypeAddon, EventEntityTypeCoupon, EventEntityTypeCustomer, EventEntityTypeEntitlement, EventEntityTypeFeature, EventEntityTypeFeatureGroup, EventEntityTypeImport, EventEntityTypeMeasurement, EventEntityTypePackage, EventEntityTypePackageGroup, EventEntityTypePlan, EventEntityTypeProduct, EventEntityTypePromotionalEntitlement, EventEntityTypeSubscription:
 		return true
 	}
 	return false
