@@ -4739,6 +4739,16 @@ type InvoiceLine struct {
 	Quantity    *int64  `json:"quantity"`
 }
 
+// Link feature group to package entitlements input
+type LinkFeatureGroupToPackageInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The group id to link to the package
+	FeatureGroupID string `json:"featureGroupId"`
+	// The unique identifier of the entitlement package
+	PackageID string `json:"packageId"`
+}
+
 // AWS Marketplace product dimensions response
 type ListAwsProductDimensionsDto struct {
 	// List of available dimensions for the AWS product
