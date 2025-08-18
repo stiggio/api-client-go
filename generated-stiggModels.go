@@ -1530,6 +1530,8 @@ type CreditGrant struct {
 	EffectiveAt string `json:"effectiveAt"`
 	// The expiration date of the credit grant
 	ExpireAt *string `json:"expireAt"`
+	// The auto-generated readable identifier for the credit grant
+	GrantID string `json:"grantId"`
 	// The type of the credit grant
 	GrantType CreditGrantType `json:"grantType"`
 	// Unique identifier for the entity
