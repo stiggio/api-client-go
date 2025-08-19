@@ -8489,6 +8489,7 @@ type SubscriptionInvoice struct {
 	BillingReason        *SubscriptionInvoiceBillingReason `json:"billingReason"`
 	CreatedAt            string                            `json:"createdAt"`
 	Currency             *string                           `json:"currency"`
+	DueDate              *string                           `json:"dueDate"`
 	EndingBalance        *float64                          `json:"endingBalance"`
 	ErrorMessage         *string                           `json:"errorMessage"`
 	Lines                []*InvoiceLine                    `json:"lines"`
