@@ -1609,12 +1609,16 @@ type CustomCurrency struct {
 	CreatedAt string `json:"createdAt"`
 	// The unique identifier for the custom currency
 	CurrencyID string `json:"currencyId"`
+	// Description of the currency
+	Description *string `json:"description"`
 	// The name of the custom currency
 	DisplayName string `json:"displayName"`
 	// Unique identifier for the entity
 	ID string `json:"id"`
 	// The symbol of the custom currency
-	Symbol string `json:"symbol"`
+	Symbol *string `json:"symbol"`
+	// Units for the currency (singular and plural)
+	Units *Units `json:"units"`
 	// Timestamp of when the record was last updated
 	UpdatedAt string `json:"updatedAt"`
 }
@@ -1625,12 +1629,16 @@ type CustomCurrencyInput struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	// The unique identifier for the custom currency
 	CurrencyID string `json:"currencyId"`
+	// Description of the currency
+	Description *string `json:"description,omitempty"`
 	// The name of the custom currency
 	DisplayName string `json:"displayName"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The symbol of the custom currency
-	Symbol string `json:"symbol"`
+	Symbol *string `json:"symbol,omitempty"`
+	// Units for the currency (singular and plural)
+	Units *UnitsInput `json:"units,omitempty"`
 }
 
 // Stigg customer object
@@ -7794,7 +7802,9 @@ type SlimCustomCurrency struct {
 	// The name of the custom currency
 	DisplayName string `json:"displayName"`
 	// The symbol of the custom currency
-	Symbol string `json:"symbol"`
+	Symbol *string `json:"symbol"`
+	// Units for the currency (singular and plural)
+	Units *Units `json:"units"`
 }
 
 // Snowflake integration configuration object
@@ -9507,6 +9517,22 @@ type UnitTransformationInput struct {
 	Round *UnitTransformationRound `json:"round,omitempty"`
 }
 
+// Units object (singular and plural)
+type Units struct {
+	// Plural form of the unit
+	Plural string `json:"plural"`
+	// Singular form of the unit
+	Singular string `json:"singular"`
+}
+
+// Units input object (singular and plural)
+type UnitsInput struct {
+	// Plural form of the unit
+	Plural string `json:"plural"`
+	// Singular form of the unit
+	Singular string `json:"singular"`
+}
+
 // Unlink feature group from package entitlements input
 type UnlinkFeatureGroupFromPackageInput struct {
 	// The unique identifier for the environment
@@ -9585,12 +9611,16 @@ type UpdateCustomCurrencyInput struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
 	// The unique identifier for the custom currency
 	CurrencyID string `json:"currencyId"`
+	// Description of the currency
+	Description *string `json:"description,omitempty"`
 	// The name of the custom currency
 	DisplayName *string `json:"displayName,omitempty"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The symbol of the custom currency
 	Symbol *string `json:"symbol,omitempty"`
+	// Units for the currency (singular and plural)
+	Units *UnitsInput `json:"units,omitempty"`
 }
 
 // Update customer information
