@@ -5177,6 +5177,8 @@ type OverageEntitlementCreateInput struct {
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
 	// Whether the entitlement is a custom entitlement
 	IsCustom *bool `json:"isCustom,omitempty"`
+	// Whether entitlement grant is active
+	IsGranted *bool `json:"isGranted,omitempty"`
 	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
 	// The order of the entitlement in the entitlement list
@@ -5377,8 +5379,10 @@ type PackageEntitlement struct {
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
 	ID                string       `json:"id"`
 	// Whether the entitlement is a custom entitlement
-	IsCustom *bool  `json:"isCustom"`
-	Meter    *Meter `json:"meter"`
+	IsCustom *bool `json:"isCustom"`
+	// Whether entitlement grant is active
+	IsGranted bool   `json:"isGranted"`
+	Meter     *Meter `json:"meter"`
 	// The order of the entitlement in the entitlement list
 	Order   *float64    `json:"order"`
 	Package *PackageDto `json:"package"`
@@ -5457,6 +5461,8 @@ type PackageEntitlementDeleteResponse struct {
 	ID                *string      `json:"id"`
 	// Whether the entitlement is a custom entitlement
 	IsCustom *bool `json:"isCustom"`
+	// Whether entitlement grant is active
+	IsGranted *bool `json:"isGranted"`
 	// The order of the entitlement in the entitlement list
 	Order *float64 `json:"order"`
 	// The unique identifier of the entitlement package
@@ -5547,6 +5553,8 @@ type PackageEntitlementInput struct {
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
 	// Whether the entitlement is a custom entitlement
 	IsCustom *bool `json:"isCustom,omitempty"`
+	// Whether entitlement grant is active
+	IsGranted *bool `json:"isGranted,omitempty"`
 	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
 	// The order of the entitlement in the entitlement list
@@ -5603,6 +5611,8 @@ type PackageEntitlementUpdateInput struct {
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
 	// Whether the entitlement is a custom entitlement
 	IsCustom *bool `json:"isCustom,omitempty"`
+	// Whether entitlement grant is active
+	IsGranted *bool `json:"isGranted,omitempty"`
 	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
 	// The order of the entitlement in the entitlement list
@@ -10461,6 +10471,8 @@ const (
 	AccessDeniedReasonRequestedUsageExceedingLimit AccessDeniedReason = "RequestedUsageExceedingLimit"
 	// The requested values do not match the expected values for the feature.
 	AccessDeniedReasonRequestedValuesMismatch AccessDeniedReason = "RequestedValuesMismatch"
+	// Entitlement access was revoked
+	AccessDeniedReasonRevoked AccessDeniedReason = "Revoked"
 	// The access denial occurred for an unknown or unexpected reason.
 	AccessDeniedReasonUnknown AccessDeniedReason = "Unknown"
 )
@@ -10476,12 +10488,13 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 	AccessDeniedReasonNoFeatureEntitlementInSubscription,
 	AccessDeniedReasonRequestedUsageExceedingLimit,
 	AccessDeniedReasonRequestedValuesMismatch,
+	AccessDeniedReasonRevoked,
 	AccessDeniedReasonUnknown,
 }
 
 func (e AccessDeniedReason) IsValid() bool {
 	switch e {
-	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonFeatureTypeMismatch, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonRequestedValuesMismatch, AccessDeniedReasonUnknown:
+	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonFeatureTypeMismatch, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonRequestedValuesMismatch, AccessDeniedReasonRevoked, AccessDeniedReasonUnknown:
 		return true
 	}
 	return false
