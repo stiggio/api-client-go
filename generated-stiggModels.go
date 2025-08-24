@@ -1514,14 +1514,14 @@ type CreditGrant struct {
 	Amount float64 `json:"amount"`
 	// The comment for the credit grant
 	Comment *string `json:"comment"`
+	// The amount of the credit grant that has been consumed
+	ConsumedAmount float64 `json:"consumedAmount"`
 	// The fiat cost of the credit grant
 	Cost Money `json:"cost"`
 	// Timestamp of when the record was created
 	CreatedAt string `json:"createdAt"`
 	// The custom currency ID of the credit grant
 	CurrencyID string `json:"currencyId"`
-	// The current amount of the credit grant
-	CurrentAmount float64 `json:"currentAmount"`
 	// The customer ID of the credit grant
 	CustomerID string `json:"customerId"`
 	// The display name of the credit grant
