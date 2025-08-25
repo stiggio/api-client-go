@@ -10463,6 +10463,8 @@ const (
 	AccessDeniedReasonFeatureNotFound AccessDeniedReason = "FeatureNotFound"
 	// The requested entitlement type does not match the feature type
 	AccessDeniedReasonFeatureTypeMismatch AccessDeniedReason = "FeatureTypeMismatch"
+	// The customer does not have enough credits to access the feature.
+	AccessDeniedReasonInsufficientCredits AccessDeniedReason = "InsufficientCredits"
 	// The customer does not have any active subscription linked to the feature.
 	AccessDeniedReasonNoActiveSubscription AccessDeniedReason = "NoActiveSubscription"
 	// The current subscription does not include entitlement to the requested feature.
@@ -10484,6 +10486,7 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 	AccessDeniedReasonCustomerResourceNotFound,
 	AccessDeniedReasonFeatureNotFound,
 	AccessDeniedReasonFeatureTypeMismatch,
+	AccessDeniedReasonInsufficientCredits,
 	AccessDeniedReasonNoActiveSubscription,
 	AccessDeniedReasonNoFeatureEntitlementInSubscription,
 	AccessDeniedReasonRequestedUsageExceedingLimit,
@@ -10494,7 +10497,7 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 
 func (e AccessDeniedReason) IsValid() bool {
 	switch e {
-	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonFeatureTypeMismatch, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonRequestedValuesMismatch, AccessDeniedReasonRevoked, AccessDeniedReasonUnknown:
+	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonFeatureTypeMismatch, AccessDeniedReasonInsufficientCredits, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonRequestedValuesMismatch, AccessDeniedReasonRevoked, AccessDeniedReasonUnknown:
 		return true
 	}
 	return false
