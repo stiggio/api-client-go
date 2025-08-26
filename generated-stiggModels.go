@@ -9036,7 +9036,8 @@ type SubscriptionQuery struct {
 	ResourceID       *string                        `json:"resourceId"`
 	SalesforceID     *string                        `json:"salesforceId"`
 	ScheduledUpdates []*SubscriptionScheduledUpdate `json:"scheduledUpdates"`
-	StartDate        string                         `json:"startDate"`
+	// Subscription start date
+	StartDate string `json:"startDate"`
 	// Subscription status
 	Status                   SubscriptionStatus              `json:"status"`
 	SubscriptionEntitlements []*SubscriptionEntitlement      `json:"subscriptionEntitlements"`
@@ -9055,6 +9056,7 @@ type SubscriptionQueryAggregateGroupBy struct {
 	EnvironmentID *string             `json:"environmentId"`
 	ProductID     *string             `json:"productId"`
 	ResourceID    *string             `json:"resourceId"`
+	StartDate     *string             `json:"startDate"`
 	Status        *SubscriptionStatus `json:"status"`
 }
 
@@ -9073,6 +9075,7 @@ type SubscriptionQueryCountAggregate struct {
 	EnvironmentID *int64 `json:"environmentId"`
 	ProductID     *int64 `json:"productId"`
 	ResourceID    *int64 `json:"resourceId"`
+	StartDate     *int64 `json:"startDate"`
 	Status        *int64 `json:"status"`
 }
 
@@ -9091,6 +9094,7 @@ type SubscriptionQueryFilter struct {
 	Or            []*SubscriptionQueryFilter          `json:"or,omitempty"`
 	ProductID     *StringFieldComparison              `json:"productId,omitempty"`
 	ResourceID    *StringFieldComparison              `json:"resourceId,omitempty"`
+	StartDate     *DateFieldComparison                `json:"startDate,omitempty"`
 	Status        *SubscriptionStatusFilterComparison `json:"status,omitempty"`
 }
 
@@ -9100,6 +9104,7 @@ type SubscriptionQueryMaxAggregate struct {
 	EnvironmentID *string             `json:"environmentId"`
 	ProductID     *string             `json:"productId"`
 	ResourceID    *string             `json:"resourceId"`
+	StartDate     *string             `json:"startDate"`
 	Status        *SubscriptionStatus `json:"status"`
 }
 
@@ -9109,6 +9114,7 @@ type SubscriptionQueryMinAggregate struct {
 	EnvironmentID *string             `json:"environmentId"`
 	ProductID     *string             `json:"productId"`
 	ResourceID    *string             `json:"resourceId"`
+	StartDate     *string             `json:"startDate"`
 	Status        *SubscriptionStatus `json:"status"`
 }
 
@@ -16096,6 +16102,7 @@ const (
 	SubscriptionQuerySortFieldsEnvironmentID SubscriptionQuerySortFields = "environmentId"
 	SubscriptionQuerySortFieldsProductID     SubscriptionQuerySortFields = "productId"
 	SubscriptionQuerySortFieldsResourceID    SubscriptionQuerySortFields = "resourceId"
+	SubscriptionQuerySortFieldsStartDate     SubscriptionQuerySortFields = "startDate"
 	SubscriptionQuerySortFieldsStatus        SubscriptionQuerySortFields = "status"
 )
 
@@ -16105,12 +16112,13 @@ var AllSubscriptionQuerySortFields = []SubscriptionQuerySortFields{
 	SubscriptionQuerySortFieldsEnvironmentID,
 	SubscriptionQuerySortFieldsProductID,
 	SubscriptionQuerySortFieldsResourceID,
+	SubscriptionQuerySortFieldsStartDate,
 	SubscriptionQuerySortFieldsStatus,
 }
 
 func (e SubscriptionQuerySortFields) IsValid() bool {
 	switch e {
-	case SubscriptionQuerySortFieldsCreatedAt, SubscriptionQuerySortFieldsCustomerID, SubscriptionQuerySortFieldsEnvironmentID, SubscriptionQuerySortFieldsProductID, SubscriptionQuerySortFieldsResourceID, SubscriptionQuerySortFieldsStatus:
+	case SubscriptionQuerySortFieldsCreatedAt, SubscriptionQuerySortFieldsCustomerID, SubscriptionQuerySortFieldsEnvironmentID, SubscriptionQuerySortFieldsProductID, SubscriptionQuerySortFieldsResourceID, SubscriptionQuerySortFieldsStartDate, SubscriptionQuerySortFieldsStatus:
 		return true
 	}
 	return false
