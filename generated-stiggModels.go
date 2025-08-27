@@ -1574,6 +1574,44 @@ type CreditGrantInput struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
+// Credits ledger
+type CreditLedger struct {
+	// List of credit ledger events
+	Events []*CreditLedgerEvent `json:"events"`
+}
+
+// Credits ledger event
+type CreditLedgerEvent struct {
+	// The partial cost of the ledger event
+	Amount float64 `json:"amount"`
+	// The credit currency ID of the ledger event
+	CreditCurrencyID string `json:"creditCurrencyId"`
+	// The credit grant ID of the ledger event
+	CreditGrantID string `json:"creditGrantId"`
+	// The customer ID of the ledger event
+	CustomerID string `json:"customerId"`
+	// The event ID of the ledger event
+	EventID *string `json:"eventId"`
+	// The type of the ledger event
+	EventType CreditLedgerEventType `json:"eventType"`
+	// The feature ID of the ledger event
+	FeatureID *string `json:"featureId"`
+	// The resource ID of the ledger event
+	ResourceID *string `json:"resourceId"`
+	// The timestamp of the ledger event
+	Timestamp string `json:"timestamp"`
+}
+
+// Input for retrieving credit ledger
+type CreditLedgerInput struct {
+	// The customer ID of the credit ledger
+	CustomerID string `json:"customerId"`
+	// The environment ID of the credit ledger
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The resource ID of the credit ledger
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
 // Credit Rate
 type CreditRate struct {
 	// The credit rate amount
@@ -11543,6 +11581,53 @@ func (e *CreditGrantType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CreditGrantType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The type of the ledger event
+type CreditLedgerEventType string
+
+const (
+	// Credits consumed
+	CreditLedgerEventTypeCreditsConsumed CreditLedgerEventType = "CREDITS_CONSUMED"
+	// Credits expired
+	CreditLedgerEventTypeCreditsExpired CreditLedgerEventType = "CREDITS_EXPIRED"
+	// Credits granted
+	CreditLedgerEventTypeCreditsGranted CreditLedgerEventType = "CREDITS_GRANTED"
+)
+
+var AllCreditLedgerEventType = []CreditLedgerEventType{
+	CreditLedgerEventTypeCreditsConsumed,
+	CreditLedgerEventTypeCreditsExpired,
+	CreditLedgerEventTypeCreditsGranted,
+}
+
+func (e CreditLedgerEventType) IsValid() bool {
+	switch e {
+	case CreditLedgerEventTypeCreditsConsumed, CreditLedgerEventTypeCreditsExpired, CreditLedgerEventTypeCreditsGranted:
+		return true
+	}
+	return false
+}
+
+func (e CreditLedgerEventType) String() string {
+	return string(e)
+}
+
+func (e *CreditLedgerEventType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CreditLedgerEventType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CreditLedgerEventType", str)
+	}
+	return nil
+}
+
+func (e CreditLedgerEventType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
