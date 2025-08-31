@@ -205,6 +205,7 @@ type Mutation struct {
 	EstimateSubscription                           SubscriptionPreview                  "json:\"estimateSubscription\" graphql:\"estimateSubscription\""
 	EstimateSubscriptionUpdate                     SubscriptionPreview                  "json:\"estimateSubscriptionUpdate\" graphql:\"estimateSubscriptionUpdate\""
 	GrantPromotionalEntitlements                   []*PromotionalEntitlement            "json:\"grantPromotionalEntitlements\" graphql:\"grantPromotionalEntitlements\""
+	GrantPromotionalEntitlementsGroup              []*PromotionalEntitlement            "json:\"grantPromotionalEntitlementsGroup\" graphql:\"grantPromotionalEntitlementsGroup\""
 	HideGettingStartedPage                         string                               "json:\"hideGettingStartedPage\" graphql:\"hideGettingStartedPage\""
 	ImportCustomersBulk                            *string                              "json:\"importCustomersBulk,omitempty\" graphql:\"importCustomersBulk\""
 	ImportOneCustomer                              Customer                             "json:\"importOneCustomer\" graphql:\"importOneCustomer\""
@@ -244,6 +245,7 @@ type Mutation struct {
 	ResendEmailVerification                        string                               "json:\"resendEmailVerification\" graphql:\"resendEmailVerification\""
 	ResyncIntegration                              ResyncIntegrationResult              "json:\"resyncIntegration\" graphql:\"resyncIntegration\""
 	RevokePromotionalEntitlement                   PromotionalEntitlement               "json:\"revokePromotionalEntitlement\" graphql:\"revokePromotionalEntitlement\""
+	RevokePromotionalEntitlementsGroup             []*PromotionalEntitlement            "json:\"revokePromotionalEntitlementsGroup\" graphql:\"revokePromotionalEntitlementsGroup\""
 	SetAccessRoles                                 *string                              "json:\"setAccessRoles,omitempty\" graphql:\"setAccessRoles\""
 	SetBasePlanOnPlan                              Plan                                 "json:\"setBasePlanOnPlan\" graphql:\"setBasePlanOnPlan\""
 	SetCompatibleAddonsOnPlan                      Plan                                 "json:\"setCompatibleAddonsOnPlan\" graphql:\"setCompatibleAddonsOnPlan\""
@@ -274,6 +276,7 @@ type Mutation struct {
 	UnarchiveFeatureGroup                          FeatureGroup                         "json:\"unarchiveFeatureGroup\" graphql:\"unarchiveFeatureGroup\""
 	UnarchivePlan                                  Plan                                 "json:\"unarchivePlan\" graphql:\"unarchivePlan\""
 	UnlinkFeatureGroupFromPackage                  []*PackageEntitlement                "json:\"unlinkFeatureGroupFromPackage\" graphql:\"unlinkFeatureGroupFromPackage\""
+	UnlinkPromotionalEntitlementsGroup             []*PromotionalEntitlement            "json:\"unlinkPromotionalEntitlementsGroup\" graphql:\"unlinkPromotionalEntitlementsGroup\""
 	UpdateAccount                                  Account                              "json:\"updateAccount\" graphql:\"updateAccount\""
 	UpdateCreditGrant                              CreditGrant                          "json:\"updateCreditGrant\" graphql:\"updateCreditGrant\""
 	UpdateCustomCurrency                           CustomCurrency                       "json:\"updateCustomCurrency\" graphql:\"updateCustomCurrency\""
@@ -10326,85 +10329,8 @@ const GetCustomerByIDDocument = `query GetCustomerById ($input: GetCustomerByRef
 		... CustomerWithSubscriptionsFragment
 	}
 }
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	isGranted
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment CustomerFragment on Customer {
-	... SlimCustomerFragment
-	hasPaymentMethod
-	hasActiveSubscription
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodType
-	trialedPlans {
-		productId
-		productRefId
-		planRefId
-		planId
-	}
-	experimentInfo {
-		groupType
-		groupName
-		id
-		name
-	}
-	coupon {
-		... CouponFragment
-	}
-	eligibleForTrial {
-		productId
-		productRefId
-		eligible
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
-	}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
 }
 fragment SlimCustomerFragment on Customer {
 	id
@@ -10417,6 +10343,26 @@ fragment SlimCustomerFragment on Customer {
 	billingId
 	additionalMetaData
 	awsMarketplaceCustomerId
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -10480,124 +10426,47 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
 fragment CustomerResourceFragment on CustomerResource {
 	resourceId
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
 		amount
 		currency
 	}
-	total {
+	flatPrice {
 		amount
 		currency
 	}
 }
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment AddonDependencyFragment on Addon {
+fragment PlanFragment on Plan {
 	id
 	refId
 	displayName
 	description
-}
-fragment CustomerWithSubscriptionsFragment on Customer {
-	... CustomerFragment
-	subscriptions {
-		... SubscriptionFragment
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
 	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
+	versionNumber
 	additionalMetaData
 	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
 	entitlements {
 		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
 	}
 	prices {
 		... PriceFragment
@@ -10606,9 +10475,13 @@ fragment AddonFragment on Addon {
 		... OveragePriceFragment
 	}
 	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
 	}
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
@@ -10668,6 +10541,131 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
+fragment CustomerWithSubscriptionsFragment on Customer {
+	... CustomerFragment
+	subscriptions {
+		... SubscriptionFragment
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	isGranted
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment CustomerFragment on Customer {
+	... SlimCustomerFragment
+	hasPaymentMethod
+	hasActiveSubscription
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodType
+	trialedPlans {
+		productId
+		productRefId
+		planRefId
+		planId
+	}
+	experimentInfo {
+		groupType
+		groupName
+		id
+		name
+	}
+	coupon {
+		... CouponFragment
+	}
+	eligibleForTrial {
+		productId
+		productRefId
+		eligible
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+}
 fragment CouponFragment on Coupon {
 	id
 	discountValue
@@ -10691,94 +10689,99 @@ fragment CouponFragment on Coupon {
 		status
 	}
 }
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
 	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
 	feature {
-		featureType
-		meterType
+		refId
 		featureUnits
 		featureUnitsPlural
 		displayName
 		description
-		refId
-		additionalMetaData
 	}
+	blockSize
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
 		amount
 		currency
 	}
-	flatPrice {
+	total {
 		amount
 		currency
 	}
 }
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
 	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
+	billingCountryCode
+	price {
+		amount
+		currency
 	}
-	basePlan {
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
 		refId
 		displayName
 	}
-	entitlements {
-		... PackageEntitlementFragment
+	scheduleVariables {
+		... ScheduleVariablesFragment
 	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
-	}
-}
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
 }
 `
 
@@ -10828,187 +10831,6 @@ const GetActiveSubscriptionsDocument = `query GetActiveSubscriptions ($input: Ge
 		... SubscriptionFragment
 	}
 }
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	isGranted
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment ScheduleVariablesFragment on ScheduleVariables {
-	__typename
-	... on PlanChangeVariables {
-		planRefId
-		changeType
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on DowngradeChangeVariables {
-		downgradePlanRefId
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on BillingPeriodChangeVariables {
-		billingPeriod
-	}
-	... on UnitAmountChangeVariables {
-		newUnitAmount
-		featureId
-	}
-	... on AddonChangeVariables {
-		addonRefId
-		newQuantity
-	}
-	... on PlanPriceOverrideChangeVariables {
-		planRefId
-		featureId
-	}
-	... on AddonPriceOverrideChangeVariables {
-		addonRefId
-		featureId
-	}
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
 fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	billingId
 	status
@@ -11030,50 +10852,6 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	amountDue
 	attemptCount
 }
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
-	}
-}
 fragment ProductFragment on Product {
 	refId
 	displayName
@@ -11086,35 +10864,6 @@ fragment ProductFragment on Product {
 		}
 	}
 }
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
 fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
 	packageGroupId
 	displayName
@@ -11125,6 +10874,22 @@ fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
 		minItems
 		freeItems
 	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -11188,7 +10953,182 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	isGranted
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+	... on PlanPriceOverrideChangeVariables {
+		planRefId
+		featureId
+	}
+	... on AddonPriceOverrideChangeVariables {
+		addonRefId
+		featureId
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 	subscriptionScheduleType
 	scheduleStatus
 	scheduledExecutionTime
@@ -11200,6 +11140,69 @@ fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
 	scheduleVariables {
 		... ScheduleVariablesFragment
 	}
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
 }
 `
 
@@ -11279,12 +11282,6 @@ const GetSubscriptionsDocument = `query GetSubscriptions ($filter: SubscriptionQ
 		}
 	}
 }
-fragment PageInfoFragment on PageInfo {
-	startCursor
-	endCursor
-	hasNextPage
-	hasPreviousPage
-}
 fragment SubscriptionQueryFragment on SubscriptionQuery {
 	subscriptionId
 	status
@@ -11315,6 +11312,12 @@ fragment SubscriptionQueryFragment on SubscriptionQuery {
 	}
 	trialEndDate
 }
+fragment PageInfoFragment on PageInfo {
+	startCursor
+	endCursor
+	hasNextPage
+	hasPreviousPage
+}
 `
 
 func (c *Client) GetSubscriptions(ctx context.Context, filter *SubscriptionQueryFilter, paging *CursorPaging, sorting []*SubscriptionQuerySort, interceptors ...clientv2.RequestInterceptor) (*GetSubscriptions, error) {
@@ -11337,23 +11340,48 @@ const GetSubscriptionDocument = `query GetSubscription ($input: GetSubscriptionI
 		... SubscriptionFragment
 	}
 }
-fragment AddonDependencyFragment on Addon {
+fragment PlanFragment on Plan {
 	id
 	refId
 	displayName
 	description
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
 		refId
 		displayName
 	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -11418,35 +11446,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
 fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	subTotal {
 		amount
@@ -11457,27 +11456,11 @@ fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 		currency
 	}
 }
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	isGranted
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
 	__typename
@@ -11549,26 +11532,47 @@ fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
 		... ScheduleVariablesFragment
 	}
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
 	createdAt
-	dueDate
 	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
 }
 fragment PriceTierFragment on PriceTier {
 	upTo
@@ -11581,48 +11585,25 @@ fragment PriceTierFragment on PriceTier {
 		currency
 	}
 }
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
 	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
+	billingCountryCode
+	price {
+		amount
+		currency
 	}
-	basePlan {
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
 		refId
+		featureUnits
+		featureUnitsPlural
 		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
+		description
 	}
 }
 fragment ProductFragment on Product {
@@ -11635,6 +11616,28 @@ fragment ProductFragment on Product {
 			refId
 			displayName
 		}
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	isGranted
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
 	}
 }
 fragment AddonFragment on Addon {
@@ -11660,14 +11663,42 @@ fragment AddonFragment on Addon {
 		... AddonDependencyFragment
 	}
 }
-fragment OveragePriceFragment on Price {
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment PriceFragment on Price {
 	billingModel
 	billingPeriod
+	billingCadence
 	billingId
+	minUnitQuantity
+	maxUnitQuantity
 	billingCountryCode
 	price {
 		amount
 		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
 	}
 	tiersMode
 	tiers {
@@ -11680,35 +11711,7 @@ fragment OveragePriceFragment on Price {
 		displayName
 		description
 	}
-}
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
+	blockSize
 }
 `
 
@@ -11775,6 +11778,362 @@ const GetPaywallDocument = `query GetPaywall ($input: GetPaywallInput!) {
 		... PaywallFragment
 	}
 }
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
+	alignment
+	planWidth
+	planMargin
+	planPadding
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
+	}
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	isGranted
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment PaywallCurrencyFragment on PaywallCurrency {
+	code
+	symbol
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
+	planId
+	additionalChargesMayApply
+	billingPeriod
+	amount
+	currency
+	billingCountryCode
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment PaywallFragment on Paywall {
+	plans {
+		... PlanFragment
+	}
+	currency {
+		... PaywallCurrencyFragment
+	}
+	configuration {
+		... PaywallConfigurationFragment
+	}
+	customer {
+		... CustomerFragment
+	}
+	activeSubscriptions {
+		... SubscriptionFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+	paywallCalculatedPricePoints {
+		... PaywallCalculatedPricePointsFragment
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+	... on PlanPriceOverrideChangeVariables {
+		planRefId
+		featureId
+	}
+	... on AddonPriceOverrideChangeVariables {
+		addonRefId
+		featureId
+	}
+}
+fragment CustomerFragment on Customer {
+	... SlimCustomerFragment
+	hasPaymentMethod
+	hasActiveSubscription
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodType
+	trialedPlans {
+		productId
+		productRefId
+		planRefId
+		planId
+	}
+	experimentInfo {
+		groupType
+		groupName
+		id
+		name
+	}
+	coupon {
+		... CouponFragment
+	}
+	eligibleForTrial {
+		productId
+		productRefId
+		eligible
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
 fragment SlimCustomerFragment on Customer {
 	id
 	name
@@ -11810,8 +12169,25 @@ fragment CouponFragment on Coupon {
 		status
 	}
 }
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -11896,206 +12272,6 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	amountDue
 	attemptCount
 }
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
-}
-fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
-	alignment
-	planWidth
-	planMargin
-	planPadding
-}
-fragment CustomerFragment on Customer {
-	... SlimCustomerFragment
-	hasPaymentMethod
-	hasActiveSubscription
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodType
-	trialedPlans {
-		productId
-		productRefId
-		planRefId
-		planId
-	}
-	experimentInfo {
-		groupType
-		groupName
-		id
-		name
-	}
-	coupon {
-		... CouponFragment
-	}
-	eligibleForTrial {
-		productId
-		productRefId
-		eligible
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
-	}
-}
-fragment ScheduleVariablesFragment on ScheduleVariables {
-	__typename
-	... on PlanChangeVariables {
-		planRefId
-		changeType
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on DowngradeChangeVariables {
-		downgradePlanRefId
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on BillingPeriodChangeVariables {
-		billingPeriod
-	}
-	... on UnitAmountChangeVariables {
-		newUnitAmount
-		featureId
-	}
-	... on AddonChangeVariables {
-		addonRefId
-		newQuantity
-	}
-	... on PlanPriceOverrideChangeVariables {
-		planRefId
-		featureId
-	}
-	... on AddonPriceOverrideChangeVariables {
-		addonRefId
-		featureId
-	}
-}
-fragment PaywallFragment on Paywall {
-	plans {
-		... PlanFragment
-	}
-	currency {
-		... PaywallCurrencyFragment
-	}
-	configuration {
-		... PaywallConfigurationFragment
-	}
-	customer {
-		... CustomerFragment
-	}
-	activeSubscriptions {
-		... SubscriptionFragment
-	}
-	resource {
-		... CustomerResourceFragment
-	}
-	paywallCalculatedPricePoints {
-		... PaywallCalculatedPricePointsFragment
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
-fragment PaywallCurrencyFragment on PaywallCurrency {
-	code
-	symbol
-}
-fragment PaywallConfigurationFragment on PaywallConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-	}
-	typography {
-		... TypographyConfigurationFragment
-	}
-	layout {
-		... LayoutConfigurationFragment
-	}
-	customCss
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
 fragment OveragePriceFragment on Price {
 	billingModel
 	billingPeriod
@@ -12117,194 +12293,21 @@ fragment OveragePriceFragment on Price {
 		description
 	}
 }
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
+fragment PaywallConfigurationFragment on PaywallConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
 	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
+	typography {
+		... TypographyConfigurationFragment
 	}
-	basePlan {
-		refId
-		displayName
+	layout {
+		... LayoutConfigurationFragment
 	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	isGranted
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
-	planId
-	additionalChargesMayApply
-	billingPeriod
-	amount
-	currency
-	billingCountryCode
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
+	customCss
 }
 `
 
@@ -12399,32 +12402,6 @@ const GetEntitlementDocument = `query GetEntitlement ($query: FetchEntitlementQu
 		... EntitlementFragment
 	}
 }
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
-	}
-}
 fragment EntitlementFragment on Entitlement {
 	__typename
 	isGranted
@@ -12450,6 +12427,32 @@ fragment EntitlementFragment on Entitlement {
 	}
 	feature {
 		... FeatureFragment
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
 	}
 }
 `
@@ -12580,46 +12583,6 @@ fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
 		... CustomerPortalSubscriptionScheduledUpdateDataFragment
 	}
 }
-fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-		pricingType
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotionalEntitlement {
-	displayName
-	hasUnlimitedUsage
-	hasSoftLimit
-	usageLimit
-	period
-	startDate
-	endDate
-}
-fragment CustomerPortalEntitlementFragment on Entitlement {
-	isGranted
-	usageLimit
-	currentUsage
-	hasUnlimitedUsage
-	hasSoftLimit
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
 fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
 	__typename
 	... on YearlyResetPeriodConfig {
@@ -12631,45 +12594,6 @@ fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
 	... on WeeklyResetPeriodConfig {
 		weeklyAccordingTo
 	}
-}
-fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
-	email
-	name
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodId
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodType
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-		iconsColor
-		paywallBackgroundColor
-	}
-	typography {
-		... TypographyConfigurationFragment
-	}
-	customCss
 }
 fragment FontVariantFragment on FontVariant {
 	fontSize
@@ -12698,31 +12622,19 @@ fragment CustomerPortalFragment on CustomerPortal {
 		... CustomerResourceFragment
 	}
 }
-fragment CustomerPortalSubscriptionPriceFragment on CustomerPortalSubscriptionPrice {
-	billingPeriod
-	billingModel
-	blockSize
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-	}
-	feature {
+fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
 		id
 		refId
 		displayName
-		featureUnits
-		featureUnitsPlural
+		pricingType
 	}
-}
-fragment CustomerPortalSubscriptionAddonFragment on CustomerPortalAddon {
-	addonId
-	description
-	displayName
-	quantity
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
 	__typename
@@ -12781,6 +12693,50 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
+fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotionalEntitlement {
+	displayName
+	hasUnlimitedUsage
+	hasSoftLimit
+	usageLimit
+	period
+	startDate
+	endDate
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment CustomerPortalEntitlementFragment on Entitlement {
+	isGranted
+	usageLimit
+	currentUsage
+	hasUnlimitedUsage
+	hasSoftLimit
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
 fragment FeatureFragment on EntitlementFeature {
 	__typename
 	featureType
@@ -12795,8 +12751,55 @@ fragment FeatureFragment on EntitlementFeature {
 		round
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
+fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
+	email
+	name
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodId
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodType
+}
+fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
+		iconsColor
+		paywallBackgroundColor
+	}
+	typography {
+		... TypographyConfigurationFragment
+	}
+	customCss
+}
+fragment CustomerPortalSubscriptionPriceFragment on CustomerPortalSubscriptionPrice {
+	billingPeriod
+	billingModel
+	blockSize
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	feature {
+		id
+		refId
+		displayName
+		featureUnits
+		featureUnitsPlural
+	}
+}
+fragment CustomerPortalSubscriptionAddonFragment on CustomerPortalAddon {
+	addonId
+	description
+	displayName
+	quantity
 }
 `
 
@@ -12817,142 +12820,6 @@ const GetCheckoutStateDocument = `query GetCheckoutState ($input: CheckoutStateI
 	checkoutState(input: $input) {
 		... CheckoutStateFragment
 	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
-	}
-}
-fragment CheckoutConfigurationFragment on CheckoutConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		summaryBackgroundColor
-		__typename
-	}
-	typography {
-		... TypographyConfigurationFragment
-		__typename
-	}
-	customCss
-	content {
-		collectPhoneNumber
-	}
-	__typename
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -13016,14 +12883,216 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment CheckoutStateFragment on CheckoutState {
+	configuration {
+		... CheckoutConfigurationFragment
+	}
+	setupSecret
+	customer {
+		... CustomerFragment
+	}
+	activeSubscription {
+		... SubscriptionFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+	plan {
+		... PlanFragment
+	}
+	billingIntegration {
+		billingIdentifier
+		credentials {
+			accountId
+			publicKey
+		}
+	}
+}
+fragment CustomerFragment on Customer {
+	... SlimCustomerFragment
+	hasPaymentMethod
+	hasActiveSubscription
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodType
+	trialedPlans {
+		productId
+		productRefId
+		planRefId
+		planId
+	}
+	experimentInfo {
+		groupType
+		groupName
+		id
+		name
+	}
+	coupon {
+		... CouponFragment
+	}
+	eligibleForTrial {
+		productId
+		productRefId
+		eligible
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	isGranted
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
 fragment AddonDependencyFragment on Addon {
 	id
 	refId
 	displayName
 	description
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
 	__typename
@@ -13082,30 +13151,72 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
-fragment CheckoutStateFragment on CheckoutState {
-	configuration {
-		... CheckoutConfigurationFragment
+fragment CheckoutConfigurationFragment on CheckoutConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		summaryBackgroundColor
+		__typename
 	}
-	setupSecret
-	customer {
-		... CustomerFragment
+	typography {
+		... TypographyConfigurationFragment
+		__typename
 	}
-	activeSubscription {
-		... SubscriptionFragment
+	customCss
+	content {
+		collectPhoneNumber
 	}
-	resource {
-		... CustomerResourceFragment
+	__typename
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment CouponFragment on Coupon {
+	id
+	discountValue
+	percentOff
+	amountsOff {
+		amount
+		currency
 	}
-	plan {
-		... PlanFragment
+	type
+	additionalMetaData
+	refId
+	name
+	description
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+	syncStates {
+		vendorIdentifier
+		status
 	}
-	billingIntegration {
-		billingIdentifier
-		credentials {
-			accountId
-			publicKey
-		}
-	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
 }
 fragment PriceFragment on Price {
 	billingModel
@@ -13136,17 +13247,45 @@ fragment PriceFragment on Price {
 	}
 	blockSize
 }
-fragment PackageEntitlementFragment on PackageEntitlement {
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
 	usageLimit
+	featureId
 	hasUnlimitedUsage
 	hasSoftLimit
-	featureId
 	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	isGranted
+	endDate
+	isVisible
 	feature {
 		featureType
 		meterType
@@ -13158,41 +13297,8 @@ fragment PackageEntitlementFragment on PackageEntitlement {
 		additionalMetaData
 	}
 }
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
 fragment OveragePriceFragment on Price {
 	billingModel
@@ -13215,118 +13321,15 @@ fragment OveragePriceFragment on Price {
 		description
 	}
 }
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
 	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment CustomerFragment on Customer {
-	... SlimCustomerFragment
-	hasPaymentMethod
-	hasActiveSubscription
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodType
-	trialedPlans {
-		productId
-		productRefId
-		planRefId
-		planId
-	}
-	experimentInfo {
-		groupType
-		groupName
-		id
-		name
-	}
-	coupon {
-		... CouponFragment
-	}
-	eligibleForTrial {
-		productId
-		productRefId
-		eligible
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
-	}
-}
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	percentOff
-	amountsOff {
-		amount
-		currency
-	}
-	type
-	additionalMetaData
-	refId
-	name
-	description
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
-	}
-}
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
+	options {
+		minItems
+		freeItems
 	}
 }
 `
@@ -13353,6 +13356,70 @@ const GetMockPaywallDocument = `query GetMockPaywall ($input: GetPaywallInput!) 
 			... PaywallConfigurationFragment
 		}
 	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment MockPaywallPlanCompatiblePackageGroupsFragment on PaywallPlanCompatiblePackageGroup {
+	packageGroupId
+	displayName
+	description
+	addons {
+		... MockPaywallAddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment PaywallConfigurationFragment on PaywallConfiguration {
+	palette {
+		primary
+		textColor
+		backgroundColor
+		borderColor
+		currentPlanBackground
+	}
+	typography {
+		... TypographyConfigurationFragment
+	}
+	layout {
+		... LayoutConfigurationFragment
+	}
+	customCss
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
+	alignment
+	planWidth
+	planMargin
+	planPadding
 }
 fragment MockPaywallPlanFragment on PaywallPlan {
 	refId
@@ -13442,42 +13509,6 @@ fragment MockPaywallPriceFragment on PaywallPrice {
 	}
 	blockSize
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
-}
-fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
-	alignment
-	planWidth
-	planMargin
-	planPadding
-}
 fragment MockPaywallAddonFragment on PaywallAddon {
 	refId
 	displayName
@@ -13501,34 +13532,6 @@ fragment MockPaywallAddonDependencyFragment on PaywallAddon {
 	refId
 	displayName
 	description
-}
-fragment MockPaywallPlanCompatiblePackageGroupsFragment on PaywallPlanCompatiblePackageGroup {
-	packageGroupId
-	displayName
-	description
-	addons {
-		... MockPaywallAddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment PaywallConfigurationFragment on PaywallConfiguration {
-	palette {
-		primary
-		textColor
-		backgroundColor
-		borderColor
-		currentPlanBackground
-	}
-	typography {
-		... TypographyConfigurationFragment
-	}
-	layout {
-		... LayoutConfigurationFragment
-	}
-	customCss
 }
 `
 
@@ -13705,26 +13708,55 @@ const ProvisionCustomerDocument = `mutation ProvisionCustomer ($input: Provision
 		... ProvisionCustomerFragment
 	}
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
 		amount
 		currency
 	}
-	total {
+	creditRate {
 		amount
-		currency
+		customCurrencyId
 	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
 }
 fragment EntitlementFragment on Entitlement {
 	__typename
@@ -13777,6 +13809,18 @@ fragment ProvisionCustomerFragment on ProvisionedCustomer {
 		... EntitlementFragment
 	}
 }
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -13828,55 +13872,29 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		refId
 	}
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
 		amount
 		currency
 	}
-	creditRate {
+	flatPrice {
 		amount
-		customCurrencyId
+		currency
 	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
 	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
+	total {
+		amount
+		currency
 	}
-	blockSize
 }
 fragment FeatureFragment on EntitlementFeature {
 	__typename
@@ -13891,21 +13909,6 @@ fragment FeatureFragment on EntitlementFeature {
 		divide
 		round
 	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
 }
 `
 
@@ -14112,6 +14115,79 @@ fragment ProvisionSubscriptionFragment on ProvisionSubscriptionResult {
 		... EntitlementFragment
 	}
 }
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	requestedValues
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
+	}
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -14163,66 +14239,6 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		refId
 	}
 }
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	requestedValues
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
-}
 fragment CustomerResourceFragment on CustomerResource {
 	resourceId
 }
@@ -14255,17 +14271,6 @@ fragment PriceFragment on Price {
 	}
 	blockSize
 }
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
 fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	subTotal {
 		amount
@@ -14276,18 +14281,16 @@ fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 		currency
 	}
 }
-fragment FeatureFragment on EntitlementFeature {
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
 	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
 	}
 }
 `
@@ -14308,235 +14311,6 @@ func (c *Client) ProvisionSubscription(ctx context.Context, input ProvisionSubsc
 const ApplySubscriptionDocument = `mutation ApplySubscription ($input: ApplySubscriptionInput!) {
 	applySubscription(input: $input) {
 		... ApplySubscriptionFragment
-	}
-}
-fragment ApplySubscriptionFragment on ApplySubscription {
-	subscription {
-		... SubscriptionFragment
-	}
-	entitlements {
-		... EntitlementFragment
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment ScheduleVariablesFragment on ScheduleVariables {
-	__typename
-	... on PlanChangeVariables {
-		planRefId
-		changeType
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on DowngradeChangeVariables {
-		downgradePlanRefId
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on BillingPeriodChangeVariables {
-		billingPeriod
-	}
-	... on UnitAmountChangeVariables {
-		newUnitAmount
-		featureId
-	}
-	... on AddonChangeVariables {
-		addonRefId
-		newQuantity
-	}
-	... on PlanPriceOverrideChangeVariables {
-		planRefId
-		featureId
-	}
-	... on AddonPriceOverrideChangeVariables {
-		addonRefId
-		featureId
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
-	}
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -14601,6 +14375,277 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	requestedValues
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+}
+fragment ApplySubscriptionFragment on ApplySubscription {
+	subscription {
+		... SubscriptionFragment
+	}
+	entitlements {
+		... EntitlementFragment
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+	... on PlanPriceOverrideChangeVariables {
+		planRefId
+		featureId
+	}
+	... on AddonPriceOverrideChangeVariables {
+		addonRefId
+		featureId
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
 fragment ProductFragment on Product {
 	refId
 	displayName
@@ -14635,21 +14680,37 @@ fragment PackageEntitlementFragment on PackageEntitlement {
 		additionalMetaData
 	}
 }
-fragment PriceFragment on Price {
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment OveragePriceFragment on Price {
 	billingModel
 	billingPeriod
-	billingCadence
 	billingId
-	minUnitQuantity
-	maxUnitQuantity
 	billingCountryCode
 	price {
 		amount
 		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
 	}
 	tiersMode
 	tiers {
@@ -14662,87 +14723,29 @@ fragment PriceFragment on Price {
 		displayName
 		description
 	}
-	blockSize
 }
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	requestedValues
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
 	displayName
-	refId
-	unitTransformation {
-		divide
-		round
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
 	}
 }
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
 }
 `
 
@@ -14780,59 +14783,6 @@ func (c *Client) ImportSubscriptionsBulk(ctx context.Context, input ImportSubscr
 const UpdateSubscriptionDocument = `mutation UpdateSubscription ($input: UpdateSubscriptionInput!) {
 	updateSubscription: updateOneSubscription(input: $input) {
 		... SlimSubscriptionFragment
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
 	}
 }
 fragment SlimSubscriptionFragment on CustomerSubscription {
@@ -14906,6 +14856,59 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	tax
 	amountDue
 	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
 }
 `
 
@@ -15448,6 +15451,46 @@ const PreviewNextInvoiceDocument = `mutation PreviewNextInvoice ($input: Preview
 		... SubscriptionInvoicePreviewFragment
 	}
 }
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
 fragment SubscriptionInvoicePreviewFragment on SubscriptionInvoicePreview {
 	amountDue {
 		amount
@@ -15540,46 +15583,6 @@ fragment SubscriptionInvoicePreviewFragment on SubscriptionInvoicePreview {
 			usageLimit
 			hasSoftLimit
 		}
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
 	}
 }
 `
@@ -15718,49 +15721,6 @@ const CreateSubscriptionDocument = `mutation CreateSubscription ($input: Subscri
 		... SlimSubscriptionFragment
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
 fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	subTotal {
 		amount
@@ -15842,6 +15802,49 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	tax
 	amountDue
 	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
 }
 `
 
@@ -15935,16 +15938,6 @@ const TransferSubscriptionDocument = `mutation TransferSubscription ($input: Tra
 		... SlimSubscriptionFragment
 	}
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -16056,6 +16049,16 @@ fragment PriceTierFragment on PriceTier {
 		currency
 	}
 	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
 		amount
 		currency
 	}
@@ -16080,16 +16083,6 @@ const DelegateSubscriptionToCustomerDocument = `mutation DelegateSubscriptionToC
 		... SlimSubscriptionFragment
 	}
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -16201,6 +16194,16 @@ fragment PriceTierFragment on PriceTier {
 		currency
 	}
 	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
 		amount
 		currency
 	}
@@ -16411,6 +16414,20 @@ const OnEntitlementsUpdatedDocument = `subscription OnEntitlementsUpdated {
 		... EntitlementsUpdatedPayload
 	}
 }
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
+	}
+}
 fragment EntitlementsUpdatedPayload on EntitlementsUpdated {
 	customerId
 	resourceId
@@ -16457,20 +16474,6 @@ fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
 		weeklyAccordingTo
 	}
 }
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
-	}
-}
 `
 
 func (c *Client) OnEntitlementsUpdated(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*OnEntitlementsUpdated, error) {
@@ -16487,6 +16490,18 @@ func (c *Client) OnEntitlementsUpdated(ctx context.Context, interceptors ...clie
 const OnUsageUpdatedDocument = `subscription OnUsageUpdated {
 	usageUpdated {
 		... EntitlementUsageUpdated
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
 	}
 }
 fragment FeatureFragment on EntitlementFeature {
@@ -16545,18 +16560,6 @@ fragment EntitlementFragment on Entitlement {
 	}
 	feature {
 		... FeatureFragment
-	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
 	}
 }
 `

@@ -4182,6 +4182,18 @@ type GrantPromotionalEntitlementInput struct {
 	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
+// Grant promotional entitlements for a feature group input
+type GrantPromotionalEntitlementsGroupInput struct {
+	// The unique identifier of the entitlement customer
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Feature group ID to grant as promotional entitlement
+	FeatureGroupID string `json:"featureGroupId"`
+	// List of promotional entitlements for features in the group
+	PromotionalEntitlements []*GrantPromotionalEntitlementInput `json:"promotionalEntitlements"`
+}
+
 // Grant multiple promotional entitlements input
 type GrantPromotionalEntitlementsInput struct {
 	// The unique identifier of the entitlement customer
@@ -7199,6 +7211,10 @@ type PromotionalEntitlement struct {
 	// The unique identifier for the environment
 	EnvironmentID string  `json:"environmentId"`
 	Feature       Feature `json:"feature"`
+	// Feature group IDs associated with this entitlement
+	FeatureGroupIds []string `json:"featureGroupIds"`
+	// Feature groups associated with this entitlement
+	FeatureGroups []*FeatureGroup `json:"featureGroups"`
 	// The unique identifier of the entitlement feature
 	FeatureID string `json:"featureId"`
 	// Whether the entitlement has a soft limit
@@ -7263,6 +7279,10 @@ type PromotionalEntitlementDeleteResponse struct {
 	EnumValues []string `json:"enumValues"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId"`
+	// Feature group IDs associated with this entitlement
+	FeatureGroupIds []string `json:"featureGroupIds"`
+	// Feature groups associated with this entitlement
+	FeatureGroups []*FeatureGroup `json:"featureGroups"`
 	// The unique identifier of the entitlement feature
 	FeatureID *string `json:"featureId"`
 	// Whether the entitlement has a soft limit
@@ -7319,6 +7339,8 @@ type PromotionalEntitlementInput struct {
 	EnumValues []string `json:"enumValues,omitempty"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
+	// Primary feature group ID (first in the array) associated with this entitlement
+	FeatureGroupID *string `json:"featureGroupId,omitempty"`
 	// The unique identifier of the entitlement feature
 	FeatureID string `json:"featureId"`
 	// Whether the entitlement has a soft limit
@@ -7736,6 +7758,16 @@ type RevokePromotionalEntitlementInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The unique identifier of the entitlement feature
 	FeatureID string `json:"featureId"`
+}
+
+// Revoke promotional entitlements for a feature group input
+type RevokePromotionalEntitlementsGroupInput struct {
+	// The unique identifier of the entitlement customer
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Feature group ID to revoke from promotional entitlements
+	FeatureGroupID string `json:"featureGroupId"`
 }
 
 // Salesforce integration configuration object
@@ -9595,6 +9627,16 @@ type UnlinkFeatureGroupFromPackageInput struct {
 	FeatureGroupID string `json:"featureGroupId"`
 	// The unique identifier of the entitlement package
 	PackageID string `json:"packageId"`
+}
+
+// Unlink promotional feature group input
+type UnlinkPromotionalEntitlementsGroupInput struct {
+	// The unique identifier of the entitlement customer
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Feature group ID to unlink from promotional entitlements
+	FeatureGroupID string `json:"featureGroupId"`
 }
 
 type UnsupportedFeatureTypeError struct {
