@@ -8285,8 +8285,9 @@ type SubscriptionCancelReasonFilterComparison struct {
 }
 
 type SubscriptionCancellationInput struct {
-	EndDate       *string `json:"endDate,omitempty"`
-	EnvironmentID *string `json:"environmentId,omitempty"`
+	AwaitSubscriptionCancellation *bool   `json:"awaitSubscriptionCancellation,omitempty"`
+	EndDate                       *string `json:"endDate,omitempty"`
+	EnvironmentID                 *string `json:"environmentId,omitempty"`
 	// If set, enables or disables prorating of credits on subscription cancellation.
 	Prorate                        *bool                           `json:"prorate,omitempty"`
 	SubscriptionCancellationAction *SubscriptionCancellationAction `json:"subscriptionCancellationAction,omitempty"`
