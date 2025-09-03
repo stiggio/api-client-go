@@ -55,6 +55,8 @@ type Account struct {
 	DefaultSSORoles *AccessRoles `json:"defaultSSORoles"`
 	// The display name of the account
 	DisplayName string `json:"displayName"`
+	// Email domains to be used for SSO and authorized domain configuration
+	EmailDomains []*AccountEmailDomain `json:"emailDomains"`
 	// Unique identifier for the entity
 	ID string `json:"id"`
 	// Whether SAML SSO is enabled for the account
@@ -65,6 +67,16 @@ type Account struct {
 	SubscriptionProrationBehavior *ProrationBehavior `json:"subscriptionProrationBehavior"`
 	// The timezone of the account, e.g. "America/New_York"
 	Timezone *string `json:"timezone"`
+}
+
+// An account email domain object
+type AccountEmailDomain struct {
+	// The unique identifier for the account
+	AccountID string `json:"accountId"`
+	// I18n.Accounts.AccountEmailDomainDTO.domain
+	Domain string `json:"domain"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
 }
 
 type AccountNotFoundError struct {
@@ -9654,17 +9666,19 @@ type UnsupportedVendorIdentifierError struct {
 type UpdateAccountInput struct {
 	// The method of adding new members to this account
 	AccessMethod *AccountAccessMethod `json:"accessMethod,omitempty"`
-	// Email domain to be used for sso and authorized domain configuration
+	// This field is deprecated and replaced by EmailDomains to support multiple domains. Please use the emailDomains field instead.
 	AccountEmailDomain *string `json:"accountEmailDomain,omitempty"`
 	// Default SSO roles for the account
 	DefaultSSORoles *DefaultSSORolesInput `json:"defaultSSORoles,omitempty"`
 	// The display name of the account
 	DisplayName string `json:"displayName"`
+	// Email domains to be used for sso and authorized domain configuration
+	EmailDomains []string `json:"emailDomains,omitempty"`
 	// The billing anchor for the subscription, e.g. "START_OF_THE_MONTH"
 	SubscriptionBillingAnchor *BillingAnchor `json:"subscriptionBillingAnchor,omitempty"`
 	// The proration behavior for the subscription, e.g. "CREATE_PRORATIONS"
 	SubscriptionProrationBehavior *ProrationBehavior `json:"subscriptionProrationBehavior,omitempty"`
-	// The timezone of the account, e.g. "America/New_York"
+	// The timezone of the aaccount, e.g. "America/New_York"
 	Timezone *string `json:"timezone,omitempty"`
 }
 
