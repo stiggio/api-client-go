@@ -8,6 +8,10 @@ import (
 	"strconv"
 )
 
+type BillingCredentials interface {
+	IsBillingCredentials()
+}
+
 // Configuration for the integration
 type Credentials interface {
 	IsCredentials()
@@ -914,6 +918,8 @@ type ChargeSubscriptionUsageInput struct {
 
 // Checkout billing integration
 type CheckoutBillingIntegration struct {
+	// The billing credentials
+	BillingCredentials BillingCredentials `json:"billingCredentials"`
 	// The billing vendor identifier
 	BillingIdentifier BillingVendorIdentifier `json:"billingIdentifier"`
 	// The billing credentials
@@ -972,10 +978,10 @@ type CheckoutContentInput struct {
 
 // Checkout credentials
 type CheckoutCredentials struct {
-	// The account ID
-	AccountID string `json:"accountId"`
-	// The public key
-	PublicKey string `json:"publicKey"`
+	// Account ID
+	AccountID *string `json:"accountId"`
+	// Public key
+	PublicKey *string `json:"publicKey"`
 }
 
 type CheckoutOptions struct {
@@ -1016,7 +1022,7 @@ type CheckoutState struct {
 	Plan Plan `json:"plan"`
 	// The resource
 	Resource *CustomerResource `json:"resource"`
-	// The billing integration setup secret
+	// The billing setup secret
 	SetupSecret string `json:"setupSecret"`
 }
 
@@ -5952,6 +5958,22 @@ type PaymentCollectionFilterComparison struct {
 	NotLike  *PaymentCollection  `json:"notLike,omitempty"`
 }
 
+// Billing payment session
+type PaymentSession struct {
+	// Billing payment session token
+	Token string `json:"token"`
+}
+
+// The billing payment session input
+type PaymentSessionInput struct {
+	// The billing country code of the plan to create payment session
+	BillingCountryCode *string `json:"billingCountryCode,omitempty"`
+	// Customer ID
+	CustomerID string `json:"customerId"`
+	// The plan ID to create payment session
+	PlanID string `json:"planId"`
+}
+
 // DTO for the paywall
 type Paywall struct {
 	// List of active subscriptions for the customer
@@ -7981,6 +8003,18 @@ type StringFieldComparison struct {
 	NotIn    []string `json:"notIn,omitempty"`
 	NotLike  *string  `json:"notLike,omitempty"`
 }
+
+// Stripe checkout credentials
+type StripeCheckoutCredentials struct {
+	// Stripe account ID
+	AccountID *string `json:"accountId"`
+	// Stripe public key
+	PublicKey *string `json:"publicKey"`
+	// Stripe setup secret
+	SetupSecret string `json:"setupSecret"`
+}
+
+func (StripeCheckoutCredentials) IsBillingCredentials() {}
 
 // Stripe integration configuration object
 type StripeCredentials struct {
@@ -10476,6 +10510,14 @@ type YearlyResetPeriodConfigInput struct {
 	AccordingTo YearlyAccordingTo `json:"accordingTo"`
 }
 
+// Zuora checkout credentials
+type ZuoraCheckoutCredentials struct {
+	// Zuora publishable key
+	PublishableKey string `json:"publishableKey"`
+}
+
+func (ZuoraCheckoutCredentials) IsBillingCredentials() {}
+
 // Zuora integration configuration object
 type ZuoraCredentials struct {
 	// REST Base URL of the Zuora account
@@ -10488,6 +10530,8 @@ type ZuoraCredentials struct {
 	PaymentGatewayID *string `json:"paymentGatewayId"`
 	// The ID of the payment page to use
 	PaymentPageID *string `json:"paymentPageId"`
+	// Publishable key for the Zuora payment form
+	PublishableKey *string `json:"publishableKey"`
 	// Stripe publishable key for the Zuora payment page
 	StripePublishableKey *string `json:"stripePublishableKey"`
 	// Stripe secret key for the Zuora payment page
@@ -10510,6 +10554,8 @@ type ZuoraCredentialsInput struct {
 	PaymentGatewayID *string `json:"paymentGatewayId,omitempty"`
 	// The ID of the payment page to use
 	PaymentPageID *string `json:"paymentPageId,omitempty"`
+	// Publishable key for the Zuora payment form
+	PublishableKey *string `json:"publishableKey,omitempty"`
 	// Stripe publishable key for the Zuora payment page
 	StripePublishableKey *string `json:"stripePublishableKey,omitempty"`
 	// Stripe secret key for the Zuora payment page
@@ -11256,15 +11302,18 @@ type BillingVendorIdentifier string
 const (
 	// Stripe
 	BillingVendorIdentifierStripe BillingVendorIdentifier = "STRIPE"
+	// Zuora
+	BillingVendorIdentifierZuora BillingVendorIdentifier = "ZUORA"
 )
 
 var AllBillingVendorIdentifier = []BillingVendorIdentifier{
 	BillingVendorIdentifierStripe,
+	BillingVendorIdentifierZuora,
 }
 
 func (e BillingVendorIdentifier) IsValid() bool {
 	switch e {
-	case BillingVendorIdentifierStripe:
+	case BillingVendorIdentifierStripe, BillingVendorIdentifierZuora:
 		return true
 	}
 	return false
