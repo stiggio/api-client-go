@@ -140,6 +140,7 @@ type Addon struct {
 	IsLatest *bool `json:"isLatest"`
 	// The maximum quantity of this addon that can be added to a subscription
 	MaxQuantity *float64 `json:"maxQuantity"`
+	Offer       *Offer   `json:"offer"`
 	// The overage billing period of the package
 	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
 	// List of overage prices of the package
@@ -316,6 +317,7 @@ type AddonFilter struct {
 	EnvironmentID *UUIDFilterComparison          `json:"environmentId,omitempty"`
 	ID            *UUIDFilterComparison          `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	Offer         *AddonFilterOfferFilter        `json:"offer,omitempty"`
 	Or            []*AddonFilter                 `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
 	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
@@ -323,6 +325,19 @@ type AddonFilter struct {
 	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
 	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison            `json:"versionNumber,omitempty"`
+}
+
+type AddonFilterOfferFilter struct {
+	And           []*AddonFilterOfferFilter    `json:"and,omitempty"`
+	CreatedAt     *DateFieldComparison         `json:"createdAt,omitempty"`
+	EnvironmentID *UUIDFilterComparison        `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison        `json:"id,omitempty"`
+	IsDefault     *BooleanFieldComparison      `json:"isDefault,omitempty"`
+	IsLatest      *BooleanFieldComparison      `json:"isLatest,omitempty"`
+	OfferID       *StringFieldComparison       `json:"offerId,omitempty"`
+	Or            []*AddonFilterOfferFilter    `json:"or,omitempty"`
+	Status        *OfferStatusFilterComparison `json:"status,omitempty"`
+	Version       *IntFieldComparison          `json:"version,omitempty"`
 }
 
 type AddonMaxAggregate struct {
@@ -1406,6 +1421,28 @@ type CreateMeter struct {
 	Aggregation MeterAggregation `json:"aggregation"`
 	// List of filters that will be applied to the data
 	Filters []*MeterFilterDefinitionInput `json:"filters"`
+}
+
+// Create offer draft input - creates new version inheriting all fields from existing offer
+type CreateOfferDraftInput struct {
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The unique identifier for the entity
+	OfferID string `json:"offerId"`
+}
+
+// Create offer input - only creates first version of new offers
+type CreateOfferInput struct {
+	// Metadata associated with the entity
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// Offer description
+	Description *string `json:"description,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Offer name
+	Name string `json:"name"`
+	// The unique identifier for the entity
+	OfferID string `json:"offerId"`
 }
 
 // Input for creating a single environment
@@ -4108,6 +4145,16 @@ type GetCustomerByRefIDInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// Get offer input
+type GetOfferInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The unique identifier for the entity
+	OfferID string `json:"offerId"`
+	// Offer version
+	Version *float64 `json:"version,omitempty"`
+}
+
 // Get Package By Ref Id Input
 type GetPackageByRefIDInput struct {
 	// The unique identifier for the environment
@@ -5179,6 +5226,136 @@ type NumberFieldComparisonBetween struct {
 	Upper float64 `json:"upper"`
 }
 
+// Offer data
+type Offer struct {
+	// The unique identifier for the account
+	AccountID string `json:"accountId"`
+	// Creation timestamp
+	CreatedAt string `json:"createdAt"`
+	// Offer description
+	Description *string `json:"description"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Whether this is the default offer
+	IsDefault bool `json:"isDefault"`
+	// Whether this is the latest version
+	IsLatest bool `json:"isLatest"`
+	// Metadata associated with the entity
+	Metadata map[string]interface{} `json:"metadata"`
+	// Offer name
+	Name string `json:"name"`
+	// The unique identifier for the entity
+	OfferID string `json:"offerId"`
+	// Offer status
+	Status OfferStatus `json:"status"`
+	// Last update timestamp
+	UpdatedAt string `json:"updatedAt"`
+	// Offer version
+	Version int64 `json:"version"`
+}
+
+type OfferAggregateGroupBy struct {
+	CreatedAt     *string      `json:"createdAt"`
+	EnvironmentID *string      `json:"environmentId"`
+	ID            *string      `json:"id"`
+	IsDefault     *bool        `json:"isDefault"`
+	IsLatest      *bool        `json:"isLatest"`
+	OfferID       *string      `json:"offerId"`
+	Status        *OfferStatus `json:"status"`
+	Version       *int64       `json:"version"`
+}
+
+type OfferAvgAggregate struct {
+	Version *float64 `json:"version"`
+}
+
+type OfferConnection struct {
+	// Array of edges.
+	Edges []*OfferEdge `json:"edges"`
+	// Paging information
+	PageInfo PageInfo `json:"pageInfo"`
+	// Fetch total count of records
+	TotalCount int64 `json:"totalCount"`
+}
+
+type OfferCountAggregate struct {
+	CreatedAt     *int64 `json:"createdAt"`
+	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
+	IsDefault     *int64 `json:"isDefault"`
+	IsLatest      *int64 `json:"isLatest"`
+	OfferID       *int64 `json:"offerId"`
+	Status        *int64 `json:"status"`
+	Version       *int64 `json:"version"`
+}
+
+type OfferEdge struct {
+	// Cursor for this node.
+	Cursor string `json:"cursor"`
+	// The node containing the Offer
+	Node Offer `json:"node"`
+}
+
+type OfferFilter struct {
+	And           []*OfferFilter               `json:"and,omitempty"`
+	CreatedAt     *DateFieldComparison         `json:"createdAt,omitempty"`
+	EnvironmentID *UUIDFilterComparison        `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison        `json:"id,omitempty"`
+	IsDefault     *BooleanFieldComparison      `json:"isDefault,omitempty"`
+	IsLatest      *BooleanFieldComparison      `json:"isLatest,omitempty"`
+	OfferID       *StringFieldComparison       `json:"offerId,omitempty"`
+	Or            []*OfferFilter               `json:"or,omitempty"`
+	Status        *OfferStatusFilterComparison `json:"status,omitempty"`
+	Version       *IntFieldComparison          `json:"version,omitempty"`
+}
+
+type OfferMaxAggregate struct {
+	CreatedAt     *string      `json:"createdAt"`
+	EnvironmentID *string      `json:"environmentId"`
+	ID            *string      `json:"id"`
+	OfferID       *string      `json:"offerId"`
+	Status        *OfferStatus `json:"status"`
+	Version       *int64       `json:"version"`
+}
+
+type OfferMinAggregate struct {
+	CreatedAt     *string      `json:"createdAt"`
+	EnvironmentID *string      `json:"environmentId"`
+	ID            *string      `json:"id"`
+	OfferID       *string      `json:"offerId"`
+	Status        *OfferStatus `json:"status"`
+	Version       *int64       `json:"version"`
+}
+
+type OfferSort struct {
+	Direction SortDirection   `json:"direction"`
+	Field     OfferSortFields `json:"field"`
+	Nulls     *SortNulls      `json:"nulls,omitempty"`
+}
+
+type OfferStatusFilterComparison struct {
+	Eq       *OfferStatus  `json:"eq,omitempty"`
+	Gt       *OfferStatus  `json:"gt,omitempty"`
+	Gte      *OfferStatus  `json:"gte,omitempty"`
+	ILike    *OfferStatus  `json:"iLike,omitempty"`
+	In       []OfferStatus `json:"in,omitempty"`
+	Is       *bool         `json:"is,omitempty"`
+	IsNot    *bool         `json:"isNot,omitempty"`
+	Like     *OfferStatus  `json:"like,omitempty"`
+	Lt       *OfferStatus  `json:"lt,omitempty"`
+	Lte      *OfferStatus  `json:"lte,omitempty"`
+	Neq      *OfferStatus  `json:"neq,omitempty"`
+	NotILike *OfferStatus  `json:"notILike,omitempty"`
+	NotIn    []OfferStatus `json:"notIn,omitempty"`
+	NotLike  *OfferStatus  `json:"notLike,omitempty"`
+}
+
+type OfferSumAggregate struct {
+	Version *float64 `json:"version"`
+}
+
 // OpenFGA integration configuration object
 type OpenFGACredentials struct {
 	// Audience for the OpenFGA API
@@ -5342,6 +5519,8 @@ type PackageDto struct {
 	ID string `json:"id"`
 	// Indicates if the package is the latest version
 	IsLatest *bool `json:"isLatest"`
+	// Associated offer
+	Offer *Offer `json:"offer"`
 	// The overage billing period of the package
 	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
 	// List of overage prices of the package
@@ -5375,6 +5554,7 @@ type PackageDTOFilter struct {
 	EnvironmentID *UUIDFilterComparison          `json:"environmentId,omitempty"`
 	ID            *UUIDFilterComparison          `json:"id,omitempty"`
 	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	Offer         *PackageDTOFilterOfferFilter   `json:"offer,omitempty"`
 	Or            []*PackageDTOFilter            `json:"or,omitempty"`
 	PricingType   *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
 	ProductID     *StringFieldComparison         `json:"productId,omitempty"`
@@ -5382,6 +5562,19 @@ type PackageDTOFilter struct {
 	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
 	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison            `json:"versionNumber,omitempty"`
+}
+
+type PackageDTOFilterOfferFilter struct {
+	And           []*PackageDTOFilterOfferFilter `json:"and,omitempty"`
+	CreatedAt     *DateFieldComparison           `json:"createdAt,omitempty"`
+	EnvironmentID *UUIDFilterComparison          `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison          `json:"id,omitempty"`
+	IsDefault     *BooleanFieldComparison        `json:"isDefault,omitempty"`
+	IsLatest      *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	OfferID       *StringFieldComparison         `json:"offerId,omitempty"`
+	Or            []*PackageDTOFilterOfferFilter `json:"or,omitempty"`
+	Status        *OfferStatusFilterComparison   `json:"status,omitempty"`
+	Version       *IntFieldComparison            `json:"version,omitempty"`
 }
 
 type PackageDTOSort struct {
@@ -6268,6 +6461,7 @@ type Plan struct {
 	IsParent bool `json:"isParent"`
 	// Minimum spend configuration
 	MinimumSpend []*MinimumSpend `json:"minimumSpend"`
+	Offer        *Offer          `json:"offer"`
 	// The overage billing period of the package
 	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
 	// List of overage prices of the package
@@ -6456,6 +6650,7 @@ type PlanFilter struct {
 	EnvironmentID    *UUIDFilterComparison          `json:"environmentId,omitempty"`
 	ID               *UUIDFilterComparison          `json:"id,omitempty"`
 	IsLatest         *BooleanFieldComparison        `json:"isLatest,omitempty"`
+	Offer            *PlanFilterOfferFilter         `json:"offer,omitempty"`
 	Or               []*PlanFilter                  `json:"or,omitempty"`
 	PricingType      *PricingTypeFilterComparison   `json:"pricingType,omitempty"`
 	Product          *PlanFilterProductFilter       `json:"product,omitempty"`
@@ -6482,6 +6677,19 @@ type PlanFilterAddonFilter struct {
 	Status        *PackageStatusFilterComparison `json:"status,omitempty"`
 	UpdatedAt     *DateFieldComparison           `json:"updatedAt,omitempty"`
 	VersionNumber *IntFieldComparison            `json:"versionNumber,omitempty"`
+}
+
+type PlanFilterOfferFilter struct {
+	And           []*PlanFilterOfferFilter     `json:"and,omitempty"`
+	CreatedAt     *DateFieldComparison         `json:"createdAt,omitempty"`
+	EnvironmentID *UUIDFilterComparison        `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison        `json:"id,omitempty"`
+	IsDefault     *BooleanFieldComparison      `json:"isDefault,omitempty"`
+	IsLatest      *BooleanFieldComparison      `json:"isLatest,omitempty"`
+	OfferID       *StringFieldComparison       `json:"offerId,omitempty"`
+	Or            []*PlanFilterOfferFilter     `json:"or,omitempty"`
+	Status        *OfferStatusFilterComparison `json:"status,omitempty"`
+	Version       *IntFieldComparison          `json:"version,omitempty"`
 }
 
 type PlanFilterProductFilter struct {
@@ -7637,6 +7845,14 @@ type ProvisionedCustomer struct {
 	SubscriptionStrategyDecision SubscriptionDecisionStrategy `json:"subscriptionStrategyDecision"`
 }
 
+// Publish offer input
+type PublishOfferInput struct {
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The unique identifier for the entity
+	OfferID string `json:"offerId"`
+}
+
 // Publish Package Result
 type PublishPackageResult struct {
 	// The task id for the publish package operation
@@ -7716,6 +7932,14 @@ type RemoveFeatureGroupFromPackageInput struct {
 	FeatureGroupID string `json:"featureGroupId"`
 	// The unique identifier of the entitlement package
 	PackageID string `json:"packageId"`
+}
+
+// Remove offer draft input
+type RemoveOfferDraftInput struct {
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The unique identifier for the entity
+	OfferID string `json:"offerId"`
 }
 
 // Report usage base input
@@ -7857,6 +8081,14 @@ type SetCouponOnCustomerInput struct {
 	ID string `json:"id"`
 	// The id of relation.
 	RelationID string `json:"relationId"`
+}
+
+// Set default offer input
+type SetDefaultOfferInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The unique identifier for the entity
+	OfferID string `json:"offerId"`
 }
 
 type SetExperimentOnCustomerInput struct {
@@ -9890,6 +10122,20 @@ type UpdateIntegrationInput struct {
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 	// Zuora integration configuration
 	ZuoraCredentials *ZuoraCredentialsInput `json:"zuoraCredentials,omitempty"`
+}
+
+// Update offer input
+type UpdateOfferInput struct {
+	// Metadata associated with the entity
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData,omitempty"`
+	// Updated offer description
+	Description *string `json:"description,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Updated offer name
+	Name *string `json:"name,omitempty"`
+	// The unique identifier for the entity
+	OfferID string `json:"offerId"`
 }
 
 type UpdateOneEnvironmentInput struct {
@@ -12871,7 +13117,9 @@ const (
 	ErrorCodeDowngradeBillingPeriodNotSupportedError ErrorCode = "DowngradeBillingPeriodNotSupportedError"
 	// Draft addon cannot be archived
 	ErrorCodeDraftAddonCantBeArchived ErrorCode = "DraftAddonCantBeArchived"
-	ErrorCodeDraftPlanCantBeArchived  ErrorCode = "DraftPlanCantBeArchived"
+	// Draft already exists for offer
+	ErrorCodeDraftAlreadyExists      ErrorCode = "DraftAlreadyExists"
+	ErrorCodeDraftPlanCantBeArchived ErrorCode = "DraftPlanCantBeArchived"
 	// Duplicate addons provisioned error
 	ErrorCodeDuplicateAddonProvisionedError ErrorCode = "DuplicateAddonProvisionedError"
 	// Duplicate integration for same non billing vendor identifier not allowed
@@ -12942,10 +13190,16 @@ const (
 	ErrorCodeMissingSubscriptionInvoiceError       ErrorCode = "MissingSubscriptionInvoiceError"
 	// Multi subscription product cannot be a source of auto-cancellation rules
 	ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError ErrorCode = "MultiSubscriptionCantBeAutoCancellationSourceError"
+	// No draft offer found to publish
+	ErrorCodeNoDraftOfferFound ErrorCode = "NoDraftOfferFound"
 	// This account has no access to the requested feature
-	ErrorCodeNoFeatureEntitlementError                     ErrorCode = "NoFeatureEntitlementError"
-	ErrorCodeNoFeatureEntitlementInSubscription            ErrorCode = "NoFeatureEntitlementInSubscription"
-	ErrorCodeNoProductsAvailable                           ErrorCode = "NoProductsAvailable"
+	ErrorCodeNoFeatureEntitlementError          ErrorCode = "NoFeatureEntitlementError"
+	ErrorCodeNoFeatureEntitlementInSubscription ErrorCode = "NoFeatureEntitlementInSubscription"
+	ErrorCodeNoProductsAvailable                ErrorCode = "NoProductsAvailable"
+	// Offer already exists
+	ErrorCodeOfferAlreadyExists ErrorCode = "OfferAlreadyExists"
+	// Offer not found
+	ErrorCodeOfferNotFound                                 ErrorCode = "OfferNotFound"
 	ErrorCodeOperationNotAllowedDuringInProgressExperiment ErrorCode = "OperationNotAllowedDuringInProgressExperiment"
 	ErrorCodePackageAlreadyPublished                       ErrorCode = "PackageAlreadyPublished"
 	// Package group min items error
@@ -13055,6 +13309,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeDeprecatedEstimateSubscriptionError,
 	ErrorCodeDowngradeBillingPeriodNotSupportedError,
 	ErrorCodeDraftAddonCantBeArchived,
+	ErrorCodeDraftAlreadyExists,
 	ErrorCodeDraftPlanCantBeArchived,
 	ErrorCodeDuplicateAddonProvisionedError,
 	ErrorCodeDuplicateIntegrationNotAllowed,
@@ -13113,9 +13368,12 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeMissingEntityIDError,
 	ErrorCodeMissingSubscriptionInvoiceError,
 	ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError,
+	ErrorCodeNoDraftOfferFound,
 	ErrorCodeNoFeatureEntitlementError,
 	ErrorCodeNoFeatureEntitlementInSubscription,
 	ErrorCodeNoProductsAvailable,
+	ErrorCodeOfferAlreadyExists,
+	ErrorCodeOfferNotFound,
 	ErrorCodeOperationNotAllowedDuringInProgressExperiment,
 	ErrorCodePackageAlreadyPublished,
 	ErrorCodePackageGroupMinItemsError,
@@ -13172,7 +13430,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
+	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftAlreadyExists, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoDraftOfferFound, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOfferAlreadyExists, ErrorCodeOfferNotFound, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
 		return true
 	}
 	return false
@@ -14463,6 +14721,106 @@ func (e *MonthlyAccordingTo) UnmarshalGQL(v interface{}) error {
 }
 
 func (e MonthlyAccordingTo) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type OfferSortFields string
+
+const (
+	OfferSortFieldsCreatedAt     OfferSortFields = "createdAt"
+	OfferSortFieldsEnvironmentID OfferSortFields = "environmentId"
+	OfferSortFieldsID            OfferSortFields = "id"
+	OfferSortFieldsIsDefault     OfferSortFields = "isDefault"
+	OfferSortFieldsIsLatest      OfferSortFields = "isLatest"
+	OfferSortFieldsOfferID       OfferSortFields = "offerId"
+	OfferSortFieldsStatus        OfferSortFields = "status"
+	OfferSortFieldsVersion       OfferSortFields = "version"
+)
+
+var AllOfferSortFields = []OfferSortFields{
+	OfferSortFieldsCreatedAt,
+	OfferSortFieldsEnvironmentID,
+	OfferSortFieldsID,
+	OfferSortFieldsIsDefault,
+	OfferSortFieldsIsLatest,
+	OfferSortFieldsOfferID,
+	OfferSortFieldsStatus,
+	OfferSortFieldsVersion,
+}
+
+func (e OfferSortFields) IsValid() bool {
+	switch e {
+	case OfferSortFieldsCreatedAt, OfferSortFieldsEnvironmentID, OfferSortFieldsID, OfferSortFieldsIsDefault, OfferSortFieldsIsLatest, OfferSortFieldsOfferID, OfferSortFieldsStatus, OfferSortFieldsVersion:
+		return true
+	}
+	return false
+}
+
+func (e OfferSortFields) String() string {
+	return string(e)
+}
+
+func (e *OfferSortFields) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = OfferSortFields(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid OfferSortFields", str)
+	}
+	return nil
+}
+
+func (e OfferSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Offer status
+type OfferStatus string
+
+const (
+	// Offer is archived
+	OfferStatusArchived OfferStatus = "ARCHIVED"
+	// Offer is in draft state
+	OfferStatusDraft OfferStatus = "DRAFT"
+	// Offer is published and active
+	OfferStatusPublished OfferStatus = "PUBLISHED"
+)
+
+var AllOfferStatus = []OfferStatus{
+	OfferStatusArchived,
+	OfferStatusDraft,
+	OfferStatusPublished,
+}
+
+func (e OfferStatus) IsValid() bool {
+	switch e {
+	case OfferStatusArchived, OfferStatusDraft, OfferStatusPublished:
+		return true
+	}
+	return false
+}
+
+func (e OfferStatus) String() string {
+	return string(e)
+}
+
+func (e *OfferStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = OfferStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid OfferStatus", str)
+	}
+	return nil
+}
+
+func (e OfferStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
