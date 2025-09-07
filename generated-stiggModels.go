@@ -5234,6 +5234,8 @@ type Offer struct {
 	CreatedAt string `json:"createdAt"`
 	// Offer description
 	Description *string `json:"description"`
+	// Draft details if this offer has a draft version
+	DraftDetails *OfferDraftDetails `json:"draftDetails"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// Unique identifier for the entity
@@ -5289,6 +5291,12 @@ type OfferCountAggregate struct {
 	OfferID       *int64 `json:"offerId"`
 	Status        *int64 `json:"status"`
 	Version       *int64 `json:"version"`
+}
+
+// Offer draft details containing information about the draft version
+type OfferDraftDetails struct {
+	// Draft version number
+	Version int64 `json:"version"`
 }
 
 type OfferEdge struct {
