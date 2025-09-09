@@ -5293,7 +5293,7 @@ type OfferCountAggregate struct {
 	Version       *int64 `json:"version"`
 }
 
-// Offer draft details containing information about the draft version
+// Offer draft details
 type OfferDraftDetails struct {
 	// Draft version number
 	Version int64 `json:"version"`
