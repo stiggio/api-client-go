@@ -4189,6 +4189,8 @@ type GetPaywallInput struct {
 	FetchAllCountriesPrices *bool `json:"fetchAllCountriesPrices,omitempty"`
 	// Whether to include hidden plans in the paywall
 	IncludeHiddenPlans *bool `json:"includeHiddenPlans,omitempty"`
+	// The offer id for which the paywall is being fetched
+	OfferID *string `json:"offerId,omitempty"`
 	// The product ID for which the paywall is being fetched
 	ProductID *string `json:"productId,omitempty"`
 	// The resource ID for which the paywall is being fetched
