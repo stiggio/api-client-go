@@ -13555,6 +13555,8 @@ const (
 	EventEntityTypeAddon EventEntityType = "ADDON"
 	// Coupon entity
 	EventEntityTypeCoupon EventEntityType = "COUPON"
+	// Credit entity
+	EventEntityTypeCredit EventEntityType = "CREDIT"
 	// Customer entity
 	EventEntityTypeCustomer EventEntityType = "CUSTOMER"
 	// Entitlement entity
@@ -13584,6 +13586,7 @@ const (
 var AllEventEntityType = []EventEntityType{
 	EventEntityTypeAddon,
 	EventEntityTypeCoupon,
+	EventEntityTypeCredit,
 	EventEntityTypeCustomer,
 	EventEntityTypeEntitlement,
 	EventEntityTypeFeature,
@@ -13600,7 +13603,7 @@ var AllEventEntityType = []EventEntityType{
 
 func (e EventEntityType) IsValid() bool {
 	switch e {
-	case EventEntityTypeAddon, EventEntityTypeCoupon, EventEntityTypeCustomer, EventEntityTypeEntitlement, EventEntityTypeFeature, EventEntityTypeFeatureGroup, EventEntityTypeImport, EventEntityTypeMeasurement, EventEntityTypePackage, EventEntityTypePackageGroup, EventEntityTypePlan, EventEntityTypeProduct, EventEntityTypePromotionalEntitlement, EventEntityTypeSubscription:
+	case EventEntityTypeAddon, EventEntityTypeCoupon, EventEntityTypeCredit, EventEntityTypeCustomer, EventEntityTypeEntitlement, EventEntityTypeFeature, EventEntityTypeFeatureGroup, EventEntityTypeImport, EventEntityTypeMeasurement, EventEntityTypePackage, EventEntityTypePackageGroup, EventEntityTypePlan, EventEntityTypeProduct, EventEntityTypePromotionalEntitlement, EventEntityTypeSubscription:
 		return true
 	}
 	return false
@@ -13694,10 +13697,20 @@ const (
 	EventLogTypeCouponUpdated EventLogType = "COUPON_UPDATED"
 	// Create subscription failed
 	EventLogTypeCreateSubscriptionFailed EventLogType = "CREATE_SUBSCRIPTION_FAILED"
-	// Credits expired
-	EventLogTypeCreditsExpired EventLogType = "CREDITS_EXPIRED"
-	// Credits granted
-	EventLogTypeCreditsGranted EventLogType = "CREDITS_GRANTED"
+	// Credits balance depleted
+	EventLogTypeCreditsBalanceDepleted EventLogType = "CREDITS_BALANCE_DEPLETED"
+	// Credits balance usage low
+	EventLogTypeCreditsBalanceUsageLow EventLogType = "CREDITS_BALANCE_USAGE_LOW"
+	// Credits grant depleted
+	EventLogTypeCreditsGrantDepleted EventLogType = "CREDITS_GRANT_DEPLETED"
+	// Credits grant expired
+	EventLogTypeCreditsGrantExpired EventLogType = "CREDITS_GRANT_EXPIRED"
+	// Credits grant granted
+	EventLogTypeCreditsGrantGranted EventLogType = "CREDITS_GRANT_GRANTED"
+	// Credits grant updated
+	EventLogTypeCreditsGrantUpdated EventLogType = "CREDITS_GRANT_UPDATED"
+	// Credits grant usage low
+	EventLogTypeCreditsGrantUsageLow EventLogType = "CREDITS_GRANT_USAGE_LOW"
 	// Customer created
 	EventLogTypeCustomerCreated EventLogType = "CUSTOMER_CREATED"
 	// Customer deleted
@@ -13828,8 +13841,13 @@ var AllEventLogType = []EventLogType{
 	EventLogTypeCouponCreated,
 	EventLogTypeCouponUpdated,
 	EventLogTypeCreateSubscriptionFailed,
-	EventLogTypeCreditsExpired,
-	EventLogTypeCreditsGranted,
+	EventLogTypeCreditsBalanceDepleted,
+	EventLogTypeCreditsBalanceUsageLow,
+	EventLogTypeCreditsGrantDepleted,
+	EventLogTypeCreditsGrantExpired,
+	EventLogTypeCreditsGrantGranted,
+	EventLogTypeCreditsGrantUpdated,
+	EventLogTypeCreditsGrantUsageLow,
 	EventLogTypeCustomerCreated,
 	EventLogTypeCustomerDeleted,
 	EventLogTypeCustomerEntitlementCalculationTriggered,
@@ -13894,7 +13912,7 @@ var AllEventLogType = []EventLogType{
 
 func (e EventLogType) IsValid() bool {
 	switch e {
-	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCreditsExpired, EventLogTypeCreditsGranted, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIDoggoResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEntitlementUsageExceeded, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureGroupArchived, EventLogTypeFeatureGroupCreated, EventLogTypeFeatureGroupUnArchived, EventLogTypeFeatureGroupUpdated, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackageGroupCreated, EventLogTypePackageGroupUpdated, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeSubscriptionsMigrated, EventLogTypeSubscriptionsMigrationTriggered, EventLogTypeSubscriptionBillingMonthEndsSoon, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionSpentLimitExceeded, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageChargeTriggered, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
+	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCreditsBalanceDepleted, EventLogTypeCreditsBalanceUsageLow, EventLogTypeCreditsGrantDepleted, EventLogTypeCreditsGrantExpired, EventLogTypeCreditsGrantGranted, EventLogTypeCreditsGrantUpdated, EventLogTypeCreditsGrantUsageLow, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIDoggoResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEntitlementUsageExceeded, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureGroupArchived, EventLogTypeFeatureGroupCreated, EventLogTypeFeatureGroupUnArchived, EventLogTypeFeatureGroupUpdated, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackageGroupCreated, EventLogTypePackageGroupUpdated, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeSubscriptionsMigrated, EventLogTypeSubscriptionsMigrationTriggered, EventLogTypeSubscriptionBillingMonthEndsSoon, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionSpentLimitExceeded, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageChargeTriggered, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
 		return true
 	}
 	return false
