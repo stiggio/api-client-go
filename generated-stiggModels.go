@@ -3151,6 +3151,14 @@ type EntitlementWithSummary struct {
 	UsageUpdatedAt *string `json:"usageUpdatedAt"`
 }
 
+// Represents a list of entitlements granted to a customer, including its usage and reset configuration.
+type EntitlementsState struct {
+	// Optional message explaining why access to the feature is denied.
+	AccessDeniedReason *EntitlementsStateAccessDeniedReason `json:"accessDeniedReason"`
+	// The list of entitlements granted to the customer.
+	Entitlements []*Entitlement `json:"entitlements"`
+}
+
 // Event payload for when entitlements are updated for a customer.
 type EntitlementsUpdated struct {
 	// The unique identifier for the account
@@ -12815,6 +12823,50 @@ func (e *EntitlementResetPeriod) UnmarshalGQL(v interface{}) error {
 }
 
 func (e EntitlementResetPeriod) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// DenyReason of get access policy
+type EntitlementsStateAccessDeniedReason string
+
+const (
+	// The customer making the request could not be found.
+	EntitlementsStateAccessDeniedReasonCustomerNotFound EntitlementsStateAccessDeniedReason = "CustomerNotFound"
+	// The customer does not have any active subscription linked to the feature.
+	EntitlementsStateAccessDeniedReasonNoActiveSubscription EntitlementsStateAccessDeniedReason = "NoActiveSubscription"
+)
+
+var AllEntitlementsStateAccessDeniedReason = []EntitlementsStateAccessDeniedReason{
+	EntitlementsStateAccessDeniedReasonCustomerNotFound,
+	EntitlementsStateAccessDeniedReasonNoActiveSubscription,
+}
+
+func (e EntitlementsStateAccessDeniedReason) IsValid() bool {
+	switch e {
+	case EntitlementsStateAccessDeniedReasonCustomerNotFound, EntitlementsStateAccessDeniedReasonNoActiveSubscription:
+		return true
+	}
+	return false
+}
+
+func (e EntitlementsStateAccessDeniedReason) String() string {
+	return string(e)
+}
+
+func (e *EntitlementsStateAccessDeniedReason) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EntitlementsStateAccessDeniedReason(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EntitlementsStateAccessDeniedReason", str)
+	}
+	return nil
+}
+
+func (e EntitlementsStateAccessDeniedReason) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
