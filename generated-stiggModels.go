@@ -1599,6 +1599,22 @@ type CreditGrant struct {
 	UpdatedAt string `json:"updatedAt"`
 }
 
+type CreditGrantConnection struct {
+	// Edges in the current page
+	Edges []*CreditGrantEdge `json:"edges"`
+	// Pagination information
+	PageInfo PageInfo `json:"pageInfo"`
+	// Total number of items matching the filter
+	TotalCount int64 `json:"totalCount"`
+}
+
+type CreditGrantEdge struct {
+	// An opaque cursor for this item
+	Cursor string `json:"cursor"`
+	// The item at the edge
+	Node CreditGrant `json:"node"`
+}
+
 // Input for creating a credit grant
 type CreditGrantInput struct {
 	// Metadata associated with the entity
@@ -4141,6 +4157,8 @@ type GetCreditGrantsInput struct {
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Cursor-based pagination input
+	Paging *CursorPaging `json:"paging,omitempty"`
 	// The resource ID of the credit grant
 	ResourceID *string `json:"resourceId,omitempty"`
 }
