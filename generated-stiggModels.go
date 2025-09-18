@@ -1699,6 +1699,46 @@ type CreditRateInput struct {
 	CustomCurrencyID string `json:"customCurrencyId"`
 }
 
+// Credits usage
+type CreditUsage struct {
+	// Series of credit usage data points
+	Series []*CreditUsageSeries `json:"series"`
+}
+
+// Input for retrieving credit usage
+type CreditUsageInput struct {
+	// The currency ID to filter credit usage by specific currency
+	CurrencyID *string `json:"currencyId,omitempty"`
+	// The customer ID of the credit usage
+	CustomerID string `json:"customerId"`
+	// The environment ID of the credit usage
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The resource ID of the credit usage
+	ResourceID *string `json:"resourceId,omitempty"`
+	// The time range for the credit usage
+	TimeRange *CreditUsageTimeRange `json:"timeRange,omitempty"`
+}
+
+// Point in the credit usage series
+type CreditUsagePoint struct {
+	// Timestamp of the credit usage point
+	Timestamp string `json:"timestamp"`
+	// Value of the credit usage point
+	Value float64 `json:"value"`
+}
+
+// Series of credit usage data points
+type CreditUsageSeries struct {
+	// Feature ID for the credit usage series
+	FeatureID string `json:"featureId"`
+	// Display name of the feature for the credit usage series
+	FeatureName string `json:"featureName"`
+	// Points in the credit usage series
+	Points []*CreditUsagePoint `json:"points"`
+	// Total credits consumed by this feature across all time points
+	TotalCredits float64 `json:"totalCredits"`
+}
+
 type CursorPaging struct {
 	// Paginate after opaque cursor
 	After *string `json:"after,omitempty"`
@@ -12016,6 +12056,56 @@ func (e *CreditLedgerEventType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CreditLedgerEventType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Time range options for credit usage data
+type CreditUsageTimeRange string
+
+const (
+	// Last 24 hours with hourly granularity
+	CreditUsageTimeRangeLastDay CreditUsageTimeRange = "LAST_DAY"
+	// Last 30 days with daily granularity
+	CreditUsageTimeRangeLastMonth CreditUsageTimeRange = "LAST_MONTH"
+	// Last 7 days with daily granularity
+	CreditUsageTimeRangeLastWeek CreditUsageTimeRange = "LAST_WEEK"
+	// Last 12 months with monthly granularity
+	CreditUsageTimeRangeLastYear CreditUsageTimeRange = "LAST_YEAR"
+)
+
+var AllCreditUsageTimeRange = []CreditUsageTimeRange{
+	CreditUsageTimeRangeLastDay,
+	CreditUsageTimeRangeLastMonth,
+	CreditUsageTimeRangeLastWeek,
+	CreditUsageTimeRangeLastYear,
+}
+
+func (e CreditUsageTimeRange) IsValid() bool {
+	switch e {
+	case CreditUsageTimeRangeLastDay, CreditUsageTimeRangeLastMonth, CreditUsageTimeRangeLastWeek, CreditUsageTimeRangeLastYear:
+		return true
+	}
+	return false
+}
+
+func (e CreditUsageTimeRange) String() string {
+	return string(e)
+}
+
+func (e *CreditUsageTimeRange) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CreditUsageTimeRange(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CreditUsageTimeRange", str)
+	}
+	return nil
+}
+
+func (e CreditUsageTimeRange) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
