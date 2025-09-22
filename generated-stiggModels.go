@@ -5522,10 +5522,12 @@ type OveragePricingModelCreateInput struct {
 	BillingModel BillingModel `json:"billingModel"`
 	// The entitlement of the overage pricing model
 	Entitlement *OverageEntitlementCreateInput `json:"entitlement,omitempty"`
-	// The feature id of the base pricing model
+	// The ID of the feature the pricing model is applied to
 	FeatureID *string `json:"featureId,omitempty"`
 	// The price periods of the base pricing model
 	PricePeriods []*PricePeriodInput `json:"pricePeriods"`
+	// The ID of the custom currency the pricing model is applied to
+	TopUpCustomCurrencyID *string `json:"topUpCustomCurrencyId,omitempty"`
 }
 
 type PackageAlreadyPublishedError struct {
@@ -6937,7 +6939,7 @@ type Price struct {
 	EnvironmentID *string `json:"environmentId"`
 	// Get the feature of the price
 	Feature *Feature `json:"feature"`
-	// The feature id of the price
+	// The ID of the feature this price applies to
 	FeatureID *string `json:"featureId"`
 	// Unique identifier for the entity
 	ID string `json:"id"`
@@ -6960,6 +6962,8 @@ type Price struct {
 	Tiers []*PriceTier `json:"tiers"`
 	// The tiers mode of the price
 	TiersMode *TiersMode `json:"tiersMode"`
+	// The ID of the custom currency this price applies to
+	TopUpCustomCurrencyID *string `json:"topUpCustomCurrencyId"`
 	// Indicates if the price is used in subscriptions
 	UsedInSubscriptions *bool `json:"usedInSubscriptions"`
 }
@@ -7009,7 +7013,7 @@ type PriceDeleteResponse struct {
 	EnvironmentID *string `json:"environmentId"`
 	// The feature of the price
 	Feature *Feature `json:"feature"`
-	// The feature id of the price
+	// The ID of the feature this price applies to
 	FeatureID *string `json:"featureId"`
 	// Unique identifier for the entity
 	ID *string `json:"id"`
@@ -7029,6 +7033,8 @@ type PriceDeleteResponse struct {
 	Tiers []*PriceTier `json:"tiers"`
 	// The tiers mode of the price
 	TiersMode *TiersMode `json:"tiersMode"`
+	// The ID of the custom currency this price applies to
+	TopUpCustomCurrencyID *string `json:"topUpCustomCurrencyId"`
 	// Indicates if the price is used in subscriptions
 	UsedInSubscriptions *bool `json:"usedInSubscriptions"`
 }
@@ -7193,7 +7199,7 @@ type PricingModelCreateInput struct {
 	BillingCadence *BillingCadence `json:"billingCadence,omitempty"`
 	// The billing model of the base pricing model
 	BillingModel BillingModel `json:"billingModel"`
-	// The feature id of the base pricing model
+	// The ID of the feature the pricing model is applied to
 	FeatureID *string `json:"featureId,omitempty"`
 	// The maximum unit quantity of the pricing model
 	MaxUnitQuantity *float64 `json:"maxUnitQuantity,omitempty"`
@@ -7207,6 +7213,8 @@ type PricingModelCreateInput struct {
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
 	// The tiers mode of the pricing model
 	TiersMode *TiersMode `json:"tiersMode,omitempty"`
+	// The ID of the custom currency the pricing model is applied to
+	TopUpCustomCurrencyID *string `json:"topUpCustomCurrencyId,omitempty"`
 	// The weekly reset period configuration of the pricing model
 	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
 	// The yearly reset period configuration of the pricing model
