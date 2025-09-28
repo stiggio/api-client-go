@@ -1701,6 +1701,8 @@ type CreditRateInput struct {
 
 // Credits usage
 type CreditUsage struct {
+	// Stigg custom currency object with minimal fields
+	Currency *SlimCustomCurrency `json:"currency"`
 	// Series of credit usage data points
 	Series []*CreditUsageSeries `json:"series"`
 }
