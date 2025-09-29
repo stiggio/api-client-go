@@ -1533,10 +1533,16 @@ type CreditBalance struct {
 	CurrencyID string `json:"currencyId"`
 	// Current available balance
 	CurrentBalance float64 `json:"currentBalance"`
+	// The customer ID of the credit grant
+	CustomerID string `json:"customerId"`
+	// The resource ID of the credit grant
+	ResourceID *string `json:"resourceId"`
 	// Total amount consumed from all grants
 	TotalConsumed float64 `json:"totalConsumed"`
 	// Total amount granted across all active grants
 	TotalGranted float64 `json:"totalGranted"`
+	// The next time the balance will be updated (e.g., when a grant expires or becomes effective)
+	ValidUntil *float64 `json:"validUntil"`
 }
 
 // Credit balance summary for a customer
@@ -1559,6 +1565,30 @@ type CreditBalanceSummaryInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The resource ID of the credit grant
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// Credit balance update notification
+type CreditBalanceUpdated struct {
+	// The unique identifier for the account
+	AccountID string `json:"accountId"`
+	// Stigg custom currency object with minimal fields
+	Currency SlimCustomCurrency `json:"currency"`
+	// The custom currency ID of the credit grant
+	CurrencyID string `json:"currencyId"`
+	// Current available balance
+	CurrentBalance float64 `json:"currentBalance"`
+	// The customer ID of the credit grant
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The resource ID of the credit grant
+	ResourceID *string `json:"resourceId"`
+	// Total amount consumed from all grants
+	TotalConsumed float64 `json:"totalConsumed"`
+	// Total amount granted across all active grants
+	TotalGranted float64 `json:"totalGranted"`
+	// The next time the balance will be updated (e.g., when a grant expires or becomes effective)
+	ValidUntil *float64 `json:"validUntil"`
 }
 
 // Stigg credit grant object
@@ -1691,16 +1721,20 @@ type CreditLedgerInput struct {
 type CreditRate struct {
 	// The credit rate amount
 	Amount float64 `json:"amount"`
+	// The custom currency refId for the credit rate
+	CurrencyID string `json:"currencyId"`
 	// The custom currency ID for the credit rate
-	CustomCurrencyID string `json:"customCurrencyId"`
+	CustomCurrencyID *string `json:"customCurrencyId"`
 }
 
 // Credit Rate Input
 type CreditRateInput struct {
 	// The credit rate amount
 	Amount float64 `json:"amount"`
+	// The custom currency refId for the credit rate
+	CurrencyID *string `json:"currencyId,omitempty"`
 	// The custom currency ID for the credit rate
-	CustomCurrencyID string `json:"customCurrencyId"`
+	CustomCurrencyID *string `json:"customCurrencyId,omitempty"`
 }
 
 // Credits usage
@@ -3011,6 +3045,8 @@ type EligibleForTrial struct {
 type Entitlement struct {
 	// Optional message explaining why access to the feature is denied.
 	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason"`
+	// The credit rate associated with this entitlement, if applicable.
+	CreditRate *CreditRate `json:"creditRate"`
 	// The amount of the feature the customer has used so far in the current period.
 	CurrentUsage *float64 `json:"currentUsage"`
 	CustomerID   *string  `json:"customerId"`
@@ -3052,6 +3088,8 @@ type Entitlement struct {
 	UsagePeriodStart *string `json:"usagePeriodStart"`
 	// Timestamp of the last update to the usage value.
 	UsageUpdatedAt *string `json:"usageUpdatedAt"`
+	// The next time the entitlement should be recalculated
+	ValidUntil *float64 `json:"validUntil"`
 }
 
 // Input used to report that an entitlement check was performed for a customer.
@@ -3168,6 +3206,8 @@ type EntitlementSummary struct {
 type EntitlementWithSummary struct {
 	// Optional message explaining why access to the feature is denied.
 	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason"`
+	// The credit rate associated with this entitlement, if applicable.
+	CreditRate *CreditRate `json:"creditRate"`
 	// The amount of the feature the customer has used so far in the current period.
 	CurrentUsage *float64 `json:"currentUsage"`
 	CustomerID   *string  `json:"customerId"`
@@ -3211,6 +3251,8 @@ type EntitlementWithSummary struct {
 	UsagePeriodStart *string `json:"usagePeriodStart"`
 	// Timestamp of the last update to the usage value.
 	UsageUpdatedAt *string `json:"usageUpdatedAt"`
+	// The next time the entitlement should be recalculated
+	ValidUntil *float64 `json:"validUntil"`
 }
 
 // Represents a list of entitlements granted to a customer, including its usage and reset configuration.
