@@ -1176,23 +1176,24 @@ type CouponFilter struct {
 }
 
 type CouponFilterCustomerFilter struct {
-	And                  []*CouponFilterCustomerFilter        `json:"and,omitempty"`
-	BillingID            *StringFieldComparison               `json:"billingId,omitempty"`
-	CreatedAt            *DateFieldComparison                 `json:"createdAt,omitempty"`
-	CrmHubspotCompanyID  *StringFieldComparison               `json:"crmHubspotCompanyId,omitempty"`
-	CrmHubspotCompanyURL *StringFieldComparison               `json:"crmHubspotCompanyUrl,omitempty"`
-	CrmID                *StringFieldComparison               `json:"crmId,omitempty"`
-	CustomerID           *StringFieldComparison               `json:"customerId,omitempty"`
-	DeletedAt            *DateFieldComparison                 `json:"deletedAt,omitempty"`
-	Email                *StringFieldComparison               `json:"email,omitempty"`
-	EnvironmentID        *UUIDFilterComparison                `json:"environmentId,omitempty"`
-	ID                   *UUIDFilterComparison                `json:"id,omitempty"`
-	Name                 *StringFieldComparison               `json:"name,omitempty"`
-	Or                   []*CouponFilterCustomerFilter        `json:"or,omitempty"`
-	RefID                *StringFieldComparison               `json:"refId,omitempty"`
-	SalesforceID         *StringFieldComparison               `json:"salesforceId,omitempty"`
-	SearchQuery          *CustomerSearchQueryFilterComparison `json:"searchQuery,omitempty"`
-	UpdatedAt            *DateFieldComparison                 `json:"updatedAt,omitempty"`
+	And                      []*CouponFilterCustomerFilter        `json:"and,omitempty"`
+	AwsMarketplaceCustomerID *StringFieldComparison               `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *StringFieldComparison               `json:"billingId,omitempty"`
+	CreatedAt                *DateFieldComparison                 `json:"createdAt,omitempty"`
+	CrmHubspotCompanyID      *StringFieldComparison               `json:"crmHubspotCompanyId,omitempty"`
+	CrmHubspotCompanyURL     *StringFieldComparison               `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                    *StringFieldComparison               `json:"crmId,omitempty"`
+	CustomerID               *StringFieldComparison               `json:"customerId,omitempty"`
+	DeletedAt                *DateFieldComparison                 `json:"deletedAt,omitempty"`
+	Email                    *StringFieldComparison               `json:"email,omitempty"`
+	EnvironmentID            *UUIDFilterComparison                `json:"environmentId,omitempty"`
+	ID                       *UUIDFilterComparison                `json:"id,omitempty"`
+	Name                     *StringFieldComparison               `json:"name,omitempty"`
+	Or                       []*CouponFilterCustomerFilter        `json:"or,omitempty"`
+	RefID                    *StringFieldComparison               `json:"refId,omitempty"`
+	SalesforceID             *StringFieldComparison               `json:"salesforceId,omitempty"`
+	SearchQuery              *CustomerSearchQueryFilterComparison `json:"searchQuery,omitempty"`
+	UpdatedAt                *DateFieldComparison                 `json:"updatedAt,omitempty"`
 }
 
 type CouponMaxAggregate struct {
@@ -1916,21 +1917,22 @@ type Customer struct {
 }
 
 type CustomerAggregateGroupBy struct {
-	BillingID            *string `json:"billingId"`
-	CreatedAt            *string `json:"createdAt"`
-	CrmHubspotCompanyID  *string `json:"crmHubspotCompanyId"`
-	CrmHubspotCompanyURL *string `json:"crmHubspotCompanyUrl"`
-	CrmID                *string `json:"crmId"`
-	CustomerID           *string `json:"customerId"`
-	DeletedAt            *string `json:"deletedAt"`
-	Email                *string `json:"email"`
-	EnvironmentID        *string `json:"environmentId"`
-	ID                   *string `json:"id"`
-	Name                 *string `json:"name"`
-	RefID                *string `json:"refId"`
-	SalesforceID         *string `json:"salesforceId"`
-	SearchQuery          *string `json:"searchQuery"`
-	UpdatedAt            *string `json:"updatedAt"`
+	AwsMarketplaceCustomerID *string `json:"awsMarketplaceCustomerId"`
+	BillingID                *string `json:"billingId"`
+	CreatedAt                *string `json:"createdAt"`
+	CrmHubspotCompanyID      *string `json:"crmHubspotCompanyId"`
+	CrmHubspotCompanyURL     *string `json:"crmHubspotCompanyUrl"`
+	CrmID                    *string `json:"crmId"`
+	CustomerID               *string `json:"customerId"`
+	DeletedAt                *string `json:"deletedAt"`
+	Email                    *string `json:"email"`
+	EnvironmentID            *string `json:"environmentId"`
+	ID                       *string `json:"id"`
+	Name                     *string `json:"name"`
+	RefID                    *string `json:"refId"`
+	SalesforceID             *string `json:"salesforceId"`
+	SearchQuery              *string `json:"searchQuery"`
+	UpdatedAt                *string `json:"updatedAt"`
 }
 
 // Aggregated events by customer
@@ -1977,21 +1979,22 @@ type CustomerConnection struct {
 }
 
 type CustomerCountAggregate struct {
-	BillingID            *int64 `json:"billingId"`
-	CreatedAt            *int64 `json:"createdAt"`
-	CrmHubspotCompanyID  *int64 `json:"crmHubspotCompanyId"`
-	CrmHubspotCompanyURL *int64 `json:"crmHubspotCompanyUrl"`
-	CrmID                *int64 `json:"crmId"`
-	CustomerID           *int64 `json:"customerId"`
-	DeletedAt            *int64 `json:"deletedAt"`
-	Email                *int64 `json:"email"`
-	EnvironmentID        *int64 `json:"environmentId"`
-	ID                   *int64 `json:"id"`
-	Name                 *int64 `json:"name"`
-	RefID                *int64 `json:"refId"`
-	SalesforceID         *int64 `json:"salesforceId"`
-	SearchQuery          *int64 `json:"searchQuery"`
-	UpdatedAt            *int64 `json:"updatedAt"`
+	AwsMarketplaceCustomerID *int64 `json:"awsMarketplaceCustomerId"`
+	BillingID                *int64 `json:"billingId"`
+	CreatedAt                *int64 `json:"createdAt"`
+	CrmHubspotCompanyID      *int64 `json:"crmHubspotCompanyId"`
+	CrmHubspotCompanyURL     *int64 `json:"crmHubspotCompanyUrl"`
+	CrmID                    *int64 `json:"crmId"`
+	CustomerID               *int64 `json:"customerId"`
+	DeletedAt                *int64 `json:"deletedAt"`
+	Email                    *int64 `json:"email"`
+	EnvironmentID            *int64 `json:"environmentId"`
+	ID                       *int64 `json:"id"`
+	Name                     *int64 `json:"name"`
+	RefID                    *int64 `json:"refId"`
+	SalesforceID             *int64 `json:"salesforceId"`
+	SearchQuery              *int64 `json:"searchQuery"`
+	UpdatedAt                *int64 `json:"updatedAt"`
 }
 
 type CustomerEdge struct {
@@ -2002,25 +2005,26 @@ type CustomerEdge struct {
 }
 
 type CustomerFilter struct {
-	And                     []*CustomerFilter                           `json:"and,omitempty"`
-	BillingID               *StringFieldComparison                      `json:"billingId,omitempty"`
-	CreatedAt               *DateFieldComparison                        `json:"createdAt,omitempty"`
-	CrmHubspotCompanyID     *StringFieldComparison                      `json:"crmHubspotCompanyId,omitempty"`
-	CrmHubspotCompanyURL    *StringFieldComparison                      `json:"crmHubspotCompanyUrl,omitempty"`
-	CrmID                   *StringFieldComparison                      `json:"crmId,omitempty"`
-	CustomerID              *StringFieldComparison                      `json:"customerId,omitempty"`
-	DeletedAt               *DateFieldComparison                        `json:"deletedAt,omitempty"`
-	Email                   *StringFieldComparison                      `json:"email,omitempty"`
-	EnvironmentID           *UUIDFilterComparison                       `json:"environmentId,omitempty"`
-	ID                      *UUIDFilterComparison                       `json:"id,omitempty"`
-	Name                    *StringFieldComparison                      `json:"name,omitempty"`
-	Or                      []*CustomerFilter                           `json:"or,omitempty"`
-	PromotionalEntitlements *CustomerFilterPromotionalEntitlementFilter `json:"promotionalEntitlements,omitempty"`
-	RefID                   *StringFieldComparison                      `json:"refId,omitempty"`
-	SalesforceID            *StringFieldComparison                      `json:"salesforceId,omitempty"`
-	SearchQuery             *CustomerSearchQueryFilterComparison        `json:"searchQuery,omitempty"`
-	Subscriptions           *CustomerFilterCustomerSubscriptionFilter   `json:"subscriptions,omitempty"`
-	UpdatedAt               *DateFieldComparison                        `json:"updatedAt,omitempty"`
+	And                      []*CustomerFilter                           `json:"and,omitempty"`
+	AwsMarketplaceCustomerID *StringFieldComparison                      `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *StringFieldComparison                      `json:"billingId,omitempty"`
+	CreatedAt                *DateFieldComparison                        `json:"createdAt,omitempty"`
+	CrmHubspotCompanyID      *StringFieldComparison                      `json:"crmHubspotCompanyId,omitempty"`
+	CrmHubspotCompanyURL     *StringFieldComparison                      `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                    *StringFieldComparison                      `json:"crmId,omitempty"`
+	CustomerID               *StringFieldComparison                      `json:"customerId,omitempty"`
+	DeletedAt                *DateFieldComparison                        `json:"deletedAt,omitempty"`
+	Email                    *StringFieldComparison                      `json:"email,omitempty"`
+	EnvironmentID            *UUIDFilterComparison                       `json:"environmentId,omitempty"`
+	ID                       *UUIDFilterComparison                       `json:"id,omitempty"`
+	Name                     *StringFieldComparison                      `json:"name,omitempty"`
+	Or                       []*CustomerFilter                           `json:"or,omitempty"`
+	PromotionalEntitlements  *CustomerFilterPromotionalEntitlementFilter `json:"promotionalEntitlements,omitempty"`
+	RefID                    *StringFieldComparison                      `json:"refId,omitempty"`
+	SalesforceID             *StringFieldComparison                      `json:"salesforceId,omitempty"`
+	SearchQuery              *CustomerSearchQueryFilterComparison        `json:"searchQuery,omitempty"`
+	Subscriptions            *CustomerFilterCustomerSubscriptionFilter   `json:"subscriptions,omitempty"`
+	UpdatedAt                *DateFieldComparison                        `json:"updatedAt,omitempty"`
 }
 
 type CustomerFilterCustomerSubscriptionFilter struct {
@@ -2096,39 +2100,41 @@ type CustomerInput struct {
 }
 
 type CustomerMaxAggregate struct {
-	BillingID            *string `json:"billingId"`
-	CreatedAt            *string `json:"createdAt"`
-	CrmHubspotCompanyID  *string `json:"crmHubspotCompanyId"`
-	CrmHubspotCompanyURL *string `json:"crmHubspotCompanyUrl"`
-	CrmID                *string `json:"crmId"`
-	CustomerID           *string `json:"customerId"`
-	DeletedAt            *string `json:"deletedAt"`
-	Email                *string `json:"email"`
-	EnvironmentID        *string `json:"environmentId"`
-	ID                   *string `json:"id"`
-	Name                 *string `json:"name"`
-	RefID                *string `json:"refId"`
-	SalesforceID         *string `json:"salesforceId"`
-	SearchQuery          *string `json:"searchQuery"`
-	UpdatedAt            *string `json:"updatedAt"`
+	AwsMarketplaceCustomerID *string `json:"awsMarketplaceCustomerId"`
+	BillingID                *string `json:"billingId"`
+	CreatedAt                *string `json:"createdAt"`
+	CrmHubspotCompanyID      *string `json:"crmHubspotCompanyId"`
+	CrmHubspotCompanyURL     *string `json:"crmHubspotCompanyUrl"`
+	CrmID                    *string `json:"crmId"`
+	CustomerID               *string `json:"customerId"`
+	DeletedAt                *string `json:"deletedAt"`
+	Email                    *string `json:"email"`
+	EnvironmentID            *string `json:"environmentId"`
+	ID                       *string `json:"id"`
+	Name                     *string `json:"name"`
+	RefID                    *string `json:"refId"`
+	SalesforceID             *string `json:"salesforceId"`
+	SearchQuery              *string `json:"searchQuery"`
+	UpdatedAt                *string `json:"updatedAt"`
 }
 
 type CustomerMinAggregate struct {
-	BillingID            *string `json:"billingId"`
-	CreatedAt            *string `json:"createdAt"`
-	CrmHubspotCompanyID  *string `json:"crmHubspotCompanyId"`
-	CrmHubspotCompanyURL *string `json:"crmHubspotCompanyUrl"`
-	CrmID                *string `json:"crmId"`
-	CustomerID           *string `json:"customerId"`
-	DeletedAt            *string `json:"deletedAt"`
-	Email                *string `json:"email"`
-	EnvironmentID        *string `json:"environmentId"`
-	ID                   *string `json:"id"`
-	Name                 *string `json:"name"`
-	RefID                *string `json:"refId"`
-	SalesforceID         *string `json:"salesforceId"`
-	SearchQuery          *string `json:"searchQuery"`
-	UpdatedAt            *string `json:"updatedAt"`
+	AwsMarketplaceCustomerID *string `json:"awsMarketplaceCustomerId"`
+	BillingID                *string `json:"billingId"`
+	CreatedAt                *string `json:"createdAt"`
+	CrmHubspotCompanyID      *string `json:"crmHubspotCompanyId"`
+	CrmHubspotCompanyURL     *string `json:"crmHubspotCompanyUrl"`
+	CrmID                    *string `json:"crmId"`
+	CustomerID               *string `json:"customerId"`
+	DeletedAt                *string `json:"deletedAt"`
+	Email                    *string `json:"email"`
+	EnvironmentID            *string `json:"environmentId"`
+	ID                       *string `json:"id"`
+	Name                     *string `json:"name"`
+	RefID                    *string `json:"refId"`
+	SalesforceID             *string `json:"salesforceId"`
+	SearchQuery              *string `json:"searchQuery"`
+	UpdatedAt                *string `json:"updatedAt"`
 }
 
 type CustomerNoBillingID struct {
@@ -2400,23 +2406,24 @@ type CustomerResourceFilter struct {
 }
 
 type CustomerResourceFilterCustomerFilter struct {
-	And                  []*CustomerResourceFilterCustomerFilter `json:"and,omitempty"`
-	BillingID            *StringFieldComparison                  `json:"billingId,omitempty"`
-	CreatedAt            *DateFieldComparison                    `json:"createdAt,omitempty"`
-	CrmHubspotCompanyID  *StringFieldComparison                  `json:"crmHubspotCompanyId,omitempty"`
-	CrmHubspotCompanyURL *StringFieldComparison                  `json:"crmHubspotCompanyUrl,omitempty"`
-	CrmID                *StringFieldComparison                  `json:"crmId,omitempty"`
-	CustomerID           *StringFieldComparison                  `json:"customerId,omitempty"`
-	DeletedAt            *DateFieldComparison                    `json:"deletedAt,omitempty"`
-	Email                *StringFieldComparison                  `json:"email,omitempty"`
-	EnvironmentID        *UUIDFilterComparison                   `json:"environmentId,omitempty"`
-	ID                   *UUIDFilterComparison                   `json:"id,omitempty"`
-	Name                 *StringFieldComparison                  `json:"name,omitempty"`
-	Or                   []*CustomerResourceFilterCustomerFilter `json:"or,omitempty"`
-	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
-	SalesforceID         *StringFieldComparison                  `json:"salesforceId,omitempty"`
-	SearchQuery          *CustomerSearchQueryFilterComparison    `json:"searchQuery,omitempty"`
-	UpdatedAt            *DateFieldComparison                    `json:"updatedAt,omitempty"`
+	And                      []*CustomerResourceFilterCustomerFilter `json:"and,omitempty"`
+	AwsMarketplaceCustomerID *StringFieldComparison                  `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *StringFieldComparison                  `json:"billingId,omitempty"`
+	CreatedAt                *DateFieldComparison                    `json:"createdAt,omitempty"`
+	CrmHubspotCompanyID      *StringFieldComparison                  `json:"crmHubspotCompanyId,omitempty"`
+	CrmHubspotCompanyURL     *StringFieldComparison                  `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                    *StringFieldComparison                  `json:"crmId,omitempty"`
+	CustomerID               *StringFieldComparison                  `json:"customerId,omitempty"`
+	DeletedAt                *DateFieldComparison                    `json:"deletedAt,omitempty"`
+	Email                    *StringFieldComparison                  `json:"email,omitempty"`
+	EnvironmentID            *UUIDFilterComparison                   `json:"environmentId,omitempty"`
+	ID                       *UUIDFilterComparison                   `json:"id,omitempty"`
+	Name                     *StringFieldComparison                  `json:"name,omitempty"`
+	Or                       []*CustomerResourceFilterCustomerFilter `json:"or,omitempty"`
+	RefID                    *StringFieldComparison                  `json:"refId,omitempty"`
+	SalesforceID             *StringFieldComparison                  `json:"salesforceId,omitempty"`
+	SearchQuery              *CustomerSearchQueryFilterComparison    `json:"searchQuery,omitempty"`
+	UpdatedAt                *DateFieldComparison                    `json:"updatedAt,omitempty"`
 }
 
 type CustomerResourceFilterCustomerSubscriptionFilter struct {
@@ -2659,23 +2666,24 @@ type CustomerSubscriptionFilter struct {
 }
 
 type CustomerSubscriptionFilterCustomerFilter struct {
-	And                  []*CustomerSubscriptionFilterCustomerFilter `json:"and,omitempty"`
-	BillingID            *StringFieldComparison                      `json:"billingId,omitempty"`
-	CreatedAt            *DateFieldComparison                        `json:"createdAt,omitempty"`
-	CrmHubspotCompanyID  *StringFieldComparison                      `json:"crmHubspotCompanyId,omitempty"`
-	CrmHubspotCompanyURL *StringFieldComparison                      `json:"crmHubspotCompanyUrl,omitempty"`
-	CrmID                *StringFieldComparison                      `json:"crmId,omitempty"`
-	CustomerID           *StringFieldComparison                      `json:"customerId,omitempty"`
-	DeletedAt            *DateFieldComparison                        `json:"deletedAt,omitempty"`
-	Email                *StringFieldComparison                      `json:"email,omitempty"`
-	EnvironmentID        *UUIDFilterComparison                       `json:"environmentId,omitempty"`
-	ID                   *UUIDFilterComparison                       `json:"id,omitempty"`
-	Name                 *StringFieldComparison                      `json:"name,omitempty"`
-	Or                   []*CustomerSubscriptionFilterCustomerFilter `json:"or,omitempty"`
-	RefID                *StringFieldComparison                      `json:"refId,omitempty"`
-	SalesforceID         *StringFieldComparison                      `json:"salesforceId,omitempty"`
-	SearchQuery          *CustomerSearchQueryFilterComparison        `json:"searchQuery,omitempty"`
-	UpdatedAt            *DateFieldComparison                        `json:"updatedAt,omitempty"`
+	And                      []*CustomerSubscriptionFilterCustomerFilter `json:"and,omitempty"`
+	AwsMarketplaceCustomerID *StringFieldComparison                      `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *StringFieldComparison                      `json:"billingId,omitempty"`
+	CreatedAt                *DateFieldComparison                        `json:"createdAt,omitempty"`
+	CrmHubspotCompanyID      *StringFieldComparison                      `json:"crmHubspotCompanyId,omitempty"`
+	CrmHubspotCompanyURL     *StringFieldComparison                      `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                    *StringFieldComparison                      `json:"crmId,omitempty"`
+	CustomerID               *StringFieldComparison                      `json:"customerId,omitempty"`
+	DeletedAt                *DateFieldComparison                        `json:"deletedAt,omitempty"`
+	Email                    *StringFieldComparison                      `json:"email,omitempty"`
+	EnvironmentID            *UUIDFilterComparison                       `json:"environmentId,omitempty"`
+	ID                       *UUIDFilterComparison                       `json:"id,omitempty"`
+	Name                     *StringFieldComparison                      `json:"name,omitempty"`
+	Or                       []*CustomerSubscriptionFilterCustomerFilter `json:"or,omitempty"`
+	RefID                    *StringFieldComparison                      `json:"refId,omitempty"`
+	SalesforceID             *StringFieldComparison                      `json:"salesforceId,omitempty"`
+	SearchQuery              *CustomerSearchQueryFilterComparison        `json:"searchQuery,omitempty"`
+	UpdatedAt                *DateFieldComparison                        `json:"updatedAt,omitempty"`
 }
 
 type CustomerSubscriptionFilterCustomerResourceFilter struct {
@@ -3730,23 +3738,24 @@ type ExperimentFilter struct {
 }
 
 type ExperimentFilterCustomerFilter struct {
-	And                  []*ExperimentFilterCustomerFilter    `json:"and,omitempty"`
-	BillingID            *StringFieldComparison               `json:"billingId,omitempty"`
-	CreatedAt            *DateFieldComparison                 `json:"createdAt,omitempty"`
-	CrmHubspotCompanyID  *StringFieldComparison               `json:"crmHubspotCompanyId,omitempty"`
-	CrmHubspotCompanyURL *StringFieldComparison               `json:"crmHubspotCompanyUrl,omitempty"`
-	CrmID                *StringFieldComparison               `json:"crmId,omitempty"`
-	CustomerID           *StringFieldComparison               `json:"customerId,omitempty"`
-	DeletedAt            *DateFieldComparison                 `json:"deletedAt,omitempty"`
-	Email                *StringFieldComparison               `json:"email,omitempty"`
-	EnvironmentID        *UUIDFilterComparison                `json:"environmentId,omitempty"`
-	ID                   *UUIDFilterComparison                `json:"id,omitempty"`
-	Name                 *StringFieldComparison               `json:"name,omitempty"`
-	Or                   []*ExperimentFilterCustomerFilter    `json:"or,omitempty"`
-	RefID                *StringFieldComparison               `json:"refId,omitempty"`
-	SalesforceID         *StringFieldComparison               `json:"salesforceId,omitempty"`
-	SearchQuery          *CustomerSearchQueryFilterComparison `json:"searchQuery,omitempty"`
-	UpdatedAt            *DateFieldComparison                 `json:"updatedAt,omitempty"`
+	And                      []*ExperimentFilterCustomerFilter    `json:"and,omitempty"`
+	AwsMarketplaceCustomerID *StringFieldComparison               `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *StringFieldComparison               `json:"billingId,omitempty"`
+	CreatedAt                *DateFieldComparison                 `json:"createdAt,omitempty"`
+	CrmHubspotCompanyID      *StringFieldComparison               `json:"crmHubspotCompanyId,omitempty"`
+	CrmHubspotCompanyURL     *StringFieldComparison               `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                    *StringFieldComparison               `json:"crmId,omitempty"`
+	CustomerID               *StringFieldComparison               `json:"customerId,omitempty"`
+	DeletedAt                *DateFieldComparison                 `json:"deletedAt,omitempty"`
+	Email                    *StringFieldComparison               `json:"email,omitempty"`
+	EnvironmentID            *UUIDFilterComparison                `json:"environmentId,omitempty"`
+	ID                       *UUIDFilterComparison                `json:"id,omitempty"`
+	Name                     *StringFieldComparison               `json:"name,omitempty"`
+	Or                       []*ExperimentFilterCustomerFilter    `json:"or,omitempty"`
+	RefID                    *StringFieldComparison               `json:"refId,omitempty"`
+	SalesforceID             *StringFieldComparison               `json:"salesforceId,omitempty"`
+	SearchQuery              *CustomerSearchQueryFilterComparison `json:"searchQuery,omitempty"`
+	UpdatedAt                *DateFieldComparison                 `json:"updatedAt,omitempty"`
 }
 
 type ExperimentMaxAggregate struct {
@@ -9582,15 +9591,37 @@ type SubscriptionQueryEdge struct {
 }
 
 type SubscriptionQueryFilter struct {
-	And           []*SubscriptionQueryFilter          `json:"and,omitempty"`
-	CreatedAt     *DateFieldComparison                `json:"createdAt,omitempty"`
-	CustomerID    *StringFieldComparison              `json:"customerId,omitempty"`
-	EnvironmentID *UUIDFilterComparison               `json:"environmentId,omitempty"`
-	Or            []*SubscriptionQueryFilter          `json:"or,omitempty"`
-	ProductID     *StringFieldComparison              `json:"productId,omitempty"`
-	ResourceID    *StringFieldComparison              `json:"resourceId,omitempty"`
-	StartDate     *DateFieldComparison                `json:"startDate,omitempty"`
-	Status        *SubscriptionStatusFilterComparison `json:"status,omitempty"`
+	And           []*SubscriptionQueryFilter             `json:"and,omitempty"`
+	CreatedAt     *DateFieldComparison                   `json:"createdAt,omitempty"`
+	Customer      *SubscriptionQueryFilterCustomerFilter `json:"customer,omitempty"`
+	CustomerID    *StringFieldComparison                 `json:"customerId,omitempty"`
+	EnvironmentID *UUIDFilterComparison                  `json:"environmentId,omitempty"`
+	Or            []*SubscriptionQueryFilter             `json:"or,omitempty"`
+	ProductID     *StringFieldComparison                 `json:"productId,omitempty"`
+	ResourceID    *StringFieldComparison                 `json:"resourceId,omitempty"`
+	StartDate     *DateFieldComparison                   `json:"startDate,omitempty"`
+	Status        *SubscriptionStatusFilterComparison    `json:"status,omitempty"`
+}
+
+type SubscriptionQueryFilterCustomerFilter struct {
+	And                      []*SubscriptionQueryFilterCustomerFilter `json:"and,omitempty"`
+	AwsMarketplaceCustomerID *StringFieldComparison                   `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *StringFieldComparison                   `json:"billingId,omitempty"`
+	CreatedAt                *DateFieldComparison                     `json:"createdAt,omitempty"`
+	CrmHubspotCompanyID      *StringFieldComparison                   `json:"crmHubspotCompanyId,omitempty"`
+	CrmHubspotCompanyURL     *StringFieldComparison                   `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                    *StringFieldComparison                   `json:"crmId,omitempty"`
+	CustomerID               *StringFieldComparison                   `json:"customerId,omitempty"`
+	DeletedAt                *DateFieldComparison                     `json:"deletedAt,omitempty"`
+	Email                    *StringFieldComparison                   `json:"email,omitempty"`
+	EnvironmentID            *UUIDFilterComparison                    `json:"environmentId,omitempty"`
+	ID                       *UUIDFilterComparison                    `json:"id,omitempty"`
+	Name                     *StringFieldComparison                   `json:"name,omitempty"`
+	Or                       []*SubscriptionQueryFilterCustomerFilter `json:"or,omitempty"`
+	RefID                    *StringFieldComparison                   `json:"refId,omitempty"`
+	SalesforceID             *StringFieldComparison                   `json:"salesforceId,omitempty"`
+	SearchQuery              *CustomerSearchQueryFilterComparison     `json:"searchQuery,omitempty"`
+	UpdatedAt                *DateFieldComparison                     `json:"updatedAt,omitempty"`
 }
 
 type SubscriptionQueryMaxAggregate struct {
@@ -10651,23 +10682,24 @@ type UsageMeasurementFilter struct {
 }
 
 type UsageMeasurementFilterCustomerFilter struct {
-	And                  []*UsageMeasurementFilterCustomerFilter `json:"and,omitempty"`
-	BillingID            *StringFieldComparison                  `json:"billingId,omitempty"`
-	CreatedAt            *DateFieldComparison                    `json:"createdAt,omitempty"`
-	CrmHubspotCompanyID  *StringFieldComparison                  `json:"crmHubspotCompanyId,omitempty"`
-	CrmHubspotCompanyURL *StringFieldComparison                  `json:"crmHubspotCompanyUrl,omitempty"`
-	CrmID                *StringFieldComparison                  `json:"crmId,omitempty"`
-	CustomerID           *StringFieldComparison                  `json:"customerId,omitempty"`
-	DeletedAt            *DateFieldComparison                    `json:"deletedAt,omitempty"`
-	Email                *StringFieldComparison                  `json:"email,omitempty"`
-	EnvironmentID        *UUIDFilterComparison                   `json:"environmentId,omitempty"`
-	ID                   *UUIDFilterComparison                   `json:"id,omitempty"`
-	Name                 *StringFieldComparison                  `json:"name,omitempty"`
-	Or                   []*UsageMeasurementFilterCustomerFilter `json:"or,omitempty"`
-	RefID                *StringFieldComparison                  `json:"refId,omitempty"`
-	SalesforceID         *StringFieldComparison                  `json:"salesforceId,omitempty"`
-	SearchQuery          *CustomerSearchQueryFilterComparison    `json:"searchQuery,omitempty"`
-	UpdatedAt            *DateFieldComparison                    `json:"updatedAt,omitempty"`
+	And                      []*UsageMeasurementFilterCustomerFilter `json:"and,omitempty"`
+	AwsMarketplaceCustomerID *StringFieldComparison                  `json:"awsMarketplaceCustomerId,omitempty"`
+	BillingID                *StringFieldComparison                  `json:"billingId,omitempty"`
+	CreatedAt                *DateFieldComparison                    `json:"createdAt,omitempty"`
+	CrmHubspotCompanyID      *StringFieldComparison                  `json:"crmHubspotCompanyId,omitempty"`
+	CrmHubspotCompanyURL     *StringFieldComparison                  `json:"crmHubspotCompanyUrl,omitempty"`
+	CrmID                    *StringFieldComparison                  `json:"crmId,omitempty"`
+	CustomerID               *StringFieldComparison                  `json:"customerId,omitempty"`
+	DeletedAt                *DateFieldComparison                    `json:"deletedAt,omitempty"`
+	Email                    *StringFieldComparison                  `json:"email,omitempty"`
+	EnvironmentID            *UUIDFilterComparison                   `json:"environmentId,omitempty"`
+	ID                       *UUIDFilterComparison                   `json:"id,omitempty"`
+	Name                     *StringFieldComparison                  `json:"name,omitempty"`
+	Or                       []*UsageMeasurementFilterCustomerFilter `json:"or,omitempty"`
+	RefID                    *StringFieldComparison                  `json:"refId,omitempty"`
+	SalesforceID             *StringFieldComparison                  `json:"salesforceId,omitempty"`
+	SearchQuery              *CustomerSearchQueryFilterComparison    `json:"searchQuery,omitempty"`
+	UpdatedAt                *DateFieldComparison                    `json:"updatedAt,omitempty"`
 }
 
 type UsageMeasurementFilterFeatureFilter struct {
@@ -12622,24 +12654,26 @@ func (e CustomerResourceSortFields) MarshalGQL(w io.Writer) {
 type CustomerSortFields string
 
 const (
-	CustomerSortFieldsBillingID            CustomerSortFields = "billingId"
-	CustomerSortFieldsCreatedAt            CustomerSortFields = "createdAt"
-	CustomerSortFieldsCrmHubspotCompanyID  CustomerSortFields = "crmHubspotCompanyId"
-	CustomerSortFieldsCrmHubspotCompanyURL CustomerSortFields = "crmHubspotCompanyUrl"
-	CustomerSortFieldsCrmID                CustomerSortFields = "crmId"
-	CustomerSortFieldsCustomerID           CustomerSortFields = "customerId"
-	CustomerSortFieldsDeletedAt            CustomerSortFields = "deletedAt"
-	CustomerSortFieldsEmail                CustomerSortFields = "email"
-	CustomerSortFieldsEnvironmentID        CustomerSortFields = "environmentId"
-	CustomerSortFieldsID                   CustomerSortFields = "id"
-	CustomerSortFieldsName                 CustomerSortFields = "name"
-	CustomerSortFieldsRefID                CustomerSortFields = "refId"
-	CustomerSortFieldsSalesforceID         CustomerSortFields = "salesforceId"
-	CustomerSortFieldsSearchQuery          CustomerSortFields = "searchQuery"
-	CustomerSortFieldsUpdatedAt            CustomerSortFields = "updatedAt"
+	CustomerSortFieldsAwsMarketplaceCustomerID CustomerSortFields = "awsMarketplaceCustomerId"
+	CustomerSortFieldsBillingID                CustomerSortFields = "billingId"
+	CustomerSortFieldsCreatedAt                CustomerSortFields = "createdAt"
+	CustomerSortFieldsCrmHubspotCompanyID      CustomerSortFields = "crmHubspotCompanyId"
+	CustomerSortFieldsCrmHubspotCompanyURL     CustomerSortFields = "crmHubspotCompanyUrl"
+	CustomerSortFieldsCrmID                    CustomerSortFields = "crmId"
+	CustomerSortFieldsCustomerID               CustomerSortFields = "customerId"
+	CustomerSortFieldsDeletedAt                CustomerSortFields = "deletedAt"
+	CustomerSortFieldsEmail                    CustomerSortFields = "email"
+	CustomerSortFieldsEnvironmentID            CustomerSortFields = "environmentId"
+	CustomerSortFieldsID                       CustomerSortFields = "id"
+	CustomerSortFieldsName                     CustomerSortFields = "name"
+	CustomerSortFieldsRefID                    CustomerSortFields = "refId"
+	CustomerSortFieldsSalesforceID             CustomerSortFields = "salesforceId"
+	CustomerSortFieldsSearchQuery              CustomerSortFields = "searchQuery"
+	CustomerSortFieldsUpdatedAt                CustomerSortFields = "updatedAt"
 )
 
 var AllCustomerSortFields = []CustomerSortFields{
+	CustomerSortFieldsAwsMarketplaceCustomerID,
 	CustomerSortFieldsBillingID,
 	CustomerSortFieldsCreatedAt,
 	CustomerSortFieldsCrmHubspotCompanyID,
@@ -12659,7 +12693,7 @@ var AllCustomerSortFields = []CustomerSortFields{
 
 func (e CustomerSortFields) IsValid() bool {
 	switch e {
-	case CustomerSortFieldsBillingID, CustomerSortFieldsCreatedAt, CustomerSortFieldsCrmHubspotCompanyID, CustomerSortFieldsCrmHubspotCompanyURL, CustomerSortFieldsCrmID, CustomerSortFieldsCustomerID, CustomerSortFieldsDeletedAt, CustomerSortFieldsEmail, CustomerSortFieldsEnvironmentID, CustomerSortFieldsID, CustomerSortFieldsName, CustomerSortFieldsRefID, CustomerSortFieldsSalesforceID, CustomerSortFieldsSearchQuery, CustomerSortFieldsUpdatedAt:
+	case CustomerSortFieldsAwsMarketplaceCustomerID, CustomerSortFieldsBillingID, CustomerSortFieldsCreatedAt, CustomerSortFieldsCrmHubspotCompanyID, CustomerSortFieldsCrmHubspotCompanyURL, CustomerSortFieldsCrmID, CustomerSortFieldsCustomerID, CustomerSortFieldsDeletedAt, CustomerSortFieldsEmail, CustomerSortFieldsEnvironmentID, CustomerSortFieldsID, CustomerSortFieldsName, CustomerSortFieldsRefID, CustomerSortFieldsSalesforceID, CustomerSortFieldsSearchQuery, CustomerSortFieldsUpdatedAt:
 		return true
 	}
 	return false
