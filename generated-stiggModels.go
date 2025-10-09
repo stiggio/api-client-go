@@ -10958,6 +10958,8 @@ type ZuoraCredentials struct {
 	ClientID string `json:"clientId"`
 	// Client secret for the Zuora account
 	ClientSecret string `json:"clientSecret"`
+	// Whether invoice settlement is enabled
+	InvoiceSettlementEnabled *bool `json:"invoiceSettlementEnabled"`
 	// The ID of the payment gateway to use
 	PaymentGatewayID *string `json:"paymentGatewayId"`
 	// The ID of the payment page to use
@@ -10982,6 +10984,8 @@ type ZuoraCredentialsInput struct {
 	ClientID string `json:"clientId"`
 	// Client secret for the Zuora account
 	ClientSecret string `json:"clientSecret"`
+	// Whether invoice settlement is enabled
+	InvoiceSettlementEnabled *bool `json:"invoiceSettlementEnabled,omitempty"`
 	// The ID of the payment gateway to use
 	PaymentGatewayID *string `json:"paymentGatewayId,omitempty"`
 	// The ID of the payment page to use
