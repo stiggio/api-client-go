@@ -9493,9 +9493,10 @@ type SubscriptionQuery struct {
 	Addons             []*SubscriptionAddon   `json:"addons"`
 	// Billing cycle anchor date
 	BillingCycleAnchor *string `json:"billingCycleAnchor"`
-	BillingID          *string `json:"billingId"`
-	BillingLinkURL     *string `json:"billingLinkUrl"`
-	BillingSyncError   *string `json:"billingSyncError"`
+	// Billing ID
+	BillingID        *string `json:"billingId"`
+	BillingLinkURL   *string `json:"billingLinkUrl"`
+	BillingSyncError *string `json:"billingSyncError"`
 	// Budget configuration
 	Budget *BudgetConfiguration `json:"budget"`
 	// Indicates if the budget has been exceeded
@@ -9539,17 +9540,19 @@ type SubscriptionQuery struct {
 	RefID                   string                   `json:"refId"`
 	Resource                *CustomerResource        `json:"resource"`
 	// Resource ID
-	ResourceID       *string                        `json:"resourceId"`
+	ResourceID *string `json:"resourceId"`
+	// Salesforce ID
 	SalesforceID     *string                        `json:"salesforceId"`
 	ScheduledUpdates []*SubscriptionScheduledUpdate `json:"scheduledUpdates"`
 	// Subscription start date
 	StartDate string `json:"startDate"`
 	// Subscription status
-	Status                   SubscriptionStatus              `json:"status"`
-	SubscriptionEntitlements []*SubscriptionEntitlement      `json:"subscriptionEntitlements"`
-	SubscriptionID           string                          `json:"subscriptionId"`
-	SyncStates               []*SyncState                    `json:"syncStates"`
-	TotalPrice               *CustomerSubscriptionTotalPrice `json:"totalPrice"`
+	Status                   SubscriptionStatus         `json:"status"`
+	SubscriptionEntitlements []*SubscriptionEntitlement `json:"subscriptionEntitlements"`
+	// Subscription ID
+	SubscriptionID string                          `json:"subscriptionId"`
+	SyncStates     []*SyncState                    `json:"syncStates"`
+	TotalPrice     *CustomerSubscriptionTotalPrice `json:"totalPrice"`
 	// Trial configuration
 	TrialConfiguration *TrialConfiguration `json:"trialConfiguration"`
 	TrialEndDate       *string             `json:"trialEndDate"`
@@ -9557,13 +9560,16 @@ type SubscriptionQuery struct {
 }
 
 type SubscriptionQueryAggregateGroupBy struct {
-	CreatedAt     *string             `json:"createdAt"`
-	CustomerID    *string             `json:"customerId"`
-	EnvironmentID *string             `json:"environmentId"`
-	ProductID     *string             `json:"productId"`
-	ResourceID    *string             `json:"resourceId"`
-	StartDate     *string             `json:"startDate"`
-	Status        *SubscriptionStatus `json:"status"`
+	BillingID      *string             `json:"billingId"`
+	CreatedAt      *string             `json:"createdAt"`
+	CustomerID     *string             `json:"customerId"`
+	EnvironmentID  *string             `json:"environmentId"`
+	ProductID      *string             `json:"productId"`
+	ResourceID     *string             `json:"resourceId"`
+	SalesforceID   *string             `json:"salesforceId"`
+	StartDate      *string             `json:"startDate"`
+	Status         *SubscriptionStatus `json:"status"`
+	SubscriptionID *string             `json:"subscriptionId"`
 }
 
 type SubscriptionQueryConnection struct {
@@ -9576,13 +9582,16 @@ type SubscriptionQueryConnection struct {
 }
 
 type SubscriptionQueryCountAggregate struct {
-	CreatedAt     *int64 `json:"createdAt"`
-	CustomerID    *int64 `json:"customerId"`
-	EnvironmentID *int64 `json:"environmentId"`
-	ProductID     *int64 `json:"productId"`
-	ResourceID    *int64 `json:"resourceId"`
-	StartDate     *int64 `json:"startDate"`
-	Status        *int64 `json:"status"`
+	BillingID      *int64 `json:"billingId"`
+	CreatedAt      *int64 `json:"createdAt"`
+	CustomerID     *int64 `json:"customerId"`
+	EnvironmentID  *int64 `json:"environmentId"`
+	ProductID      *int64 `json:"productId"`
+	ResourceID     *int64 `json:"resourceId"`
+	SalesforceID   *int64 `json:"salesforceId"`
+	StartDate      *int64 `json:"startDate"`
+	Status         *int64 `json:"status"`
+	SubscriptionID *int64 `json:"subscriptionId"`
 }
 
 type SubscriptionQueryEdge struct {
@@ -9593,16 +9602,19 @@ type SubscriptionQueryEdge struct {
 }
 
 type SubscriptionQueryFilter struct {
-	And           []*SubscriptionQueryFilter             `json:"and,omitempty"`
-	CreatedAt     *DateFieldComparison                   `json:"createdAt,omitempty"`
-	Customer      *SubscriptionQueryFilterCustomerFilter `json:"customer,omitempty"`
-	CustomerID    *StringFieldComparison                 `json:"customerId,omitempty"`
-	EnvironmentID *UUIDFilterComparison                  `json:"environmentId,omitempty"`
-	Or            []*SubscriptionQueryFilter             `json:"or,omitempty"`
-	ProductID     *StringFieldComparison                 `json:"productId,omitempty"`
-	ResourceID    *StringFieldComparison                 `json:"resourceId,omitempty"`
-	StartDate     *DateFieldComparison                   `json:"startDate,omitempty"`
-	Status        *SubscriptionStatusFilterComparison    `json:"status,omitempty"`
+	And            []*SubscriptionQueryFilter             `json:"and,omitempty"`
+	BillingID      *StringFieldComparison                 `json:"billingId,omitempty"`
+	CreatedAt      *DateFieldComparison                   `json:"createdAt,omitempty"`
+	Customer       *SubscriptionQueryFilterCustomerFilter `json:"customer,omitempty"`
+	CustomerID     *StringFieldComparison                 `json:"customerId,omitempty"`
+	EnvironmentID  *UUIDFilterComparison                  `json:"environmentId,omitempty"`
+	Or             []*SubscriptionQueryFilter             `json:"or,omitempty"`
+	ProductID      *StringFieldComparison                 `json:"productId,omitempty"`
+	ResourceID     *StringFieldComparison                 `json:"resourceId,omitempty"`
+	SalesforceID   *StringFieldComparison                 `json:"salesforceId,omitempty"`
+	StartDate      *DateFieldComparison                   `json:"startDate,omitempty"`
+	Status         *SubscriptionStatusFilterComparison    `json:"status,omitempty"`
+	SubscriptionID *StringFieldComparison                 `json:"subscriptionId,omitempty"`
 }
 
 type SubscriptionQueryFilterCustomerFilter struct {
@@ -9627,23 +9639,29 @@ type SubscriptionQueryFilterCustomerFilter struct {
 }
 
 type SubscriptionQueryMaxAggregate struct {
-	CreatedAt     *string             `json:"createdAt"`
-	CustomerID    *string             `json:"customerId"`
-	EnvironmentID *string             `json:"environmentId"`
-	ProductID     *string             `json:"productId"`
-	ResourceID    *string             `json:"resourceId"`
-	StartDate     *string             `json:"startDate"`
-	Status        *SubscriptionStatus `json:"status"`
+	BillingID      *string             `json:"billingId"`
+	CreatedAt      *string             `json:"createdAt"`
+	CustomerID     *string             `json:"customerId"`
+	EnvironmentID  *string             `json:"environmentId"`
+	ProductID      *string             `json:"productId"`
+	ResourceID     *string             `json:"resourceId"`
+	SalesforceID   *string             `json:"salesforceId"`
+	StartDate      *string             `json:"startDate"`
+	Status         *SubscriptionStatus `json:"status"`
+	SubscriptionID *string             `json:"subscriptionId"`
 }
 
 type SubscriptionQueryMinAggregate struct {
-	CreatedAt     *string             `json:"createdAt"`
-	CustomerID    *string             `json:"customerId"`
-	EnvironmentID *string             `json:"environmentId"`
-	ProductID     *string             `json:"productId"`
-	ResourceID    *string             `json:"resourceId"`
-	StartDate     *string             `json:"startDate"`
-	Status        *SubscriptionStatus `json:"status"`
+	BillingID      *string             `json:"billingId"`
+	CreatedAt      *string             `json:"createdAt"`
+	CustomerID     *string             `json:"customerId"`
+	EnvironmentID  *string             `json:"environmentId"`
+	ProductID      *string             `json:"productId"`
+	ResourceID     *string             `json:"resourceId"`
+	SalesforceID   *string             `json:"salesforceId"`
+	StartDate      *string             `json:"startDate"`
+	Status         *SubscriptionStatus `json:"status"`
+	SubscriptionID *string             `json:"subscriptionId"`
 }
 
 type SubscriptionQuerySort struct {
@@ -16986,28 +17004,34 @@ func (e SubscriptionProrationBehavior) MarshalGQL(w io.Writer) {
 type SubscriptionQuerySortFields string
 
 const (
-	SubscriptionQuerySortFieldsCreatedAt     SubscriptionQuerySortFields = "createdAt"
-	SubscriptionQuerySortFieldsCustomerID    SubscriptionQuerySortFields = "customerId"
-	SubscriptionQuerySortFieldsEnvironmentID SubscriptionQuerySortFields = "environmentId"
-	SubscriptionQuerySortFieldsProductID     SubscriptionQuerySortFields = "productId"
-	SubscriptionQuerySortFieldsResourceID    SubscriptionQuerySortFields = "resourceId"
-	SubscriptionQuerySortFieldsStartDate     SubscriptionQuerySortFields = "startDate"
-	SubscriptionQuerySortFieldsStatus        SubscriptionQuerySortFields = "status"
+	SubscriptionQuerySortFieldsBillingID      SubscriptionQuerySortFields = "billingId"
+	SubscriptionQuerySortFieldsCreatedAt      SubscriptionQuerySortFields = "createdAt"
+	SubscriptionQuerySortFieldsCustomerID     SubscriptionQuerySortFields = "customerId"
+	SubscriptionQuerySortFieldsEnvironmentID  SubscriptionQuerySortFields = "environmentId"
+	SubscriptionQuerySortFieldsProductID      SubscriptionQuerySortFields = "productId"
+	SubscriptionQuerySortFieldsResourceID     SubscriptionQuerySortFields = "resourceId"
+	SubscriptionQuerySortFieldsSalesforceID   SubscriptionQuerySortFields = "salesforceId"
+	SubscriptionQuerySortFieldsStartDate      SubscriptionQuerySortFields = "startDate"
+	SubscriptionQuerySortFieldsStatus         SubscriptionQuerySortFields = "status"
+	SubscriptionQuerySortFieldsSubscriptionID SubscriptionQuerySortFields = "subscriptionId"
 )
 
 var AllSubscriptionQuerySortFields = []SubscriptionQuerySortFields{
+	SubscriptionQuerySortFieldsBillingID,
 	SubscriptionQuerySortFieldsCreatedAt,
 	SubscriptionQuerySortFieldsCustomerID,
 	SubscriptionQuerySortFieldsEnvironmentID,
 	SubscriptionQuerySortFieldsProductID,
 	SubscriptionQuerySortFieldsResourceID,
+	SubscriptionQuerySortFieldsSalesforceID,
 	SubscriptionQuerySortFieldsStartDate,
 	SubscriptionQuerySortFieldsStatus,
+	SubscriptionQuerySortFieldsSubscriptionID,
 }
 
 func (e SubscriptionQuerySortFields) IsValid() bool {
 	switch e {
-	case SubscriptionQuerySortFieldsCreatedAt, SubscriptionQuerySortFieldsCustomerID, SubscriptionQuerySortFieldsEnvironmentID, SubscriptionQuerySortFieldsProductID, SubscriptionQuerySortFieldsResourceID, SubscriptionQuerySortFieldsStartDate, SubscriptionQuerySortFieldsStatus:
+	case SubscriptionQuerySortFieldsBillingID, SubscriptionQuerySortFieldsCreatedAt, SubscriptionQuerySortFieldsCustomerID, SubscriptionQuerySortFieldsEnvironmentID, SubscriptionQuerySortFieldsProductID, SubscriptionQuerySortFieldsResourceID, SubscriptionQuerySortFieldsSalesforceID, SubscriptionQuerySortFieldsStartDate, SubscriptionQuerySortFieldsStatus, SubscriptionQuerySortFieldsSubscriptionID:
 		return true
 	}
 	return false
