@@ -10319,6 +10319,8 @@ type UpdateIntegrationInput struct {
 	OpenFGACredentials *OpenFGACredentialsInput `json:"openFGACredentials,omitempty"`
 	// Salesforce integration configuration
 	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
+	// Snowflake integration configuration
+	SnowflakeCredentials *SnowflakeCredentialsInput `json:"snowflakeCredentials,omitempty"`
 	// Stripe integration configuration
 	StripeCredentials *UpdateStripeCredentialsInput `json:"stripeCredentials,omitempty"`
 	// The vendor identifier of integration
