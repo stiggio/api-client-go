@@ -1730,6 +1730,8 @@ type CreditLedgerInput struct {
 type CreditRate struct {
 	// The credit rate amount
 	Amount float64 `json:"amount"`
+	// A custom formula for calculating cost based on single event dimensions
+	CostFormula *string `json:"costFormula"`
 	// The custom currency refId for the credit rate
 	CurrencyID string `json:"currencyId"`
 	// The custom currency ID for the credit rate
@@ -1740,6 +1742,8 @@ type CreditRate struct {
 type CreditRateInput struct {
 	// The credit rate amount
 	Amount float64 `json:"amount"`
+	// A custom formula for calculating cost based on single event dimensions
+	CostFormula *string `json:"costFormula,omitempty"`
 	// The custom currency refId for the credit rate
 	CurrencyID string `json:"currencyId"`
 	// The custom currency ID for the credit rate
