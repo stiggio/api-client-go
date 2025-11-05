@@ -8324,8 +8324,12 @@ type SnowflakeCredentials struct {
 	Database string `json:"database"`
 	// The Snowflake account URL, for example: https://ab12345.us-east-2.aws.snowflakecomputing.com
 	Host string `json:"host"`
+	// The masked passphrase for the encrypted private key
+	Passphrase *string `json:"passphrase"`
 	// The masked password indicating the password based authentication for the Snowflake integration
 	Password *string `json:"password"`
+	// The base64 encoded SHA-256 fingerprint of the public key corresponding to the private key
+	PrivateKey *string `json:"privateKey"`
 	// The role you specified when creating the Stigg entities in Snowflake, for example: STIGG_ROLE
 	Role string `json:"role"`
 	// The schema you specified when creating the Stigg entities in Snowflake, for example: STIGG_SCHEMA
@@ -8344,7 +8348,7 @@ type SnowflakeCredentialsInput struct {
 	Database string `json:"database"`
 	// The Snowflake account URL, for example: https://ab12345.us-east-2.aws.snowflakecomputing.com
 	Host string `json:"host"`
-	// The passphrase for the private key
+	// The passphrase for the encrypted private key
 	Passphrase *string `json:"passphrase,omitempty"`
 	// The password you specified when creating the Stigg entities in Snowflake
 	Password *string `json:"password,omitempty"`
