@@ -9627,23 +9627,25 @@ type SubscriptionQueryEdge struct {
 }
 
 type SubscriptionQueryFilter struct {
-	And               []*SubscriptionQueryFilter             `json:"and,omitempty"`
-	BillingID         *StringFieldComparison                 `json:"billingId,omitempty"`
-	CancellationDate  *DateFieldComparison                   `json:"cancellationDate,omitempty"`
-	CreatedAt         *DateFieldComparison                   `json:"createdAt,omitempty"`
-	Customer          *SubscriptionQueryFilterCustomerFilter `json:"customer,omitempty"`
-	CustomerID        *StringFieldComparison                 `json:"customerId,omitempty"`
-	EndDate           *DateFieldComparison                   `json:"endDate,omitempty"`
-	EnvironmentID     *UUIDFilterComparison                  `json:"environmentId,omitempty"`
-	Or                []*SubscriptionQueryFilter             `json:"or,omitempty"`
-	PaymentCollection *PaymentCollectionFilterComparison     `json:"paymentCollection,omitempty"`
-	PricingType       *PricingTypeFilterComparison           `json:"pricingType,omitempty"`
-	ProductID         *StringFieldComparison                 `json:"productId,omitempty"`
-	ResourceID        *StringFieldComparison                 `json:"resourceId,omitempty"`
-	SalesforceID      *StringFieldComparison                 `json:"salesforceId,omitempty"`
-	StartDate         *DateFieldComparison                   `json:"startDate,omitempty"`
-	Status            *SubscriptionStatusFilterComparison    `json:"status,omitempty"`
-	SubscriptionID    *StringFieldComparison                 `json:"subscriptionId,omitempty"`
+	And               []*SubscriptionQueryFilter                     `json:"and,omitempty"`
+	BillingID         *StringFieldComparison                         `json:"billingId,omitempty"`
+	CancellationDate  *DateFieldComparison                           `json:"cancellationDate,omitempty"`
+	CreatedAt         *DateFieldComparison                           `json:"createdAt,omitempty"`
+	Customer          *SubscriptionQueryFilterCustomerFilter         `json:"customer,omitempty"`
+	CustomerID        *StringFieldComparison                         `json:"customerId,omitempty"`
+	EndDate           *DateFieldComparison                           `json:"endDate,omitempty"`
+	EnvironmentID     *UUIDFilterComparison                          `json:"environmentId,omitempty"`
+	Or                []*SubscriptionQueryFilter                     `json:"or,omitempty"`
+	PaymentCollection *PaymentCollectionFilterComparison             `json:"paymentCollection,omitempty"`
+	Plan              *SubscriptionQueryFilterPlanFilter             `json:"plan,omitempty"`
+	PricingType       *PricingTypeFilterComparison                   `json:"pricingType,omitempty"`
+	ProductID         *StringFieldComparison                         `json:"productId,omitempty"`
+	Resource          *SubscriptionQueryFilterCustomerResourceFilter `json:"resource,omitempty"`
+	ResourceID        *StringFieldComparison                         `json:"resourceId,omitempty"`
+	SalesforceID      *StringFieldComparison                         `json:"salesforceId,omitempty"`
+	StartDate         *DateFieldComparison                           `json:"startDate,omitempty"`
+	Status            *SubscriptionStatusFilterComparison            `json:"status,omitempty"`
+	SubscriptionID    *StringFieldComparison                         `json:"subscriptionId,omitempty"`
 }
 
 type SubscriptionQueryFilterCustomerFilter struct {
@@ -9665,6 +9667,32 @@ type SubscriptionQueryFilterCustomerFilter struct {
 	SalesforceID             *StringFieldComparison                   `json:"salesforceId,omitempty"`
 	SearchQuery              *CustomerSearchQueryFilterComparison     `json:"searchQuery,omitempty"`
 	UpdatedAt                *DateFieldComparison                     `json:"updatedAt,omitempty"`
+}
+
+type SubscriptionQueryFilterCustomerResourceFilter struct {
+	And           []*SubscriptionQueryFilterCustomerResourceFilter `json:"and,omitempty"`
+	CreatedAt     *DateFieldComparison                             `json:"createdAt,omitempty"`
+	EnvironmentID *UUIDFilterComparison                            `json:"environmentId,omitempty"`
+	Or            []*SubscriptionQueryFilterCustomerResourceFilter `json:"or,omitempty"`
+	ResourceID    *StringFieldComparison                           `json:"resourceId,omitempty"`
+}
+
+type SubscriptionQueryFilterPlanFilter struct {
+	And           []*SubscriptionQueryFilterPlanFilter `json:"and,omitempty"`
+	BillingID     *StringFieldComparison               `json:"billingId,omitempty"`
+	CreatedAt     *DateFieldComparison                 `json:"createdAt,omitempty"`
+	Description   *StringFieldComparison               `json:"description,omitempty"`
+	DisplayName   *StringFieldComparison               `json:"displayName,omitempty"`
+	EnvironmentID *UUIDFilterComparison                `json:"environmentId,omitempty"`
+	ID            *UUIDFilterComparison                `json:"id,omitempty"`
+	IsLatest      *BooleanFieldComparison              `json:"isLatest,omitempty"`
+	Or            []*SubscriptionQueryFilterPlanFilter `json:"or,omitempty"`
+	PricingType   *PricingTypeFilterComparison         `json:"pricingType,omitempty"`
+	ProductID     *StringFieldComparison               `json:"productId,omitempty"`
+	RefID         *StringFieldComparison               `json:"refId,omitempty"`
+	Status        *PackageStatusFilterComparison       `json:"status,omitempty"`
+	UpdatedAt     *DateFieldComparison                 `json:"updatedAt,omitempty"`
+	VersionNumber *IntFieldComparison                  `json:"versionNumber,omitempty"`
 }
 
 type SubscriptionQueryMaxAggregate struct {
