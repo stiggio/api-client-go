@@ -5211,6 +5211,8 @@ type MeterCondition struct {
 	Operation ConditionOperation `json:"operation"`
 	// The value of the field to filter on
 	Value *string `json:"value"`
+	// The values of the field to filter on (used for IN operation)
+	Values []string `json:"values"`
 }
 
 // A condition that will be used to filter the data
@@ -5221,6 +5223,8 @@ type MeterConditionInput struct {
 	Operation ConditionOperation `json:"operation"`
 	// The value of the field to filter on
 	Value *string `json:"value,omitempty"`
+	// The values of the field to filter on (used for IN operation)
+	Values []string `json:"values,omitempty"`
 }
 
 // A configuration defining how to filter the data
@@ -11917,12 +11921,18 @@ func (e ChangeType) MarshalGQL(w io.Writer) {
 type ConditionOperation string
 
 const (
+	// Contains operation
+	ConditionOperationContains ConditionOperation = "CONTAINS"
+	// Ends with operation
+	ConditionOperationEndsWith ConditionOperation = "ENDS_WITH"
 	// Equals operation
 	ConditionOperationEquals ConditionOperation = "EQUALS"
 	// Greater than operation
 	ConditionOperationGreaterThan ConditionOperation = "GREATER_THAN"
 	// Greater than or equal operation
 	ConditionOperationGreaterThanOrEqual ConditionOperation = "GREATER_THAN_OR_EQUAL"
+	// In operation
+	ConditionOperationIn ConditionOperation = "IN"
 	// Is not null operation
 	ConditionOperationIsNotNull ConditionOperation = "IS_NOT_NULL"
 	// Is null operation
@@ -11933,22 +11943,28 @@ const (
 	ConditionOperationLessThanOrEqual ConditionOperation = "LESS_THAN_OR_EQUAL"
 	// Not equals operation
 	ConditionOperationNotEquals ConditionOperation = "NOT_EQUALS"
+	// Starts with operation
+	ConditionOperationStartsWith ConditionOperation = "STARTS_WITH"
 )
 
 var AllConditionOperation = []ConditionOperation{
+	ConditionOperationContains,
+	ConditionOperationEndsWith,
 	ConditionOperationEquals,
 	ConditionOperationGreaterThan,
 	ConditionOperationGreaterThanOrEqual,
+	ConditionOperationIn,
 	ConditionOperationIsNotNull,
 	ConditionOperationIsNull,
 	ConditionOperationLessThan,
 	ConditionOperationLessThanOrEqual,
 	ConditionOperationNotEquals,
+	ConditionOperationStartsWith,
 }
 
 func (e ConditionOperation) IsValid() bool {
 	switch e {
-	case ConditionOperationEquals, ConditionOperationGreaterThan, ConditionOperationGreaterThanOrEqual, ConditionOperationIsNotNull, ConditionOperationIsNull, ConditionOperationLessThan, ConditionOperationLessThanOrEqual, ConditionOperationNotEquals:
+	case ConditionOperationContains, ConditionOperationEndsWith, ConditionOperationEquals, ConditionOperationGreaterThan, ConditionOperationGreaterThanOrEqual, ConditionOperationIn, ConditionOperationIsNotNull, ConditionOperationIsNull, ConditionOperationLessThan, ConditionOperationLessThanOrEqual, ConditionOperationNotEquals, ConditionOperationStartsWith:
 		return true
 	}
 	return false
