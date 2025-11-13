@@ -1622,6 +1622,12 @@ type CreditGrant struct {
 	GrantType CreditGrantType `json:"grantType"`
 	// Unique identifier for the entity
 	ID string `json:"id"`
+	// The invoice ID of the credit grant
+	InvoiceID *string `json:"invoiceId"`
+	// The latest invoice information of the credit grant
+	LatestInvoice map[string]interface{} `json:"latestInvoice"`
+	// The payment collection status of the credit grant
+	PaymentCollection PaymentCollection `json:"paymentCollection"`
 	// The priority of the credit grant
 	Priority float64 `json:"priority"`
 	// The resource ID of the credit grant
