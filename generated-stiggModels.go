@@ -1625,7 +1625,7 @@ type CreditGrant struct {
 	// The invoice ID of the credit grant
 	InvoiceID *string `json:"invoiceId"`
 	// The latest invoice information of the credit grant
-	LatestInvoice map[string]interface{} `json:"latestInvoice"`
+	LatestInvoice *SubscriptionInvoice `json:"latestInvoice"`
 	// The payment collection status of the credit grant
 	PaymentCollection PaymentCollection `json:"paymentCollection"`
 	// The priority of the credit grant
