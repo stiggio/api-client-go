@@ -1632,6 +1632,8 @@ type CreditGrant struct {
 	Priority float64 `json:"priority"`
 	// The resource ID of the credit grant
 	ResourceID *string `json:"resourceId"`
+	// The status of the credit grant
+	Status CreditGrantStatus `json:"status"`
 	// Timestamp of when the record was last updated
 	UpdatedAt string `json:"updatedAt"`
 	// The voided date of the credit grant
@@ -12188,6 +12190,54 @@ func (e *CouponType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CouponType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The status of a credit grant
+type CreditGrantStatus string
+
+const (
+	CreditGrantStatusActive         CreditGrantStatus = "ACTIVE"
+	CreditGrantStatusExpired        CreditGrantStatus = "EXPIRED"
+	CreditGrantStatusPaymentPending CreditGrantStatus = "PAYMENT_PENDING"
+	CreditGrantStatusScheduled      CreditGrantStatus = "SCHEDULED"
+	CreditGrantStatusVoided         CreditGrantStatus = "VOIDED"
+)
+
+var AllCreditGrantStatus = []CreditGrantStatus{
+	CreditGrantStatusActive,
+	CreditGrantStatusExpired,
+	CreditGrantStatusPaymentPending,
+	CreditGrantStatusScheduled,
+	CreditGrantStatusVoided,
+}
+
+func (e CreditGrantStatus) IsValid() bool {
+	switch e {
+	case CreditGrantStatusActive, CreditGrantStatusExpired, CreditGrantStatusPaymentPending, CreditGrantStatusScheduled, CreditGrantStatusVoided:
+		return true
+	}
+	return false
+}
+
+func (e CreditGrantStatus) String() string {
+	return string(e)
+}
+
+func (e *CreditGrantStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CreditGrantStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CreditGrantStatus", str)
+	}
+	return nil
+}
+
+func (e CreditGrantStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
