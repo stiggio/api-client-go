@@ -11057,6 +11057,8 @@ type ZuoraCredentials struct {
 	ClientID string `json:"clientId"`
 	// Client secret for the Zuora account
 	ClientSecret string `json:"clientSecret"`
+	// The deferred revenue account code
+	DeferredRevenueAccount *string `json:"deferredRevenueAccount"`
 	// Whether invoice settlement is enabled
 	InvoiceSettlementEnabled *bool `json:"invoiceSettlementEnabled"`
 	// The ID of the payment gateway to use
@@ -11065,6 +11067,8 @@ type ZuoraCredentials struct {
 	PaymentPageID *string `json:"paymentPageId"`
 	// Publishable key for the Zuora payment form
 	PublishableKey *string `json:"publishableKey"`
+	// The revenue recognition account code
+	RecognizedRevenueAccount *string `json:"recognizedRevenueAccount"`
 	// Stripe publishable key for the Zuora payment page
 	StripePublishableKey *string `json:"stripePublishableKey"`
 	// Stripe secret key for the Zuora payment page
@@ -11083,6 +11087,8 @@ type ZuoraCredentialsInput struct {
 	ClientID string `json:"clientId"`
 	// Client secret for the Zuora account
 	ClientSecret string `json:"clientSecret"`
+	// The deferred revenue account code
+	DeferredRevenueAccount *string `json:"deferredRevenueAccount,omitempty"`
 	// Whether invoice settlement is enabled
 	InvoiceSettlementEnabled *bool `json:"invoiceSettlementEnabled,omitempty"`
 	// The ID of the payment gateway to use
@@ -11091,6 +11097,8 @@ type ZuoraCredentialsInput struct {
 	PaymentPageID *string `json:"paymentPageId,omitempty"`
 	// Publishable key for the Zuora payment form
 	PublishableKey *string `json:"publishableKey,omitempty"`
+	// The revenue recognition account code
+	RecognizedRevenueAccount *string `json:"recognizedRevenueAccount,omitempty"`
 	// Stripe publishable key for the Zuora payment page
 	StripePublishableKey *string `json:"stripePublishableKey,omitempty"`
 	// Stripe secret key for the Zuora payment page
