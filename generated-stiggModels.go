@@ -3518,17 +3518,21 @@ type EventLog struct {
 	Payload map[string]interface{} `json:"payload"`
 	// Request information
 	Request *EventRequest `json:"request"`
+	// Request log ID (trace ID)
+	RequestLogID *string `json:"requestLogId"`
 	// List of webhooks endpoints this event was configured to be sent to
 	Webhooks []*EventWebhook `json:"webhooks"`
 }
 
 type EventLogAggregateGroupBy struct {
-	CreatedAt      *string       `json:"createdAt"`
-	EntityID       *string       `json:"entityId"`
-	EnvironmentID  *string       `json:"environmentId"`
-	EventLogType   *EventLogType `json:"eventLogType"`
-	ID             *string       `json:"id"`
-	ParentEntityID *string       `json:"parentEntityId"`
+	CreatedAt      *string          `json:"createdAt"`
+	EntityID       *string          `json:"entityId"`
+	EntityType     *EventEntityType `json:"entityType"`
+	EnvironmentID  *string          `json:"environmentId"`
+	EventLogType   *EventLogType    `json:"eventLogType"`
+	ID             *string          `json:"id"`
+	ParentEntityID *string          `json:"parentEntityId"`
+	RequestLogID   *string          `json:"requestLogId"`
 }
 
 type EventLogConnection struct {
@@ -3541,10 +3545,12 @@ type EventLogConnection struct {
 type EventLogCountAggregate struct {
 	CreatedAt      *int64 `json:"createdAt"`
 	EntityID       *int64 `json:"entityId"`
+	EntityType     *int64 `json:"entityType"`
 	EnvironmentID  *int64 `json:"environmentId"`
 	EventLogType   *int64 `json:"eventLogType"`
 	ID             *int64 `json:"id"`
 	ParentEntityID *int64 `json:"parentEntityId"`
+	RequestLogID   *int64 `json:"requestLogId"`
 }
 
 type EventLogCreatedAtFilterComparison struct {
@@ -3560,8 +3566,14 @@ type EventLogEdge struct {
 }
 
 type EventLogEntityIDFilterComparison struct {
-	Eq *string  `json:"eq,omitempty"`
-	In []string `json:"in,omitempty"`
+	Eq   *string  `json:"eq,omitempty"`
+	In   []string `json:"in,omitempty"`
+	Like *string  `json:"like,omitempty"`
+}
+
+type EventLogEntityTypeFilterComparison struct {
+	Eq *EventEntityType  `json:"eq,omitempty"`
+	In []EventEntityType `json:"in,omitempty"`
 }
 
 type EventLogEnvironmentIDFilterComparison struct {
@@ -3579,11 +3591,13 @@ type EventLogFilter struct {
 	And            []*EventLogFilter                       `json:"and,omitempty"`
 	CreatedAt      *EventLogCreatedAtFilterComparison      `json:"createdAt,omitempty"`
 	EntityID       *EventLogEntityIDFilterComparison       `json:"entityId,omitempty"`
+	EntityType     *EventLogEntityTypeFilterComparison     `json:"entityType,omitempty"`
 	EnvironmentID  EventLogEnvironmentIDFilterComparison   `json:"environmentId"`
 	EventLogType   *EventLogEventLogTypeFilterComparison   `json:"eventLogType,omitempty"`
 	ID             *EventLogIDFilterComparison             `json:"id,omitempty"`
 	Or             []*EventLogFilter                       `json:"or,omitempty"`
 	ParentEntityID *EventLogParentEntityIDFilterComparison `json:"parentEntityId,omitempty"`
+	RequestLogID   *EventLogRequestLogIDFilterComparison   `json:"requestLogId,omitempty"`
 }
 
 type EventLogIDFilterComparison struct {
@@ -3591,26 +3605,34 @@ type EventLogIDFilterComparison struct {
 }
 
 type EventLogMaxAggregate struct {
-	CreatedAt      *string       `json:"createdAt"`
-	EntityID       *string       `json:"entityId"`
-	EnvironmentID  *string       `json:"environmentId"`
-	EventLogType   *EventLogType `json:"eventLogType"`
-	ID             *string       `json:"id"`
-	ParentEntityID *string       `json:"parentEntityId"`
+	CreatedAt      *string          `json:"createdAt"`
+	EntityID       *string          `json:"entityId"`
+	EntityType     *EventEntityType `json:"entityType"`
+	EnvironmentID  *string          `json:"environmentId"`
+	EventLogType   *EventLogType    `json:"eventLogType"`
+	ID             *string          `json:"id"`
+	ParentEntityID *string          `json:"parentEntityId"`
+	RequestLogID   *string          `json:"requestLogId"`
 }
 
 type EventLogMinAggregate struct {
-	CreatedAt      *string       `json:"createdAt"`
-	EntityID       *string       `json:"entityId"`
-	EnvironmentID  *string       `json:"environmentId"`
-	EventLogType   *EventLogType `json:"eventLogType"`
-	ID             *string       `json:"id"`
-	ParentEntityID *string       `json:"parentEntityId"`
+	CreatedAt      *string          `json:"createdAt"`
+	EntityID       *string          `json:"entityId"`
+	EntityType     *EventEntityType `json:"entityType"`
+	EnvironmentID  *string          `json:"environmentId"`
+	EventLogType   *EventLogType    `json:"eventLogType"`
+	ID             *string          `json:"id"`
+	ParentEntityID *string          `json:"parentEntityId"`
+	RequestLogID   *string          `json:"requestLogId"`
 }
 
 type EventLogParentEntityIDFilterComparison struct {
 	Eq *string  `json:"eq,omitempty"`
 	In []string `json:"in,omitempty"`
+}
+
+type EventLogRequestLogIDFilterComparison struct {
+	Eq *string `json:"eq,omitempty"`
 }
 
 type EventLogSort struct {
@@ -14086,24 +14108,28 @@ type EventLogSortFields string
 const (
 	EventLogSortFieldsCreatedAt      EventLogSortFields = "createdAt"
 	EventLogSortFieldsEntityID       EventLogSortFields = "entityId"
+	EventLogSortFieldsEntityType     EventLogSortFields = "entityType"
 	EventLogSortFieldsEnvironmentID  EventLogSortFields = "environmentId"
 	EventLogSortFieldsEventLogType   EventLogSortFields = "eventLogType"
 	EventLogSortFieldsID             EventLogSortFields = "id"
 	EventLogSortFieldsParentEntityID EventLogSortFields = "parentEntityId"
+	EventLogSortFieldsRequestLogID   EventLogSortFields = "requestLogId"
 )
 
 var AllEventLogSortFields = []EventLogSortFields{
 	EventLogSortFieldsCreatedAt,
 	EventLogSortFieldsEntityID,
+	EventLogSortFieldsEntityType,
 	EventLogSortFieldsEnvironmentID,
 	EventLogSortFieldsEventLogType,
 	EventLogSortFieldsID,
 	EventLogSortFieldsParentEntityID,
+	EventLogSortFieldsRequestLogID,
 }
 
 func (e EventLogSortFields) IsValid() bool {
 	switch e {
-	case EventLogSortFieldsCreatedAt, EventLogSortFieldsEntityID, EventLogSortFieldsEnvironmentID, EventLogSortFieldsEventLogType, EventLogSortFieldsID, EventLogSortFieldsParentEntityID:
+	case EventLogSortFieldsCreatedAt, EventLogSortFieldsEntityID, EventLogSortFieldsEntityType, EventLogSortFieldsEnvironmentID, EventLogSortFieldsEventLogType, EventLogSortFieldsID, EventLogSortFieldsParentEntityID, EventLogSortFieldsRequestLogID:
 		return true
 	}
 	return false
