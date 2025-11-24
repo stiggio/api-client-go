@@ -679,6 +679,89 @@ type AutoCancellationRuleInput struct {
 	TargetPlanID string `json:"targetPlanId"`
 }
 
+// Auto-recharge settings for a customer and currency
+type AutoRechargeSettingsDto struct {
+	// Creation timestamp
+	CreatedAt *string `json:"createdAt"`
+	// Currency ID
+	CurrencyID     string         `json:"currencyId"`
+	CustomCurrency CustomCurrency `json:"customCurrency"`
+	Customer       Customer       `json:"customer"`
+	// Customer ID (refId)
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Expiration period for granted credits
+	GrantExpirationPeriod GrantExpirationPeriod `json:"grantExpirationPeriod"`
+	// Configuration ID
+	ID *string `json:"id"`
+	// Whether auto-recharge is enabled
+	IsEnabled bool `json:"isEnabled"`
+	// Maximum spend limit (null = unlimited)
+	MaxSpendLimit *float64 `json:"maxSpendLimit"`
+	// Target balance
+	TargetBalance float64 `json:"targetBalance"`
+	// Type of threshold
+	ThresholdType ThresholdType `json:"thresholdType"`
+	// Threshold value
+	ThresholdValue float64 `json:"thresholdValue"`
+	// Last update timestamp
+	UpdatedAt *string `json:"updatedAt"`
+	// Validation configuration based on subscription pricing
+	ValidationConfig AutoRechargeValidationConfigDto `json:"validationConfig"`
+}
+
+type AutoRechargeSettingsDTOAggregateGroupBy struct {
+	CurrencyID    *string `json:"currencyId"`
+	CustomerID    *string `json:"customerId"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+}
+
+type AutoRechargeSettingsDTOCountAggregate struct {
+	CurrencyID    *int64 `json:"currencyId"`
+	CustomerID    *int64 `json:"customerId"`
+	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
+}
+
+type AutoRechargeSettingsDTOEdge struct {
+	// Cursor for this node.
+	Cursor string `json:"cursor"`
+	// The node containing the AutoRechargeSettingsDTO
+	Node AutoRechargeSettingsDto `json:"node"`
+}
+
+type AutoRechargeSettingsDTOMaxAggregate struct {
+	CurrencyID    *string `json:"currencyId"`
+	CustomerID    *string `json:"customerId"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+}
+
+type AutoRechargeSettingsDTOMinAggregate struct {
+	CurrencyID    *string `json:"currencyId"`
+	CustomerID    *string `json:"customerId"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+}
+
+// Validation configuration for auto-recharge settings based on subscription pricing
+type AutoRechargeValidationConfigDto struct {
+	// Whether unlimited spend limit is allowed
+	AllowUnlimitedSpendLimit bool `json:"allowUnlimitedSpendLimit"`
+	// Maximum credit pool size (from subscription pricing)
+	MaxCreditPoolSize *float64 `json:"maxCreditPoolSize"`
+	// Maximum target balance
+	MaxTargetBalance *float64 `json:"maxTargetBalance"`
+	// Maximum threshold amount
+	MaxThresholdAmount *float64 `json:"maxThresholdAmount"`
+	// Minimum grant amount (from subscription pricing)
+	MinGrantAmount *float64 `json:"minGrantAmount"`
+	// Minimum target balance
+	MinTargetBalance *float64 `json:"minTargetBalance"`
+}
+
 // AWS Marketplace product dimension (maps to Stigg plan)
 type AwsDimension struct {
 	// Detailed description of the dimension offering
@@ -4280,6 +4363,16 @@ type GetAuth0ApplicationsInput struct {
 	ClientSecret string `json:"clientSecret"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
+// Input for getting auto-recharge settings
+type GetAutoRechargeSettingsInput struct {
+	// Currency ID
+	CurrencyID string `json:"currencyId"`
+	// Customer ID (refId)
+	CustomerID string `json:"customerId"`
+	// Environment ID
+	EnvironmentID string `json:"environmentId"`
 }
 
 // AWS external ID for secure cross-account access
@@ -8233,6 +8326,28 @@ func (SalesforceCredentials) IsCredentials() {}
 type SalesforceCredentialsInput struct {
 	// Domain of the Salesforce account
 	Domain *string `json:"domain,omitempty"`
+}
+
+// Input for saving auto-recharge settings
+type SaveAutoRechargeSettingsInput struct {
+	// Currency ID
+	CurrencyID string `json:"currencyId"`
+	// Customer ID (refId)
+	CustomerID string `json:"customerId"`
+	// Environment ID
+	EnvironmentID string `json:"environmentId"`
+	// Expiration period for granted credits
+	GrantExpirationPeriod *GrantExpirationPeriod `json:"grantExpirationPeriod,omitempty"`
+	// Whether auto-recharge is enabled
+	IsEnabled bool `json:"isEnabled"`
+	// Maximum spend limit (null = unlimited)
+	MaxSpendLimit *float64 `json:"maxSpendLimit,omitempty"`
+	// Target balance
+	TargetBalance *float64 `json:"targetBalance,omitempty"`
+	// Type of threshold
+	ThresholdType *ThresholdType `json:"thresholdType,omitempty"`
+	// Threshold value
+	ThresholdValue *float64 `json:"thresholdValue,omitempty"`
 }
 
 // Overall SDK configuration for the current environment.
@@ -14846,6 +14961,50 @@ func (e FontWeight) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Expiration period for granted credits
+type GrantExpirationPeriod string
+
+const (
+	// Credits expire after one month
+	GrantExpirationPeriodOneMonth GrantExpirationPeriod = "OneMonth"
+	// Credits expire after one year
+	GrantExpirationPeriodOneYear GrantExpirationPeriod = "OneYear"
+)
+
+var AllGrantExpirationPeriod = []GrantExpirationPeriod{
+	GrantExpirationPeriodOneMonth,
+	GrantExpirationPeriodOneYear,
+}
+
+func (e GrantExpirationPeriod) IsValid() bool {
+	switch e {
+	case GrantExpirationPeriodOneMonth, GrantExpirationPeriodOneYear:
+		return true
+	}
+	return false
+}
+
+func (e GrantExpirationPeriod) String() string {
+	return string(e)
+}
+
+func (e *GrantExpirationPeriod) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = GrantExpirationPeriod(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid GrantExpirationPeriod", str)
+	}
+	return nil
+}
+
+func (e GrantExpirationPeriod) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type HookSortFields string
 
 const (
@@ -17676,6 +17835,50 @@ func (e *TaskType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e TaskType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Type of threshold for automatic recharge
+type ThresholdType string
+
+const (
+	// Threshold based on credit balance
+	ThresholdTypeCreditAmount ThresholdType = "CreditAmount"
+	// Threshold based on dollar amount
+	ThresholdTypeDollarAmount ThresholdType = "DollarAmount"
+)
+
+var AllThresholdType = []ThresholdType{
+	ThresholdTypeCreditAmount,
+	ThresholdTypeDollarAmount,
+}
+
+func (e ThresholdType) IsValid() bool {
+	switch e {
+	case ThresholdTypeCreditAmount, ThresholdTypeDollarAmount:
+		return true
+	}
+	return false
+}
+
+func (e ThresholdType) String() string {
+	return string(e)
+}
+
+func (e *ThresholdType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ThresholdType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ThresholdType", str)
+	}
+	return nil
+}
+
+func (e ThresholdType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
