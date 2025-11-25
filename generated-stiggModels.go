@@ -3628,8 +3628,8 @@ type EventLog struct {
 	Payload map[string]interface{} `json:"payload"`
 	// Request information
 	Request *EventRequest `json:"request"`
-	// Request log ID (trace ID)
-	RequestLogID *string `json:"requestLogId"`
+	// Trace ID for distributed tracing (extracted from additionalAttributes.traceId)
+	TraceID *string `json:"traceId"`
 	// List of webhooks endpoints this event was configured to be sent to
 	Webhooks []*EventWebhook `json:"webhooks"`
 }
@@ -3642,7 +3642,7 @@ type EventLogAggregateGroupBy struct {
 	EventLogType   *EventLogType    `json:"eventLogType"`
 	ID             *string          `json:"id"`
 	ParentEntityID *string          `json:"parentEntityId"`
-	RequestLogID   *string          `json:"requestLogId"`
+	TraceID        *string          `json:"traceId"`
 }
 
 type EventLogConnection struct {
@@ -3660,7 +3660,7 @@ type EventLogCountAggregate struct {
 	EventLogType   *int64 `json:"eventLogType"`
 	ID             *int64 `json:"id"`
 	ParentEntityID *int64 `json:"parentEntityId"`
-	RequestLogID   *int64 `json:"requestLogId"`
+	TraceID        *int64 `json:"traceId"`
 }
 
 type EventLogCreatedAtFilterComparison struct {
@@ -3707,7 +3707,7 @@ type EventLogFilter struct {
 	ID             *EventLogIDFilterComparison             `json:"id,omitempty"`
 	Or             []*EventLogFilter                       `json:"or,omitempty"`
 	ParentEntityID *EventLogParentEntityIDFilterComparison `json:"parentEntityId,omitempty"`
-	RequestLogID   *EventLogRequestLogIDFilterComparison   `json:"requestLogId,omitempty"`
+	TraceID        *EventLogTraceIDFilterComparison        `json:"traceId,omitempty"`
 }
 
 type EventLogIDFilterComparison struct {
@@ -3722,7 +3722,7 @@ type EventLogMaxAggregate struct {
 	EventLogType   *EventLogType    `json:"eventLogType"`
 	ID             *string          `json:"id"`
 	ParentEntityID *string          `json:"parentEntityId"`
-	RequestLogID   *string          `json:"requestLogId"`
+	TraceID        *string          `json:"traceId"`
 }
 
 type EventLogMinAggregate struct {
@@ -3733,7 +3733,7 @@ type EventLogMinAggregate struct {
 	EventLogType   *EventLogType    `json:"eventLogType"`
 	ID             *string          `json:"id"`
 	ParentEntityID *string          `json:"parentEntityId"`
-	RequestLogID   *string          `json:"requestLogId"`
+	TraceID        *string          `json:"traceId"`
 }
 
 type EventLogParentEntityIDFilterComparison struct {
@@ -3741,14 +3741,14 @@ type EventLogParentEntityIDFilterComparison struct {
 	In []string `json:"in,omitempty"`
 }
 
-type EventLogRequestLogIDFilterComparison struct {
-	Eq *string `json:"eq,omitempty"`
-}
-
 type EventLogSort struct {
 	Direction SortDirection      `json:"direction"`
 	Field     EventLogSortFields `json:"field"`
 	Nulls     *SortNulls         `json:"nulls,omitempty"`
+}
+
+type EventLogTraceIDFilterComparison struct {
+	Eq *string `json:"eq,omitempty"`
 }
 
 // Event request properties
@@ -14275,7 +14275,7 @@ const (
 	EventLogSortFieldsEventLogType   EventLogSortFields = "eventLogType"
 	EventLogSortFieldsID             EventLogSortFields = "id"
 	EventLogSortFieldsParentEntityID EventLogSortFields = "parentEntityId"
-	EventLogSortFieldsRequestLogID   EventLogSortFields = "requestLogId"
+	EventLogSortFieldsTraceID        EventLogSortFields = "traceId"
 )
 
 var AllEventLogSortFields = []EventLogSortFields{
@@ -14286,12 +14286,12 @@ var AllEventLogSortFields = []EventLogSortFields{
 	EventLogSortFieldsEventLogType,
 	EventLogSortFieldsID,
 	EventLogSortFieldsParentEntityID,
-	EventLogSortFieldsRequestLogID,
+	EventLogSortFieldsTraceID,
 }
 
 func (e EventLogSortFields) IsValid() bool {
 	switch e {
-	case EventLogSortFieldsCreatedAt, EventLogSortFieldsEntityID, EventLogSortFieldsEntityType, EventLogSortFieldsEnvironmentID, EventLogSortFieldsEventLogType, EventLogSortFieldsID, EventLogSortFieldsParentEntityID, EventLogSortFieldsRequestLogID:
+	case EventLogSortFieldsCreatedAt, EventLogSortFieldsEntityID, EventLogSortFieldsEntityType, EventLogSortFieldsEnvironmentID, EventLogSortFieldsEventLogType, EventLogSortFieldsID, EventLogSortFieldsParentEntityID, EventLogSortFieldsTraceID:
 		return true
 	}
 	return false
