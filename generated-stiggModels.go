@@ -1729,6 +1729,12 @@ type CreditGrantAlreadyVoidedError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
+// Credit grant billing information input
+type CreditGrantBillingInfoInput struct {
+	TaxPercentage *float64 `json:"taxPercentage,omitempty"`
+	TaxRateIds    []string `json:"taxRateIds,omitempty"`
+}
+
 type CreditGrantConnection struct {
 	// Edges in the current page
 	Edges []*CreditGrantEdge `json:"edges"`
@@ -1736,6 +1742,16 @@ type CreditGrantConnection struct {
 	PageInfo PageInfo `json:"pageInfo"`
 	// Total number of items matching the filter
 	TotalCount int64 `json:"totalCount"`
+}
+
+// Credit grant coupon input object
+type CreditGrantCouponInput struct {
+	// Billing integration coupon id
+	BillingCouponID *string `json:"billingCouponId,omitempty"`
+	// Stigg coupon id
+	CouponID *string `json:"couponId,omitempty"`
+	// Promotion code
+	PromotionCode *string `json:"promotionCode,omitempty"`
 }
 
 type CreditGrantEdge struct {
@@ -1777,6 +1793,17 @@ type CreditGrantInput struct {
 	Priority *float64 `json:"priority,omitempty"`
 	// The resource ID of the credit grant
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+type CreditGrantPreview struct {
+	Credits           *SubscriptionPreviewCredits    `json:"credits"`
+	Discount          *Money                         `json:"discount"`
+	DiscountDetails   *SubscriptionPreviewDiscount   `json:"discountDetails"`
+	SubTotal          Money                          `json:"subTotal"`
+	Tax               *Money                         `json:"tax"`
+	TaxDetails        *SubscriptionPreviewTaxDetails `json:"taxDetails"`
+	Total             Money                          `json:"total"`
+	TotalExcludingTax Money                          `json:"totalExcludingTax"`
 }
 
 // Credits ledger
@@ -7083,6 +7110,26 @@ type PreparedPaymentMethodForm struct {
 	PaymentMethodForm PaymentMethodForm `json:"paymentMethodForm"`
 	// The integration type to attach the payment method to
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
+}
+
+// Preview credit grant input object, used to preview credits invoice before purchasing
+type PreviewCreditGrantInput struct {
+	// The amount of the credit grant
+	Amount float64 `json:"amount"`
+	// Applied Stripe coupon
+	AppliedCoupon *CreditGrantCouponInput `json:"appliedCoupon,omitempty"`
+	// Credit grant billing information
+	BillingInformation *CreditGrantBillingInfoInput `json:"billingInformation,omitempty"`
+	// The fiat cost of the credit grant
+	Cost MoneyInputDto `json:"cost"`
+	// The custom currency ID of the credit grant
+	CurrencyID string `json:"currencyId"`
+	// The customer ID of the credit grant
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The resource ID of the credit grant
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 // Input to preview the next invoice for a subscription
