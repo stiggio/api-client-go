@@ -6375,8 +6375,6 @@ type PackagePricingInput struct {
 	OveragePricingModels []*OveragePricingModelCreateInput `json:"overagePricingModels,omitempty"`
 	// The package id of the price
 	PackageID string `json:"packageId"`
-	// The pricing model of the package pricing
-	PricingModel *PricingModelCreateInput `json:"pricingModel,omitempty"`
 	// The list of pricing models of the package pricing
 	PricingModels []*PricingModelCreateInput `json:"pricingModels,omitempty"`
 	// The pricing type of the package pricing
@@ -7178,12 +7176,16 @@ type Price struct {
 	BlockSize *float64 `json:"blockSize"`
 	// Timestamp of when the record was created
 	CreatedAt *string `json:"createdAt"`
+	// The recurring credit grant cadence of the price
+	CreditGrantCadence *CreditGrantCadence `json:"creditGrantCadence"`
 	// The credit rate for this price
 	CreditRate *CreditRate `json:"creditRate"`
 	// The CRM id of the price
 	CrmID *string `json:"crmId"`
 	// The CRM link url of the price
 	CrmLinkURL *string `json:"crmLinkUrl"`
+	// The custom currency of the price this price applies to
+	CustomCurrency *CustomCurrency `json:"customCurrency"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId"`
 	// Get the feature of the price
@@ -7252,12 +7254,16 @@ type PriceDeleteResponse struct {
 	BlockSize *float64 `json:"blockSize"`
 	// Timestamp of when the record was created
 	CreatedAt *string `json:"createdAt"`
+	// The recurring credit grant cadence of the price
+	CreditGrantCadence *CreditGrantCadence `json:"creditGrantCadence"`
 	// The credit rate for this price
 	CreditRate *CreditRate `json:"creditRate"`
 	// The CRM id of the price
 	CrmID *string `json:"crmId"`
 	// The CRM link url of the price
 	CrmLinkURL *string `json:"crmLinkUrl"`
+	// The custom currency of the price this price applies to
+	CustomCurrency *CustomCurrency `json:"customCurrency"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId"`
 	// The feature of the price
@@ -7390,6 +7396,8 @@ type PriceOverrideInput struct {
 	BaseCharge *bool `json:"baseCharge,omitempty"`
 	// The number of units per block. Defaults to 1 unit
 	BlockSize *float64 `json:"blockSize,omitempty"`
+	// The recurring credit grant cadence of the pricing model
+	CreditGrantCadence *CreditGrantCadence `json:"creditGrantCadence,omitempty"`
 	// The credit rate for this period
 	CreditRate *CreditRateInput `json:"creditRate,omitempty"`
 	// The corresponding feature id of the price
@@ -7408,6 +7416,8 @@ type PricePeriodInput struct {
 	BillingPeriod BillingPeriod `json:"billingPeriod"`
 	// The number of units per block. Defaults to 1 unit
 	BlockSize *float64 `json:"blockSize,omitempty"`
+	// The recurring credit grant cadence of the pricing model
+	CreditGrantCadence *CreditGrantCadence `json:"creditGrantCadence,omitempty"`
 	// The credit rate for this period
 	CreditRate *CreditRateInput `json:"creditRate,omitempty"`
 	// The price of the price period
@@ -12382,6 +12392,50 @@ func (e *CouponType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CouponType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Credit grant cadence
+type CreditGrantCadence string
+
+const (
+	// Beginning of billing period
+	CreditGrantCadenceBeginningOfBillingPeriod CreditGrantCadence = "BEGINNING_OF_BILLING_PERIOD"
+	// Monthly
+	CreditGrantCadenceMonthly CreditGrantCadence = "MONTHLY"
+)
+
+var AllCreditGrantCadence = []CreditGrantCadence{
+	CreditGrantCadenceBeginningOfBillingPeriod,
+	CreditGrantCadenceMonthly,
+}
+
+func (e CreditGrantCadence) IsValid() bool {
+	switch e {
+	case CreditGrantCadenceBeginningOfBillingPeriod, CreditGrantCadenceMonthly:
+		return true
+	}
+	return false
+}
+
+func (e CreditGrantCadence) String() string {
+	return string(e)
+}
+
+func (e *CreditGrantCadence) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CreditGrantCadence(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CreditGrantCadence", str)
+	}
+	return nil
+}
+
+func (e CreditGrantCadence) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
