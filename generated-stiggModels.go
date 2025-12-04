@@ -1708,7 +1708,7 @@ type CreditGrant struct {
 	// The invoice ID of the credit grant
 	InvoiceID *string `json:"invoiceId"`
 	// The latest invoice information of the credit grant
-	LatestInvoice *SubscriptionInvoice `json:"latestInvoice"`
+	LatestInvoice *CreditGrantInvoice `json:"latestInvoice"`
 	// The payment collection status of the credit grant
 	PaymentCollection PaymentCollection `json:"paymentCollection"`
 	// The priority of the credit grant
@@ -1793,6 +1793,35 @@ type CreditGrantInput struct {
 	Priority *float64 `json:"priority,omitempty"`
 	// The resource ID of the credit grant
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+type CreditGrantInvoice struct {
+	AmountDue      *float64 `json:"amountDue"`
+	AppliedBalance *float64 `json:"appliedBalance"`
+	// Number of payment attempts made for this invoice, from the perspective of the payment retry schedule.
+	AttemptCount *float64 `json:"attemptCount"`
+	BillingID    string   `json:"billingId"`
+	// The billing reason of a credit grant invoice
+	BillingReason   *CreditGrantInvoiceBillingReason `json:"billingReason"`
+	CreatedAt       string                           `json:"createdAt"`
+	Currency        *string                          `json:"currency"`
+	DueDate         *string                          `json:"dueDate"`
+	EndingBalance   *float64                         `json:"endingBalance"`
+	ErrorMessage    *string                          `json:"errorMessage"`
+	Lines           []*InvoiceLine                   `json:"lines"`
+	PaymentSecret   *string                          `json:"paymentSecret"`
+	PaymentURL      *string                          `json:"paymentUrl"`
+	PDFURL          *string                          `json:"pdfUrl"`
+	RequiresAction  bool                             `json:"requiresAction"`
+	StartingBalance *float64                         `json:"startingBalance"`
+	// The status of the credit grant
+	Status               CreditGrantInvoiceStatus `json:"status"`
+	SubTotal             *float64                 `json:"subTotal"`
+	SubTotalExcludingTax *float64                 `json:"subTotalExcludingTax"`
+	Tax                  *float64                 `json:"tax"`
+	Total                *float64                 `json:"total"`
+	TotalExcludingTax    *float64                 `json:"totalExcludingTax"`
+	UpdatedAt            string                   `json:"updatedAt"`
 }
 
 type CreditGrantPreview struct {
@@ -12439,15 +12468,108 @@ func (e CreditGrantCadence) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// The billing reason of a credit grant invoice
+type CreditGrantInvoiceBillingReason string
+
+const (
+	// An invoice was created manually.
+	CreditGrantInvoiceBillingReasonManual CreditGrantInvoiceBillingReason = "MANUAL"
+	// An invoice was created for another reason.
+	CreditGrantInvoiceBillingReasonOther CreditGrantInvoiceBillingReason = "OTHER"
+)
+
+var AllCreditGrantInvoiceBillingReason = []CreditGrantInvoiceBillingReason{
+	CreditGrantInvoiceBillingReasonManual,
+	CreditGrantInvoiceBillingReasonOther,
+}
+
+func (e CreditGrantInvoiceBillingReason) IsValid() bool {
+	switch e {
+	case CreditGrantInvoiceBillingReasonManual, CreditGrantInvoiceBillingReasonOther:
+		return true
+	}
+	return false
+}
+
+func (e CreditGrantInvoiceBillingReason) String() string {
+	return string(e)
+}
+
+func (e *CreditGrantInvoiceBillingReason) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CreditGrantInvoiceBillingReason(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CreditGrantInvoiceBillingReason", str)
+	}
+	return nil
+}
+
+func (e CreditGrantInvoiceBillingReason) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The status of a credit grant invoice
+type CreditGrantInvoiceStatus string
+
+const (
+	// Invoice is open and waiting for payment
+	CreditGrantInvoiceStatusOpen CreditGrantInvoiceStatus = "OPEN"
+	// Invoice is paid
+	CreditGrantInvoiceStatusPaid CreditGrantInvoiceStatus = "PAID"
+)
+
+var AllCreditGrantInvoiceStatus = []CreditGrantInvoiceStatus{
+	CreditGrantInvoiceStatusOpen,
+	CreditGrantInvoiceStatusPaid,
+}
+
+func (e CreditGrantInvoiceStatus) IsValid() bool {
+	switch e {
+	case CreditGrantInvoiceStatusOpen, CreditGrantInvoiceStatusPaid:
+		return true
+	}
+	return false
+}
+
+func (e CreditGrantInvoiceStatus) String() string {
+	return string(e)
+}
+
+func (e *CreditGrantInvoiceStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CreditGrantInvoiceStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CreditGrantInvoiceStatus", str)
+	}
+	return nil
+}
+
+func (e CreditGrantInvoiceStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 // The status of a credit grant
 type CreditGrantStatus string
 
 const (
-	CreditGrantStatusActive         CreditGrantStatus = "ACTIVE"
-	CreditGrantStatusExpired        CreditGrantStatus = "EXPIRED"
+	// Credit grant is active
+	CreditGrantStatusActive CreditGrantStatus = "ACTIVE"
+	// Credit grant is expired
+	CreditGrantStatusExpired CreditGrantStatus = "EXPIRED"
+	// Payment is pending
 	CreditGrantStatusPaymentPending CreditGrantStatus = "PAYMENT_PENDING"
-	CreditGrantStatusScheduled      CreditGrantStatus = "SCHEDULED"
-	CreditGrantStatusVoided         CreditGrantStatus = "VOIDED"
+	// Credit grant is scheduled
+	CreditGrantStatusScheduled CreditGrantStatus = "SCHEDULED"
+	// Credit grant is voided
+	CreditGrantStatusVoided CreditGrantStatus = "VOIDED"
 )
 
 var AllCreditGrantStatus = []CreditGrantStatus{
