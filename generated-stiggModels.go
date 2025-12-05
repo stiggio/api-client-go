@@ -475,6 +475,40 @@ type APIKeySort struct {
 	Nulls     *SortNulls       `json:"nulls,omitempty"`
 }
 
+// AppStore integration configuration object
+type AppStoreCredentials struct {
+	// The Apple ID of the app
+	AppAppleID string `json:"appAppleId"`
+	// The bundle ID of the app
+	BundleID string `json:"bundleId"`
+	// The issuer ID of key in App Store Connect
+	IssuerID string `json:"issuerId"`
+	// The key ID of key in App Store Connect
+	KeyID string `json:"keyId"`
+	// The base64 encoded SHA-256 fingerprint of the private key
+	PrivateKey *string `json:"privateKey"`
+	// Whether the app is in sandbox environment
+	SandboxEnvironment bool `json:"sandboxEnvironment"`
+}
+
+func (AppStoreCredentials) IsCredentials() {}
+
+// Input configuration for AppStore integration
+type AppStoreCredentialsInput struct {
+	// The Apple ID of the app
+	AppAppleID string `json:"appAppleId"`
+	// The bundle ID of the app
+	BundleID string `json:"bundleId"`
+	// The issuer ID of key in App Store Connect
+	IssuerID string `json:"issuerId"`
+	// The key ID of key in App Store Connect
+	KeyID string `json:"keyId"`
+	// The private key in App Store Connect (.p8 file content)
+	PrivateKey string `json:"privateKey"`
+	// Whether the app is in sandbox environment
+	SandboxEnvironment bool `json:"sandboxEnvironment"`
+}
+
 // Apply subscription response
 type ApplySubscription struct {
 	// The updated entitlements
@@ -1461,6 +1495,8 @@ type CreateHook struct {
 
 // Create integration input
 type CreateIntegrationInput struct {
+	// AppStore integration configuration
+	AppStoreCredentials *AppStoreCredentialsInput `json:"appStoreCredentials,omitempty"`
 	// Auth0 integration configuration
 	Auth0Credentials *Auth0CredentialsInput `json:"auth0Credentials,omitempty"`
 	// Amazon Web Services Marketplace integration configuration
@@ -18416,6 +18452,8 @@ func (e UsageUpdateBehavior) MarshalGQL(w io.Writer) {
 type VendorIdentifier string
 
 const (
+	// AppStore integration vendor identifier
+	VendorIdentifierAppStore VendorIdentifier = "APP_STORE"
 	// Auth0 integration vendor identifier
 	VendorIdentifierAuth0 VendorIdentifier = "AUTH0"
 	// AWS Marketplace integration vendor identifier
@@ -18437,6 +18475,7 @@ const (
 )
 
 var AllVendorIdentifier = []VendorIdentifier{
+	VendorIdentifierAppStore,
 	VendorIdentifierAuth0,
 	VendorIdentifierAwsMarketplace,
 	VendorIdentifierBigQuery,
@@ -18450,7 +18489,7 @@ var AllVendorIdentifier = []VendorIdentifier{
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierOpenFga, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAppStore, VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierOpenFga, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
