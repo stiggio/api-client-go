@@ -718,9 +718,11 @@ type AutoRechargeSettingsDto struct {
 	// Creation timestamp
 	CreatedAt *string `json:"createdAt"`
 	// Currency ID
-	CurrencyID     string         `json:"currencyId"`
-	CustomCurrency CustomCurrency `json:"customCurrency"`
-	Customer       Customer       `json:"customer"`
+	CurrencyID string `json:"currencyId"`
+	// Total amount spent on automatic recharge grants in the current monthly period (in USD)
+	CurrentMonthlySpend float64        `json:"currentMonthlySpend"`
+	CustomCurrency      CustomCurrency `json:"customCurrency"`
+	Customer            Customer       `json:"customer"`
 	// Customer ID (refId)
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
@@ -1717,6 +1719,8 @@ type CreditGrant struct {
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	// The amount of the credit grant
 	Amount float64 `json:"amount"`
+	// The ID of the automatic recharge configuration that created this grant, if applicable
+	AutomaticRechargeConfigurationID *string `json:"automaticRechargeConfigurationId"`
 	// The comment for the credit grant
 	Comment *string `json:"comment"`
 	// The amount of the credit grant that has been consumed
