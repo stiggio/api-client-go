@@ -1875,10 +1875,20 @@ type CreditGrantPreview struct {
 	TotalExcludingTax Money                          `json:"totalExcludingTax"`
 }
 
-// Credits ledger
-type CreditLedger struct {
-	// List of credit ledger events
-	Events []*CreditLedgerEvent `json:"events"`
+type CreditLedgerConnection struct {
+	// Edges in the current page
+	Edges []*CreditLedgerEdge `json:"edges"`
+	// Pagination information
+	PageInfo PageInfo `json:"pageInfo"`
+	// Total number of items matching the filter
+	TotalCount int64 `json:"totalCount"`
+}
+
+type CreditLedgerEdge struct {
+	// An opaque cursor for this item
+	Cursor string `json:"cursor"`
+	// The item at the edge
+	Node CreditLedgerEvent `json:"node"`
 }
 
 // Credits ledger event
@@ -1905,10 +1915,14 @@ type CreditLedgerEvent struct {
 
 // Input for retrieving credit ledger
 type CreditLedgerInput struct {
+	// The credit currency ID of the credit ledger
+	CurrencyID *string `json:"currencyId,omitempty"`
 	// The customer ID of the credit ledger
 	CustomerID string `json:"customerId"`
 	// The environment ID of the credit ledger
 	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Cursor-based pagination input
+	Paging *CursorPaging `json:"paging,omitempty"`
 	// The resource ID of the credit ledger
 	ResourceID *string `json:"resourceId,omitempty"`
 }
