@@ -610,7 +610,17 @@ type ArchivePlanInput struct {
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Plan ID to archive
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
+	// Plan refId to archive
+	RefID *string `json:"refId,omitempty"`
+}
+
+// Input for archiving a product
+type ArchiveProductInput struct {
+	// Environment ID to archive the product in
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Product refId to archive
+	RefID string `json:"refId"`
 }
 
 // Result of an asynchronous import task
@@ -6376,6 +6386,7 @@ type PackageGroupFilterProductFilter struct {
 	MultipleSubscriptions     *BooleanFieldComparison            `json:"multipleSubscriptions,omitempty"`
 	Or                        []*PackageGroupFilterProductFilter `json:"or,omitempty"`
 	RefID                     *StringFieldComparison             `json:"refId,omitempty"`
+	Status                    *ProductStatusFilterComparison     `json:"status,omitempty"`
 	UpdatedAt                 *DateFieldComparison               `json:"updatedAt,omitempty"`
 }
 
@@ -7081,19 +7092,20 @@ type PlanFilterOfferFilter struct {
 }
 
 type PlanFilterProductFilter struct {
-	And                       []*PlanFilterProductFilter `json:"and,omitempty"`
-	AwsMarketplaceProductCode *StringFieldComparison     `json:"awsMarketplaceProductCode,omitempty"`
-	AwsMarketplaceProductID   *StringFieldComparison     `json:"awsMarketplaceProductId,omitempty"`
-	CreatedAt                 *DateFieldComparison       `json:"createdAt,omitempty"`
-	Description               *StringFieldComparison     `json:"description,omitempty"`
-	DisplayName               *StringFieldComparison     `json:"displayName,omitempty"`
-	EnvironmentID             *UUIDFilterComparison      `json:"environmentId,omitempty"`
-	ID                        *UUIDFilterComparison      `json:"id,omitempty"`
-	IsDefaultProduct          *BooleanFieldComparison    `json:"isDefaultProduct,omitempty"`
-	MultipleSubscriptions     *BooleanFieldComparison    `json:"multipleSubscriptions,omitempty"`
-	Or                        []*PlanFilterProductFilter `json:"or,omitempty"`
-	RefID                     *StringFieldComparison     `json:"refId,omitempty"`
-	UpdatedAt                 *DateFieldComparison       `json:"updatedAt,omitempty"`
+	And                       []*PlanFilterProductFilter     `json:"and,omitempty"`
+	AwsMarketplaceProductCode *StringFieldComparison         `json:"awsMarketplaceProductCode,omitempty"`
+	AwsMarketplaceProductID   *StringFieldComparison         `json:"awsMarketplaceProductId,omitempty"`
+	CreatedAt                 *DateFieldComparison           `json:"createdAt,omitempty"`
+	Description               *StringFieldComparison         `json:"description,omitempty"`
+	DisplayName               *StringFieldComparison         `json:"displayName,omitempty"`
+	EnvironmentID             *UUIDFilterComparison          `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison          `json:"id,omitempty"`
+	IsDefaultProduct          *BooleanFieldComparison        `json:"isDefaultProduct,omitempty"`
+	MultipleSubscriptions     *BooleanFieldComparison        `json:"multipleSubscriptions,omitempty"`
+	Or                        []*PlanFilterProductFilter     `json:"or,omitempty"`
+	RefID                     *StringFieldComparison         `json:"refId,omitempty"`
+	Status                    *ProductStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt                 *DateFieldComparison           `json:"updatedAt,omitempty"`
 }
 
 type PlanMaxAggregate struct {
@@ -7625,8 +7637,10 @@ type Product struct {
 	// Settings for the product
 	ProductSettings ProductSettings `json:"productSettings"`
 	// The unique identifier for the entity
-	RefID                 string `json:"refId"`
-	SubscriptionStartPlan *Plan  `json:"subscriptionStartPlan"`
+	RefID string `json:"refId"`
+	// The status of the product
+	Status                ProductStatus `json:"status"`
+	SubscriptionStartPlan *Plan         `json:"subscriptionStartPlan"`
 	// Method to get the rule for resetting usage cutoff on subscription update
 	SubscriptionUpdateUsageResetCutoffRule SubscriptionUpdateUsageResetCutoffRule `json:"subscriptionUpdateUsageResetCutoffRule"`
 	// Timestamp of when the record was last updated
@@ -7634,17 +7648,18 @@ type Product struct {
 }
 
 type ProductAggregateGroupBy struct {
-	AwsMarketplaceProductCode *string `json:"awsMarketplaceProductCode"`
-	AwsMarketplaceProductID   *string `json:"awsMarketplaceProductId"`
-	CreatedAt                 *string `json:"createdAt"`
-	Description               *string `json:"description"`
-	DisplayName               *string `json:"displayName"`
-	EnvironmentID             *string `json:"environmentId"`
-	ID                        *string `json:"id"`
-	IsDefaultProduct          *bool   `json:"isDefaultProduct"`
-	MultipleSubscriptions     *bool   `json:"multipleSubscriptions"`
-	RefID                     *string `json:"refId"`
-	UpdatedAt                 *string `json:"updatedAt"`
+	AwsMarketplaceProductCode *string        `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *string        `json:"awsMarketplaceProductId"`
+	CreatedAt                 *string        `json:"createdAt"`
+	Description               *string        `json:"description"`
+	DisplayName               *string        `json:"displayName"`
+	EnvironmentID             *string        `json:"environmentId"`
+	ID                        *string        `json:"id"`
+	IsDefaultProduct          *bool          `json:"isDefaultProduct"`
+	MultipleSubscriptions     *bool          `json:"multipleSubscriptions"`
+	RefID                     *string        `json:"refId"`
+	Status                    *ProductStatus `json:"status"`
+	UpdatedAt                 *string        `json:"updatedAt"`
 }
 
 // DTO representing a product catalog dump
@@ -7673,6 +7688,7 @@ type ProductCountAggregate struct {
 	IsDefaultProduct          *int64 `json:"isDefaultProduct"`
 	MultipleSubscriptions     *int64 `json:"multipleSubscriptions"`
 	RefID                     *int64 `json:"refId"`
+	Status                    *int64 `json:"status"`
 	UpdatedAt                 *int64 `json:"updatedAt"`
 }
 
@@ -7734,43 +7750,46 @@ type ProductEdge struct {
 }
 
 type ProductFilter struct {
-	And                       []*ProductFilter        `json:"and,omitempty"`
-	AwsMarketplaceProductCode *StringFieldComparison  `json:"awsMarketplaceProductCode,omitempty"`
-	AwsMarketplaceProductID   *StringFieldComparison  `json:"awsMarketplaceProductId,omitempty"`
-	CreatedAt                 *DateFieldComparison    `json:"createdAt,omitempty"`
-	Description               *StringFieldComparison  `json:"description,omitempty"`
-	DisplayName               *StringFieldComparison  `json:"displayName,omitempty"`
-	EnvironmentID             *UUIDFilterComparison   `json:"environmentId,omitempty"`
-	ID                        *UUIDFilterComparison   `json:"id,omitempty"`
-	IsDefaultProduct          *BooleanFieldComparison `json:"isDefaultProduct,omitempty"`
-	MultipleSubscriptions     *BooleanFieldComparison `json:"multipleSubscriptions,omitempty"`
-	Or                        []*ProductFilter        `json:"or,omitempty"`
-	RefID                     *StringFieldComparison  `json:"refId,omitempty"`
-	UpdatedAt                 *DateFieldComparison    `json:"updatedAt,omitempty"`
+	And                       []*ProductFilter               `json:"and,omitempty"`
+	AwsMarketplaceProductCode *StringFieldComparison         `json:"awsMarketplaceProductCode,omitempty"`
+	AwsMarketplaceProductID   *StringFieldComparison         `json:"awsMarketplaceProductId,omitempty"`
+	CreatedAt                 *DateFieldComparison           `json:"createdAt,omitempty"`
+	Description               *StringFieldComparison         `json:"description,omitempty"`
+	DisplayName               *StringFieldComparison         `json:"displayName,omitempty"`
+	EnvironmentID             *UUIDFilterComparison          `json:"environmentId,omitempty"`
+	ID                        *UUIDFilterComparison          `json:"id,omitempty"`
+	IsDefaultProduct          *BooleanFieldComparison        `json:"isDefaultProduct,omitempty"`
+	MultipleSubscriptions     *BooleanFieldComparison        `json:"multipleSubscriptions,omitempty"`
+	Or                        []*ProductFilter               `json:"or,omitempty"`
+	RefID                     *StringFieldComparison         `json:"refId,omitempty"`
+	Status                    *ProductStatusFilterComparison `json:"status,omitempty"`
+	UpdatedAt                 *DateFieldComparison           `json:"updatedAt,omitempty"`
 }
 
 type ProductMaxAggregate struct {
-	AwsMarketplaceProductCode *string `json:"awsMarketplaceProductCode"`
-	AwsMarketplaceProductID   *string `json:"awsMarketplaceProductId"`
-	CreatedAt                 *string `json:"createdAt"`
-	Description               *string `json:"description"`
-	DisplayName               *string `json:"displayName"`
-	EnvironmentID             *string `json:"environmentId"`
-	ID                        *string `json:"id"`
-	RefID                     *string `json:"refId"`
-	UpdatedAt                 *string `json:"updatedAt"`
+	AwsMarketplaceProductCode *string        `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *string        `json:"awsMarketplaceProductId"`
+	CreatedAt                 *string        `json:"createdAt"`
+	Description               *string        `json:"description"`
+	DisplayName               *string        `json:"displayName"`
+	EnvironmentID             *string        `json:"environmentId"`
+	ID                        *string        `json:"id"`
+	RefID                     *string        `json:"refId"`
+	Status                    *ProductStatus `json:"status"`
+	UpdatedAt                 *string        `json:"updatedAt"`
 }
 
 type ProductMinAggregate struct {
-	AwsMarketplaceProductCode *string `json:"awsMarketplaceProductCode"`
-	AwsMarketplaceProductID   *string `json:"awsMarketplaceProductId"`
-	CreatedAt                 *string `json:"createdAt"`
-	Description               *string `json:"description"`
-	DisplayName               *string `json:"displayName"`
-	EnvironmentID             *string `json:"environmentId"`
-	ID                        *string `json:"id"`
-	RefID                     *string `json:"refId"`
-	UpdatedAt                 *string `json:"updatedAt"`
+	AwsMarketplaceProductCode *string        `json:"awsMarketplaceProductCode"`
+	AwsMarketplaceProductID   *string        `json:"awsMarketplaceProductId"`
+	CreatedAt                 *string        `json:"createdAt"`
+	Description               *string        `json:"description"`
+	DisplayName               *string        `json:"displayName"`
+	EnvironmentID             *string        `json:"environmentId"`
+	ID                        *string        `json:"id"`
+	RefID                     *string        `json:"refId"`
+	Status                    *ProductStatus `json:"status"`
+	UpdatedAt                 *string        `json:"updatedAt"`
 }
 
 // Product settings object
@@ -7815,6 +7834,23 @@ type ProductSort struct {
 	Direction SortDirection     `json:"direction"`
 	Field     ProductSortFields `json:"field"`
 	Nulls     *SortNulls        `json:"nulls,omitempty"`
+}
+
+type ProductStatusFilterComparison struct {
+	Eq       *ProductStatus  `json:"eq,omitempty"`
+	Gt       *ProductStatus  `json:"gt,omitempty"`
+	Gte      *ProductStatus  `json:"gte,omitempty"`
+	ILike    *ProductStatus  `json:"iLike,omitempty"`
+	In       []ProductStatus `json:"in,omitempty"`
+	Is       *bool           `json:"is,omitempty"`
+	IsNot    *bool           `json:"isNot,omitempty"`
+	Like     *ProductStatus  `json:"like,omitempty"`
+	Lt       *ProductStatus  `json:"lt,omitempty"`
+	Lte      *ProductStatus  `json:"lte,omitempty"`
+	Neq      *ProductStatus  `json:"neq,omitempty"`
+	NotILike *ProductStatus  `json:"notILike,omitempty"`
+	NotIn    []ProductStatus `json:"notIn,omitempty"`
+	NotLike  *ProductStatus  `json:"notLike,omitempty"`
 }
 
 // Input for updating a product
@@ -13953,13 +13989,14 @@ const (
 	ErrorCodeCannotAddOverrideEntitlementToPlan ErrorCode = "CannotAddOverrideEntitlementToPlan"
 	ErrorCodeCannotArchiveFeatureError          ErrorCode = "CannotArchiveFeatureError"
 	ErrorCodeCannotArchiveFeatureGroupError     ErrorCode = "CannotArchiveFeatureGroupError"
+	// Cannot archive product because one or more of it packages cannot be archived
+	ErrorCodeCannotArchiveProductError ErrorCode = "CannotArchiveProductError"
 	// Cannot change billing integration at current customer state
 	ErrorCodeCannotChangeBillingIntegration ErrorCode = "CannotChangeBillingIntegration"
 	ErrorCodeCannotDeleteCustomerError      ErrorCode = "CannotDeleteCustomerError"
 	// Deleting the default integration is not allowed
 	ErrorCodeCannotDeleteDefaultIntegration                ErrorCode = "CannotDeleteDefaultIntegration"
 	ErrorCodeCannotDeleteFeatureError                      ErrorCode = "CannotDeleteFeatureError"
-	ErrorCodeCannotDeleteProductError                      ErrorCode = "CannotDeleteProductError"
 	ErrorCodeCannotEditPackageInNonDraftMode               ErrorCode = "CannotEditPackageInNonDraftMode"
 	ErrorCodeCannotRemovePaymentMethodFromCustomerError    ErrorCode = "CannotRemovePaymentMethodFromCustomerError"
 	ErrorCodeCannotReportUsageForEntitlementWithMeterError ErrorCode = "CannotReportUsageForEntitlementWithMeterError"
@@ -14157,11 +14194,11 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeCannotAddOverrideEntitlementToPlan,
 	ErrorCodeCannotArchiveFeatureError,
 	ErrorCodeCannotArchiveFeatureGroupError,
+	ErrorCodeCannotArchiveProductError,
 	ErrorCodeCannotChangeBillingIntegration,
 	ErrorCodeCannotDeleteCustomerError,
 	ErrorCodeCannotDeleteDefaultIntegration,
 	ErrorCodeCannotDeleteFeatureError,
-	ErrorCodeCannotDeleteProductError,
 	ErrorCodeCannotEditPackageInNonDraftMode,
 	ErrorCodeCannotRemovePaymentMethodFromCustomerError,
 	ErrorCodeCannotReportUsageForEntitlementWithMeterError,
@@ -14305,7 +14342,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotDeleteProductError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantAlreadyVoided, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftAlreadyExists, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoActiveSubscriptionForCustomer, ErrorCodeNoDraftOfferFound, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOfferAlreadyExists, ErrorCodeOfferNotFound, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
+	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotArchiveProductError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantAlreadyVoided, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftAlreadyExists, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoActiveSubscriptionForCustomer, ErrorCodeNoDraftOfferFound, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeOfferAlreadyExists, ErrorCodeOfferNotFound, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
 		return true
 	}
 	return false
@@ -16461,6 +16498,7 @@ const (
 	ProductSortFieldsIsDefaultProduct          ProductSortFields = "isDefaultProduct"
 	ProductSortFieldsMultipleSubscriptions     ProductSortFields = "multipleSubscriptions"
 	ProductSortFieldsRefID                     ProductSortFields = "refId"
+	ProductSortFieldsStatus                    ProductSortFields = "status"
 	ProductSortFieldsUpdatedAt                 ProductSortFields = "updatedAt"
 )
 
@@ -16475,12 +16513,13 @@ var AllProductSortFields = []ProductSortFields{
 	ProductSortFieldsIsDefaultProduct,
 	ProductSortFieldsMultipleSubscriptions,
 	ProductSortFieldsRefID,
+	ProductSortFieldsStatus,
 	ProductSortFieldsUpdatedAt,
 }
 
 func (e ProductSortFields) IsValid() bool {
 	switch e {
-	case ProductSortFieldsAwsMarketplaceProductCode, ProductSortFieldsAwsMarketplaceProductID, ProductSortFieldsCreatedAt, ProductSortFieldsDescription, ProductSortFieldsDisplayName, ProductSortFieldsEnvironmentID, ProductSortFieldsID, ProductSortFieldsIsDefaultProduct, ProductSortFieldsMultipleSubscriptions, ProductSortFieldsRefID, ProductSortFieldsUpdatedAt:
+	case ProductSortFieldsAwsMarketplaceProductCode, ProductSortFieldsAwsMarketplaceProductID, ProductSortFieldsCreatedAt, ProductSortFieldsDescription, ProductSortFieldsDisplayName, ProductSortFieldsEnvironmentID, ProductSortFieldsID, ProductSortFieldsIsDefaultProduct, ProductSortFieldsMultipleSubscriptions, ProductSortFieldsRefID, ProductSortFieldsStatus, ProductSortFieldsUpdatedAt:
 		return true
 	}
 	return false
@@ -16504,6 +16543,50 @@ func (e *ProductSortFields) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ProductSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Product status enum
+type ProductStatus string
+
+const (
+	// Archived
+	ProductStatusArchived ProductStatus = "ARCHIVED"
+	// Published
+	ProductStatusPublished ProductStatus = "PUBLISHED"
+)
+
+var AllProductStatus = []ProductStatus{
+	ProductStatusArchived,
+	ProductStatusPublished,
+}
+
+func (e ProductStatus) IsValid() bool {
+	switch e {
+	case ProductStatusArchived, ProductStatusPublished:
+		return true
+	}
+	return false
+}
+
+func (e ProductStatus) String() string {
+	return string(e)
+}
+
+func (e *ProductStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ProductStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ProductStatus", str)
+	}
+	return nil
+}
+
+func (e ProductStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
