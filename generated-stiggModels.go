@@ -4492,7 +4492,7 @@ type GetAutoRechargeSettingsInput struct {
 	// Customer ID (refId)
 	CustomerID string `json:"customerId"`
 	// Environment ID
-	EnvironmentID string `json:"environmentId"`
+	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
 // AWS external ID for secure cross-account access
@@ -8511,7 +8511,7 @@ type SaveAutoRechargeSettingsInput struct {
 	// Customer ID (refId)
 	CustomerID string `json:"customerId"`
 	// Environment ID
-	EnvironmentID string `json:"environmentId"`
+	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Expiration period for granted credits
 	GrantExpirationPeriod *GrantExpirationPeriod `json:"grantExpirationPeriod,omitempty"`
 	// Whether auto-recharge is enabled
