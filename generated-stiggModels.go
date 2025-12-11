@@ -5904,6 +5904,8 @@ type OverageEntitlementCreateInput struct {
 type OveragePricingModelCreateInput struct {
 	// The billing cadence of the base pricing model
 	BillingCadence *BillingCadence `json:"billingCadence,omitempty"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
 	// The billing model of the base pricing model
 	BillingModel BillingModel `json:"billingModel"`
 	// The entitlement of the overage pricing model
@@ -6523,8 +6525,6 @@ type PackagePriceChange struct {
 
 // Package Pricing Input
 type PackagePricingInput struct {
-	// The unique identifier for the entity in the billing provider
-	BillingID *string `json:"billingId,omitempty"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The minimum spend configuration per each billing period
@@ -6535,7 +6535,7 @@ type PackagePricingInput struct {
 	OveragePricingModels []*OveragePricingModelCreateInput `json:"overagePricingModels,omitempty"`
 	// The package id of the price
 	PackageID string `json:"packageId"`
-	// The billing ID of the price group package (Rate plan id in Zuora)
+	// The billing ID of the price group package
 	PriceGroupPackageBillingID *string `json:"priceGroupPackageBillingId,omitempty"`
 	// The list of pricing models of the package pricing
 	PricingModels []*PricingModelCreateInput `json:"pricingModels,omitempty"`
@@ -7619,6 +7619,8 @@ type PriceTierInput struct {
 type PricingModelCreateInput struct {
 	// The billing cadence of the base pricing model
 	BillingCadence *BillingCadence `json:"billingCadence,omitempty"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
 	// The billing model of the base pricing model
 	BillingModel BillingModel `json:"billingModel"`
 	// The ID of the feature the pricing model is applied to
