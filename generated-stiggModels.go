@@ -475,19 +475,31 @@ type APIKeySort struct {
 	Nulls     *SortNulls       `json:"nulls,omitempty"`
 }
 
+// An App Store application object
+type AppStoreApplication struct {
+	// Bundle ID of the App Store application
+	BundleID string `json:"bundleId"`
+	// ID of the App Store application
+	ID string `json:"id"`
+	// Name of the App Store application
+	Name string `json:"name"`
+	// SKU of the App Store application
+	Sku string `json:"sku"`
+}
+
 // AppStore integration configuration object
 type AppStoreCredentials struct {
-	// The Apple ID of the app
-	AppAppleID string `json:"appAppleId"`
-	// The bundle ID of the app
-	BundleID string `json:"bundleId"`
+	// The Apple ID of the application
+	AppAppleID *string `json:"appAppleId"`
+	// The bundle ID of the application
+	BundleID *string `json:"bundleId"`
 	// The issuer ID of key in App Store Connect
 	IssuerID string `json:"issuerId"`
 	// The key ID of key in App Store Connect
 	KeyID string `json:"keyId"`
 	// The base64 encoded SHA-256 fingerprint of the private key
 	PrivateKey *string `json:"privateKey"`
-	// Whether the app is in sandbox environment
+	// Whether the application is in sandbox environment
 	SandboxEnvironment bool `json:"sandboxEnvironment"`
 }
 
@@ -495,18 +507,48 @@ func (AppStoreCredentials) IsCredentials() {}
 
 // Input configuration for AppStore integration
 type AppStoreCredentialsInput struct {
-	// The Apple ID of the app
-	AppAppleID string `json:"appAppleId"`
-	// The bundle ID of the app
-	BundleID string `json:"bundleId"`
 	// The issuer ID of key in App Store Connect
 	IssuerID string `json:"issuerId"`
 	// The key ID of key in App Store Connect
 	KeyID string `json:"keyId"`
 	// The private key in App Store Connect (.p8 file content)
 	PrivateKey string `json:"privateKey"`
-	// Whether the app is in sandbox environment
+	// Whether the application is in sandbox environment
 	SandboxEnvironment bool `json:"sandboxEnvironment"`
+}
+
+// An App Store subscription object
+type AppStoreSubscription struct {
+	// ID of the App Store subscription
+	ID string `json:"id"`
+	// Name of the App Store subscription
+	Name string `json:"name"`
+	// Product ID of the App Store subscription
+	ProductID string `json:"productId"`
+	// Subscription group name of the App Store subscription
+	SubscriptionGroupName string `json:"subscriptionGroupName"`
+	// Subscription period of the App Store subscription
+	SubscriptionPeriod string `json:"subscriptionPeriod"`
+}
+
+// An App Store subscription mapping object
+type AppStoreSubscriptionMappingInput struct {
+	// ID of the App Store subscription
+	AppStoreSubscriptionID string `json:"appStoreSubscriptionId"`
+	// Ref ID of the Stigg plan
+	PlanRefID string `json:"planRefId"`
+}
+
+// Input for mapping App Store subscriptions to plans
+type AppStoreSubscriptionsToPlansMappingInput struct {
+	// Array of App Store subscription mappings
+	AppStoreSubscriptionMapping []*AppStoreSubscriptionMappingInput `json:"appStoreSubscriptionMapping"`
+	// ID of the App Store application
+	ApplicationID string `json:"applicationId"`
+	// Bundle ID of the App Store application
+	BundleID string `json:"bundleId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
 // Apply subscription response
@@ -5318,6 +5360,32 @@ type LinkFeatureGroupToPackageInput struct {
 	PackageID string `json:"packageId"`
 }
 
+// Input for listing App Store applications
+type ListAppStoreApplicationsInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
+// Response containing the result of the App Store applications list
+type ListAppStoreApplicationsResult struct {
+	// Array of App Store applications
+	Applications []*AppStoreApplication `json:"applications"`
+}
+
+// Input for listing App Store subscriptions for an application
+type ListAppStoreSubscriptionsInput struct {
+	// ID of the App Store application
+	ApplicationID string `json:"applicationId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
+// Response containing the result of the App Store subscriptions list
+type ListAppStoreSubscriptionsResult struct {
+	// Array of App Store subscriptions
+	Subscriptions []*AppStoreSubscription `json:"subscriptions"`
+}
+
 // AWS Marketplace product dimensions response
 type ListAwsProductDimensionsDto struct {
 	// List of available dimensions for the AWS product
@@ -5342,6 +5410,12 @@ type ListAwsProductsInput struct {
 type ListAwsProductsResult struct {
 	// Array of available AWS Marketplace product configurations
 	Products []*AwsProduct `json:"products"`
+}
+
+// Response containing the result of the App Store subscriptions to plans mapping
+type MapAppStoreSubscriptionsToPlansResult struct {
+	// Whether the mapping was successful
+	Success bool `json:"success"`
 }
 
 // Input for triggering the subscription invoice as paid
