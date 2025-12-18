@@ -572,7 +572,8 @@ type ApplySubscriptionInput struct {
 	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
+	Budget  *BudgetConfigurationInput `json:"budget,omitempty"`
+	Charges []*ChargeInput            `json:"charges,omitempty"`
 	// Customer ID
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
@@ -1140,6 +1141,12 @@ type ChangingPayingCustomerIsNotSupportedError struct {
 	CurrentPayingCustomerID string `json:"currentPayingCustomerId"`
 	IsValidationError       bool   `json:"isValidationError"`
 	NewPayingCustomerID     string `json:"newPayingCustomerId"`
+}
+
+type ChargeInput struct {
+	ID       string     `json:"id"`
+	Quantity float64    `json:"quantity"`
+	Type     ChargeType `json:"type"`
 }
 
 // Input for triggering an immediate usage charge for a subscription
@@ -8325,7 +8332,8 @@ type ProvisionCustomerSubscriptionInput struct {
 	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
+	Budget  *BudgetConfigurationInput `json:"budget,omitempty"`
+	Charges []*ChargeInput            `json:"charges,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	// Subscription payment collection method
@@ -8366,6 +8374,7 @@ type ProvisionSubscription struct {
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
+	Charges         []*ChargeInput            `json:"charges,omitempty"`
 	CheckoutOptions *CheckoutOptions          `json:"checkoutOptions,omitempty"`
 	CustomerID      string                    `json:"customerId"`
 	// The minimum spend configuration
@@ -8403,6 +8412,7 @@ type ProvisionSubscriptionInput struct {
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
+	Charges         []*ChargeInput            `json:"charges,omitempty"`
 	CheckoutOptions *CheckoutOptions          `json:"checkoutOptions,omitempty"`
 	CustomerID      string                    `json:"customerId"`
 	// The minimum spend configuration
@@ -9460,6 +9470,7 @@ type SubscriptionInput struct {
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget                    *BudgetConfigurationInput `json:"budget,omitempty"`
+	Charges                   []*ChargeInput            `json:"charges,omitempty"`
 	CrmID                     *string                   `json:"crmId,omitempty"`
 	CustomerID                string                    `json:"customerId"`
 	EndDate                   *string                   `json:"endDate,omitempty"`
@@ -9829,15 +9840,16 @@ type SubscriptionPreviewV2 struct {
 }
 
 type SubscriptionPrice struct {
-	BillingModel *BillingModel        `json:"billingModel"`
-	CreatedAt    *string              `json:"createdAt"`
-	FeatureID    *string              `json:"featureId"`
-	HasSoftLimit *bool                `json:"hasSoftLimit"`
-	ID           string               `json:"id"`
-	Price        *Price               `json:"price"`
-	Subscription CustomerSubscription `json:"subscription"`
-	UpdatedAt    string               `json:"updatedAt"`
-	UsageLimit   *float64             `json:"usageLimit"`
+	BillingModel    *BillingModel        `json:"billingModel"`
+	CreatedAt       *string              `json:"createdAt"`
+	CreditsQuantity *float64             `json:"creditsQuantity"`
+	FeatureID       *string              `json:"featureId"`
+	HasSoftLimit    *bool                `json:"hasSoftLimit"`
+	ID              string               `json:"id"`
+	Price           *Price               `json:"price"`
+	Subscription    CustomerSubscription `json:"subscription"`
+	UpdatedAt       string               `json:"updatedAt"`
+	UsageLimit      *float64             `json:"usageLimit"`
 }
 
 type SubscriptionPriceAggregateGroupBy struct {
@@ -12398,6 +12410,50 @@ func (e ChangeType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Charge type
+type ChargeType string
+
+const (
+	// Credit
+	ChargeTypeCredit ChargeType = "CREDIT"
+	// Feature
+	ChargeTypeFeature ChargeType = "FEATURE"
+)
+
+var AllChargeType = []ChargeType{
+	ChargeTypeCredit,
+	ChargeTypeFeature,
+}
+
+func (e ChargeType) IsValid() bool {
+	switch e {
+	case ChargeTypeCredit, ChargeTypeFeature:
+		return true
+	}
+	return false
+}
+
+func (e ChargeType) String() string {
+	return string(e)
+}
+
+func (e *ChargeType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ChargeType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ChargeType", str)
+	}
+	return nil
+}
+
+func (e ChargeType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 // Condition operation
 type ConditionOperation string
 
@@ -12859,16 +12915,19 @@ const (
 	CreditGrantTypePaid CreditGrantType = "PAID"
 	// Promotional credit grant
 	CreditGrantTypePromotional CreditGrantType = "PROMOTIONAL"
+	// Recurring credit grant
+	CreditGrantTypeRecurring CreditGrantType = "RECURRING"
 )
 
 var AllCreditGrantType = []CreditGrantType{
 	CreditGrantTypePaid,
 	CreditGrantTypePromotional,
+	CreditGrantTypeRecurring,
 }
 
 func (e CreditGrantType) IsValid() bool {
 	switch e {
-	case CreditGrantTypePaid, CreditGrantTypePromotional:
+	case CreditGrantTypePaid, CreditGrantTypePromotional, CreditGrantTypeRecurring:
 		return true
 	}
 	return false
