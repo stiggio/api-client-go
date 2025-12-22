@@ -3943,8 +3943,9 @@ type EventLogMinAggregate struct {
 }
 
 type EventLogParentEntityIDFilterComparison struct {
-	Eq *string  `json:"eq,omitempty"`
-	In []string `json:"in,omitempty"`
+	Eq   *string  `json:"eq,omitempty"`
+	In   []string `json:"in,omitempty"`
+	Like *string  `json:"like,omitempty"`
 }
 
 type EventLogSort struct {
@@ -9191,7 +9192,7 @@ type SubscriptionBillingInfo struct {
 	Metadata            map[string]interface{} `json:"metadata,omitempty"`
 	// Override the proration behavior for the subscription
 	ProrationBehavior *SubscriptionProrationBehavior `json:"prorationBehavior,omitempty"`
-	// Tax IDs for the invoice.
+	// Customer’s tax identification number
 	TaxIds        []*TaxExempt `json:"taxIds,omitempty"`
 	TaxPercentage *float64     `json:"taxPercentage,omitempty"`
 	TaxRateIds    []string     `json:"taxRateIds,omitempty"`
