@@ -3908,7 +3908,7 @@ type EventLogFilter struct {
 	CreatedAt      *EventLogCreatedAtFilterComparison      `json:"createdAt,omitempty"`
 	EntityID       *EventLogEntityIDFilterComparison       `json:"entityId,omitempty"`
 	EntityType     *EventLogEntityTypeFilterComparison     `json:"entityType,omitempty"`
-	EnvironmentID  EventLogEnvironmentIDFilterComparison   `json:"environmentId"`
+	EnvironmentID  *EventLogEnvironmentIDFilterComparison  `json:"environmentId,omitempty"`
 	EventLogType   *EventLogEventLogTypeFilterComparison   `json:"eventLogType,omitempty"`
 	ID             *EventLogIDFilterComparison             `json:"id,omitempty"`
 	Or             []*EventLogFilter                       `json:"or,omitempty"`
