@@ -3309,6 +3309,7 @@ type DowngradeChangeVariables struct {
 	BillingPeriod      *BillingPeriod                  `json:"billingPeriod"`
 	DowngradePlanRefID string                          `json:"downgradePlanRefId"`
 	PriceOverrides     []*PriceOverrideChangeVariables `json:"priceOverrides"`
+	RecurringCredits   []*RecurringCredits             `json:"recurringCredits"`
 }
 
 func (DowngradeChangeVariables) IsScheduleVariables() {}
@@ -3764,6 +3765,7 @@ type EstimateSubscriptionInput struct {
 	BillingCountryCode *string                  `json:"billingCountryCode,omitempty"`
 	BillingInformation *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod      *BillingPeriod           `json:"billingPeriod,omitempty"`
+	Charges            []*ChargeInput           `json:"charges,omitempty"`
 	CustomerID         string                   `json:"customerId"`
 	EnvironmentID      *string                  `json:"environmentId,omitempty"`
 	// The customer that will pay for the subscription
@@ -3784,6 +3786,7 @@ type EstimateSubscriptionUpdateInput struct {
 	// Coupon input
 	AppliedCoupon    *SubscriptionCouponInput `json:"appliedCoupon,omitempty"`
 	BillableFeatures []*BillableFeatureInput  `json:"billableFeatures,omitempty"`
+	Charges          []*ChargeInput           `json:"charges,omitempty"`
 	EnvironmentID    *string                  `json:"environmentId,omitempty"`
 	PromotionCode    *string                  `json:"promotionCode,omitempty"`
 	SubscriptionID   string                   `json:"subscriptionId"`
@@ -5134,6 +5137,7 @@ type ImportSubscriptionInput struct {
 	BillableFeatures         []*BillableFeatureInput         `json:"billableFeatures,omitempty"`
 	BillingID                *string                         `json:"billingId,omitempty"`
 	BillingPeriod            *BillingPeriod                  `json:"billingPeriod,omitempty"`
+	Charges                  []*ChargeInput                  `json:"charges,omitempty"`
 	CustomerID               string                          `json:"customerId"`
 	EndDate                  *string                         `json:"endDate,omitempty"`
 	PlanID                   string                          `json:"planId"`
@@ -7068,6 +7072,7 @@ type PlanChangeVariables struct {
 	ChangeType       PlanChangeType                  `json:"changeType"`
 	PlanRefID        string                          `json:"planRefId"`
 	PriceOverrides   []*PriceOverrideChangeVariables `json:"priceOverrides"`
+	RecurringCredits []*RecurringCredits             `json:"recurringCredits"`
 }
 
 func (PlanChangeVariables) IsScheduleVariables() {}
@@ -7391,6 +7396,7 @@ type PreviewSubscriptionInput struct {
 	BillingCountryCode *string                  `json:"billingCountryCode,omitempty"`
 	BillingInformation *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod      *BillingPeriod           `json:"billingPeriod,omitempty"`
+	Charges            []*ChargeInput           `json:"charges,omitempty"`
 	CustomerID         string                   `json:"customerId"`
 	EnvironmentID      *string                  `json:"environmentId,omitempty"`
 	// The customer that will pay for the subscription
@@ -8505,6 +8511,18 @@ type RecalculateEntitlementsSideEffectsOptionsInput struct {
 	// Skips writing entitlement recalculation events to the event log.
 	SkipWriteToEventLog *bool `json:"skipWriteToEventLog,omitempty"`
 }
+
+type RecurringCredits struct {
+	CustomCurrencyID string  `json:"customCurrencyId"`
+	Quantity         float64 `json:"quantity"`
+}
+
+type RecurringCreditsChangeVariables struct {
+	CustomCurrencyID *string  `json:"customCurrencyId"`
+	NewQuantity      *float64 `json:"newQuantity"`
+}
+
+func (RecurringCreditsChangeVariables) IsScheduleVariables() {}
 
 type RemoveBasePlanFromPlanInput struct {
 	// The id of the record.
@@ -10993,6 +11011,7 @@ type UpdateSubscriptionInput struct {
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget        *BudgetConfigurationInput `json:"budget,omitempty"`
+	Charges       []*ChargeInput            `json:"charges,omitempty"`
 	EnvironmentID *string                   `json:"environmentId,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
@@ -18069,6 +18088,8 @@ const (
 	SubscriptionScheduleTypePlan SubscriptionScheduleType = "Plan"
 	// Custom price change
 	SubscriptionScheduleTypePriceOverride SubscriptionScheduleType = "PriceOverride"
+	// Recurring credits change
+	SubscriptionScheduleTypeRecurringCredits SubscriptionScheduleType = "RecurringCredits"
 	// Unit amount change
 	SubscriptionScheduleTypeUnitAmount SubscriptionScheduleType = "UnitAmount"
 )
@@ -18083,12 +18104,13 @@ var AllSubscriptionScheduleType = []SubscriptionScheduleType{
 	SubscriptionScheduleTypeMigrateToLatest,
 	SubscriptionScheduleTypePlan,
 	SubscriptionScheduleTypePriceOverride,
+	SubscriptionScheduleTypeRecurringCredits,
 	SubscriptionScheduleTypeUnitAmount,
 }
 
 func (e SubscriptionScheduleType) IsValid() bool {
 	switch e {
-	case SubscriptionScheduleTypeAdditionalMetaData, SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingInfoMetadata, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeCoupon, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypePriceOverride, SubscriptionScheduleTypeUnitAmount:
+	case SubscriptionScheduleTypeAdditionalMetaData, SubscriptionScheduleTypeAddon, SubscriptionScheduleTypeBillingInfoMetadata, SubscriptionScheduleTypeBillingPeriod, SubscriptionScheduleTypeCoupon, SubscriptionScheduleTypeDowngrade, SubscriptionScheduleTypeMigrateToLatest, SubscriptionScheduleTypePlan, SubscriptionScheduleTypePriceOverride, SubscriptionScheduleTypeRecurringCredits, SubscriptionScheduleTypeUnitAmount:
 		return true
 	}
 	return false
