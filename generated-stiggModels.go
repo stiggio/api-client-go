@@ -13907,6 +13907,8 @@ func (e EntitlementResetPeriod) MarshalGQL(w io.Writer) {
 type EntitlementsStateAccessDeniedReason string
 
 const (
+	// The customer is archived and no longer eligible for entitlements.
+	EntitlementsStateAccessDeniedReasonCustomerIsArchived EntitlementsStateAccessDeniedReason = "CustomerIsArchived"
 	// The customer making the request could not be found.
 	EntitlementsStateAccessDeniedReasonCustomerNotFound EntitlementsStateAccessDeniedReason = "CustomerNotFound"
 	// The customer does not have any active subscription linked to the feature.
@@ -13914,13 +13916,14 @@ const (
 )
 
 var AllEntitlementsStateAccessDeniedReason = []EntitlementsStateAccessDeniedReason{
+	EntitlementsStateAccessDeniedReasonCustomerIsArchived,
 	EntitlementsStateAccessDeniedReasonCustomerNotFound,
 	EntitlementsStateAccessDeniedReasonNoActiveSubscription,
 }
 
 func (e EntitlementsStateAccessDeniedReason) IsValid() bool {
 	switch e {
-	case EntitlementsStateAccessDeniedReasonCustomerNotFound, EntitlementsStateAccessDeniedReasonNoActiveSubscription:
+	case EntitlementsStateAccessDeniedReasonCustomerIsArchived, EntitlementsStateAccessDeniedReasonCustomerNotFound, EntitlementsStateAccessDeniedReasonNoActiveSubscription:
 		return true
 	}
 	return false
