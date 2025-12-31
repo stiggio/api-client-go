@@ -533,7 +533,7 @@ type AppStoreSubscription struct {
 
 // An App Store subscription mapping object
 type AppStoreSubscriptionMappingInput struct {
-	// ID of the App Store subscription
+	// Product ID of the App Store subscription
 	AppStoreSubscriptionID string `json:"appStoreSubscriptionId"`
 	// Ref ID of the Stigg plan
 	PlanRefID string `json:"planRefId"`
