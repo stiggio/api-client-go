@@ -9071,6 +9071,22 @@ type StripeSubscriptionSearchResult struct {
 	TotalCount int64 `json:"totalCount"`
 }
 
+// Get Subscribed Customers Count Input
+type SubscribedCustomersCountInput struct {
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The ref id of the package
+	PackageRefID string `json:"packageRefId"`
+	// The version number of the package (optional - if not provided, counts all versions)
+	VersionNumber *int64 `json:"versionNumber,omitempty"`
+}
+
+// Subscribed Customers Count Result
+type SubscribedCustomersCountResult struct {
+	// The count of subscribed customers
+	Count int64 `json:"count"`
+}
+
 type SubscriptionAddon struct {
 	// Addon object
 	Addon Addon `json:"addon"`
