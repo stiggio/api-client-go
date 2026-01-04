@@ -3610,6 +3610,8 @@ type EntitlementsState struct {
 
 // Event payload for when entitlements are updated for a customer.
 type EntitlementsUpdated struct {
+	// The reason why access to the feature is denied.
+	AccessDeniedReason *EntitlementsStateAccessDeniedReason `json:"accessDeniedReason"`
 	// The unique identifier for the account
 	AccountID string `json:"accountId"`
 	// Identifier of the customer whose entitlements have changed.
