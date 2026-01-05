@@ -409,6 +409,22 @@ type AddonUpdateInput struct {
 	Status      *PackageStatus `json:"status,omitempty"`
 }
 
+type AddonVersionsConnection struct {
+	// Edges in the current page
+	Edges []*AddonVersionsEdge `json:"edges"`
+	// Pagination information
+	PageInfo PageInfo `json:"pageInfo"`
+	// Total number of items matching the filter
+	TotalCount int64 `json:"totalCount"`
+}
+
+type AddonVersionsEdge struct {
+	// An opaque cursor for this item
+	Cursor string `json:"cursor"`
+	// The item at the edge
+	Node Addon `json:"node"`
+}
+
 // Customers address
 type Address struct {
 	// Address line 1
@@ -7340,6 +7356,22 @@ type PlanUpdateInput struct {
 	ParentPlanID *string `json:"parentPlanId,omitempty"`
 	// The status of the plan, e.g. "active" or "archived"
 	Status *PackageStatus `json:"status,omitempty"`
+}
+
+type PlanVersionsConnection struct {
+	// Edges in the current page
+	Edges []*PlanVersionsEdge `json:"edges"`
+	// Pagination information
+	PageInfo PageInfo `json:"pageInfo"`
+	// Total number of items matching the filter
+	TotalCount int64 `json:"totalCount"`
+}
+
+type PlanVersionsEdge struct {
+	// An opaque cursor for this item
+	Cursor string `json:"cursor"`
+	// The item at the edge
+	Node Plan `json:"node"`
 }
 
 // Input for preparing a payment method form
