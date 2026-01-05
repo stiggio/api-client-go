@@ -8697,6 +8697,16 @@ type RevokePromotionalEntitlementsGroupInput struct {
 	FeatureGroupID string `json:"featureGroupId"`
 }
 
+// Rollback Package Input
+type RollbackPackageInput struct {
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The unique identifier for the entity
+	RefID string `json:"refId"`
+	// The version number to rollback to
+	VersionNumber int64 `json:"versionNumber"`
+}
+
 // Salesforce integration configuration object
 type SalesforceCredentials struct {
 	// Domain of the Salesforce account
