@@ -17,6 +17,10 @@ type Credentials interface {
 	IsCredentials()
 }
 
+type PackageEntitlementUnion interface {
+	IsPackageEntitlementUnion()
+}
+
 // Union of all payment method forms for different billing providers
 type PaymentMethodForm interface {
 	IsPaymentMethodForm()
@@ -145,7 +149,9 @@ type Addon struct {
 	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
 	// List of overage prices of the package
 	OveragePrices []*Price `json:"overagePrices"`
-	Prices        []*Price `json:"prices"`
+	// List of entitlements for the addon
+	PackageEntitlements []PackageEntitlementUnion `json:"packageEntitlements"`
+	Prices              []*Price                  `json:"prices"`
 	// The pricing type of the package
 	PricingType *PricingType `json:"pricingType"`
 	Product     *Product     `json:"product"`
@@ -1758,6 +1764,22 @@ type CreateOrUpdateAwsMarketplaceProductInput struct {
 	UsageResetCutoffRule *SubscriptionUpdateUsageResetCutoffRuleInput `json:"usageResetCutoffRule,omitempty"`
 }
 
+// Package entitlement input
+type CreatePackageEntitlementInput struct {
+	// Package feature entitlement
+	Feature *PackageFeatureEntitlementInput `json:"feature,omitempty"`
+}
+
+// Create package entitlements input
+type CreatePackageEntitlementsInput struct {
+	// List of package entitlements to create
+	Entitlements []*CreatePackageEntitlementInput `json:"entitlements"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The unique identifier of the entitlement package
+	PackageID string `json:"packageId"`
+}
+
 // The input type for creating a package group
 type CreatePackageGroup struct {
 	// The description of the package group
@@ -3273,6 +3295,12 @@ type DeleteOneProductInput struct {
 
 type DeleteOnePromotionalEntitlementInput struct {
 	// The id of the record to delete.
+	ID string `json:"id"`
+}
+
+// Delete package entitlement input
+type DeletePackageEntitlementInput struct {
+	// Unique identifier for the entity
 	ID string `json:"id"`
 }
 
@@ -6079,8 +6107,6 @@ type PackageDto struct {
 	DraftDetails *PackageDraftDetails `json:"draftDetails"`
 	// The draft summary of the package
 	DraftSummary *PackageDraftSummary `json:"draftSummary"`
-	// List of entitlements of the package
-	Entitlements []*PackageEntitlement `json:"entitlements"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// List of hidden widgets of the package
@@ -6426,6 +6452,167 @@ type PackageEntitlementSort struct {
 
 // Package entitlement update input
 type PackageEntitlementUpdateInput struct {
+	// The behavior of the entitlement
+	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues,omitempty"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom,omitempty"`
+	// Whether entitlement grant is active
+	IsGranted *bool `json:"isGranted,omitempty"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
+	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	// The order of the entitlement in the entitlement list
+	Order *float64 `json:"order,omitempty"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
+}
+
+// Package feature entitlement
+type PackageFeatureEntitlement struct {
+	// The behavior of the entitlement
+	Behavior EntitlementBehavior `json:"behavior"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The description of the entitlement
+	Description *string `json:"description"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues"`
+	// The unique identifier for the environment
+	EnvironmentID string  `json:"environmentId"`
+	Feature       Feature `json:"feature"`
+	// Feature group IDs associated with this entitlement
+	FeatureGroupIds []string `json:"featureGroupIds"`
+	// Feature groups associated with this entitlement
+	FeatureGroups []*FeatureGroup `json:"featureGroups"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
+	ID                string       `json:"id"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom"`
+	// Whether entitlement grant is active
+	IsGranted bool   `json:"isGranted"`
+	Meter     *Meter `json:"meter"`
+	// The order of the entitlement in the entitlement list
+	Order   *float64    `json:"order"`
+	Package *PackageDto `json:"package"`
+	// The unique identifier of the entitlement package
+	PackageID string `json:"packageId"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// The reset period configuration of the entitlement
+	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit"`
+}
+
+func (PackageFeatureEntitlement) IsPackageEntitlementUnion() {}
+
+type PackageFeatureEntitlementAggregateGroupBy struct {
+	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+	PackageID     *string `json:"packageId"`
+	UpdatedAt     *string `json:"updatedAt"`
+}
+
+type PackageFeatureEntitlementCountAggregate struct {
+	CreatedAt     *int64 `json:"createdAt"`
+	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
+	PackageID     *int64 `json:"packageId"`
+	UpdatedAt     *int64 `json:"updatedAt"`
+}
+
+type PackageFeatureEntitlementEdge struct {
+	// Cursor for this node.
+	Cursor string `json:"cursor"`
+	// The node containing the PackageFeatureEntitlement
+	Node PackageFeatureEntitlement `json:"node"`
+}
+
+// Package entitlement input
+type PackageFeatureEntitlementInput struct {
+	// The behavior of the entitlement
+	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues,omitempty"`
+	// Primary feature group ID (first in the array) associated with this entitlement
+	FeatureGroupID *string `json:"featureGroupId,omitempty"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom,omitempty"`
+	// Whether entitlement grant is active
+	IsGranted *bool `json:"isGranted,omitempty"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
+	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	// The order of the entitlement in the entitlement list
+	Order *float64 `json:"order,omitempty"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
+}
+
+type PackageFeatureEntitlementMaxAggregate struct {
+	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+	PackageID     *string `json:"packageId"`
+	UpdatedAt     *string `json:"updatedAt"`
+}
+
+type PackageFeatureEntitlementMinAggregate struct {
+	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+	PackageID     *string `json:"packageId"`
+	UpdatedAt     *string `json:"updatedAt"`
+}
+
+// Package feature entitlement update input
+type PackageFeatureEntitlementUpdateInput struct {
 	// The behavior of the entitlement
 	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
 	// The description of the entitlement
@@ -7026,6 +7213,8 @@ type Plan struct {
 	ID string `json:"id"`
 	// List of inherited entitlements for the plan
 	InheritedEntitlements []*PackageEntitlement `json:"inheritedEntitlements"`
+	// List of inherited entitlements for the plan
+	InheritedPackageEntitlements []PackageEntitlementUnion `json:"inheritedPackageEntitlements"`
 	// Indicates if the package is the latest version
 	IsLatest *bool `json:"isLatest"`
 	// Indicates if the plan is a parent plan
@@ -7037,6 +7226,8 @@ type Plan struct {
 	OverageBillingPeriod *OverageBillingPeriod `json:"overageBillingPeriod"`
 	// List of overage prices of the package
 	OveragePrices []*Price `json:"overagePrices"`
+	// List of entitlements for the plan
+	PackageEntitlements []PackageEntitlementUnion `json:"packageEntitlements"`
 	// List of prices for the plan
 	Prices []*Price `json:"prices"`
 	// The pricing type of the package
@@ -11014,6 +11205,14 @@ type UpdateOnePromotionalEntitlementInput struct {
 	ID string `json:"id"`
 	// The update to apply.
 	Update PromotionalEntitlementUpdateInput `json:"update"`
+}
+
+// Update package entitlement input
+type UpdatePackageEntitlementInput struct {
+	// Package feature entitlement update input
+	Feature *PackageFeatureEntitlementUpdateInput `json:"feature,omitempty"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
 }
 
 // Update package entitlement order input
