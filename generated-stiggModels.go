@@ -1766,6 +1766,8 @@ type CreateOrUpdateAwsMarketplaceProductInput struct {
 
 // Package entitlement input
 type CreatePackageEntitlementInput struct {
+	// Package credit entitlement
+	Credit *PackageCreditEntitlementInput `json:"credit,omitempty"`
 	// Package feature entitlement
 	Feature *PackageFeatureEntitlementInput `json:"feature,omitempty"`
 }
@@ -4629,6 +4631,13 @@ type FreeSubscriptionItem struct {
 	Quantity float64 `json:"quantity"`
 }
 
+type FutureUpdateNotFound struct {
+	Code              string `json:"code"`
+	ExternalID        string `json:"externalId"`
+	IsValidationError bool   `json:"isValidationError"`
+	Status            string `json:"status"`
+}
+
 type GetActiveSubscriptionsInput struct {
 	CustomerID    string   `json:"customerId"`
 	EnvironmentID *string  `json:"environmentId,omitempty"`
@@ -6087,6 +6096,71 @@ type PackageChanges struct {
 	// The pricing type of the package
 	PricingType  *PricingTypeChange `json:"pricingType"`
 	TotalChanges int64              `json:"totalChanges"`
+}
+
+// Package credit entitlement
+type PackageCreditEntitlement struct {
+	// The behavior of the entitlement
+	Behavior EntitlementBehavior `json:"behavior"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The description of the entitlement
+	Description *string `json:"description"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
+	ID                string       `json:"id"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom"`
+	// Whether entitlement grant is active
+	IsGranted bool `json:"isGranted"`
+	// The order of the entitlement in the entitlement list
+	Order *float64 `json:"order"`
+	// The unique identifier of the entitlement package
+	PackageID string `json:"packageId"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+}
+
+func (PackageCreditEntitlement) IsPackageEntitlementUnion() {}
+
+// Package credit entitlement input
+type PackageCreditEntitlementInput struct {
+	// The behavior of the entitlement
+	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom,omitempty"`
+	// Whether entitlement grant is active
+	IsGranted *bool `json:"isGranted,omitempty"`
+	// The order of the entitlement in the entitlement list
+	Order *float64 `json:"order,omitempty"`
+}
+
+// Package credit entitlement update input
+type PackageCreditEntitlementUpdateInput struct {
+	// The behavior of the entitlement
+	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The description of the entitlement
+	Description *string `json:"description,omitempty"`
+	// The display name override of the entitlement
+	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// Whether the entitlement is hidden from widgets
+	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
+	// Whether the entitlement is a custom entitlement
+	IsCustom *bool `json:"isCustom,omitempty"`
+	// Whether entitlement grant is active
+	IsGranted *bool `json:"isGranted,omitempty"`
+	// The order of the entitlement in the entitlement list
+	Order *float64 `json:"order,omitempty"`
 }
 
 // Package
@@ -11209,6 +11283,8 @@ type UpdateOnePromotionalEntitlementInput struct {
 
 // Update package entitlement input
 type UpdatePackageEntitlementInput struct {
+	// Package credit entitlement update input
+	Credit *PackageCreditEntitlementUpdateInput `json:"credit,omitempty"`
 	// Package feature entitlement update input
 	Feature *PackageFeatureEntitlementUpdateInput `json:"feature,omitempty"`
 	// Unique identifier for the entity
@@ -14564,6 +14640,7 @@ const (
 	ErrorCodeFetchAllCountriesPricesNotAllowed   ErrorCode = "FetchAllCountriesPricesNotAllowed"
 	// Free plan can't have compatible package groups error
 	ErrorCodeFreePlanCantHaveCompatiblePackageGroupError ErrorCode = "FreePlanCantHaveCompatiblePackageGroupError"
+	ErrorCodeFutureUpdateNotFound                        ErrorCode = "FutureUpdateNotFound"
 	// Too many graphql aliases were used in a single request
 	ErrorCodeGraphQLAliasesLimitExceeded ErrorCode = "GraphQLAliasesLimitExceeded"
 	// Too many batched operations were used in a single request
@@ -14754,6 +14831,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeFeatureNotFound,
 	ErrorCodeFetchAllCountriesPricesNotAllowed,
 	ErrorCodeFreePlanCantHaveCompatiblePackageGroupError,
+	ErrorCodeFutureUpdateNotFound,
 	ErrorCodeGraphQLAliasesLimitExceeded,
 	ErrorCodeGraphQLBatchedOperationsLimitExceeded,
 	ErrorCodeGraphQLUnsupportedDirective,
@@ -14851,7 +14929,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotArchiveProductError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUnarchiveProductError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantAlreadyVoided, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftAlreadyExists, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidTaxID, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoActiveSubscriptionForCustomer, ErrorCodeNoDraftOfferFound, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeObjectAlreadyBeingUsedByAnotherRequestError, ErrorCodeOfferAlreadyExists, ErrorCodeOfferNotFound, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodeProductNotPublishedError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVendorIsNotSupported, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
+	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotArchiveProductError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUnarchiveProductError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantAlreadyVoided, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftAlreadyExists, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeFutureUpdateNotFound, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidTaxID, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingEntityIDError, ErrorCodeMissingSubscriptionInvoiceError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoActiveSubscriptionForCustomer, ErrorCodeNoDraftOfferFound, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeObjectAlreadyBeingUsedByAnotherRequestError, ErrorCodeOfferAlreadyExists, ErrorCodeOfferNotFound, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodeProductNotPublishedError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionInvoiceStatusError, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVendorIsNotSupported, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
 		return true
 	}
 	return false
