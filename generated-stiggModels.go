@@ -6100,10 +6100,17 @@ type PackageChanges struct {
 
 // Package credit entitlement
 type PackageCreditEntitlement struct {
+	// The amount of credits
+	Amount float64 `json:"amount"`
 	// The behavior of the entitlement
 	Behavior EntitlementBehavior `json:"behavior"`
+	// The cadence of the credit entitlement
+	Cadence CreditCadence `json:"cadence"`
 	// Timestamp of when the record was created
-	CreatedAt *string `json:"createdAt"`
+	CreatedAt      *string        `json:"createdAt"`
+	CustomCurrency CustomCurrency `json:"customCurrency"`
+	// The unique identifier of the custom currency
+	CustomCurrencyID string `json:"customCurrencyId"`
 	// The description of the entitlement
 	Description *string `json:"description"`
 	// The display name override of the entitlement
@@ -6118,7 +6125,8 @@ type PackageCreditEntitlement struct {
 	// Whether entitlement grant is active
 	IsGranted bool `json:"isGranted"`
 	// The order of the entitlement in the entitlement list
-	Order *float64 `json:"order"`
+	Order   *float64    `json:"order"`
+	Package *PackageDto `json:"package"`
 	// The unique identifier of the entitlement package
 	PackageID string `json:"packageId"`
 	// Timestamp of when the record was last updated
@@ -6127,10 +6135,39 @@ type PackageCreditEntitlement struct {
 
 func (PackageCreditEntitlement) IsPackageEntitlementUnion() {}
 
+type PackageCreditEntitlementAggregateGroupBy struct {
+	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+	PackageID     *string `json:"packageId"`
+	UpdatedAt     *string `json:"updatedAt"`
+}
+
+type PackageCreditEntitlementCountAggregate struct {
+	CreatedAt     *int64 `json:"createdAt"`
+	EnvironmentID *int64 `json:"environmentId"`
+	ID            *int64 `json:"id"`
+	PackageID     *int64 `json:"packageId"`
+	UpdatedAt     *int64 `json:"updatedAt"`
+}
+
+type PackageCreditEntitlementEdge struct {
+	// Cursor for this node.
+	Cursor string `json:"cursor"`
+	// The node containing the PackageCreditEntitlement
+	Node PackageCreditEntitlement `json:"node"`
+}
+
 // Package credit entitlement input
 type PackageCreditEntitlementInput struct {
+	// The amount of credits
+	Amount float64 `json:"amount"`
 	// The behavior of the entitlement
 	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The cadence of the credit entitlement
+	Cadence CreditCadence `json:"cadence"`
+	// The unique identifier of the custom currency
+	CustomCurrencyID string `json:"customCurrencyId"`
 	// The description of the entitlement
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
@@ -6145,10 +6182,30 @@ type PackageCreditEntitlementInput struct {
 	Order *float64 `json:"order,omitempty"`
 }
 
+type PackageCreditEntitlementMaxAggregate struct {
+	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+	PackageID     *string `json:"packageId"`
+	UpdatedAt     *string `json:"updatedAt"`
+}
+
+type PackageCreditEntitlementMinAggregate struct {
+	CreatedAt     *string `json:"createdAt"`
+	EnvironmentID *string `json:"environmentId"`
+	ID            *string `json:"id"`
+	PackageID     *string `json:"packageId"`
+	UpdatedAt     *string `json:"updatedAt"`
+}
+
 // Package credit entitlement update input
 type PackageCreditEntitlementUpdateInput struct {
+	// The amount of credits
+	Amount *float64 `json:"amount,omitempty"`
 	// The behavior of the entitlement
 	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The cadence of the credit entitlement
+	Cadence *CreditCadence `json:"cadence,omitempty"`
 	// The description of the entitlement
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
@@ -13080,6 +13137,50 @@ func (e *CouponType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CouponType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Credit entitlement cadence
+type CreditCadence string
+
+const (
+	// Monthly
+	CreditCadenceMonth CreditCadence = "MONTH"
+	// Yearly
+	CreditCadenceYear CreditCadence = "YEAR"
+)
+
+var AllCreditCadence = []CreditCadence{
+	CreditCadenceMonth,
+	CreditCadenceYear,
+}
+
+func (e CreditCadence) IsValid() bool {
+	switch e {
+	case CreditCadenceMonth, CreditCadenceYear:
+		return true
+	}
+	return false
+}
+
+func (e CreditCadence) String() string {
+	return string(e)
+}
+
+func (e *CreditCadence) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CreditCadence(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CreditCadence", str)
+	}
+	return nil
+}
+
+func (e CreditCadence) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
