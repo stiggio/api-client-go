@@ -9394,6 +9394,8 @@ type SubscribedCustomersCountInput struct {
 type SubscribedCustomersCountResult struct {
 	// The count of subscribed customers
 	Count int64 `json:"count"`
+	// The timestamp of the last update
+	UpdatedAt string `json:"updatedAt"`
 }
 
 type SubscriptionAddon struct {
