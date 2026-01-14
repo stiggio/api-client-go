@@ -12457,6 +12457,7 @@ const (
 	APIKeyTypeClient APIKeyType = "CLIENT"
 	// Salesforce API key
 	APIKeyTypeSalesforce APIKeyType = "SALESFORCE"
+	APIKeyTypeScoped     APIKeyType = "SCOPED"
 	// Server-side API key
 	APIKeyTypeServer APIKeyType = "SERVER"
 	// Workflow API key
@@ -12466,13 +12467,14 @@ const (
 var AllAPIKeyType = []APIKeyType{
 	APIKeyTypeClient,
 	APIKeyTypeSalesforce,
+	APIKeyTypeScoped,
 	APIKeyTypeServer,
 	APIKeyTypeWorkflow,
 }
 
 func (e APIKeyType) IsValid() bool {
 	switch e {
-	case APIKeyTypeClient, APIKeyTypeSalesforce, APIKeyTypeServer, APIKeyTypeWorkflow:
+	case APIKeyTypeClient, APIKeyTypeSalesforce, APIKeyTypeScoped, APIKeyTypeServer, APIKeyTypeWorkflow:
 		return true
 	}
 	return false
