@@ -17,6 +17,10 @@ type Credentials interface {
 	IsCredentials()
 }
 
+type PackageEntitlementChangeUnion interface {
+	IsPackageEntitlementChangeUnion()
+}
+
 type PackageEntitlementUnion interface {
 	IsPackageEntitlementUnion()
 }
@@ -6091,6 +6095,8 @@ type PackageChanges struct {
 	OverageBillingPeriod *OverageBillingPeriodChange `json:"overageBillingPeriod"`
 	// List of overage prices of the package
 	OveragePrices []*PackagePriceChange `json:"overagePrices"`
+	// List of all entitlements of the package
+	PackageEntitlements []PackageEntitlementChangeUnion `json:"packageEntitlements"`
 	// List of prices of the package
 	Prices []*PackagePriceChange `json:"prices"`
 	// The pricing type of the package
@@ -6142,6 +6148,18 @@ type PackageCreditEntitlementAggregateGroupBy struct {
 	PackageID     *string `json:"packageId"`
 	UpdatedAt     *string `json:"updatedAt"`
 }
+
+// Package credit entitlement change
+type PackageCreditEntitlementChange struct {
+	// The value after the change
+	After *PackageCreditEntitlement `json:"after"`
+	// The value before the change
+	Before *PackageCreditEntitlement `json:"before"`
+	// The change type
+	ChangeType *ChangeType `json:"changeType"`
+}
+
+func (PackageCreditEntitlementChange) IsPackageEntitlementChangeUnion() {}
 
 type PackageCreditEntitlementCountAggregate struct {
 	CreatedAt     *int64 `json:"createdAt"`
@@ -6672,6 +6690,18 @@ type PackageFeatureEntitlementAggregateGroupBy struct {
 	PackageID     *string `json:"packageId"`
 	UpdatedAt     *string `json:"updatedAt"`
 }
+
+// Package feature entitlement change
+type PackageFeatureEntitlementChange struct {
+	// The value after the change
+	After *PackageFeatureEntitlement `json:"after"`
+	// The value before the change
+	Before *PackageFeatureEntitlement `json:"before"`
+	// The change type
+	ChangeType *ChangeType `json:"changeType"`
+}
+
+func (PackageFeatureEntitlementChange) IsPackageEntitlementChangeUnion() {}
 
 type PackageFeatureEntitlementCountAggregate struct {
 	CreatedAt     *int64 `json:"createdAt"`
