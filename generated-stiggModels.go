@@ -10278,6 +10278,7 @@ type SubscriptionPrice struct {
 	BillingModel          *BillingModel        `json:"billingModel"`
 	CreatedAt             *string              `json:"createdAt"`
 	CreditGrantCadence    *CreditGrantCadence  `json:"creditGrantCadence"`
+	CreditRate            *CreditRate          `json:"creditRate"`
 	CreditsQuantity       *float64             `json:"creditsQuantity"`
 	FeatureID             *string              `json:"featureId"`
 	HasSoftLimit          *bool                `json:"hasSoftLimit"`
