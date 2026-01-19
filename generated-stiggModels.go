@@ -1938,8 +1938,9 @@ type CreditGrantAlreadyVoidedError struct {
 
 // Credit grant billing information input
 type CreditGrantBillingInfoInput struct {
-	TaxPercentage *float64 `json:"taxPercentage,omitempty"`
-	TaxRateIds    []string `json:"taxRateIds,omitempty"`
+	BillingAddress *BillingAddress `json:"billingAddress,omitempty"`
+	TaxPercentage  *float64        `json:"taxPercentage,omitempty"`
+	TaxRateIds     []string        `json:"taxRateIds,omitempty"`
 }
 
 type CreditGrantConnection struct {
