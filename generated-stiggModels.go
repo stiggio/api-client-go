@@ -8049,6 +8049,8 @@ type PriceOverrideInput struct {
 type PricePeriodInput struct {
 	// The billing country code of the price
 	BillingCountryCode *string `json:"billingCountryCode,omitempty"`
+	// The unique identifier for the entity in the billing provider
+	BillingID *string `json:"billingId,omitempty"`
 	// The billing period of the price
 	BillingPeriod BillingPeriod `json:"billingPeriod"`
 	// The number of units per block. Defaults to 1 unit
@@ -8059,6 +8061,8 @@ type PricePeriodInput struct {
 	CreditRate *CreditRateInput `json:"creditRate,omitempty"`
 	// The price of the price period
 	Price *MoneyInputDto `json:"price,omitempty"`
+	// The billing ID of the price group package
+	PriceGroupPackageBillingID *string `json:"priceGroupPackageBillingId,omitempty"`
 	// List of tiers of the price period
 	Tiers []*PriceTierInput `json:"tiers,omitempty"`
 }
