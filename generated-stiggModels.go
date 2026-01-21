@@ -1936,11 +1936,10 @@ type CreditGrantAlreadyVoidedError struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
-// Credit grant billing information input
+// Billing information for credit grant creation
 type CreditGrantBillingInfoInput struct {
-	BillingAddress *BillingAddress `json:"billingAddress,omitempty"`
-	TaxPercentage  *float64        `json:"taxPercentage,omitempty"`
-	TaxRateIds     []string        `json:"taxRateIds,omitempty"`
+	InvoiceDaysUntilDue *float64 `json:"invoiceDaysUntilDue,omitempty"`
+	IsInvoicePaid       *bool    `json:"isInvoicePaid,omitempty"`
 }
 
 type CreditGrantConnection struct {
@@ -1977,6 +1976,8 @@ type CreditGrantInput struct {
 	Amount float64 `json:"amount"`
 	// Wait for payment confirmation before returning
 	AwaitPaymentConfirmation *bool `json:"awaitPaymentConfirmation,omitempty"`
+	// Billing information for credit grants
+	BillingInformation *CreditGrantBillingInfoInput `json:"billingInformation,omitempty"`
 	// The comment for the credit grant
 	Comment *string `json:"comment,omitempty"`
 	// The fiat cost of the credit grant
@@ -7747,6 +7748,13 @@ type PreparedPaymentMethodForm struct {
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
+// Preview credit grant billing information input
+type PreviewCreditGrantBillingInfoInput struct {
+	BillingAddress *BillingAddress `json:"billingAddress,omitempty"`
+	TaxPercentage  *float64        `json:"taxPercentage,omitempty"`
+	TaxRateIds     []string        `json:"taxRateIds,omitempty"`
+}
+
 // Preview credit grant input object, used to preview credits invoice before purchasing
 type PreviewCreditGrantInput struct {
 	// The amount of the credit grant
@@ -7754,7 +7762,7 @@ type PreviewCreditGrantInput struct {
 	// Applied Stripe coupon
 	AppliedCoupon *CreditGrantCouponInput `json:"appliedCoupon,omitempty"`
 	// Credit grant billing information
-	BillingInformation *CreditGrantBillingInfoInput `json:"billingInformation,omitempty"`
+	BillingInformation *PreviewCreditGrantBillingInfoInput `json:"billingInformation,omitempty"`
 	// The fiat cost of the credit grant
 	Cost MoneyInputDto `json:"cost"`
 	// The custom currency ID of the credit grant
