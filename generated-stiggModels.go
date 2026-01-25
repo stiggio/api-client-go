@@ -17,6 +17,10 @@ type Credentials interface {
 	IsCredentials()
 }
 
+type EntitlementUnion interface {
+	IsEntitlementUnion()
+}
+
 type PackageEntitlementChangeUnion interface {
 	IsPackageEntitlementChangeUnion()
 }
@@ -605,8 +609,10 @@ type AppStoreSubscriptionsToPlansMappingInput struct {
 
 // Apply subscription response
 type ApplySubscription struct {
-	// The updated entitlements
+	// The list of feature entitlements granted to the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// The list of polymorphic entitlements (feature and credit) granted to the customer.
+	EntitlementsV2 []EntitlementUnion `json:"entitlementsV2"`
 	// The updated subscription
 	Subscription *CustomerSubscription `json:"subscription"`
 }
@@ -1921,6 +1927,28 @@ type CreditBalanceUpdated struct {
 	// The next time the balance will be updated (e.g., when a grant expires or becomes effective)
 	ValidUntil *float64 `json:"validUntil"`
 }
+
+// Represents a credit-based entitlement granted to a customer.
+type CreditEntitlement struct {
+	// Optional message explaining why access to the feature is denied.
+	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason"`
+	// The custom currency associated with this credit entitlement.
+	Currency EntitlementCurrency `json:"currency"`
+	// The total amount of credits consumed by the customer.
+	CurrentUsage *float64 `json:"currentUsage"`
+	// Timestamp of the last update to the entitlement grant or configuration.
+	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// Indicates whether the entitlement is currently granted to the customer.
+	IsGranted bool `json:"isGranted"`
+	// The total amount of credits granted to the customer.
+	UsageLimit *float64 `json:"usageLimit"`
+	// Timestamp of the last update to the credit usage.
+	UsageUpdatedAt *string `json:"usageUpdatedAt"`
+	// The next time the entitlement should be recalculated
+	ValidUntil *string `json:"validUntil"`
+}
+
+func (CreditEntitlement) IsEntitlementUnion() {}
 
 // Stigg credit grant object
 type CreditGrant struct {
@@ -3581,6 +3609,12 @@ type EntitlementCheckResult struct {
 	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
+// The currency associated with a credit entitlement.
+type EntitlementCurrency struct {
+	// The unique identifier of the custom currency.
+	CurrencyID string `json:"currencyId"`
+}
+
 type EntitlementFeature struct {
 	// Any additional metadata attached to this entitlement.
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
@@ -3621,6 +3655,14 @@ type EntitlementOptions struct {
 	RequestedValues []string `json:"requestedValues,omitempty"`
 	// Not in use anymore
 	ShouldTrack *bool `json:"shouldTrack,omitempty"`
+}
+
+// Reference to an entitlement with type discriminator and identifier
+type EntitlementReference struct {
+	// Identifier - featureId for FEATURE type, currencyId for CREDIT type
+	ID string `json:"id"`
+	// The type of entitlement (FEATURE or CREDIT)
+	Type EntitlementType `json:"type"`
 }
 
 // Summary of all entitlements affecting a given feature for a customer.
@@ -3694,12 +3736,14 @@ type EntitlementWithSummary struct {
 	ValidUntil *float64 `json:"validUntil"`
 }
 
-// Represents a list of entitlements granted to a customer, including its usage and reset configuration.
+// Represents a list of entitlements (both feature and credit) granted to a customer, including usage and configuration.
 type EntitlementsState struct {
 	// Optional message explaining why access to the feature is denied.
 	AccessDeniedReason *EntitlementsStateAccessDeniedReason `json:"accessDeniedReason"`
-	// The list of entitlements granted to the customer.
+	// The list of feature entitlements granted to the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// The list of polymorphic entitlements (feature and credit) granted to the customer.
+	EntitlementsV2 []EntitlementUnion `json:"entitlementsV2"`
 }
 
 // Event payload for when entitlements are updated for a customer.
@@ -3712,6 +3756,22 @@ type EntitlementsUpdated struct {
 	CustomerID string `json:"customerId"`
 	// The updated list of entitlements for the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The resource the entitlement update is scoped to.
+	ResourceID *string `json:"resourceId"`
+}
+
+// Event payload for when entitlements are updated for a customer (v2 with polymorphic entitlements).
+type EntitlementsUpdatedV2 struct {
+	// The reason why access is denied.
+	AccessDeniedReason *EntitlementsStateAccessDeniedReason `json:"accessDeniedReason"`
+	// The unique identifier for the account
+	AccountID string `json:"accountId"`
+	// Identifier of the customer whose entitlements have changed.
+	CustomerID string `json:"customerId"`
+	// The updated list of polymorphic entitlements (feature and credit) for the customer.
+	Entitlements []EntitlementUnion `json:"entitlements"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The resource the entitlement update is scoped to.
@@ -4372,6 +4432,46 @@ type FeatureEdge struct {
 	// The node containing the Feature
 	Node Feature `json:"node"`
 }
+
+// Represents a feature-based entitlement granted to a customer.
+type FeatureEntitlement struct {
+	// Optional message explaining why access to the feature is denied.
+	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason"`
+	// The credit rate associated with this entitlement, if applicable.
+	CreditRate *CreditRate `json:"creditRate"`
+	// The amount of the feature the customer has used so far in the current period.
+	CurrentUsage *float64 `json:"currentUsage"`
+	// Timestamp of the last update to the entitlement grant or configuration.
+	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// List of enum values applicable to this entitlement, if it is an enum feature.
+	EnumValues []string `json:"enumValues"`
+	// The feature this entitlement corresponds to.
+	Feature *EntitlementFeature `json:"feature"`
+	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Indicates whether this entitlement grants unlimited usage with no enforced cap.
+	HasUnlimitedUsage bool `json:"hasUnlimitedUsage"`
+	// Indicates whether the entitlement is currently granted to the customer.
+	IsGranted bool `json:"isGranted"`
+	// The interval at which usage resets automatically, such as monthly or yearly.
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// Detailed configuration object specifying the usage reset schedule.
+	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
+	// The maximum allowed usage for this entitlement before restrictions apply.
+	UsageLimit *float64 `json:"usageLimit"`
+	// The anchor for calculating the usage period for metered entitlements with a reset period configured
+	UsagePeriodAnchor *string `json:"usagePeriodAnchor"`
+	// The end date of the usage period for metered entitlements with a reset period configured
+	UsagePeriodEnd *string `json:"usagePeriodEnd"`
+	// The start date of the usage period for metered entitlements with a reset period configured
+	UsagePeriodStart *string `json:"usagePeriodStart"`
+	// Timestamp of the last update to the usage value.
+	UsageUpdatedAt *string `json:"usageUpdatedAt"`
+	// The next time the entitlement should be recalculated
+	ValidUntil *string `json:"validUntil"`
+}
+
+func (FeatureEntitlement) IsEntitlementUnion() {}
 
 type FeatureFilter struct {
 	And           []*FeatureFilter               `json:"and,omitempty"`
@@ -8894,21 +8994,26 @@ type ProvisionSubscriptionInput struct {
 }
 
 type ProvisionSubscriptionResult struct {
-	CheckoutBillingID *string                     `json:"checkoutBillingId"`
-	CheckoutURL       *string                     `json:"checkoutUrl"`
-	Entitlements      []*Entitlement              `json:"entitlements"`
-	ID                string                      `json:"id"`
-	IsScheduled       *bool                       `json:"isScheduled"`
-	Status            ProvisionSubscriptionStatus `json:"status"`
-	Subscription      *CustomerSubscription       `json:"subscription"`
+	CheckoutBillingID *string `json:"checkoutBillingId"`
+	CheckoutURL       *string `json:"checkoutUrl"`
+	// The list of feature entitlements granted to the customer.
+	Entitlements []*Entitlement `json:"entitlements"`
+	// The list of polymorphic entitlements (feature and credit) granted to the customer.
+	EntitlementsV2 []EntitlementUnion          `json:"entitlementsV2"`
+	ID             string                      `json:"id"`
+	IsScheduled    *bool                       `json:"isScheduled"`
+	Status         ProvisionSubscriptionStatus `json:"status"`
+	Subscription   *CustomerSubscription       `json:"subscription"`
 }
 
 // Response for provisioning a customer and subscription
 type ProvisionedCustomer struct {
 	// Customer slg
 	Customer Customer `json:"customer"`
-	// Entitlements
+	// The list of feature entitlements granted to the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// The list of polymorphic entitlements (feature and credit) granted to the customer.
+	EntitlementsV2 []EntitlementUnion `json:"entitlementsV2"`
 	// Provisioned subscription
 	Subscription *CustomerSubscription `json:"subscription"`
 	// Wether the subscription should be provision based on customer journey or input
@@ -11925,6 +12030,34 @@ type UsageUpdated struct {
 	Usage UsageMeasurementUpdated `json:"usage"`
 }
 
+// Usage updated event supporting both feature and credit consumption
+type UsageUpdatedV2 struct {
+	// The unique identifier for the account
+	AccountID string `json:"accountId"`
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// Reference to the entitlement whose usage was updated
+	EntitlementReference EntitlementReference `json:"entitlementReference"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// Resource id
+	ResourceID *string `json:"resourceId"`
+	// Usage
+	Usage UsageV2 `json:"usage"`
+}
+
+// Usage measurement data
+type UsageV2 struct {
+	// The current measured usage value
+	CurrentUsage float64 `json:"currentUsage"`
+	// The end date of the usage period in which this measurement resides (for entitlements with a reset period)
+	UsagePeriodEnd *string `json:"usagePeriodEnd"`
+	// The start date of the usage period in which this measurement resides (for entitlements with a reset period)
+	UsagePeriodStart *string `json:"usagePeriodStart"`
+	// Timestamp of when the usage was last updated.
+	UsageUpdatedAt string `json:"usageUpdatedAt"`
+}
+
 // Stigg user
 type User struct {
 	// User selected department
@@ -12172,6 +12305,8 @@ const (
 	AccessDeniedReasonCustomerNotFound AccessDeniedReason = "CustomerNotFound"
 	// The resource associated with the customer could not be found.
 	AccessDeniedReasonCustomerResourceNotFound AccessDeniedReason = "CustomerResourceNotFound"
+	// No entitlement was found for the requested feature or currency.
+	AccessDeniedReasonEntitlementNotFound AccessDeniedReason = "EntitlementNotFound"
 	// The requested feature does not exist or is not defined in the current environment.
 	AccessDeniedReasonFeatureNotFound AccessDeniedReason = "FeatureNotFound"
 	// The requested entitlement type does not match the feature type
@@ -12197,6 +12332,7 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 	AccessDeniedReasonCustomerIsArchived,
 	AccessDeniedReasonCustomerNotFound,
 	AccessDeniedReasonCustomerResourceNotFound,
+	AccessDeniedReasonEntitlementNotFound,
 	AccessDeniedReasonFeatureNotFound,
 	AccessDeniedReasonFeatureTypeMismatch,
 	AccessDeniedReasonInsufficientCredits,
@@ -12210,7 +12346,7 @@ var AllAccessDeniedReason = []AccessDeniedReason{
 
 func (e AccessDeniedReason) IsValid() bool {
 	switch e {
-	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonFeatureTypeMismatch, AccessDeniedReasonInsufficientCredits, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonRequestedValuesMismatch, AccessDeniedReasonRevoked, AccessDeniedReasonUnknown:
+	case AccessDeniedReasonBudgetExceeded, AccessDeniedReasonCustomerIsArchived, AccessDeniedReasonCustomerNotFound, AccessDeniedReasonCustomerResourceNotFound, AccessDeniedReasonEntitlementNotFound, AccessDeniedReasonFeatureNotFound, AccessDeniedReasonFeatureTypeMismatch, AccessDeniedReasonInsufficientCredits, AccessDeniedReasonNoActiveSubscription, AccessDeniedReasonNoFeatureEntitlementInSubscription, AccessDeniedReasonRequestedUsageExceedingLimit, AccessDeniedReasonRequestedValuesMismatch, AccessDeniedReasonRevoked, AccessDeniedReasonUnknown:
 		return true
 	}
 	return false
@@ -14471,6 +14607,50 @@ func (e *EntitlementResetPeriod) UnmarshalGQL(v interface{}) error {
 }
 
 func (e EntitlementResetPeriod) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The type of entitlement
+type EntitlementType string
+
+const (
+	// A credit-based entitlement with balance management
+	EntitlementTypeCredit EntitlementType = "CREDIT"
+	// A feature-based entitlement with usage limits and access control
+	EntitlementTypeFeature EntitlementType = "FEATURE"
+)
+
+var AllEntitlementType = []EntitlementType{
+	EntitlementTypeCredit,
+	EntitlementTypeFeature,
+}
+
+func (e EntitlementType) IsValid() bool {
+	switch e {
+	case EntitlementTypeCredit, EntitlementTypeFeature:
+		return true
+	}
+	return false
+}
+
+func (e EntitlementType) String() string {
+	return string(e)
+}
+
+func (e *EntitlementType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EntitlementType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EntitlementType", str)
+	}
+	return nil
+}
+
+func (e EntitlementType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
