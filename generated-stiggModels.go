@@ -10465,19 +10465,24 @@ type SubscriptionPreviewV2 struct {
 }
 
 type SubscriptionPrice struct {
-	BillingModel          *BillingModel        `json:"billingModel"`
-	CreatedAt             *string              `json:"createdAt"`
-	CreditGrantCadence    *CreditGrantCadence  `json:"creditGrantCadence"`
-	CreditRate            *CreditRate          `json:"creditRate"`
-	CreditsQuantity       *float64             `json:"creditsQuantity"`
-	FeatureID             *string              `json:"featureId"`
-	HasSoftLimit          *bool                `json:"hasSoftLimit"`
-	ID                    string               `json:"id"`
-	Price                 *Price               `json:"price"`
-	Subscription          CustomerSubscription `json:"subscription"`
-	TopUpCustomCurrencyID *string              `json:"topUpCustomCurrencyId"`
-	UpdatedAt             string               `json:"updatedAt"`
-	UsageLimit            *float64             `json:"usageLimit"`
+	BillingModel       *BillingModel       `json:"billingModel"`
+	CreatedAt          *string             `json:"createdAt"`
+	CreditGrantCadence *CreditGrantCadence `json:"creditGrantCadence"`
+	CreditRate         *CreditRate         `json:"creditRate"`
+	CreditsQuantity    *float64            `json:"creditsQuantity"`
+	EnvironmentID      *string             `json:"environmentId"`
+	FeatureID          *string             `json:"featureId"`
+	HasSoftLimit       *bool               `json:"hasSoftLimit"`
+	ID                 string              `json:"id"`
+	// The next date when recurring credits will be granted
+	NextGrantDate *string              `json:"nextGrantDate"`
+	Price         *Price               `json:"price"`
+	Subscription  CustomerSubscription `json:"subscription"`
+	// The subscription this price belongs to
+	SubscriptionID        string   `json:"subscriptionId"`
+	TopUpCustomCurrencyID *string  `json:"topUpCustomCurrencyId"`
+	UpdatedAt             string   `json:"updatedAt"`
+	UsageLimit            *float64 `json:"usageLimit"`
 }
 
 type SubscriptionPriceAggregateGroupBy struct {
