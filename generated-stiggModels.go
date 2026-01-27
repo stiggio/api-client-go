@@ -2008,8 +2008,9 @@ type CreditGrantAlreadyVoidedError struct {
 
 // Billing information for credit grant creation
 type CreditGrantBillingInfoInput struct {
-	InvoiceDaysUntilDue *float64 `json:"invoiceDaysUntilDue,omitempty"`
-	IsInvoicePaid       *bool    `json:"isInvoicePaid,omitempty"`
+	BillingAddress      *BillingAddress `json:"billingAddress,omitempty"`
+	InvoiceDaysUntilDue *float64        `json:"invoiceDaysUntilDue,omitempty"`
+	IsInvoicePaid       *bool           `json:"isInvoicePaid,omitempty"`
 }
 
 type CreditGrantConnection struct {
