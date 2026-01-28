@@ -1820,7 +1820,7 @@ type CreatePackageEntitlementsInput struct {
 	Entitlements []*CreatePackageEntitlementInput `json:"entitlements"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 }
 
@@ -4950,7 +4950,7 @@ type GrantPromotionalEntitlementInput struct {
 
 // Grant promotional entitlements for a feature group input
 type GrantPromotionalEntitlementsGroupInput struct {
-	// The unique identifier of the entitlement customer
+	// The unique identifier of the customer
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
@@ -4962,7 +4962,7 @@ type GrantPromotionalEntitlementsGroupInput struct {
 
 // Grant multiple promotional entitlements input
 type GrantPromotionalEntitlementsInput struct {
-	// The unique identifier of the entitlement customer
+	// The unique identifier of the customer
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
@@ -5167,7 +5167,7 @@ type ImportAlreadyInProgressError struct {
 
 // Input for importing a bulk of customers
 type ImportCustomerBulkInput struct {
-	// List of customers to import
+	// List of customer objects to import
 	Customers []*ImportCustomerInput `json:"customers"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
@@ -5572,7 +5572,7 @@ type LinkFeatureGroupToPackageInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The group id to link to the package
 	FeatureGroupID string `json:"featureGroupId"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 }
 
@@ -5869,7 +5869,7 @@ type MigratePackageFeatureGroupsToLatestInput struct {
 	Entitlements []*PackageEntitlementInput `json:"entitlements"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 }
 
@@ -6286,7 +6286,7 @@ type PackageCreditEntitlement struct {
 	// The order of the entitlement in the entitlement list
 	Order   *float64    `json:"order"`
 	Package *PackageDto `json:"package"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 	// Timestamp of when the record was last updated
 	UpdatedAt *string `json:"updatedAt"`
@@ -6545,7 +6545,7 @@ type PackageEntitlement struct {
 	// The order of the entitlement in the entitlement list
 	Order   *float64    `json:"order"`
 	Package *PackageDto `json:"package"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 	// The reset period of the entitlement
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
@@ -6624,7 +6624,7 @@ type PackageEntitlementDeleteResponse struct {
 	IsGranted *bool `json:"isGranted"`
 	// The order of the entitlement in the entitlement list
 	Order *float64 `json:"order"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID *string `json:"packageId"`
 	// The reset period of the entitlement
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
@@ -6718,7 +6718,7 @@ type PackageEntitlementInput struct {
 	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
 	// The order of the entitlement in the entitlement list
 	Order *float64 `json:"order,omitempty"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 	// The reset period of the entitlement
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
@@ -6822,7 +6822,7 @@ type PackageFeatureEntitlement struct {
 	// The order of the entitlement in the entitlement list
 	Order   *float64    `json:"order"`
 	Package *PackageDto `json:"package"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 	// The reset period of the entitlement
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
@@ -8741,7 +8741,7 @@ type PromotionalEntitlementFilter struct {
 
 // Promotional entitlement input
 type PromotionalEntitlementInput struct {
-	// The unique identifier of the entitlement customer
+	// The unique identifier of the customer
 	CustomerID string `json:"customerId"`
 	// The description of the entitlement
 	Description *string `json:"description,omitempty"`
@@ -9120,7 +9120,7 @@ type RemoveFeatureGroupFromPackageInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The group id to remove
 	FeatureGroupID string `json:"featureGroupId"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 }
 
@@ -9206,7 +9206,7 @@ type RevokeAPIKeyInput struct {
 
 // Revoke promotional entitlement input
 type RevokePromotionalEntitlementInput struct {
-	// The unique identifier of the entitlement customer
+	// The unique identifier of the customer
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
@@ -9216,7 +9216,7 @@ type RevokePromotionalEntitlementInput struct {
 
 // Revoke promotional entitlements for a feature group input
 type RevokePromotionalEntitlementsGroupInput struct {
-	// The unique identifier of the entitlement customer
+	// The unique identifier of the customer
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
@@ -9933,7 +9933,7 @@ type SubscriptionEntitlement struct {
 	// The reset period configuration of the entitlement
 	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
 	Subscription             CustomerSubscription     `json:"subscription"`
-	// The unique identifier of the entitlement subscription
+	// The unique identifier of the subscription
 	SubscriptionID string `json:"subscriptionId"`
 	// Timestamp of when the record was last updated
 	UpdatedAt *string `json:"updatedAt"`
@@ -11289,13 +11289,13 @@ type UnlinkFeatureGroupFromPackageInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The group id to unlink
 	FeatureGroupID string `json:"featureGroupId"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 }
 
 // Unlink promotional feature group input
 type UnlinkPromotionalEntitlementsGroupInput struct {
-	// The unique identifier of the entitlement customer
+	// The unique identifier of the customer
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
@@ -11595,7 +11595,7 @@ type UpdatePackageEntitlementOrderInput struct {
 	Entitlements []*UpdatePackageEntitlementOrderItemInput `json:"entitlements"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	// The unique identifier of the entitlement package
+	// The unique identifier of the plan or add-on
 	PackageID string `json:"packageId"`
 }
 
