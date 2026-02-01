@@ -8197,6 +8197,8 @@ type PriceOverrideInput struct {
 	CreditGrantCadence *CreditGrantCadence `json:"creditGrantCadence,omitempty"`
 	// The credit rate for this period
 	CreditRate *CreditRateInput `json:"creditRate,omitempty"`
+	// The corresponding custom currency id of the recurring credits price
+	CurrencyID *string `json:"currencyId,omitempty"`
 	// The corresponding feature id of the price
 	FeatureID *string `json:"featureId,omitempty"`
 	// The price of the price period
