@@ -485,6 +485,8 @@ type Aggregation struct {
 
 // API key
 type APIKey struct {
+	// The creation date of the API key
+	CreatedAt string `json:"createdAt"`
 	// The description of the API key
 	Description *string `json:"description"`
 	// The display name of the API key
@@ -499,6 +501,31 @@ type APIKey struct {
 	KeyType APIKeyType `json:"keyType"`
 	// The token of the API key
 	Token string `json:"token"`
+}
+
+type APIKeyConnection struct {
+	// Edges in the current page
+	Edges []*APIKeyEdge `json:"edges"`
+	// Pagination information
+	PageInfo PageInfo `json:"pageInfo"`
+	// Total number of items matching the filter
+	TotalCount int64 `json:"totalCount"`
+}
+
+type APIKeyEdge struct {
+	// An opaque cursor for this item
+	Cursor string `json:"cursor"`
+	// The item at the edge
+	Node APIKey `json:"node"`
+}
+
+type APIKeyExpirationFilterInput struct {
+	// Include keys expiring after this date (applies only keys with expiration)
+	ExpiresAfter *string `json:"expiresAfter,omitempty"`
+	// Include keys expiring before this date (applies only keys with expiration)
+	ExpiresBefore *string `json:"expiresBefore,omitempty"`
+	// Include keys with no expiration date (defaults to true)
+	IncludeNeverExpires *bool `json:"includeNeverExpires,omitempty"`
 }
 
 type APIKeyExpired struct {
@@ -4792,6 +4819,20 @@ type GetActiveSubscriptionsInput struct {
 	EnvironmentID *string  `json:"environmentId,omitempty"`
 	ResourceID    *string  `json:"resourceId,omitempty"`
 	ResourceIds   []string `json:"resourceIds,omitempty"`
+}
+
+// Input for fetching API keys with pagination
+type GetAPIKeysInput struct {
+	// Search API keys by display name, works with partial matching
+	DisplayNameContains *string `json:"displayNameContains,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Filter API keys by expiration date (defaults to non expired keys)
+	ExpirationFilter *APIKeyExpirationFilterInput `json:"expirationFilter,omitempty"`
+	// Filter API keys by types
+	KeyTypes []APIKeyType `json:"keyTypes,omitempty"`
+	// Pagination options
+	Paging *CursorPaging `json:"paging,omitempty"`
 }
 
 // Input configuration for retrieving Auth0 applications
