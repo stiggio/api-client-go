@@ -13592,6 +13592,8 @@ func (e CreditGrantInvoiceBillingReason) MarshalGQL(w io.Writer) {
 type CreditGrantInvoiceStatus string
 
 const (
+	// Invoice is voided
+	CreditGrantInvoiceStatusCanceled CreditGrantInvoiceStatus = "CANCELED"
 	// Invoice is open and waiting for payment
 	CreditGrantInvoiceStatusOpen CreditGrantInvoiceStatus = "OPEN"
 	// Invoice is paid
@@ -13599,13 +13601,14 @@ const (
 )
 
 var AllCreditGrantInvoiceStatus = []CreditGrantInvoiceStatus{
+	CreditGrantInvoiceStatusCanceled,
 	CreditGrantInvoiceStatusOpen,
 	CreditGrantInvoiceStatusPaid,
 }
 
 func (e CreditGrantInvoiceStatus) IsValid() bool {
 	switch e {
-	case CreditGrantInvoiceStatusOpen, CreditGrantInvoiceStatusPaid:
+	case CreditGrantInvoiceStatusCanceled, CreditGrantInvoiceStatusOpen, CreditGrantInvoiceStatusPaid:
 		return true
 	}
 	return false
