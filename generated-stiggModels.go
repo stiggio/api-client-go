@@ -7316,8 +7316,6 @@ type PaywallAddon struct {
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
 	// The maximum quantity of this addon that can be added to a subscription
 	MaxQuantity *float64 `json:"maxQuantity"`
-	// List of package entitlements for the addon
-	PackageEntitlements []PackageEntitlementUnion `json:"packageEntitlements"`
 	// List of prices for the addon
 	Prices []*PaywallPrice `json:"prices"`
 	// The pricing type of the addon, e.g. "recurring" or "one-time"
@@ -7440,12 +7438,8 @@ type PaywallPlan struct {
 	Entitlements []*Entitlement `json:"entitlements"`
 	// List of inherited entitlements for the plan
 	InheritedEntitlements []*Entitlement `json:"inheritedEntitlements"`
-	// List of inherited package entitlements for the plan
-	InheritedPackageEntitlements []PackageEntitlementUnion `json:"inheritedPackageEntitlements"`
 	// Minimum spend configuration
 	MinimumSpend []*MinimumSpend `json:"minimumSpend"`
-	// List of package entitlements for the plan
-	PackageEntitlements []PackageEntitlementUnion `json:"packageEntitlements"`
 	// List of prices for the plan
 	Prices []*PaywallPrice `json:"prices"`
 	// The pricing type of the plan, e.g. "recurring" or "one-time"
