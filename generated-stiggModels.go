@@ -5212,6 +5212,8 @@ type ImportCustomerBulkInput struct {
 	Customers []*ImportCustomerInput `json:"customers"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The integration id to use for the customers
+	IntegrationID *string `json:"integrationId,omitempty"`
 }
 
 // Input for importing a customer
@@ -5398,6 +5400,7 @@ type ImportSubscriptionInput struct {
 
 type ImportSubscriptionsBulkInput struct {
 	EnvironmentID *string                    `json:"environmentId,omitempty"`
+	IntegrationID *string                    `json:"integrationId,omitempty"`
 	Subscriptions []*ImportSubscriptionInput `json:"subscriptions"`
 }
 
