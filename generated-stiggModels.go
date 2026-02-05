@@ -2172,8 +2172,12 @@ type CreditLedgerEvent struct {
 	EventID *string `json:"eventId"`
 	// The type of the ledger event
 	EventType CreditLedgerEventType `json:"eventType"`
+	// The feature associated with this ledger event
+	Feature *Feature `json:"feature"`
 	// The feature ID of the ledger event
 	FeatureID *string `json:"featureId"`
+	// The credit grant associated with this ledger event
+	Grant *CreditGrant `json:"grant"`
 	// The resource ID of the ledger event
 	ResourceID *string `json:"resourceId"`
 	// The timestamp of the ledger event
