@@ -411,6 +411,43 @@ type PackageEntitlementFragment struct {
 	IsGranted           bool                               "json:\"isGranted\" graphql:\"isGranted\""
 	Feature             PackageEntitlementFragment_Feature "json:\"feature\" graphql:\"feature\""
 }
+type PackageFeatureEntitlementFragment struct {
+	Typename            *string                                   "json:\"__typename\" graphql:\"__typename\""
+	ID                  string                                    "json:\"id\" graphql:\"id\""
+	Behavior            EntitlementBehavior                       "json:\"behavior\" graphql:\"behavior\""
+	Description         *string                                   "json:\"description\" graphql:\"description\""
+	DisplayNameOverride *string                                   "json:\"displayNameOverride\" graphql:\"displayNameOverride\""
+	EnumValues          []string                                  "json:\"enumValues\" graphql:\"enumValues\""
+	FeatureID           string                                    "json:\"featureId\" graphql:\"featureId\""
+	HasSoftLimit        *bool                                     "json:\"hasSoftLimit\" graphql:\"hasSoftLimit\""
+	HasUnlimitedUsage   *bool                                     "json:\"hasUnlimitedUsage\" graphql:\"hasUnlimitedUsage\""
+	HiddenFromWidgets   []WidgetType                              "json:\"hiddenFromWidgets\" graphql:\"hiddenFromWidgets\""
+	IsCustom            *bool                                     "json:\"isCustom\" graphql:\"isCustom\""
+	IsGranted           bool                                      "json:\"isGranted\" graphql:\"isGranted\""
+	Order               *float64                                  "json:\"order\" graphql:\"order\""
+	ResetPeriod         *EntitlementResetPeriod                   "json:\"resetPeriod\" graphql:\"resetPeriod\""
+	UsageLimit          *float64                                  "json:\"usageLimit\" graphql:\"usageLimit\""
+	Feature             PackageFeatureEntitlementFragment_Feature "json:\"feature\" graphql:\"feature\""
+}
+type PackageCreditEntitlementFragment struct {
+	Typename            *string                                         "json:\"__typename\" graphql:\"__typename\""
+	ID                  string                                          "json:\"id\" graphql:\"id\""
+	Amount              float64                                         "json:\"amount\" graphql:\"amount\""
+	Behavior            EntitlementBehavior                             "json:\"behavior\" graphql:\"behavior\""
+	Cadence             CreditCadence                                   "json:\"cadence\" graphql:\"cadence\""
+	CustomCurrencyID    string                                          "json:\"customCurrencyId\" graphql:\"customCurrencyId\""
+	Description         *string                                         "json:\"description\" graphql:\"description\""
+	DisplayNameOverride *string                                         "json:\"displayNameOverride\" graphql:\"displayNameOverride\""
+	HiddenFromWidgets   []WidgetType                                    "json:\"hiddenFromWidgets\" graphql:\"hiddenFromWidgets\""
+	IsCustom            *bool                                           "json:\"isCustom\" graphql:\"isCustom\""
+	IsGranted           bool                                            "json:\"isGranted\" graphql:\"isGranted\""
+	Order               *float64                                        "json:\"order\" graphql:\"order\""
+	CustomCurrency      PackageCreditEntitlementFragment_CustomCurrency "json:\"customCurrency\" graphql:\"customCurrency\""
+}
+type PackageEntitlementUnionFragment struct {
+	PackageFeatureEntitlement PackageFeatureEntitlementFragment "graphql:\"... on PackageFeatureEntitlement\""
+	PackageCreditEntitlement  PackageCreditEntitlementFragment  "graphql:\"... on PackageCreditEntitlement\""
+}
 type AddonFragment struct {
 	ID                 string                        "json:\"id\" graphql:\"id\""
 	RefID              string                        "json:\"refId\" graphql:\"refId\""
@@ -433,25 +470,27 @@ type AddonDependencyFragment struct {
 	Description *string "json:\"description\" graphql:\"description\""
 }
 type PlanFragment struct {
-	ID                          string                                 "json:\"id\" graphql:\"id\""
-	RefID                       string                                 "json:\"refId\" graphql:\"refId\""
-	DisplayName                 string                                 "json:\"displayName\" graphql:\"displayName\""
-	Description                 *string                                "json:\"description\" graphql:\"description\""
-	BillingID                   *string                                "json:\"billingId\" graphql:\"billingId\""
-	VersionNumber               int64                                  "json:\"versionNumber\" graphql:\"versionNumber\""
-	AdditionalMetaData          map[string]interface{}                 "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
-	HiddenFromWidgets           []WidgetType                           "json:\"hiddenFromWidgets\" graphql:\"hiddenFromWidgets\""
-	Product                     *ProductFragment                       "json:\"product\" graphql:\"product\""
-	BasePlan                    *PlanFragment_BasePlan                 "json:\"basePlan\" graphql:\"basePlan\""
-	Entitlements                []*PackageEntitlementFragment          "json:\"entitlements\" graphql:\"entitlements\""
-	InheritedEntitlements       []*PackageEntitlementFragment          "json:\"inheritedEntitlements\" graphql:\"inheritedEntitlements\""
-	CompatibleAddons            []*AddonFragment                       "json:\"compatibleAddons\" graphql:\"compatibleAddons\""
-	CompatiblePackageGroups     []*PlanCompatiblePackageGroupsFragment "json:\"compatiblePackageGroups\" graphql:\"compatiblePackageGroups\""
-	Prices                      []*PriceFragment                       "json:\"prices\" graphql:\"prices\""
-	OveragePrices               []*OveragePriceFragment                "json:\"overagePrices\" graphql:\"overagePrices\""
-	PricingType                 *PricingType                           "json:\"pricingType\" graphql:\"pricingType\""
-	DefaultTrialConfig          *PlanFragment_DefaultTrialConfig       "json:\"defaultTrialConfig\" graphql:\"defaultTrialConfig\""
-	AwsMarketplacePlanDimension *string                                "json:\"awsMarketplacePlanDimension\" graphql:\"awsMarketplacePlanDimension\""
+	ID                           string                                 "json:\"id\" graphql:\"id\""
+	RefID                        string                                 "json:\"refId\" graphql:\"refId\""
+	DisplayName                  string                                 "json:\"displayName\" graphql:\"displayName\""
+	Description                  *string                                "json:\"description\" graphql:\"description\""
+	BillingID                    *string                                "json:\"billingId\" graphql:\"billingId\""
+	VersionNumber                int64                                  "json:\"versionNumber\" graphql:\"versionNumber\""
+	AdditionalMetaData           map[string]interface{}                 "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+	HiddenFromWidgets            []WidgetType                           "json:\"hiddenFromWidgets\" graphql:\"hiddenFromWidgets\""
+	Product                      *ProductFragment                       "json:\"product\" graphql:\"product\""
+	BasePlan                     *PlanFragment_BasePlan                 "json:\"basePlan\" graphql:\"basePlan\""
+	Entitlements                 []*PackageEntitlementFragment          "json:\"entitlements\" graphql:\"entitlements\""
+	InheritedEntitlements        []*PackageEntitlementFragment          "json:\"inheritedEntitlements\" graphql:\"inheritedEntitlements\""
+	CompatibleAddons             []*AddonFragment                       "json:\"compatibleAddons\" graphql:\"compatibleAddons\""
+	CompatiblePackageGroups      []*PlanCompatiblePackageGroupsFragment "json:\"compatiblePackageGroups\" graphql:\"compatiblePackageGroups\""
+	Prices                       []*PriceFragment                       "json:\"prices\" graphql:\"prices\""
+	OveragePrices                []*OveragePriceFragment                "json:\"overagePrices\" graphql:\"overagePrices\""
+	PricingType                  *PricingType                           "json:\"pricingType\" graphql:\"pricingType\""
+	DefaultTrialConfig           *PlanFragment_DefaultTrialConfig       "json:\"defaultTrialConfig\" graphql:\"defaultTrialConfig\""
+	AwsMarketplacePlanDimension  *string                                "json:\"awsMarketplacePlanDimension\" graphql:\"awsMarketplacePlanDimension\""
+	PackageEntitlements          []*PackageEntitlementUnionFragment     "json:\"packageEntitlements\" graphql:\"packageEntitlements\""
+	InheritedPackageEntitlements []*PackageEntitlementUnionFragment     "json:\"inheritedPackageEntitlements\" graphql:\"inheritedPackageEntitlements\""
 }
 type PlanCompatiblePackageGroupsFragment struct {
 	PackageGroupID string                                      "json:\"packageGroupId\" graphql:\"packageGroupId\""
@@ -943,20 +982,22 @@ type CustomerPortalBillingInformationFragment struct {
 	DefaultPaymentMethodType        *PaymentMethodType "json:\"defaultPaymentMethodType\" graphql:\"defaultPaymentMethodType\""
 }
 type MockPaywallPlanFragment struct {
-	RefID                   string                                            "json:\"refId\" graphql:\"refId\""
-	Description             *string                                           "json:\"description\" graphql:\"description\""
-	DisplayName             string                                            "json:\"displayName\" graphql:\"displayName\""
-	BillingID               *string                                           "json:\"billingId\" graphql:\"billingId\""
-	AdditionalMetaData      map[string]interface{}                            "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
-	Product                 MockPaywallPlanFragment_Product                   "json:\"product\" graphql:\"product\""
-	BasePlan                *MockPaywallPlanFragment_BasePlan                 "json:\"basePlan\" graphql:\"basePlan\""
-	Entitlements            []*MockPaywallPackageEntitlementFragment          "json:\"entitlements\" graphql:\"entitlements\""
-	InheritedEntitlements   []*MockPaywallPackageEntitlementFragment          "json:\"inheritedEntitlements\" graphql:\"inheritedEntitlements\""
-	Prices                  []*MockPaywallPriceFragment                       "json:\"prices\" graphql:\"prices\""
-	PricingType             *PricingType                                      "json:\"pricingType\" graphql:\"pricingType\""
-	DefaultTrialConfig      *MockPaywallPlanFragment_DefaultTrialConfig       "json:\"defaultTrialConfig\" graphql:\"defaultTrialConfig\""
-	CompatibleAddons        []*MockPaywallAddonFragment                       "json:\"compatibleAddons\" graphql:\"compatibleAddons\""
-	CompatiblePackageGroups []*MockPaywallPlanCompatiblePackageGroupsFragment "json:\"compatiblePackageGroups\" graphql:\"compatiblePackageGroups\""
+	RefID                        string                                            "json:\"refId\" graphql:\"refId\""
+	Description                  *string                                           "json:\"description\" graphql:\"description\""
+	DisplayName                  string                                            "json:\"displayName\" graphql:\"displayName\""
+	BillingID                    *string                                           "json:\"billingId\" graphql:\"billingId\""
+	AdditionalMetaData           map[string]interface{}                            "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+	Product                      MockPaywallPlanFragment_Product                   "json:\"product\" graphql:\"product\""
+	BasePlan                     *MockPaywallPlanFragment_BasePlan                 "json:\"basePlan\" graphql:\"basePlan\""
+	Entitlements                 []*MockPaywallPackageEntitlementFragment          "json:\"entitlements\" graphql:\"entitlements\""
+	InheritedEntitlements        []*MockPaywallPackageEntitlementFragment          "json:\"inheritedEntitlements\" graphql:\"inheritedEntitlements\""
+	PackageEntitlements          []*PackageEntitlementUnionFragment                "json:\"packageEntitlements\" graphql:\"packageEntitlements\""
+	InheritedPackageEntitlements []*PackageEntitlementUnionFragment                "json:\"inheritedPackageEntitlements\" graphql:\"inheritedPackageEntitlements\""
+	Prices                       []*MockPaywallPriceFragment                       "json:\"prices\" graphql:\"prices\""
+	PricingType                  *PricingType                                      "json:\"pricingType\" graphql:\"pricingType\""
+	DefaultTrialConfig           *MockPaywallPlanFragment_DefaultTrialConfig       "json:\"defaultTrialConfig\" graphql:\"defaultTrialConfig\""
+	CompatibleAddons             []*MockPaywallAddonFragment                       "json:\"compatibleAddons\" graphql:\"compatibleAddons\""
+	CompatiblePackageGroups      []*MockPaywallPlanCompatiblePackageGroupsFragment "json:\"compatiblePackageGroups\" graphql:\"compatiblePackageGroups\""
 }
 type MockPaywallPackageEntitlementFragment struct {
 	UsageLimit          *float64                                       "json:\"usageLimit\" graphql:\"usageLimit\""
@@ -1005,17 +1046,18 @@ type MockPaywallAddonDependencyFragment struct {
 	Description *string "json:\"description\" graphql:\"description\""
 }
 type MockPaywallAddonFragment struct {
-	RefID              string                                   "json:\"refId\" graphql:\"refId\""
-	DisplayName        string                                   "json:\"displayName\" graphql:\"displayName\""
-	Description        *string                                  "json:\"description\" graphql:\"description\""
-	AdditionalMetaData map[string]interface{}                   "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
-	BillingID          *string                                  "json:\"billingId\" graphql:\"billingId\""
-	MaxQuantity        *float64                                 "json:\"maxQuantity\" graphql:\"maxQuantity\""
-	HiddenFromWidgets  []WidgetType                             "json:\"hiddenFromWidgets\" graphql:\"hiddenFromWidgets\""
-	Dependencies       []*MockPaywallAddonDependencyFragment    "json:\"dependencies\" graphql:\"dependencies\""
-	Entitlements       []*MockPaywallPackageEntitlementFragment "json:\"entitlements\" graphql:\"entitlements\""
-	Prices             []*MockPaywallPriceFragment              "json:\"prices\" graphql:\"prices\""
-	PricingType        *PricingType                             "json:\"pricingType\" graphql:\"pricingType\""
+	RefID               string                                   "json:\"refId\" graphql:\"refId\""
+	DisplayName         string                                   "json:\"displayName\" graphql:\"displayName\""
+	Description         *string                                  "json:\"description\" graphql:\"description\""
+	AdditionalMetaData  map[string]interface{}                   "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+	BillingID           *string                                  "json:\"billingId\" graphql:\"billingId\""
+	MaxQuantity         *float64                                 "json:\"maxQuantity\" graphql:\"maxQuantity\""
+	HiddenFromWidgets   []WidgetType                             "json:\"hiddenFromWidgets\" graphql:\"hiddenFromWidgets\""
+	Dependencies        []*MockPaywallAddonDependencyFragment    "json:\"dependencies\" graphql:\"dependencies\""
+	Entitlements        []*MockPaywallPackageEntitlementFragment "json:\"entitlements\" graphql:\"entitlements\""
+	PackageEntitlements []*PackageEntitlementUnionFragment       "json:\"packageEntitlements\" graphql:\"packageEntitlements\""
+	Prices              []*MockPaywallPriceFragment              "json:\"prices\" graphql:\"prices\""
+	PricingType         *PricingType                             "json:\"pricingType\" graphql:\"pricingType\""
 }
 type PaywallFragment struct {
 	Plans                        []*PlanFragment                         "json:\"plans\" graphql:\"plans\""
@@ -1306,6 +1348,46 @@ type PackageEntitlementFragment_Feature struct {
 	RefID              string                 "json:\"refId\" graphql:\"refId\""
 	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
 }
+type PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                 "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                 "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                "json:\"symbol\" graphql:\"symbol\""
+	Units       *PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                          "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                          "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                         "json:\"symbol\" graphql:\"symbol\""
+	Units       *PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
 	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
@@ -1551,6 +1633,46 @@ type PlanFragment_DefaultTrialConfig struct {
 	Units            TrialPeriodUnits                        "json:\"units\" graphql:\"units\""
 	Budget           *PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                       "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
+}
+type PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                           "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                           "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                          "json:\"symbol\" graphql:\"symbol\""
+	Units       *PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                    "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                    "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                   "json:\"symbol\" graphql:\"symbol\""
+	Units       *PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type PlanCompatiblePackageGroupsFragment_Addons_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
@@ -2092,6 +2214,46 @@ type SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig struct {
 	Budget           *SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                 "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
 }
+type SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                     "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                     "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                    "json:\"symbol\" graphql:\"symbol\""
+	Units       *SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                              "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                              "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                             "json:\"symbol\" graphql:\"symbol\""
+	Units       *SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
 	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
@@ -2594,6 +2756,46 @@ type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_P
 	Units            TrialPeriodUnits                                                                                                  "json:\"units\" graphql:\"units\""
 	Budget           *CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                                 "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                     "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                     "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                    "json:\"symbol\" graphql:\"symbol\""
+	Units       *CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                              "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                              "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                             "json:\"symbol\" graphql:\"symbol\""
+	Units       *CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
@@ -3301,8 +3503,8 @@ type EntitlementUsageUpdated_Entitlement_EntitlementFragment_CreditRate struct {
 	CurrencyID string  "json:\"currencyId\" graphql:\"currencyId\""
 }
 type CreditBalanceUpdatedPayload_Currency_Units struct {
-	Singular string "json:\"singular\" graphql:\"singular\""
-	Plural   string "json:\"plural\" graphql:\"plural\""
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
 }
 type CreditBalanceUpdatedPayload_Currency struct {
 	CurrencyID  string                                      "json:\"currencyId\" graphql:\"currencyId\""
@@ -3746,6 +3948,46 @@ type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFrag
 	Budget           *CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                          "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
 }
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                              "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                              "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                             "json:\"symbol\" graphql:\"symbol\""
+	Units       *CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                       "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                       "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                      "json:\"symbol\" graphql:\"symbol\""
+	Units       *CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
 	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
@@ -4127,6 +4369,46 @@ type CheckoutStateFragment_Plan_PlanFragment_DefaultTrialConfig struct {
 	Budget           *CheckoutStateFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                  "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
 }
+type CheckoutStateFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type CheckoutStateFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type CheckoutStateFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                      "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                      "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                     "json:\"symbol\" graphql:\"symbol\""
+	Units       *CheckoutStateFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type CheckoutStateFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type CheckoutStateFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type CheckoutStateFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                               "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                               "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                              "json:\"symbol\" graphql:\"symbol\""
+	Units       *CheckoutStateFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type CheckoutStateFragment_BillingIntegration_BillingCredentials struct {
 	StripeCheckoutCredentials StripeCheckoutCredentialsFragment "graphql:\"... on StripeCheckoutCredentials\""
 	ZuoraCheckoutCredentials  ZuoraCheckoutCredentialsFragment  "graphql:\"... on ZuoraCheckoutCredentials\""
@@ -4417,6 +4699,46 @@ type MockPaywallPlanFragment_InheritedEntitlements_MockPaywallPackageEntitlement
 	RefID              string                 "json:\"refId\" graphql:\"refId\""
 	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
 }
+type MockPaywallPlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type MockPaywallPlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type MockPaywallPlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                      "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                      "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                     "json:\"symbol\" graphql:\"symbol\""
+	Units       *MockPaywallPlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type MockPaywallPlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type MockPaywallPlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type MockPaywallPlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                               "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                               "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                              "json:\"symbol\" graphql:\"symbol\""
+	Units       *MockPaywallPlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type MockPaywallPlanFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4458,6 +4780,26 @@ type MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_Entitleme
 	RefID              string                 "json:\"refId\" graphql:\"refId\""
 	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
 }
+type MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                               "json:\"symbol\" graphql:\"symbol\""
+	Units       *MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4489,6 +4831,26 @@ type MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePa
 	Description        *string                "json:\"description\" graphql:\"description\""
 	RefID              string                 "json:\"refId\" graphql:\"refId\""
 	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                                             "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                                             "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                                            "json:\"symbol\" graphql:\"symbol\""
+	Units       *MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -4565,6 +4927,26 @@ type MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragm
 	RefID              string                 "json:\"refId\" graphql:\"refId\""
 	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
 }
+type MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                             "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                             "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                            "json:\"symbol\" graphql:\"symbol\""
+	Units       *MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -4600,6 +4982,26 @@ type MockPaywallAddonFragment_Entitlements_MockPaywallPackageEntitlementFragment
 	Description        *string                "json:\"description\" graphql:\"description\""
 	RefID              string                 "json:\"refId\" graphql:\"refId\""
 	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                       "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                       "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                      "json:\"symbol\" graphql:\"symbol\""
+	Units       *MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -4815,6 +5217,46 @@ type PaywallFragment_Plans_PlanFragment_DefaultTrialConfig struct {
 	Units            TrialPeriodUnits                                              "json:\"units\" graphql:\"units\""
 	Budget           *PaywallFragment_Plans_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                             "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
+}
+type PaywallFragment_Plans_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type PaywallFragment_Plans_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type PaywallFragment_Plans_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                 "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                 "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                "json:\"symbol\" graphql:\"symbol\""
+	Units       *PaywallFragment_Plans_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type PaywallFragment_Plans_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type PaywallFragment_Plans_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type PaywallFragment_Plans_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                          "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                          "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                         "json:\"symbol\" graphql:\"symbol\""
+	Units       *PaywallFragment_Plans_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type PaywallFragment_Configuration_PaywallConfigurationFragment_Palette struct {
 	Primary               *string "json:\"primary\" graphql:\"primary\""
@@ -5092,6 +5534,46 @@ type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_
 	Units            TrialPeriodUnits                                                                                      "json:\"units\" graphql:\"units\""
 	Budget           *PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                     "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                         "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                         "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                        "json:\"symbol\" graphql:\"symbol\""
+	Units       *PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                  "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                  "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                 "json:\"symbol\" graphql:\"symbol\""
+	Units       *PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
@@ -5657,6 +6139,46 @@ type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragme
 	Budget           *ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                        "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
 }
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                            "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                            "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                           "json:\"symbol\" graphql:\"symbol\""
+	Units       *ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                     "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                     "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                    "json:\"symbol\" graphql:\"symbol\""
+	Units       *ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type ApplySubscriptionFragment_Subscription_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
 	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
@@ -6042,8 +6564,8 @@ type CreditGrantFragment_Cost struct {
 	Currency Currency "json:\"currency\" graphql:\"currency\""
 }
 type CreditsBalanceSummaryFragment_Balances_CreditBalanceFragment_Currency_Units struct {
-	Singular string "json:\"singular\" graphql:\"singular\""
-	Plural   string "json:\"plural\" graphql:\"plural\""
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
 }
 type CreditsBalanceSummaryFragment_Balances_CreditBalanceFragment_Currency struct {
 	CurrencyID  string                                                                       "json:\"currencyId\" graphql:\"currencyId\""
@@ -6052,8 +6574,8 @@ type CreditsBalanceSummaryFragment_Balances_CreditBalanceFragment_Currency struc
 	Units       *CreditsBalanceSummaryFragment_Balances_CreditBalanceFragment_Currency_Units "json:\"units\" graphql:\"units\""
 }
 type CreditBalanceFragment_Currency_Units struct {
-	Singular string "json:\"singular\" graphql:\"singular\""
-	Plural   string "json:\"plural\" graphql:\"plural\""
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
 }
 type CreditBalanceFragment_Currency struct {
 	CurrencyID  string                                "json:\"currencyId\" graphql:\"currencyId\""
@@ -6062,8 +6584,8 @@ type CreditBalanceFragment_Currency struct {
 	Units       *CreditBalanceFragment_Currency_Units "json:\"units\" graphql:\"units\""
 }
 type SlimCustomCurrencyFragment_Units struct {
-	Singular string "json:\"singular\" graphql:\"singular\""
-	Plural   string "json:\"plural\" graphql:\"plural\""
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
 }
 type CreditUsageFragment_Series_Points struct {
 	Timestamp string  "json:\"timestamp\" graphql:\"timestamp\""
@@ -6076,8 +6598,8 @@ type CreditUsageFragment_Series struct {
 	Points       []*CreditUsageFragment_Series_Points "json:\"points\" graphql:\"points\""
 }
 type CreditUsageFragment_Currency_SlimCustomCurrencyFragment_Units struct {
-	Singular string "json:\"singular\" graphql:\"singular\""
-	Plural   string "json:\"plural\" graphql:\"plural\""
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
 }
 type FeatureEntitlementFragment_ResetPeriodConfiguration_ResetPeriodConfigurationFragment_YearlyResetPeriodConfig struct {
 	YearlyAccordingTo *YearlyAccordingTo "json:\"yearlyAccordingTo\" graphql:\"yearlyAccordingTo\""
@@ -6408,6 +6930,46 @@ type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscr
 	Units            TrialPeriodUnits                                                                                                                                     "json:\"units\" graphql:\"units\""
 	Budget           *GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                                                                    "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                                        "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                                        "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                                       "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                                                 "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                                                 "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                                                "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type GetCustomerById_GetCustomerByRefID_CustomerWithSubscriptionsFragment_Subscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
@@ -6838,6 +7400,46 @@ type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_Pla
 	Units            TrialPeriodUnits                                                                                                "json:\"units\" graphql:\"units\""
 	Budget           *GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                               "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                   "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                   "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                  "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                            "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                            "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                           "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type GetActiveSubscriptions_GetActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
@@ -7329,6 +7931,46 @@ type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_Defa
 	Budget           *GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                 "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
 }
+type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                     "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                     "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                    "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                              "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                              "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                             "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetSubscription_GetSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type GetSubscription_GetSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
 	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
@@ -7724,6 +8366,46 @@ type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_DefaultTrialConfig st
 	Budget           *GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
 }
+type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                    "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                    "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                   "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                             "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                             "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                            "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetPaywall_Paywall_PaywallFragment_Plans_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type GetPaywall_Paywall_PaywallFragment_Configuration_PaywallConfigurationFragment_Palette struct {
 	Primary               *string "json:\"primary\" graphql:\"primary\""
 	TextColor             *string "json:\"textColor\" graphql:\"textColor\""
@@ -8000,6 +8682,46 @@ type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment
 	Units            TrialPeriodUnits                                                                                                         "json:\"units\" graphql:\"units\""
 	Budget           *GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                                        "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                            "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                            "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                           "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                     "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                     "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                    "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type GetPaywall_Paywall_PaywallFragment_ActiveSubscriptions_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
@@ -8727,6 +9449,46 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_Sub
 	Budget           *GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                                                         "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
 }
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                             "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                             "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                            "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                                      "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                                      "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                                     "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_ActiveSubscription_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
 	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
@@ -9108,6 +9870,46 @@ type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_Defa
 	Budget           *GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                 "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
 }
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                     "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                     "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                    "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                              "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                              "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                             "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetCheckoutState_CheckoutState_CheckoutStateFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type GetCheckoutState_CheckoutState_CheckoutStateFragment_BillingIntegration_BillingCredentials struct {
 	StripeCheckoutCredentials StripeCheckoutCredentialsFragment "graphql:\"... on StripeCheckoutCredentials\""
 	ZuoraCheckoutCredentials  ZuoraCheckoutCredentialsFragment  "graphql:\"... on ZuoraCheckoutCredentials\""
@@ -9151,6 +9953,46 @@ type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_InheritedEntitleme
 	RefID              string                 "json:\"refId\" graphql:\"refId\""
 	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
 }
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                       "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                       "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                      "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                               "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -9192,6 +10034,26 @@ type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatibleAddons_M
 	RefID              string                 "json:\"refId\" graphql:\"refId\""
 	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
 }
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                 "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                 "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
 type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatibleAddons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
 	Currency Currency "json:\"currency\" graphql:\"currency\""
@@ -9223,6 +10085,26 @@ type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageG
 	Description        *string                "json:\"description\" graphql:\"description\""
 	RefID              string                 "json:\"refId\" graphql:\"refId\""
 	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                                                                              "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                                                                              "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                                                                             "json:\"symbol\" graphql:\"symbol\""
+	Units       *GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type GetMockPaywall_MockPaywall_Plans_MockPaywallPlanFragment_CompatiblePackageGroups_MockPaywallPlanCompatiblePackageGroupsFragment_Addons_MockPaywallAddonFragment_Prices_MockPaywallPriceFragment_Price struct {
 	Amount   float64  "json:\"amount\" graphql:\"amount\""
@@ -9301,8 +10183,8 @@ type GetUsageHistoryV2_UsageHistoryV2_UsageHistoryV2Fragment_Series struct {
 	Points []*GetUsageHistoryV2_UsageHistoryV2_UsageHistoryV2Fragment_Series_Points "json:\"points\" graphql:\"points\""
 }
 type GetCreditBalance_CreditBalanceSummary_CreditsBalanceSummaryFragment_Balances_CreditBalanceFragment_Currency_Units struct {
-	Singular string "json:\"singular\" graphql:\"singular\""
-	Plural   string "json:\"plural\" graphql:\"plural\""
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
 }
 type GetCreditBalance_CreditBalanceSummary_CreditsBalanceSummaryFragment_Balances_CreditBalanceFragment_Currency struct {
 	CurrencyID  string                                                                                                             "json:\"currencyId\" graphql:\"currencyId\""
@@ -9342,8 +10224,8 @@ type GetCreditUsage_CreditUsage_CreditUsageFragment_Series struct {
 	Points       []*GetCreditUsage_CreditUsage_CreditUsageFragment_Series_Points "json:\"points\" graphql:\"points\""
 }
 type GetCreditUsage_CreditUsage_CreditUsageFragment_Currency_SlimCustomCurrencyFragment_Units struct {
-	Singular string "json:\"singular\" graphql:\"singular\""
-	Plural   string "json:\"plural\" graphql:\"plural\""
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
 }
 type ProvisionCustomer_ProvisionCustomer_ProvisionCustomerFragment_Subscription_SlimSubscriptionFragment_ExperimentInfo struct {
 	Name      string              "json:\"name\" graphql:\"name\""
@@ -9782,6 +10664,46 @@ type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_
 	Units            TrialPeriodUnits                                                                                                                             "json:\"units\" graphql:\"units\""
 	Budget           *ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_DefaultTrialConfig_Budget "json:\"budget\" graphql:\"budget\""
 	TrialEndBehavior *TrialEndBehavior                                                                                                                            "json:\"trialEndBehavior\" graphql:\"trialEndBehavior\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                                "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                                "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                               "json:\"symbol\" graphql:\"symbol\""
+	Units       *ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_PackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageFeatureEntitlement_PackageFeatureEntitlementFragment_Feature struct {
+	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
+	MeterType          *MeterType             "json:\"meterType\" graphql:\"meterType\""
+	FeatureUnits       *string                "json:\"featureUnits\" graphql:\"featureUnits\""
+	FeatureUnitsPlural *string                "json:\"featureUnitsPlural\" graphql:\"featureUnitsPlural\""
+	DisplayName        string                 "json:\"displayName\" graphql:\"displayName\""
+	Description        *string                "json:\"description\" graphql:\"description\""
+	RefID              string                 "json:\"refId\" graphql:\"refId\""
+	AdditionalMetaData map[string]interface{} "json:\"additionalMetaData\" graphql:\"additionalMetaData\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units struct {
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
+}
+type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency struct {
+	CurrencyID  string                                                                                                                                                                                                                                                         "json:\"currencyId\" graphql:\"currencyId\""
+	DisplayName string                                                                                                                                                                                                                                                         "json:\"displayName\" graphql:\"displayName\""
+	Symbol      *string                                                                                                                                                                                                                                                        "json:\"symbol\" graphql:\"symbol\""
+	Units       *ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Plan_PlanFragment_InheritedPackageEntitlements_PackageEntitlementUnionFragment_PackageCreditEntitlement_PackageCreditEntitlementFragment_CustomCurrency_Units "json:\"units\" graphql:\"units\""
 }
 type ApplySubscription_ApplySubscription_ApplySubscriptionFragment_Subscription_SubscriptionFragment_Addons_Addon_AddonFragment_Entitlements_PackageEntitlementFragment_Feature struct {
 	FeatureType        FeatureType            "json:\"featureType\" graphql:\"featureType\""
@@ -10909,8 +11831,8 @@ type OnUsageUpdated_UsageUpdated_EntitlementUsageUpdated_Entitlement_Entitlement
 	CurrencyID string  "json:\"currencyId\" graphql:\"currencyId\""
 }
 type OnCreditBalanceUpdated_CreditBalanceUpdated_CreditBalanceUpdatedPayload_Currency_Units struct {
-	Singular string "json:\"singular\" graphql:\"singular\""
-	Plural   string "json:\"plural\" graphql:\"plural\""
+	Singular *string "json:\"singular\" graphql:\"singular\""
+	Plural   *string "json:\"plural\" graphql:\"plural\""
 }
 type OnCreditBalanceUpdated_CreditBalanceUpdated_CreditBalanceUpdatedPayload_Currency struct {
 	CurrencyID  string                                                                                  "json:\"currencyId\" graphql:\"currencyId\""
@@ -11119,6 +12041,217 @@ const GetCustomerByIDDocument = `query GetCustomerById ($input: GetCustomerByRef
 		... CustomerWithSubscriptionsFragment
 	}
 }
+fragment PackageCreditEntitlementFragment on PackageCreditEntitlement {
+	__typename
+	id
+	amount
+	behavior
+	cadence
+	customCurrencyId
+	description
+	displayNameOverride
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	customCurrency {
+		currencyId
+		displayName
+		symbol
+		units {
+			singular
+			plural
+		}
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	awsMarketplaceProductId
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment PackageEntitlementUnionFragment on PackageEntitlementUnion {
+	... on PackageFeatureEntitlement {
+		... PackageFeatureEntitlementFragment
+	}
+	... on PackageCreditEntitlement {
+		... PackageCreditEntitlementFragment
+	}
+}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+	... on PlanPriceOverrideChangeVariables {
+		planRefId
+		featureId
+	}
+	... on AddonPriceOverrideChangeVariables {
+		addonRefId
+		featureId
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
 fragment CustomerFragment on Customer {
 	... SlimCustomerFragment
 	hasPaymentMethod
@@ -11149,6 +12282,219 @@ fragment CustomerFragment on Customer {
 	}
 	promotionalEntitlements {
 		... PromotionalEntitlementFragment
+	}
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+		currencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
+	}
+	awsMarketplacePlanDimension
+	packageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
+	inheritedPackageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	isGranted
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment PackageFeatureEntitlementFragment on PackageFeatureEntitlement {
+	__typename
+	id
+	behavior
+	description
+	displayNameOverride
+	enumValues
+	featureId
+	hasSoftLimit
+	hasUnlimitedUsage
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	resetPeriod
+	usageLimit
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment CustomerWithSubscriptionsFragment on Customer {
+	... CustomerFragment
+	subscriptions {
+		... SubscriptionFragment
+	}
+}
+fragment CouponFragment on Coupon {
+	id
+	discountValue
+	percentOff
+	amountsOff {
+		amount
+		currency
+	}
+	type
+	additionalMetaData
+	refId
+	name
+	description
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+	syncStates {
+		vendorIdentifier
+		status
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -11213,368 +12559,8 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	isGranted
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-		currencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
-fragment ScheduleVariablesFragment on ScheduleVariables {
-	__typename
-	... on PlanChangeVariables {
-		planRefId
-		changeType
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on DowngradeChangeVariables {
-		downgradePlanRefId
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on BillingPeriodChangeVariables {
-		billingPeriod
-	}
-	... on UnitAmountChangeVariables {
-		newUnitAmount
-		featureId
-	}
-	... on AddonChangeVariables {
-		addonRefId
-		newQuantity
-	}
-	... on PlanPriceOverrideChangeVariables {
-		planRefId
-		featureId
-	}
-	... on AddonPriceOverrideChangeVariables {
-		addonRefId
-		featureId
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	percentOff
-	amountsOff {
-		amount
-		currency
-	}
-	type
-	additionalMetaData
-	refId
-	name
-	description
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
-	}
-}
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	awsMarketplaceProductId
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
 fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
 	trialEndBehavior
-}
-fragment CustomerWithSubscriptionsFragment on Customer {
-	... CustomerFragment
-	subscriptions {
-		... SubscriptionFragment
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
-	}
-	awsMarketplacePlanDimension
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
 }
 `
 
@@ -11624,63 +12610,17 @@ const GetActiveSubscriptionsDocument = `query GetActiveSubscriptions ($input: Ge
 		... SubscriptionFragment
 	}
 }
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	awsMarketplaceProductId
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	isGranted
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
 		refId
-		additionalMetaData
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
 	}
 }
 fragment SlimCustomerFragment on Customer {
@@ -11694,118 +12634,6 @@ fragment SlimCustomerFragment on Customer {
 	billingId
 	additionalMetaData
 	awsMarketplaceCustomerId
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
-fragment SubscriptionFragment on CustomerSubscription {
-	id
-	subscriptionId
-	payingCustomer {
-		... SlimCustomerFragment
-	}
-	startDate
-	endDate
-	trialEndDate
-	cancellationDate
-	effectiveEndDate
-	status
-	refId
-	currentBillingPeriodEnd
-	additionalMetaData
-	billingId
-	billingLinkUrl
-	latestInvoice {
-		... SubscriptionInvoiceFragment
-	}
-	paymentCollection
-	paymentCollectionMethod
-	billingSyncError
-	resource {
-		... CustomerResourceFragment
-	}
-	experimentInfo {
-		name
-		groupType
-		groupName
-		id
-	}
-	prices {
-		usageLimit
-		price {
-			... PriceFragment
-		}
-	}
-	totalPrice {
-		... TotalPriceFragment
-	}
-	pricingType
-	plan {
-		... PlanFragment
-	}
-	addons {
-		id
-		quantity
-		addon {
-			... AddonFragment
-		}
-	}
-	scheduledUpdates {
-		... SubscriptionScheduledUpdateData
-	}
-	futureUpdates {
-		... SubscriptionFutureUpdateData
-	}
-	trialConfiguration {
-		... SubscriptionTrialConfigurationFragment
-	}
 }
 fragment PriceFragment on Price {
 	billingModel
@@ -11881,6 +12709,12 @@ fragment PlanFragment on Plan {
 		trialEndBehavior
 	}
 	awsMarketplacePlanDimension
+	packageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
+	inheritedPackageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
 }
 fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
 	packageGroupId
@@ -11891,6 +12725,56 @@ fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
 	options {
 		minItems
 		freeItems
+	}
+}
+fragment PackageFeatureEntitlementFragment on PackageFeatureEntitlement {
+	__typename
+	id
+	behavior
+	description
+	displayNameOverride
+	enumValues
+	featureId
+	hasSoftLimit
+	hasUnlimitedUsage
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	resetPeriod
+	usageLimit
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment PackageCreditEntitlementFragment on PackageCreditEntitlement {
+	__typename
+	id
+	amount
+	behavior
+	cadence
+	customCurrencyId
+	description
+	displayNameOverride
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	customCurrency {
+		currencyId
+		displayName
+		symbol
+		units {
+			singular
+			plural
+		}
 	}
 }
 fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
@@ -11904,6 +12788,209 @@ fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
 	}
 	scheduleVariables {
 		... ScheduleVariablesFragment
+	}
+}
+fragment SubscriptionFragment on CustomerSubscription {
+	id
+	subscriptionId
+	payingCustomer {
+		... SlimCustomerFragment
+	}
+	startDate
+	endDate
+	trialEndDate
+	cancellationDate
+	effectiveEndDate
+	status
+	refId
+	currentBillingPeriodEnd
+	additionalMetaData
+	billingId
+	billingLinkUrl
+	latestInvoice {
+		... SubscriptionInvoiceFragment
+	}
+	paymentCollection
+	paymentCollectionMethod
+	billingSyncError
+	resource {
+		... CustomerResourceFragment
+	}
+	experimentInfo {
+		name
+		groupType
+		groupName
+		id
+	}
+	prices {
+		usageLimit
+		price {
+			... PriceFragment
+		}
+	}
+	totalPrice {
+		... TotalPriceFragment
+	}
+	pricingType
+	plan {
+		... PlanFragment
+	}
+	addons {
+		id
+		quantity
+		addon {
+			... AddonFragment
+		}
+	}
+	scheduledUpdates {
+		... SubscriptionScheduledUpdateData
+	}
+	futureUpdates {
+		... SubscriptionFutureUpdateData
+	}
+	trialConfiguration {
+		... SubscriptionTrialConfigurationFragment
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	isGranted
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	awsMarketplaceProductId
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
+}
+fragment PackageEntitlementUnionFragment on PackageEntitlementUnion {
+	... on PackageFeatureEntitlement {
+		... PackageFeatureEntitlementFragment
+	}
+	... on PackageCreditEntitlement {
+		... PackageCreditEntitlementFragment
 	}
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
@@ -11962,43 +13049,6 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		addonRefId
 		featureId
 	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
 }
 `
 
@@ -12151,6 +13201,40 @@ const GetSubscriptionDocument = `query GetSubscription ($input: GetSubscriptionI
 		... SubscriptionFragment
 	}
 }
+fragment PackageEntitlementUnionFragment on PackageEntitlementUnion {
+	... on PackageFeatureEntitlement {
+		... PackageFeatureEntitlementFragment
+	}
+	... on PackageCreditEntitlement {
+		... PackageCreditEntitlementFragment
+	}
+}
+fragment PackageCreditEntitlementFragment on PackageCreditEntitlement {
+	__typename
+	id
+	amount
+	behavior
+	cadence
+	customCurrencyId
+	description
+	displayNameOverride
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	customCurrency {
+		currencyId
+		displayName
+		symbol
+		units {
+			singular
+			plural
+		}
+	}
+}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
 fragment ProductFragment on Product {
 	refId
 	displayName
@@ -12163,6 +13247,39 @@ fragment ProductFragment on Product {
 			displayName
 		}
 	}
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+		currencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
 }
 fragment PackageEntitlementFragment on PackageEntitlement {
 	usageLimit
@@ -12192,6 +13309,159 @@ fragment AddonDependencyFragment on Addon {
 	displayName
 	description
 }
+fragment PackageFeatureEntitlementFragment on PackageFeatureEntitlement {
+	__typename
+	id
+	behavior
+	description
+	displayNameOverride
+	enumValues
+	featureId
+	hasSoftLimit
+	hasUnlimitedUsage
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	resetPeriod
+	usageLimit
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment ScheduleVariablesFragment on ScheduleVariables {
+	__typename
+	... on PlanChangeVariables {
+		planRefId
+		changeType
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on DowngradeChangeVariables {
+		downgradePlanRefId
+		billingPeriod
+		billableFeatures {
+			featureId
+			quantity
+		}
+		addons {
+			addonRefId
+			quantity
+		}
+		priceOverrides {
+			planRefId
+			addonRefId
+			featureId
+		}
+	}
+	... on BillingPeriodChangeVariables {
+		billingPeriod
+	}
+	... on UnitAmountChangeVariables {
+		newUnitAmount
+		featureId
+	}
+	... on AddonChangeVariables {
+		addonRefId
+		newQuantity
+	}
+	... on PlanPriceOverrideChangeVariables {
+		planRefId
+		featureId
+	}
+	... on AddonPriceOverrideChangeVariables {
+		addonRefId
+		featureId
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
 fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
 	packageGroupId
 	displayName
@@ -12201,6 +13471,99 @@ fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
 	options {
 		minItems
 		freeItems
+	}
+}
+fragment PlanFragment on Plan {
+	id
+	refId
+	displayName
+	description
+	billingId
+	versionNumber
+	additionalMetaData
+	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
+	}
+	awsMarketplacePlanDimension
+	packageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
+	inheritedPackageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
+}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
 	}
 }
 fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
@@ -12277,255 +13640,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 	trialConfiguration {
 		... SubscriptionTrialConfigurationFragment
 	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment ScheduleVariablesFragment on ScheduleVariables {
-	__typename
-	... on PlanChangeVariables {
-		planRefId
-		changeType
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on DowngradeChangeVariables {
-		downgradePlanRefId
-		billingPeriod
-		billableFeatures {
-			featureId
-			quantity
-		}
-		addons {
-			addonRefId
-			quantity
-		}
-		priceOverrides {
-			planRefId
-			addonRefId
-			featureId
-		}
-	}
-	... on BillingPeriodChangeVariables {
-		billingPeriod
-	}
-	... on UnitAmountChangeVariables {
-		newUnitAmount
-		featureId
-	}
-	... on AddonChangeVariables {
-		addonRefId
-		newQuantity
-	}
-	... on PlanPriceOverrideChangeVariables {
-		planRefId
-		featureId
-	}
-	... on AddonPriceOverrideChangeVariables {
-		addonRefId
-		featureId
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-		currencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
-	}
-	awsMarketplacePlanDimension
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
 }
 `
 
@@ -12592,99 +13706,34 @@ const GetPaywallDocument = `query GetPaywall ($input: GetPaywallInput!) {
 		... PaywallFragment
 	}
 }
-fragment PackageEntitlementFragment on PackageEntitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	featureId
-	resetPeriod
-	hiddenFromWidgets
-	isCustom
-	displayNameOverride
-	enumValues
-	isGranted
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
 	feature {
-		featureType
-		meterType
+		refId
 		featureUnits
 		featureUnitsPlural
 		displayName
 		description
-		refId
-		additionalMetaData
 	}
 }
-fragment CustomerFragment on Customer {
-	... SlimCustomerFragment
-	hasPaymentMethod
-	hasActiveSubscription
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodType
-	trialedPlans {
-		productId
-		productRefId
-		planRefId
-		planId
+fragment PackageEntitlementUnionFragment on PackageEntitlementUnion {
+	... on PackageFeatureEntitlement {
+		... PackageFeatureEntitlementFragment
 	}
-	experimentInfo {
-		groupType
-		groupName
-		id
-		name
+	... on PackageCreditEntitlement {
+		... PackageCreditEntitlementFragment
 	}
-	coupon {
-		... CouponFragment
-	}
-	eligibleForTrial {
-		productId
-		productRefId
-		eligible
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
-	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
 }
 fragment SubscriptionFragment on CustomerSubscription {
 	id
@@ -12748,117 +13797,8 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment PlanFragment on Plan {
-	id
-	refId
-	displayName
-	description
-	billingId
-	versionNumber
-	additionalMetaData
-	hiddenFromWidgets
-	product {
-		... ProductFragment
-	}
-	basePlan {
-		refId
-		displayName
-	}
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	inheritedEntitlements {
-		... PackageEntitlementFragment
-	}
-	compatibleAddons {
-		... AddonFragment
-	}
-	compatiblePackageGroups {
-		... PlanCompatiblePackageGroupsFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
-		}
-		trialEndBehavior
-	}
-	awsMarketplacePlanDimension
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	percentOff
-	amountsOff {
-		amount
-		currency
-	}
-	type
-	additionalMetaData
-	refId
-	name
-	description
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
 fragment PriceFragment on Price {
 	billingModel
@@ -12890,23 +13830,103 @@ fragment PriceFragment on Price {
 	}
 	blockSize
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
 }
-fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
-	planId
-	additionalChargesMayApply
-	billingPeriod
-	amount
-	currency
-	billingCountryCode
-	feature {
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
 		refId
-		featureUnits
-		featureUnitsPlural
 		displayName
-		description
 	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment ProductFragment on Product {
+	refId
+	displayName
+	description
+	additionalMetaData
+	awsMarketplaceProductId
+	productSettings {
+		downgradePlan {
+			refId
+			displayName
+		}
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment PaywallCurrencyFragment on PaywallCurrency {
+	code
+	symbol
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment PaywallFragment on Paywall {
+	plans {
+		... PlanFragment
+	}
+	currency {
+		... PaywallCurrencyFragment
+	}
+	configuration {
+		... PaywallConfigurationFragment
+	}
+	customer {
+		... CustomerFragment
+	}
+	activeSubscriptions {
+		... SubscriptionFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+	paywallCalculatedPricePoints {
+		... PaywallCalculatedPricePointsFragment
+	}
+}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
 }
 fragment PromotionalEntitlementFragment on PromotionalEntitlement {
 	status
@@ -12948,66 +13968,6 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	tax
 	amountDue
 	attemptCount
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
-}
-fragment ProductFragment on Product {
-	refId
-	displayName
-	description
-	additionalMetaData
-	awsMarketplaceProductId
-	productSettings {
-		downgradePlan {
-			refId
-			displayName
-		}
-	}
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
-}
-fragment PaywallFragment on Paywall {
-	plans {
-		... PlanFragment
-	}
-	currency {
-		... PaywallCurrencyFragment
-	}
-	configuration {
-		... PaywallConfigurationFragment
-	}
-	customer {
-		... CustomerFragment
-	}
-	activeSubscriptions {
-		... SubscriptionFragment
-	}
-	resource {
-		... CustomerResourceFragment
-	}
-	paywallCalculatedPricePoints {
-		... PaywallCalculatedPricePointsFragment
-	}
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
 	__typename
@@ -13066,22 +14026,33 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
-fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
-	alignment
-	planWidth
-	planMargin
-	planPadding
-}
-fragment AddonFragment on Addon {
+fragment PlanFragment on Plan {
 	id
 	refId
-	billingId
 	displayName
 	description
+	billingId
+	versionNumber
 	additionalMetaData
 	hiddenFromWidgets
+	product {
+		... ProductFragment
+	}
+	basePlan {
+		refId
+		displayName
+	}
 	entitlements {
 		... PackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... PackageEntitlementFragment
+	}
+	compatibleAddons {
+		... AddonFragment
+	}
+	compatiblePackageGroups {
+		... PlanCompatiblePackageGroupsFragment
 	}
 	prices {
 		... PriceFragment
@@ -13090,25 +14061,101 @@ fragment AddonFragment on Addon {
 		... OveragePriceFragment
 	}
 	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
+	}
+	awsMarketplacePlanDimension
+	packageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
+	inheritedPackageEntitlements {
+		... PackageEntitlementUnionFragment
 	}
 }
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
 	}
-	options {
-		minItems
-		freeItems
+	flatPrice {
+		amount
+		currency
 	}
 }
-fragment PaywallCurrencyFragment on PaywallCurrency {
-	code
-	symbol
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
+fragment PackageEntitlementFragment on PackageEntitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	featureId
+	resetPeriod
+	hiddenFromWidgets
+	isCustom
+	displayNameOverride
+	enumValues
+	isGranted
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment PackageCreditEntitlementFragment on PackageCreditEntitlement {
+	__typename
+	id
+	amount
+	behavior
+	cadence
+	customCurrencyId
+	description
+	displayNameOverride
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	customCurrency {
+		currencyId
+		displayName
+		symbol
+		units {
+			singular
+			plural
+		}
+	}
+}
+fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
+	alignment
+	planWidth
+	planMargin
+	planPadding
 }
 fragment PaywallConfigurationFragment on PaywallConfiguration {
 	palette {
@@ -13125,6 +14172,137 @@ fragment PaywallConfigurationFragment on PaywallConfiguration {
 		... LayoutConfigurationFragment
 	}
 	customCss
+}
+fragment CouponFragment on Coupon {
+	id
+	discountValue
+	percentOff
+	amountsOff {
+		amount
+		currency
+	}
+	type
+	additionalMetaData
+	refId
+	name
+	description
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+	syncStates {
+		vendorIdentifier
+		status
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment PaywallCalculatedPricePointsFragment on PaywallPricePoint {
+	planId
+	additionalChargesMayApply
+	billingPeriod
+	amount
+	currency
+	billingCountryCode
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment PackageFeatureEntitlementFragment on PackageFeatureEntitlement {
+	__typename
+	id
+	behavior
+	description
+	displayNameOverride
+	enumValues
+	featureId
+	hasSoftLimit
+	hasUnlimitedUsage
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	resetPeriod
+	usageLimit
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment CustomerFragment on Customer {
+	... SlimCustomerFragment
+	hasPaymentMethod
+	hasActiveSubscription
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodType
+	trialedPlans {
+		productId
+		productRefId
+		planRefId
+		planId
+	}
+	experimentInfo {
+		groupType
+		groupName
+		id
+		name
+	}
+	coupon {
+		... CouponFragment
+	}
+	eligibleForTrial {
+		productId
+		productRefId
+		eligible
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
 }
 `
 
@@ -13231,6 +14409,38 @@ const GetEntitlementsStateDocument = `query GetEntitlementsState ($query: FetchE
 		accessDeniedReason
 	}
 }
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	requestedValues
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+	creditRate {
+		amount
+		currencyId
+	}
+	validUntil
+}
 fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
 	__typename
 	... on YearlyResetPeriodConfig {
@@ -13303,38 +14513,6 @@ fragment CreditEntitlementFragment on CreditEntitlement {
 	currentUsage
 	usageUpdatedAt
 	entitlementUpdatedAt
-	validUntil
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	requestedValues
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-	creditRate {
-		amount
-		currencyId
-	}
 	validUntil
 }
 `
@@ -13510,20 +14688,6 @@ fragment CustomerPortalSubscriptionPriceFragment on CustomerPortalSubscriptionPr
 		featureUnitsPlural
 	}
 }
-fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-		pricingType
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
 fragment ScheduleVariablesFragment on ScheduleVariables {
 	__typename
 	... on PlanChangeVariables {
@@ -13581,28 +14745,56 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
-fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
-	email
-	name
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodId
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodType
+fragment CustomerPortalEntitlementFragment on Entitlement {
+	isGranted
+	usageLimit
+	currentUsage
+	hasUnlimitedUsage
+	hasSoftLimit
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
 }
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
 	}
-	h2 {
-		... FontVariantFragment
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
 	}
-	h3 {
-		... FontVariantFragment
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
 	}
-	body {
-		... FontVariantFragment
+}
+fragment CustomerPortalFragment on CustomerPortal {
+	subscriptions {
+		... CustomerPortalSubscriptionFragment
+	}
+	entitlements {
+		... CustomerPortalEntitlementFragment
+	}
+	promotionalEntitlements {
+		... CustomerPortalPromotionalEntitlementFragment
+	}
+	billingInformation {
+		... CustomerPortalBillingInformationFragment
+	}
+	showWatermark
+	billingPortalUrl
+	canUpgradeSubscription
+	configuration {
+		... CustomerPortalConfigurationFragment
+	}
+	resource {
+		... CustomerResourceFragment
 	}
 }
 fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
@@ -13660,42 +14852,38 @@ fragment CustomerPortalSubscriptionFragment on CustomerPortalSubscription {
 		... CustomerPortalSubscriptionScheduledUpdateDataFragment
 	}
 }
+fragment CustomerPortalSubscriptionScheduledUpdateDataFragment on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+		pricingType
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment CustomerPortalBillingInformationFragment on CustomerPortalBillingInformation {
+	email
+	name
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodId
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodType
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
 fragment CustomerPortalSubscriptionAddonFragment on CustomerPortalAddon {
 	addonId
 	description
 	displayName
 	quantity
-}
-fragment CustomerPortalEntitlementFragment on Entitlement {
-	isGranted
-	usageLimit
-	currentUsage
-	hasUnlimitedUsage
-	hasSoftLimit
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
-	}
 }
 fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotionalEntitlement {
 	displayName
@@ -13705,48 +14893,6 @@ fragment CustomerPortalPromotionalEntitlementFragment on CustomerPortalPromotion
 	period
 	startDate
 	endDate
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
-}
-fragment CustomerPortalFragment on CustomerPortal {
-	subscriptions {
-		... CustomerPortalSubscriptionFragment
-	}
-	entitlements {
-		... CustomerPortalEntitlementFragment
-	}
-	promotionalEntitlements {
-		... CustomerPortalPromotionalEntitlementFragment
-	}
-	billingInformation {
-		... CustomerPortalBillingInformationFragment
-	}
-	showWatermark
-	billingPortalUrl
-	canUpgradeSubscription
-	configuration {
-		... CustomerPortalConfigurationFragment
-	}
-	resource {
-		... CustomerResourceFragment
-	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
 }
 fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
 	palette {
@@ -13762,6 +14908,38 @@ fragment CustomerPortalConfigurationFragment on CustomerPortalConfiguration {
 		... TypographyConfigurationFragment
 	}
 	customCss
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
+	}
 }
 `
 
@@ -13805,50 +14983,117 @@ fragment PackageEntitlementFragment on PackageEntitlement {
 		additionalMetaData
 	}
 }
+fragment CustomerFragment on Customer {
+	... SlimCustomerFragment
+	hasPaymentMethod
+	hasActiveSubscription
+	defaultPaymentExpirationMonth
+	defaultPaymentExpirationYear
+	defaultPaymentMethodLast4Digits
+	defaultPaymentMethodType
+	trialedPlans {
+		productId
+		productRefId
+		planRefId
+		planId
+	}
+	experimentInfo {
+		groupType
+		groupName
+		id
+		name
+	}
+	coupon {
+		... CouponFragment
+	}
+	eligibleForTrial {
+		productId
+		productRefId
+		eligible
+	}
+	promotionalEntitlements {
+		... PromotionalEntitlementFragment
+	}
+}
+fragment PromotionalEntitlementFragment on PromotionalEntitlement {
+	status
+	usageLimit
+	featureId
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	endDate
+	isVisible
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment FontVariantFragment on FontVariant {
+	fontSize
+	fontWeight
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
 fragment AddonDependencyFragment on Addon {
 	id
 	refId
 	displayName
 	description
 }
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
-}
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
 	}
-	h2 {
-		... FontVariantFragment
+	options {
+		minItems
+		freeItems
 	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
-	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
 }
 fragment PlanFragment on Plan {
 	id
@@ -13894,18 +15139,11 @@ fragment PlanFragment on Plan {
 		trialEndBehavior
 	}
 	awsMarketplacePlanDimension
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
+	packageEntitlements {
+		... PackageEntitlementUnionFragment
 	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
+	inheritedPackageEntitlements {
+		... PackageEntitlementUnionFragment
 	}
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
@@ -13965,18 +15203,68 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
+fragment ZuoraCheckoutCredentialsFragment on ZuoraCheckoutCredentials {
+	publishableKey
+}
+fragment CheckoutStateFragment on CheckoutState {
+	configuration {
+		... CheckoutConfigurationFragment
 	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
+	setupSecret
+	customer {
+		... CustomerFragment
 	}
+	activeSubscription {
+		... SubscriptionFragment
+	}
+	resource {
+		... CustomerResourceFragment
+	}
+	plan {
+		... PlanFragment
+	}
+	billingIntegration {
+		billingIdentifier
+		billingCredentials {
+			... on StripeCheckoutCredentials {
+				... StripeCheckoutCredentialsFragment
+			}
+			... on ZuoraCheckoutCredentials {
+				... ZuoraCheckoutCredentialsFragment
+			}
+		}
+		credentials {
+			accountId
+			publicKey
+		}
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment StripeCheckoutCredentialsFragment on StripeCheckoutCredentials {
+	accountId
+	setupSecret
+	publicKey
 }
 fragment CheckoutConfigurationFragment on CheckoutConfiguration {
 	palette {
@@ -13997,92 +15285,49 @@ fragment CheckoutConfigurationFragment on CheckoutConfiguration {
 	}
 	__typename
 }
-fragment SlimCustomerFragment on Customer {
+fragment CouponFragment on Coupon {
 	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment PromotionalEntitlementFragment on PromotionalEntitlement {
-	status
-	usageLimit
-	featureId
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	endDate
-	isVisible
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-		refId
-		additionalMetaData
-	}
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
+	discountValue
+	percentOff
+	amountsOff {
 		amount
 		currency
 	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
+	type
+	additionalMetaData
+	refId
+	name
+	description
+	createdAt
+	updatedAt
+	billingId
+	billingLinkUrl
+	status
+	syncStates {
+		vendorIdentifier
+		status
 	}
 }
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
 }
 fragment ProductFragment on Product {
 	refId
@@ -14097,36 +15342,40 @@ fragment ProductFragment on Product {
 		}
 	}
 }
-fragment CustomerFragment on Customer {
-	... SlimCustomerFragment
-	hasPaymentMethod
-	hasActiveSubscription
-	defaultPaymentExpirationMonth
-	defaultPaymentExpirationYear
-	defaultPaymentMethodLast4Digits
-	defaultPaymentMethodType
-	trialedPlans {
-		productId
-		productRefId
-		planRefId
-		planId
+fragment PackageCreditEntitlementFragment on PackageCreditEntitlement {
+	__typename
+	id
+	amount
+	behavior
+	cadence
+	customCurrencyId
+	description
+	displayNameOverride
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	customCurrency {
+		currencyId
+		displayName
+		symbol
+		units {
+			singular
+			plural
+		}
 	}
-	experimentInfo {
-		groupType
-		groupName
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
 		id
-		name
+		refId
+		displayName
 	}
-	coupon {
-		... CouponFragment
-	}
-	eligibleForTrial {
-		productId
-		productRefId
-		eligible
-	}
-	promotionalEntitlements {
-		... PromotionalEntitlementFragment
+	scheduleVariables {
+		... ScheduleVariablesFragment
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -14191,9 +15440,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
 fragment PriceFragment on Price {
 	billingModel
 	billingPeriod
@@ -14224,10 +15470,76 @@ fragment PriceFragment on Price {
 	}
 	blockSize
 }
-fragment StripeCheckoutCredentialsFragment on StripeCheckoutCredentials {
-	accountId
-	setupSecret
-	publicKey
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment PackageEntitlementUnionFragment on PackageEntitlementUnion {
+	... on PackageFeatureEntitlement {
+		... PackageFeatureEntitlementFragment
+	}
+	... on PackageCreditEntitlement {
+		... PackageCreditEntitlementFragment
+	}
+}
+fragment PackageFeatureEntitlementFragment on PackageFeatureEntitlement {
+	__typename
+	id
+	behavior
+	description
+	displayNameOverride
+	enumValues
+	featureId
+	hasSoftLimit
+	hasUnlimitedUsage
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	resetPeriod
+	usageLimit
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
 }
 fragment PriceTierFragment on PriceTier {
 	upTo
@@ -14240,78 +15552,8 @@ fragment PriceTierFragment on PriceTier {
 		currency
 	}
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment ZuoraCheckoutCredentialsFragment on ZuoraCheckoutCredentials {
-	publishableKey
-}
-fragment CheckoutStateFragment on CheckoutState {
-	configuration {
-		... CheckoutConfigurationFragment
-	}
-	setupSecret
-	customer {
-		... CustomerFragment
-	}
-	activeSubscription {
-		... SubscriptionFragment
-	}
-	resource {
-		... CustomerResourceFragment
-	}
-	plan {
-		... PlanFragment
-	}
-	billingIntegration {
-		billingIdentifier
-		billingCredentials {
-			... on StripeCheckoutCredentials {
-				... StripeCheckoutCredentialsFragment
-			}
-			... on ZuoraCheckoutCredentials {
-				... ZuoraCheckoutCredentialsFragment
-			}
-		}
-		credentials {
-			accountId
-			publicKey
-		}
-	}
-}
-fragment FontVariantFragment on FontVariant {
-	fontSize
-	fontWeight
-}
-fragment CouponFragment on Coupon {
-	id
-	discountValue
-	percentOff
-	amountsOff {
-		amount
-		currency
-	}
-	type
-	additionalMetaData
-	refId
-	name
-	description
-	createdAt
-	updatedAt
-	billingId
-	billingLinkUrl
-	status
-	syncStates {
-		vendorIdentifier
-		status
-	}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
 }
 `
 
@@ -14338,57 +15580,104 @@ const GetMockPaywallDocument = `query GetMockPaywall ($input: GetPaywallInput!) 
 		}
 	}
 }
-fragment MockPaywallPlanCompatiblePackageGroupsFragment on PaywallPlanCompatiblePackageGroup {
-	packageGroupId
-	displayName
-	description
-	addons {
-		... MockPaywallAddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment MockPaywallPlanFragment on PaywallPlan {
+fragment MockPaywallAddonFragment on PaywallAddon {
 	refId
-	description
 	displayName
-	billingId
+	description
 	additionalMetaData
-	product {
-		refId
-		displayName
-		description
-		additionalMetaData
-	}
-	basePlan {
-		refId
-		displayName
+	billingId
+	maxQuantity
+	hiddenFromWidgets
+	dependencies {
+		... MockPaywallAddonDependencyFragment
 	}
 	entitlements {
 		... MockPaywallPackageEntitlementFragment
 	}
-	inheritedEntitlements {
-		... MockPaywallPackageEntitlementFragment
+	packageEntitlements {
+		... PackageEntitlementUnionFragment
 	}
 	prices {
 		... MockPaywallPriceFragment
 	}
 	pricingType
-	defaultTrialConfig {
-		duration
-		units
-		budget {
-			limit
+}
+fragment PackageCreditEntitlementFragment on PackageCreditEntitlement {
+	__typename
+	id
+	amount
+	behavior
+	cadence
+	customCurrencyId
+	description
+	displayNameOverride
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	customCurrency {
+		currencyId
+		displayName
+		symbol
+		units {
+			singular
+			plural
 		}
-		trialEndBehavior
 	}
-	compatibleAddons {
-		... MockPaywallAddonFragment
+}
+fragment PackageFeatureEntitlementFragment on PackageFeatureEntitlement {
+	__typename
+	id
+	behavior
+	description
+	displayNameOverride
+	enumValues
+	featureId
+	hasSoftLimit
+	hasUnlimitedUsage
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	resetPeriod
+	usageLimit
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
 	}
-	compatiblePackageGroups {
-		... MockPaywallPlanCompatiblePackageGroupsFragment
+}
+fragment MockPaywallPackageEntitlementFragment on Entitlement {
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	resetPeriod
+	hiddenFromWidgets
+	displayNameOverride
+	enumValues
+	isGranted
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment PackageEntitlementUnionFragment on PackageEntitlementUnion {
+	... on PackageFeatureEntitlement {
+		... PackageFeatureEntitlementFragment
+	}
+	... on PackageCreditEntitlement {
+		... PackageCreditEntitlementFragment
 	}
 }
 fragment MockPaywallPriceFragment on PaywallPrice {
@@ -14434,54 +15723,71 @@ fragment MockPaywallAddonDependencyFragment on PaywallAddon {
 	displayName
 	description
 }
+fragment TypographyConfigurationFragment on TypographyConfiguration {
+	fontFamily
+	h1 {
+		... FontVariantFragment
+	}
+	h2 {
+		... FontVariantFragment
+	}
+	h3 {
+		... FontVariantFragment
+	}
+	body {
+		... FontVariantFragment
+	}
+}
 fragment FontVariantFragment on FontVariant {
 	fontSize
 	fontWeight
 }
-fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
-	alignment
-	planWidth
-	planMargin
-	planPadding
-}
-fragment MockPaywallPackageEntitlementFragment on Entitlement {
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	resetPeriod
-	hiddenFromWidgets
-	displayNameOverride
-	enumValues
-	isGranted
-	feature {
-		featureType
-		meterType
-		featureUnits
-		featureUnitsPlural
+fragment MockPaywallPlanFragment on PaywallPlan {
+	refId
+	description
+	displayName
+	billingId
+	additionalMetaData
+	product {
+		refId
 		displayName
 		description
-		refId
 		additionalMetaData
 	}
-}
-fragment MockPaywallAddonFragment on PaywallAddon {
-	refId
-	displayName
-	description
-	additionalMetaData
-	billingId
-	maxQuantity
-	hiddenFromWidgets
-	dependencies {
-		... MockPaywallAddonDependencyFragment
+	basePlan {
+		refId
+		displayName
 	}
 	entitlements {
 		... MockPaywallPackageEntitlementFragment
+	}
+	inheritedEntitlements {
+		... MockPaywallPackageEntitlementFragment
+	}
+	packageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
+	inheritedPackageEntitlements {
+		... PackageEntitlementUnionFragment
 	}
 	prices {
 		... MockPaywallPriceFragment
 	}
 	pricingType
+	defaultTrialConfig {
+		duration
+		units
+		budget {
+			limit
+		}
+		trialEndBehavior
+	}
+	compatibleAddons {
+		... MockPaywallAddonFragment
+	}
+	compatiblePackageGroups {
+		... MockPaywallPlanCompatiblePackageGroupsFragment
+	}
 }
 fragment PaywallConfigurationFragment on PaywallConfiguration {
 	palette {
@@ -14499,19 +15805,22 @@ fragment PaywallConfigurationFragment on PaywallConfiguration {
 	}
 	customCss
 }
-fragment TypographyConfigurationFragment on TypographyConfiguration {
-	fontFamily
-	h1 {
-		... FontVariantFragment
+fragment LayoutConfigurationFragment on PaywallLayoutConfiguration {
+	alignment
+	planWidth
+	planMargin
+	planPadding
+}
+fragment MockPaywallPlanCompatiblePackageGroupsFragment on PaywallPlanCompatiblePackageGroup {
+	packageGroupId
+	displayName
+	description
+	addons {
+		... MockPaywallAddonFragment
 	}
-	h2 {
-		... FontVariantFragment
-	}
-	h3 {
-		... FontVariantFragment
-	}
-	body {
-		... FontVariantFragment
+	options {
+		minItems
+		freeItems
 	}
 }
 `
@@ -14666,6 +15975,12 @@ const GetCreditGrantsDocument = `query GetCreditGrants ($input: GetCreditGrantsI
 		totalCount
 	}
 }
+fragment PageInfoFragment on PageInfo {
+	startCursor
+	endCursor
+	hasNextPage
+	hasPreviousPage
+}
 fragment CreditGrantFragment on CreditGrant {
 	grantId
 	amount
@@ -14715,12 +16030,6 @@ fragment CreditGrantInvoiceFragment on CreditGrantInvoice {
 	tax
 	amountDue
 	attemptCount
-}
-fragment PageInfoFragment on PageInfo {
-	startCursor
-	endCursor
-	hasNextPage
-	hasPreviousPage
 }
 `
 
@@ -14863,182 +16172,6 @@ const ProvisionCustomerDocument = `mutation ProvisionCustomer ($input: Provision
 		... ProvisionCustomerFragment
 	}
 }
-fragment ProvisionCustomerFragment on ProvisionedCustomer {
-	customer {
-		... SlimCustomerFragment
-	}
-	subscriptionDecisionStrategy
-	subscription {
-		... SlimSubscriptionFragment
-	}
-	entitlements {
-		... EntitlementFragment
-	}
-	entitlementsV2 {
-		... EntitlementUnionFragment
-	}
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
-	}
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-		currencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
-	}
-}
-fragment EntitlementUnionFragment on EntitlementUnion {
-	... on FeatureEntitlement {
-		... FeatureEntitlementFragment
-	}
-	... on CreditEntitlement {
-		... CreditEntitlementFragment
-	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment FeatureEntitlementFragment on FeatureEntitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-	creditRate {
-		amount
-		currencyId
-	}
-	validUntil
-}
-fragment CreditEntitlementFragment on CreditEntitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	currency {
-		currencyId
-	}
-	usageLimit
-	currentUsage
-	usageUpdatedAt
-	entitlementUpdatedAt
-	validUntil
-}
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -15090,6 +16223,27 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		refId
 	}
 }
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
 fragment EntitlementFragment on Entitlement {
 	__typename
 	isGranted
@@ -15121,6 +16275,161 @@ fragment EntitlementFragment on Entitlement {
 		currencyId
 	}
 	validUntil
+}
+fragment EntitlementUnionFragment on EntitlementUnion {
+	... on FeatureEntitlement {
+		... FeatureEntitlementFragment
+	}
+	... on CreditEntitlement {
+		... CreditEntitlementFragment
+	}
+}
+fragment ProvisionCustomerFragment on ProvisionedCustomer {
+	customer {
+		... SlimCustomerFragment
+	}
+	subscriptionDecisionStrategy
+	subscription {
+		... SlimSubscriptionFragment
+	}
+	entitlements {
+		... EntitlementFragment
+	}
+	entitlementsV2 {
+		... EntitlementUnionFragment
+	}
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
+	refId
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+		currencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
+	}
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment FeatureEntitlementFragment on FeatureEntitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+	creditRate {
+		amount
+		currencyId
+	}
+	validUntil
+}
+fragment CreditEntitlementFragment on CreditEntitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	currency {
+		currencyId
+	}
+	usageLimit
+	currentUsage
+	usageUpdatedAt
+	entitlementUpdatedAt
+	validUntil
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
 `
 
@@ -15316,6 +16625,52 @@ const ProvisionSubscriptionDocument = `mutation ProvisionSubscription ($input: P
 		... ProvisionSubscriptionFragment
 	}
 }
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	requestedValues
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+	creditRate {
+		amount
+		currencyId
+	}
+	validUntil
+}
+fragment ProvisionSubscriptionFragment on ProvisionSubscriptionResult {
+	status
+	checkoutUrl
+	checkoutBillingId
+	subscription {
+		... SlimSubscriptionFragment
+	}
+	entitlements {
+		... EntitlementFragment
+	}
+	entitlementsV2 {
+		... EntitlementUnionFragment
+	}
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -15367,6 +16722,30 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		refId
 	}
 }
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
 fragment PriceFragment on Price {
 	billingModel
 	billingPeriod
@@ -15397,48 +16776,25 @@ fragment PriceFragment on Price {
 	}
 	blockSize
 }
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	requestedValues
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-	creditRate {
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
 		amount
-		currencyId
+		currency
 	}
-	validUntil
+	flatPrice {
+		amount
+		currency
+	}
 }
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
 	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
+	total {
+		amount
+		currency
 	}
 }
 fragment EntitlementUnionFragment on EntitlementUnion {
@@ -15476,6 +16832,32 @@ fragment FeatureEntitlementFragment on FeatureEntitlement {
 	}
 	validUntil
 }
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
+	}
+}
 fragment CreditEntitlementFragment on CreditEntitlement {
 	__typename
 	isGranted
@@ -15489,18 +16871,226 @@ fragment CreditEntitlementFragment on CreditEntitlement {
 	entitlementUpdatedAt
 	validUntil
 }
-fragment ProvisionSubscriptionFragment on ProvisionSubscriptionResult {
-	status
-	checkoutUrl
-	checkoutBillingId
+`
+
+func (c *Client) ProvisionSubscription(ctx context.Context, input ProvisionSubscriptionInput, interceptors ...clientv2.RequestInterceptor) (*ProvisionSubscriptionResponse, error) {
+	vars := map[string]interface{}{
+		"input": input,
+	}
+
+	var res ProvisionSubscriptionResponse
+	if err := c.Client.Post(ctx, "ProvisionSubscription", ProvisionSubscriptionDocument, &res, vars, interceptors...); err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const ApplySubscriptionDocument = `mutation ApplySubscription ($input: ApplySubscriptionInput!) {
+	applySubscription(input: $input) {
+		... ApplySubscriptionFragment
+	}
+}
+fragment PackageFeatureEntitlementFragment on PackageFeatureEntitlement {
+	__typename
+	id
+	behavior
+	description
+	displayNameOverride
+	enumValues
+	featureId
+	hasSoftLimit
+	hasUnlimitedUsage
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	resetPeriod
+	usageLimit
+	feature {
+		featureType
+		meterType
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+		refId
+		additionalMetaData
+	}
+}
+fragment FeatureEntitlementFragment on FeatureEntitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+	creditRate {
+		amount
+		currencyId
+	}
+	validUntil
+}
+fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
+	}
+}
+fragment ApplySubscriptionFragment on ApplySubscription {
 	subscription {
-		... SlimSubscriptionFragment
+		... SubscriptionFragment
 	}
 	entitlements {
 		... EntitlementFragment
 	}
 	entitlementsV2 {
 		... EntitlementUnionFragment
+	}
+}
+fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
+	packageGroupId
+	displayName
+	addons {
+		... AddonFragment
+	}
+	options {
+		minItems
+		freeItems
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment AddonFragment on Addon {
+	id
+	refId
+	billingId
+	displayName
+	description
+	additionalMetaData
+	hiddenFromWidgets
+	entitlements {
+		... PackageEntitlementFragment
+	}
+	prices {
+		... PriceFragment
+	}
+	overagePrices {
+		... OveragePriceFragment
+	}
+	pricingType
+	maxQuantity
+	dependencies {
+		... AddonDependencyFragment
+	}
+}
+fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
+	subscriptionScheduleType
+	scheduleStatus
+	scheduledExecutionTime
+	targetPackage {
+		id
+		refId
+		displayName
+	}
+	scheduleVariables {
+		... ScheduleVariablesFragment
+	}
+}
+fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
+	__typename
+	... on YearlyResetPeriodConfig {
+		yearlyAccordingTo
+	}
+	... on MonthlyResetPeriodConfig {
+		monthlyAccordingTo
+	}
+	... on WeeklyResetPeriodConfig {
+		weeklyAccordingTo
+	}
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+		currencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
 	}
 }
 fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
@@ -15524,64 +17114,6 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	amountDue
 	attemptCount
 }
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
-	}
-}
-`
-
-func (c *Client) ProvisionSubscription(ctx context.Context, input ProvisionSubscriptionInput, interceptors ...clientv2.RequestInterceptor) (*ProvisionSubscriptionResponse, error) {
-	vars := map[string]interface{}{
-		"input": input,
-	}
-
-	var res ProvisionSubscriptionResponse
-	if err := c.Client.Post(ctx, "ProvisionSubscription", ProvisionSubscriptionDocument, &res, vars, interceptors...); err != nil {
-		return nil, err
-	}
-
-	return &res, nil
-}
-
-const ApplySubscriptionDocument = `mutation ApplySubscription ($input: ApplySubscriptionInput!) {
-	applySubscription(input: $input) {
-		... ApplySubscriptionFragment
-	}
-}
 fragment PackageEntitlementFragment on PackageEntitlement {
 	usageLimit
 	hasUnlimitedUsage
@@ -15603,6 +17135,12 @@ fragment PackageEntitlementFragment on PackageEntitlement {
 		refId
 		additionalMetaData
 	}
+}
+fragment AddonDependencyFragment on Addon {
+	id
+	refId
+	displayName
+	description
 }
 fragment ScheduleVariablesFragment on ScheduleVariables {
 	__typename
@@ -15661,134 +17199,12 @@ fragment ScheduleVariablesFragment on ScheduleVariables {
 		featureId
 	}
 }
-fragment CreditEntitlementFragment on CreditEntitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	currency {
-		currencyId
-	}
-	usageLimit
-	currentUsage
-	usageUpdatedAt
-	entitlementUpdatedAt
-	validUntil
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-		currencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment SubscriptionScheduledUpdateData on SubscriptionScheduledUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
-fragment SubscriptionFutureUpdateData on SubscriptionFutureUpdate {
-	subscriptionScheduleType
-	scheduleStatus
-	scheduledExecutionTime
-	targetPackage {
-		id
-		refId
-		displayName
-	}
-	scheduleVariables {
-		... ScheduleVariablesFragment
-	}
-}
 fragment EntitlementUnionFragment on EntitlementUnion {
 	... on FeatureEntitlement {
 		... FeatureEntitlementFragment
 	}
 	... on CreditEntitlement {
 		... CreditEntitlementFragment
-	}
-}
-fragment FeatureEntitlementFragment on FeatureEntitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-	creditRate {
-		amount
-		currencyId
-	}
-	validUntil
-}
-fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
-	__typename
-	... on YearlyResetPeriodConfig {
-		yearlyAccordingTo
-	}
-	... on MonthlyResetPeriodConfig {
-		monthlyAccordingTo
-	}
-	... on WeeklyResetPeriodConfig {
-		weeklyAccordingTo
 	}
 }
 fragment SubscriptionFragment on CustomerSubscription {
@@ -15853,142 +17269,6 @@ fragment SubscriptionFragment on CustomerSubscription {
 		... SubscriptionTrialConfigurationFragment
 	}
 }
-fragment SlimCustomerFragment on Customer {
-	id
-	name
-	email
-	createdAt
-	updatedAt
-	refId
-	customerId
-	billingId
-	additionalMetaData
-	awsMarketplaceCustomerId
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment AddonFragment on Addon {
-	id
-	refId
-	billingId
-	displayName
-	description
-	additionalMetaData
-	hiddenFromWidgets
-	entitlements {
-		... PackageEntitlementFragment
-	}
-	prices {
-		... PriceFragment
-	}
-	overagePrices {
-		... OveragePriceFragment
-	}
-	pricingType
-	maxQuantity
-	dependencies {
-		... AddonDependencyFragment
-	}
-}
-fragment OveragePriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingId
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-}
-fragment AddonDependencyFragment on Addon {
-	id
-	refId
-	displayName
-	description
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	requestedValues
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-	creditRate {
-		amount
-		currencyId
-	}
-	validUntil
-}
-fragment ApplySubscriptionFragment on ApplySubscription {
-	subscription {
-		... SubscriptionFragment
-	}
-	entitlements {
-		... EntitlementFragment
-	}
-	entitlementsV2 {
-		... EntitlementUnionFragment
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
 fragment PlanFragment on Plan {
 	id
 	refId
@@ -16033,6 +17313,52 @@ fragment PlanFragment on Plan {
 		trialEndBehavior
 	}
 	awsMarketplacePlanDimension
+	packageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
+	inheritedPackageEntitlements {
+		... PackageEntitlementUnionFragment
+	}
+}
+fragment OveragePriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingId
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+}
+fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
+	trialEndBehavior
+}
+fragment CreditEntitlementFragment on CreditEntitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	currency {
+		currencyId
+	}
+	usageLimit
+	currentUsage
+	usageUpdatedAt
+	entitlementUpdatedAt
+	validUntil
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
 }
 fragment ProductFragment on Product {
 	refId
@@ -16047,32 +17373,79 @@ fragment ProductFragment on Product {
 		}
 	}
 }
-fragment PlanCompatiblePackageGroupsFragment on PlanCompatiblePackageGroups {
-	packageGroupId
-	displayName
-	addons {
-		... AddonFragment
-	}
-	options {
-		minItems
-		freeItems
-	}
-}
-fragment SubscriptionTrialConfigurationFragment on TrialConfiguration {
-	trialEndBehavior
-}
-fragment FeatureFragment on EntitlementFeature {
+fragment PackageCreditEntitlementFragment on PackageCreditEntitlement {
 	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
+	id
+	amount
+	behavior
+	cadence
+	customCurrencyId
 	description
-	displayName
+	displayNameOverride
+	hiddenFromWidgets
+	isCustom
+	isGranted
+	order
+	customCurrency {
+		currencyId
+		displayName
+		symbol
+		units {
+			singular
+			plural
+		}
+	}
+}
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	requestedValues
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+	creditRate {
+		amount
+		currencyId
+	}
+	validUntil
+}
+fragment SlimCustomerFragment on Customer {
+	id
+	name
+	email
+	createdAt
+	updatedAt
 	refId
-	unitTransformation {
-		divide
-		round
+	customerId
+	billingId
+	additionalMetaData
+	awsMarketplaceCustomerId
+}
+fragment PackageEntitlementUnionFragment on PackageEntitlementUnion {
+	... on PackageFeatureEntitlement {
+		... PackageFeatureEntitlementFragment
+	}
+	... on PackageCreditEntitlement {
+		... PackageCreditEntitlementFragment
 	}
 }
 `
@@ -16259,6 +17632,57 @@ const CancelSubscriptionDocument = `mutation CancelSubscription ($input: Subscri
 		... SlimSubscriptionFragment
 	}
 }
+fragment SlimSubscriptionFragment on CustomerSubscription {
+	id
+	subscriptionId
+	refId
+	status
+	additionalMetaData
+	billingId
+	billingLinkUrl
+	effectiveEndDate
+	cancellationDate
+	currentBillingPeriodEnd
+	pricingType
+	latestInvoice {
+		... SubscriptionInvoiceFragment
+	}
+	paymentCollection
+	billingSyncError
+	resource {
+		... CustomerResourceFragment
+	}
+	experimentInfo {
+		name
+		id
+		groupType
+		groupName
+	}
+	prices {
+		usageLimit
+		price {
+			... PriceFragment
+		}
+	}
+	totalPrice {
+		... TotalPriceFragment
+	}
+	plan {
+		id
+		refId
+	}
+	addons {
+		quantity
+		addon {
+			id
+			refId
+		}
+	}
+	customer {
+		id
+		refId
+	}
+}
 fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	billingId
 	status
@@ -16332,57 +17756,6 @@ fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
 	total {
 		amount
 		currency
-	}
-}
-fragment SlimSubscriptionFragment on CustomerSubscription {
-	id
-	subscriptionId
-	refId
-	status
-	additionalMetaData
-	billingId
-	billingLinkUrl
-	effectiveEndDate
-	cancellationDate
-	currentBillingPeriodEnd
-	pricingType
-	latestInvoice {
-		... SubscriptionInvoiceFragment
-	}
-	paymentCollection
-	billingSyncError
-	resource {
-		... CustomerResourceFragment
-	}
-	experimentInfo {
-		name
-		id
-		groupType
-		groupName
-	}
-	prices {
-		usageLimit
-		price {
-			... PriceFragment
-		}
-	}
-	totalPrice {
-		... TotalPriceFragment
-	}
-	plan {
-		id
-		refId
-	}
-	addons {
-		quantity
-		addon {
-			id
-			refId
-		}
-	}
-	customer {
-		id
-		refId
 	}
 }
 `
@@ -16651,20 +18024,6 @@ const PreviewSubscriptionDocument = `mutation PreviewSubscription ($input: Previ
 		... SubscriptionPreviewV2Fragment
 	}
 }
-fragment SubscriptionPreviewV2Fragment on SubscriptionPreviewV2 {
-	immediateInvoice {
-		... ImmediateSubscriptionPreviewInvoiceFragment
-	}
-	recurringInvoice {
-		... SubscriptionPreviewInvoiceFragment
-	}
-	billingPeriodRange {
-		start
-		end
-	}
-	isPlanDowngrade
-	hasScheduledUpdates
-}
 fragment ImmediateSubscriptionPreviewInvoiceFragment on ImmediateSubscriptionPreviewInvoice {
 	total {
 		amount
@@ -16760,6 +18119,20 @@ fragment SubscriptionPreviewInvoiceFragment on SubscriptionPreviewInvoice {
 		durationType
 		durationInMonths
 	}
+}
+fragment SubscriptionPreviewV2Fragment on SubscriptionPreviewV2 {
+	immediateInvoice {
+		... ImmediateSubscriptionPreviewInvoiceFragment
+	}
+	recurringInvoice {
+		... SubscriptionPreviewInvoiceFragment
+	}
+	billingPeriodRange {
+		start
+		end
+	}
+	isPlanDowngrade
+	hasScheduledUpdates
 }
 `
 
@@ -17052,6 +18425,60 @@ const CreateSubscriptionDocument = `mutation CreateSubscription ($input: Subscri
 		... SlimSubscriptionFragment
 	}
 }
+fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
+	billingId
+	status
+	createdAt
+	dueDate
+	updatedAt
+	errorMessage
+	requiresAction
+	paymentSecret
+	paymentUrl
+	pdfUrl
+	billingReason
+	currency
+	subTotal
+	subTotalExcludingTax
+	total
+	totalExcludingTax
+	tax
+	amountDue
+	attemptCount
+}
+fragment CustomerResourceFragment on CustomerResource {
+	resourceId
+}
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+		currencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
 fragment PriceTierFragment on PriceTier {
 	upTo
 	unitPrice {
@@ -17123,60 +18550,6 @@ fragment SlimSubscriptionFragment on CustomerSubscription {
 		id
 		refId
 	}
-}
-fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
-	billingId
-	status
-	createdAt
-	dueDate
-	updatedAt
-	errorMessage
-	requiresAction
-	paymentSecret
-	paymentUrl
-	pdfUrl
-	billingReason
-	currency
-	subTotal
-	subTotalExcludingTax
-	total
-	totalExcludingTax
-	tax
-	amountDue
-	attemptCount
-}
-fragment CustomerResourceFragment on CustomerResource {
-	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-		currencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
 }
 `
 
@@ -17270,6 +18643,57 @@ const TransferSubscriptionDocument = `mutation TransferSubscription ($input: Tra
 		... SlimSubscriptionFragment
 	}
 }
+fragment PriceFragment on Price {
+	billingModel
+	billingPeriod
+	billingCadence
+	billingId
+	minUnitQuantity
+	maxUnitQuantity
+	billingCountryCode
+	price {
+		amount
+		currency
+	}
+	creditRate {
+		amount
+		customCurrencyId
+		currencyId
+	}
+	tiersMode
+	tiers {
+		... PriceTierFragment
+	}
+	feature {
+		refId
+		featureUnits
+		featureUnitsPlural
+		displayName
+		description
+	}
+	blockSize
+}
+fragment PriceTierFragment on PriceTier {
+	upTo
+	unitPrice {
+		amount
+		currency
+	}
+	flatPrice {
+		amount
+		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
 fragment SlimSubscriptionFragment on CustomerSubscription {
 	id
 	subscriptionId
@@ -17344,57 +18768,6 @@ fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 }
 fragment CustomerResourceFragment on CustomerResource {
 	resourceId
-}
-fragment PriceFragment on Price {
-	billingModel
-	billingPeriod
-	billingCadence
-	billingId
-	minUnitQuantity
-	maxUnitQuantity
-	billingCountryCode
-	price {
-		amount
-		currency
-	}
-	creditRate {
-		amount
-		customCurrencyId
-		currencyId
-	}
-	tiersMode
-	tiers {
-		... PriceTierFragment
-	}
-	feature {
-		refId
-		featureUnits
-		featureUnitsPlural
-		displayName
-		description
-	}
-	blockSize
-}
-fragment PriceTierFragment on PriceTier {
-	upTo
-	unitPrice {
-		amount
-		currency
-	}
-	flatPrice {
-		amount
-		currency
-	}
-}
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
 }
 `
 
@@ -17416,67 +18789,6 @@ const DelegateSubscriptionToCustomerDocument = `mutation DelegateSubscriptionToC
 		... SlimSubscriptionFragment
 	}
 }
-fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
-	subTotal {
-		amount
-		currency
-	}
-	total {
-		amount
-		currency
-	}
-}
-fragment SlimSubscriptionFragment on CustomerSubscription {
-	id
-	subscriptionId
-	refId
-	status
-	additionalMetaData
-	billingId
-	billingLinkUrl
-	effectiveEndDate
-	cancellationDate
-	currentBillingPeriodEnd
-	pricingType
-	latestInvoice {
-		... SubscriptionInvoiceFragment
-	}
-	paymentCollection
-	billingSyncError
-	resource {
-		... CustomerResourceFragment
-	}
-	experimentInfo {
-		name
-		id
-		groupType
-		groupName
-	}
-	prices {
-		usageLimit
-		price {
-			... PriceFragment
-		}
-	}
-	totalPrice {
-		... TotalPriceFragment
-	}
-	plan {
-		id
-		refId
-	}
-	addons {
-		quantity
-		addon {
-			id
-			refId
-		}
-	}
-	customer {
-		id
-		refId
-	}
-}
 fragment SubscriptionInvoiceFragment on SubscriptionInvoice {
 	billingId
 	status
@@ -17540,6 +18852,67 @@ fragment PriceTierFragment on PriceTier {
 	flatPrice {
 		amount
 		currency
+	}
+}
+fragment TotalPriceFragment on CustomerSubscriptionTotalPrice {
+	subTotal {
+		amount
+		currency
+	}
+	total {
+		amount
+		currency
+	}
+}
+fragment SlimSubscriptionFragment on CustomerSubscription {
+	id
+	subscriptionId
+	refId
+	status
+	additionalMetaData
+	billingId
+	billingLinkUrl
+	effectiveEndDate
+	cancellationDate
+	currentBillingPeriodEnd
+	pricingType
+	latestInvoice {
+		... SubscriptionInvoiceFragment
+	}
+	paymentCollection
+	billingSyncError
+	resource {
+		... CustomerResourceFragment
+	}
+	experimentInfo {
+		name
+		id
+		groupType
+		groupName
+	}
+	prices {
+		usageLimit
+		price {
+			... PriceFragment
+		}
+	}
+	totalPrice {
+		... TotalPriceFragment
+	}
+	plan {
+		id
+		refId
+	}
+	addons {
+		quantity
+		addon {
+			id
+			refId
+		}
+	}
+	customer {
+		id
+		refId
 	}
 }
 `
@@ -18067,6 +19440,38 @@ const OnEntitlementsUpdatedDocument = `subscription OnEntitlementsUpdated {
 		... EntitlementsUpdatedPayload
 	}
 }
+fragment EntitlementFragment on Entitlement {
+	__typename
+	isGranted
+	accessDeniedReason
+	customerId
+	resourceId
+	usageLimit
+	hasUnlimitedUsage
+	hasSoftLimit
+	currentUsage
+	requestedUsage
+	requestedValues
+	enumValues
+	entitlementUpdatedAt
+	usageUpdatedAt
+	usagePeriodAnchor
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
+	resetPeriod
+	resetPeriodConfiguration {
+		... ResetPeriodConfigurationFragment
+	}
+	feature {
+		... FeatureFragment
+	}
+	creditRate {
+		amount
+		currencyId
+	}
+	validUntil
+}
 fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
 	__typename
 	... on YearlyResetPeriodConfig {
@@ -18100,38 +19505,6 @@ fragment EntitlementsUpdatedPayload on EntitlementsUpdated {
 	entitlements {
 		... EntitlementFragment
 	}
-}
-fragment EntitlementFragment on Entitlement {
-	__typename
-	isGranted
-	accessDeniedReason
-	customerId
-	resourceId
-	usageLimit
-	hasUnlimitedUsage
-	hasSoftLimit
-	currentUsage
-	requestedUsage
-	requestedValues
-	enumValues
-	entitlementUpdatedAt
-	usageUpdatedAt
-	usagePeriodAnchor
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-	resetPeriod
-	resetPeriodConfiguration {
-		... ResetPeriodConfigurationFragment
-	}
-	feature {
-		... FeatureFragment
-	}
-	creditRate {
-		amount
-		currencyId
-	}
-	validUntil
 }
 `
 
@@ -18251,37 +19624,6 @@ const OnUsageUpdatedDocument = `subscription OnUsageUpdated {
 		... EntitlementUsageUpdated
 	}
 }
-fragment FeatureFragment on EntitlementFeature {
-	__typename
-	featureType
-	meterType
-	featureUnits
-	featureUnitsPlural
-	description
-	displayName
-	refId
-	unitTransformation {
-		divide
-		round
-	}
-}
-fragment EntitlementUsageUpdated on UsageUpdated {
-	usage {
-		... UsageUpdatedFragment
-	}
-	entitlement {
-		... EntitlementFragment
-	}
-}
-fragment UsageUpdatedFragment on UsageMeasurementUpdated {
-	customerId
-	resourceId
-	featureId
-	currentUsage
-	usagePeriodStart
-	usagePeriodEnd
-	nextResetDate
-}
 fragment EntitlementFragment on Entitlement {
 	__typename
 	isGranted
@@ -18325,6 +19667,37 @@ fragment ResetPeriodConfigurationFragment on ResetPeriodConfiguration {
 	... on WeeklyResetPeriodConfig {
 		weeklyAccordingTo
 	}
+}
+fragment FeatureFragment on EntitlementFeature {
+	__typename
+	featureType
+	meterType
+	featureUnits
+	featureUnitsPlural
+	description
+	displayName
+	refId
+	unitTransformation {
+		divide
+		round
+	}
+}
+fragment EntitlementUsageUpdated on UsageUpdated {
+	usage {
+		... UsageUpdatedFragment
+	}
+	entitlement {
+		... EntitlementFragment
+	}
+}
+fragment UsageUpdatedFragment on UsageMeasurementUpdated {
+	customerId
+	resourceId
+	featureId
+	currentUsage
+	usagePeriodStart
+	usagePeriodEnd
+	nextResetDate
 }
 `
 
