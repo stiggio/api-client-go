@@ -21,6 +21,10 @@ type EntitlementUnion interface {
 	IsEntitlementUnion()
 }
 
+type EntitlementWithSummaryUnion interface {
+	IsEntitlementWithSummaryUnion()
+}
+
 type PackageEntitlementChangeUnion interface {
 	IsPackageEntitlementChangeUnion()
 }
@@ -1977,6 +1981,28 @@ type CreditEntitlement struct {
 
 func (CreditEntitlement) IsEntitlementUnion() {}
 
+// A credit entitlement combined with its computed summary.
+type CreditEntitlementWithSummary struct {
+	// Optional message explaining why access to the feature is denied.
+	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason"`
+	// The custom currency associated with this credit entitlement.
+	Currency EntitlementCurrency `json:"currency"`
+	// The total amount of credits consumed by the customer.
+	CurrentUsage *float64 `json:"currentUsage"`
+	// Timestamp of the last update to the entitlement grant or configuration.
+	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// Indicates whether the entitlement is currently granted to the customer.
+	IsGranted bool `json:"isGranted"`
+	// The total amount of credits granted to the customer.
+	UsageLimit *float64 `json:"usageLimit"`
+	// Timestamp of the last update to the credit usage.
+	UsageUpdatedAt *string `json:"usageUpdatedAt"`
+	// The next time the entitlement should be recalculated
+	ValidUntil *string `json:"validUntil"`
+}
+
+func (CreditEntitlementWithSummary) IsEntitlementWithSummaryUnion() {}
+
 // Stigg credit grant object
 type CreditGrant struct {
 	// Metadata associated with the entity
@@ -3818,6 +3844,12 @@ type EntitlementsUpdatedV2 struct {
 	ResourceID *string `json:"resourceId"`
 }
 
+// Response containing entitlements with summaries, supporting both feature and credit entitlements.
+type EntitlementsWithSummary struct {
+	// The list of polymorphic entitlements (feature and credit) with summaries granted to the customer.
+	Entitlements []EntitlementWithSummaryUnion `json:"entitlements"`
+}
+
 // Feature enum configuration entity
 type EnumConfigurationEntity struct {
 	// The deletion date for soft-deleted enum configuration entities
@@ -4512,6 +4544,48 @@ type FeatureEntitlement struct {
 }
 
 func (FeatureEntitlement) IsEntitlementUnion() {}
+
+// A feature entitlement combined with its computed summary.
+type FeatureEntitlementWithSummary struct {
+	// Optional message explaining why access to the feature is denied.
+	AccessDeniedReason *AccessDeniedReason `json:"accessDeniedReason"`
+	// The credit rate associated with this entitlement, if applicable.
+	CreditRate *CreditRate `json:"creditRate"`
+	// The amount of the feature the customer has used so far in the current period.
+	CurrentUsage *float64 `json:"currentUsage"`
+	// Timestamp of the last update to the entitlement grant or configuration.
+	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// List of enum values applicable to this entitlement, if it is an enum feature.
+	EnumValues []string `json:"enumValues"`
+	// The feature this entitlement corresponds to.
+	Feature *EntitlementFeature `json:"feature"`
+	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Indicates whether this entitlement grants unlimited usage with no enforced cap.
+	HasUnlimitedUsage bool `json:"hasUnlimitedUsage"`
+	// Indicates whether the entitlement is currently granted to the customer.
+	IsGranted bool `json:"isGranted"`
+	// The interval at which usage resets automatically, such as monthly or yearly.
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// Detailed configuration object specifying the usage reset schedule.
+	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
+	// List of entitlement summaries per feature, including source and effective values.
+	Summaries []*EntitlementSummary `json:"summaries"`
+	// The maximum allowed usage for this entitlement before restrictions apply.
+	UsageLimit *float64 `json:"usageLimit"`
+	// The anchor for calculating the usage period for metered entitlements with a reset period configured
+	UsagePeriodAnchor *string `json:"usagePeriodAnchor"`
+	// The end date of the usage period for metered entitlements with a reset period configured
+	UsagePeriodEnd *string `json:"usagePeriodEnd"`
+	// The start date of the usage period for metered entitlements with a reset period configured
+	UsagePeriodStart *string `json:"usagePeriodStart"`
+	// Timestamp of the last update to the usage value.
+	UsageUpdatedAt *string `json:"usageUpdatedAt"`
+	// The next time the entitlement should be recalculated
+	ValidUntil *string `json:"validUntil"`
+}
+
+func (FeatureEntitlementWithSummary) IsEntitlementWithSummaryUnion() {}
 
 type FeatureFilter struct {
 	And           []*FeatureFilter               `json:"and,omitempty"`
