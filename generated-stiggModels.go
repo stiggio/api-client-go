@@ -4525,6 +4525,8 @@ type FeatureEntitlement struct {
 	HasUnlimitedUsage bool `json:"hasUnlimitedUsage"`
 	// Indicates whether the entitlement is currently granted to the customer.
 	IsGranted bool `json:"isGranted"`
+	// The ID of the meter tracking usage for this entitlement.
+	MeterID *string `json:"meterId"`
 	// The interval at which usage resets automatically, such as monthly or yearly.
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
 	// Detailed configuration object specifying the usage reset schedule.
@@ -4565,6 +4567,8 @@ type FeatureEntitlementWithSummary struct {
 	HasUnlimitedUsage bool `json:"hasUnlimitedUsage"`
 	// Indicates whether the entitlement is currently granted to the customer.
 	IsGranted bool `json:"isGranted"`
+	// The ID of the meter tracking usage for this entitlement.
+	MeterID *string `json:"meterId"`
 	// The interval at which usage resets automatically, such as monthly or yearly.
 	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
 	// Detailed configuration object specifying the usage reset schedule.
