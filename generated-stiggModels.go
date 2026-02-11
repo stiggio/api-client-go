@@ -566,6 +566,8 @@ type APIKeySort struct {
 type AppStoreApplication struct {
 	// Bundle ID of the App Store application
 	BundleID string `json:"bundleId"`
+	// URL of the App Store application icon
+	IconURL *string `json:"iconUrl"`
 	// ID of the App Store application
 	ID string `json:"id"`
 	// Name of the App Store application
