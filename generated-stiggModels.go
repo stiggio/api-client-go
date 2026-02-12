@@ -3954,6 +3954,30 @@ type EnvironmentInput struct {
 	ProvisionStatus *EnvironmentProvisionStatus `json:"provisionStatus,omitempty"`
 }
 
+// An environment object
+type EnvironmentListItem struct {
+	// The color associated with the environment, used for UI representation
+	Color *string `json:"color"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The description of the environment
+	Description *string `json:"description"`
+	// The display name of the environment
+	DisplayName string `json:"displayName"`
+	// Whether hardened client access is enabled for the environment
+	HardenClientAccessEnabled bool `json:"hardenClientAccessEnabled"`
+	// Unique identifier for the entity
+	ID string `json:"id"`
+	// Whether the environment is a sandbox environment
+	IsSandbox bool `json:"isSandbox"`
+	// The signing token for the environment, used for secure communication
+	SigningToken string `json:"signingToken"`
+	// The slug of the environment, used in URLs
+	Slug string `json:"slug"`
+	// The type of the environment, e.g. "DEVELOPMENT", "PRODUCTION", or "SANDBOX"
+	Type EnvironmentType `json:"type"`
+}
+
 type EnvironmentMaxAggregate struct {
 	CreatedAt             *string `json:"createdAt"`
 	DisplayName           *string `json:"displayName"`
