@@ -1975,6 +1975,8 @@ type CreditEntitlement struct {
 	IsGranted bool `json:"isGranted"`
 	// The total amount of credits granted to the customer.
 	UsageLimit *float64 `json:"usageLimit"`
+	// The end date of the current billing period for recurring credit grants.
+	UsagePeriodEnd *string `json:"usagePeriodEnd"`
 	// Timestamp of the last update to the credit usage.
 	UsageUpdatedAt *string `json:"usageUpdatedAt"`
 	// The next time the entitlement should be recalculated
@@ -1997,6 +1999,8 @@ type CreditEntitlementWithSummary struct {
 	IsGranted bool `json:"isGranted"`
 	// The total amount of credits granted to the customer.
 	UsageLimit *float64 `json:"usageLimit"`
+	// The end date of the current billing period for recurring credit grants.
+	UsagePeriodEnd *string `json:"usagePeriodEnd"`
 	// Timestamp of the last update to the credit usage.
 	UsageUpdatedAt *string `json:"usageUpdatedAt"`
 	// The next time the entitlement should be recalculated
