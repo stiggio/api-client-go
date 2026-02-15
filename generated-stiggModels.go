@@ -5005,6 +5005,22 @@ type GetCustomerByRefIDInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// Query for fetching a single entitlement by reference (supports both feature and credit entitlements).
+type GetEntitlementV2Input struct {
+	// Identifier of the credit type / custom currency (for credit entitlements). Exactly one of featureId or currencyId must be set.
+	CurrencyID *string `json:"currencyId,omitempty"`
+	// Identifier of the customer.
+	CustomerID string `json:"customerId"`
+	// The environment identifier used to resolve the entitlement context.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Identifier of the feature (for feature entitlements). Exactly one of featureId or currencyId must be set.
+	FeatureID *string `json:"featureId,omitempty"`
+	// Optional flags or preferences to customize the fetch behavior.
+	Options *EntitlementOptions `json:"options,omitempty"`
+	// The scoped resource Identifier.
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
 // Get offer input
 type GetOfferInput struct {
 	// The unique identifier for the environment
