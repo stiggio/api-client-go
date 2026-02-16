@@ -11458,9 +11458,9 @@ type UnitTransformationInput struct {
 // Units object (singular and plural)
 type Units struct {
 	// Plural form of the unit
-	Plural string `json:"plural"`
+	Plural *string `json:"plural"`
 	// Singular form of the unit
-	Singular string `json:"singular"`
+	Singular *string `json:"singular"`
 }
 
 // Units input object (singular and plural)
