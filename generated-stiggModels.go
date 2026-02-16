@@ -1985,6 +1985,26 @@ type CreditEntitlement struct {
 
 func (CreditEntitlement) IsEntitlementUnion() {}
 
+// Summary of an individual credit grant contributing to the credit entitlement.
+type CreditEntitlementSummary struct {
+	// The addon associated with this grant, if applicable.
+	Addon *Addon `json:"addon"`
+	// The amount of the credit grant
+	Amount float64 `json:"amount"`
+	// The effective date of the credit grant
+	EffectiveAt string `json:"effectiveAt"`
+	// The expiration date of the credit grant
+	ExpireAt *string `json:"expireAt"`
+	// The type of the credit grant
+	GrantType CreditGrantType `json:"grantType"`
+	// The plan associated with this grant, if applicable.
+	Plan *Plan `json:"plan"`
+	// The source type of the credit grant (plan entitlement, addon entitlement, or price)
+	SourceType *CreditGrantSourceType `json:"sourceType"`
+	// The subscription context in which the grant was created.
+	Subscription *CustomerSubscription `json:"subscription"`
+}
+
 // A credit entitlement combined with its computed summary.
 type CreditEntitlementWithSummary struct {
 	// Optional message explaining why access to the feature is denied.
@@ -1997,6 +2017,8 @@ type CreditEntitlementWithSummary struct {
 	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
 	// Indicates whether the entitlement is currently granted to the customer.
 	IsGranted bool `json:"isGranted"`
+	// List of credit grant summaries showing individual sources and their contributions.
+	Summaries []*CreditEntitlementSummary `json:"summaries"`
 	// The total amount of credits granted to the customer.
 	UsageLimit *float64 `json:"usageLimit"`
 	// The end date of the current billing period for recurring credit grants.
@@ -2051,6 +2073,8 @@ type CreditGrant struct {
 	Priority float64 `json:"priority"`
 	// The resource ID of the credit grant
 	ResourceID *string `json:"resourceId"`
+	// The source type of the credit grant (plan entitlement, addon entitlement, or price)
+	SourceType *CreditGrantSourceType `json:"sourceType"`
 	// The status of the credit grant
 	Status CreditGrantStatus `json:"status"`
 	// Timestamp of when the record was last updated
@@ -13777,6 +13801,53 @@ func (e *CreditGrantInvoiceStatus) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CreditGrantInvoiceStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The source type of a credit grant
+type CreditGrantSourceType string
+
+const (
+	// Credit grant from an addon entitlement
+	CreditGrantSourceTypeAddonEntitlement CreditGrantSourceType = "ADDON_ENTITLEMENT"
+	// Credit grant from a plan entitlement
+	CreditGrantSourceTypePlanEntitlement CreditGrantSourceType = "PLAN_ENTITLEMENT"
+	// Credit grant from a recurring price
+	CreditGrantSourceTypePrice CreditGrantSourceType = "PRICE"
+)
+
+var AllCreditGrantSourceType = []CreditGrantSourceType{
+	CreditGrantSourceTypeAddonEntitlement,
+	CreditGrantSourceTypePlanEntitlement,
+	CreditGrantSourceTypePrice,
+}
+
+func (e CreditGrantSourceType) IsValid() bool {
+	switch e {
+	case CreditGrantSourceTypeAddonEntitlement, CreditGrantSourceTypePlanEntitlement, CreditGrantSourceTypePrice:
+		return true
+	}
+	return false
+}
+
+func (e CreditGrantSourceType) String() string {
+	return string(e)
+}
+
+func (e *CreditGrantSourceType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CreditGrantSourceType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CreditGrantSourceType", str)
+	}
+	return nil
+}
+
+func (e CreditGrantSourceType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
