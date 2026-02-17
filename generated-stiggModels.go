@@ -557,6 +557,14 @@ type APIKeyNotFound struct {
 }
 
 // Input for defining API key scope permissions
+type APIKeyScope struct {
+	// The action allowed on the resource
+	Action APIKeyScopeAction `json:"action"`
+	// The resource type for the scope
+	Resource APIKeyScopeResource `json:"resource"`
+}
+
+// Input for defining API key scope permissions
 type APIKeyScopeInput struct {
 	// The action allowed on the resource
 	Action APIKeyScopeAction `json:"action"`
