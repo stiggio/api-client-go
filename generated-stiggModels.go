@@ -1991,6 +1991,8 @@ type CreditEntitlementSummary struct {
 	Addon *Addon `json:"addon"`
 	// The amount of the credit grant
 	Amount float64 `json:"amount"`
+	// The cadence for recurring grants (MONTH or YEAR).
+	Cadence *CreditCadence `json:"cadence"`
 	// The effective date of the credit grant
 	EffectiveAt string `json:"effectiveAt"`
 	// The expiration date of the credit grant
