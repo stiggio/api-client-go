@@ -48,6 +48,10 @@ type ScheduleVariables interface {
 	IsScheduleVariables()
 }
 
+type SubscriptionEntitlementUnion interface {
+	IsSubscriptionEntitlementUnion()
+}
+
 // Data of the sync revision
 type SyncRevisionData interface {
 	IsSyncRevisionData()
@@ -682,7 +686,8 @@ type ApplySubscriptionInput struct {
 	Budget  *BudgetConfigurationInput `json:"budget,omitempty"`
 	Charges []*ChargeInput            `json:"charges,omitempty"`
 	// Customer ID
-	CustomerID string `json:"customerId"`
+	CustomerID   string                            `json:"customerId"`
+	Entitlements []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The minimum spend configuration
@@ -3067,26 +3072,28 @@ type CustomerSubscription struct {
 	// Active coupon for this subscription
 	Coupon *SubscriptionCoupon `json:"coupon"`
 	// List of coupons for this subscription
-	Coupons                   []*SubscriptionCoupon       `json:"coupons"`
-	CreatedAt                 *string                     `json:"createdAt"`
-	CrmID                     *string                     `json:"crmId"`
-	CrmLinkURL                *string                     `json:"crmLinkUrl"`
-	CurrentBillingPeriodEnd   *string                     `json:"currentBillingPeriodEnd"`
-	CurrentBillingPeriodStart *string                     `json:"currentBillingPeriodStart"`
-	Customer                  Customer                    `json:"customer"`
-	CustomerID                *string                     `json:"customerId"`
-	EffectiveEndDate          *string                     `json:"effectiveEndDate"`
-	EndDate                   *string                     `json:"endDate"`
-	Environment               Environment                 `json:"environment"`
-	EnvironmentID             string                      `json:"environmentId"`
-	Experiment                *Experiment                 `json:"experiment"`
-	ExperimentInfo            *ExperimentInfo             `json:"experimentInfo"`
-	FreeItems                 []*FreeSubscriptionItem     `json:"freeItems"`
-	FutureUpdates             []*SubscriptionFutureUpdate `json:"futureUpdates"`
-	ID                        string                      `json:"id"`
-	IsCustomPriceSubscription *bool                       `json:"isCustomPriceSubscription"`
-	LastUsageInvoice          *SubscriptionInvoice        `json:"lastUsageInvoice"`
-	LatestInvoice             *SubscriptionInvoice        `json:"latestInvoice"`
+	Coupons                   []*SubscriptionCoupon `json:"coupons"`
+	CreatedAt                 *string               `json:"createdAt"`
+	CrmID                     *string               `json:"crmId"`
+	CrmLinkURL                *string               `json:"crmLinkUrl"`
+	CurrentBillingPeriodEnd   *string               `json:"currentBillingPeriodEnd"`
+	CurrentBillingPeriodStart *string               `json:"currentBillingPeriodStart"`
+	Customer                  Customer              `json:"customer"`
+	CustomerID                *string               `json:"customerId"`
+	EffectiveEndDate          *string               `json:"effectiveEndDate"`
+	EndDate                   *string               `json:"endDate"`
+	// The list of entitlements (feature and credit) associated with the subscription
+	Entitlements              []SubscriptionEntitlementUnion `json:"entitlements"`
+	Environment               Environment                    `json:"environment"`
+	EnvironmentID             string                         `json:"environmentId"`
+	Experiment                *Experiment                    `json:"experiment"`
+	ExperimentInfo            *ExperimentInfo                `json:"experimentInfo"`
+	FreeItems                 []*FreeSubscriptionItem        `json:"freeItems"`
+	FutureUpdates             []*SubscriptionFutureUpdate    `json:"futureUpdates"`
+	ID                        string                         `json:"id"`
+	IsCustomPriceSubscription *bool                          `json:"isCustomPriceSubscription"`
+	LastUsageInvoice          *SubscriptionInvoice           `json:"lastUsageInvoice"`
+	LatestInvoice             *SubscriptionInvoice           `json:"latestInvoice"`
 	// Minimum spend configuration
 	MinimumSpend          *SubscriptionMinimumSpend `json:"minimumSpend"`
 	OldBillingID          *string                   `json:"oldBillingId"`
@@ -6484,7 +6491,7 @@ type PackageChanges struct {
 // Package credit entitlement
 type PackageCreditEntitlement struct {
 	// The amount of credits
-	Amount float64 `json:"amount"`
+	Amount *float64 `json:"amount"`
 	// The behavior of the entitlement
 	Behavior EntitlementBehavior `json:"behavior"`
 	// The cadence of the credit entitlement
@@ -6556,7 +6563,7 @@ type PackageCreditEntitlementEdge struct {
 // Package credit entitlement input
 type PackageCreditEntitlementInput struct {
 	// The amount of credits
-	Amount float64 `json:"amount"`
+	Amount *float64 `json:"amount,omitempty"`
 	// The behavior of the entitlement
 	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
 	// The cadence of the credit entitlement
@@ -9121,8 +9128,9 @@ type ProvisionCustomerSubscriptionInput struct {
 	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget  *BudgetConfigurationInput `json:"budget,omitempty"`
-	Charges []*ChargeInput            `json:"charges,omitempty"`
+	Budget       *BudgetConfigurationInput         `json:"budget,omitempty"`
+	Charges      []*ChargeInput                    `json:"charges,omitempty"`
+	Entitlements []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	// Subscription payment collection method
@@ -9162,10 +9170,11 @@ type ProvisionSubscription struct {
 	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
-	Charges         []*ChargeInput            `json:"charges,omitempty"`
-	CheckoutOptions *CheckoutOptions          `json:"checkoutOptions,omitempty"`
-	CustomerID      string                    `json:"customerId"`
+	Budget          *BudgetConfigurationInput         `json:"budget,omitempty"`
+	Charges         []*ChargeInput                    `json:"charges,omitempty"`
+	CheckoutOptions *CheckoutOptions                  `json:"checkoutOptions,omitempty"`
+	CustomerID      string                            `json:"customerId"`
+	Entitlements    []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend     *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	PayingCustomerID *string                             `json:"payingCustomerId,omitempty"`
@@ -9200,10 +9209,11 @@ type ProvisionSubscriptionInput struct {
 	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget          *BudgetConfigurationInput `json:"budget,omitempty"`
-	Charges         []*ChargeInput            `json:"charges,omitempty"`
-	CheckoutOptions *CheckoutOptions          `json:"checkoutOptions,omitempty"`
-	CustomerID      string                    `json:"customerId"`
+	Budget          *BudgetConfigurationInput         `json:"budget,omitempty"`
+	Charges         []*ChargeInput                    `json:"charges,omitempty"`
+	CheckoutOptions *CheckoutOptions                  `json:"checkoutOptions,omitempty"`
+	CustomerID      string                            `json:"customerId"`
+	Entitlements    []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend     *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	PayingCustomerID *string                             `json:"payingCustomerId,omitempty"`
@@ -10143,6 +10153,41 @@ type SubscriptionCouponInput struct {
 	PromotionCode *string `json:"promotionCode,omitempty"`
 }
 
+// Subscription credit entitlement
+type SubscriptionCreditEntitlement struct {
+	// The amount of credits
+	Amount float64 `json:"amount"`
+	// The cadence of the credit entitlement
+	Cadence CreditCadence `json:"cadence"`
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// The custom currency associated with this credit entitlement
+	CustomCurrency CustomCurrency `json:"customCurrency"`
+	// The unique identifier of the custom currency
+	CustomCurrencyID string `json:"customCurrencyId"`
+	// Subscription entitlement
+	Description *string `json:"description"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	ID            string `json:"id"`
+	// The unique identifier of the subscription
+	SubscriptionID string `json:"subscriptionId"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+}
+
+func (SubscriptionCreditEntitlement) IsSubscriptionEntitlementUnion() {}
+
+// Subscription credit entitlement input
+type SubscriptionCreditEntitlementInput struct {
+	// The amount of credits
+	Amount float64 `json:"amount"`
+	// The cadence of the credit entitlement
+	Cadence CreditCadence `json:"cadence"`
+	// The unique identifier of the custom currency
+	CustomCurrencyID string `json:"customCurrencyId"`
+}
+
 // Subscription entitlement
 type SubscriptionEntitlement struct {
 	// Timestamp of when the record was created
@@ -10282,6 +10327,14 @@ type SubscriptionEntitlementInput struct {
 	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
+// Subscription entitlement input (supports feature and credit types)
+type SubscriptionEntitlementInputV2 struct {
+	// Subscription credit entitlement input
+	Credit *SubscriptionCreditEntitlementInput `json:"credit,omitempty"`
+	// Subscription feature entitlement input
+	Feature *SubscriptionFeatureEntitlementInput `json:"feature,omitempty"`
+}
+
 type SubscriptionEntitlementMaxAggregate struct {
 	CreatedAt      *string `json:"createdAt"`
 	EnvironmentID  *string `json:"environmentId"`
@@ -10302,6 +10355,69 @@ type SubscriptionEntitlementSort struct {
 	Direction SortDirection                     `json:"direction"`
 	Field     SubscriptionEntitlementSortFields `json:"field"`
 	Nulls     *SortNulls                        `json:"nulls,omitempty"`
+}
+
+// Subscription feature entitlement
+type SubscriptionFeatureEntitlement struct {
+	// Timestamp of when the record was created
+	CreatedAt *string `json:"createdAt"`
+	// Subscription entitlement
+	Description *string `json:"description"`
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues"`
+	// The unique identifier for the environment
+	EnvironmentID string `json:"environmentId"`
+	// The feature this entitlement corresponds to.
+	Feature Feature `json:"feature"`
+	// Feature group IDs associated with this entitlement
+	FeatureGroupIds []string `json:"featureGroupIds"`
+	// Feature groups associated with this entitlement
+	FeatureGroups []*FeatureGroup `json:"featureGroups"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool  `json:"hasUnlimitedUsage"`
+	ID                string `json:"id"`
+	// The meter configuration used to track and measure usage for this entitlement
+	Meter *Meter `json:"meter"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod"`
+	// The reset period configuration of the entitlement
+	ResetPeriodConfiguration ResetPeriodConfiguration `json:"resetPeriodConfiguration"`
+	// The unique identifier of the subscription
+	SubscriptionID string `json:"subscriptionId"`
+	// Timestamp of when the record was last updated
+	UpdatedAt *string `json:"updatedAt"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit"`
+}
+
+func (SubscriptionFeatureEntitlement) IsSubscriptionEntitlementUnion() {}
+
+// Subscription feature entitlement input
+type SubscriptionFeatureEntitlementInput struct {
+	// The enum values of the entitlement
+	EnumValues []string `json:"enumValues,omitempty"`
+	// Primary feature group ID (first in the array) associated with this entitlement
+	FeatureGroupID *string `json:"featureGroupId,omitempty"`
+	// The unique identifier of the entitlement feature
+	FeatureID string `json:"featureId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
+	// Whether the entitlement has an unlimited usage
+	HasUnlimitedUsage *bool `json:"hasUnlimitedUsage,omitempty"`
+	// The monthly reset period configuration of the entitlement, defined when reset period is monthly
+	MonthlyResetPeriodConfiguration *MonthlyResetPeriodConfigInput `json:"monthlyResetPeriodConfiguration,omitempty"`
+	// The reset period of the entitlement
+	ResetPeriod *EntitlementResetPeriod `json:"resetPeriod,omitempty"`
+	// The usage limit of the entitlement
+	UsageLimit *float64 `json:"usageLimit,omitempty"`
+	// The weekly reset period configuration of the entitlement, defined when reset period is weekly
+	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
+	// The yearly reset period configuration of the entitlement, defined when reset period is yearly
+	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
 }
 
 type SubscriptionFutureUpdate struct {
@@ -10327,15 +10443,16 @@ type SubscriptionInput struct {
 	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget                    *BudgetConfigurationInput `json:"budget,omitempty"`
-	Charges                   []*ChargeInput            `json:"charges,omitempty"`
-	CrmID                     *string                   `json:"crmId,omitempty"`
-	CustomerID                string                    `json:"customerId"`
-	EndDate                   *string                   `json:"endDate,omitempty"`
-	EnvironmentID             *string                   `json:"environmentId,omitempty"`
-	IsCustomPriceSubscription *bool                     `json:"isCustomPriceSubscription,omitempty"`
-	IsOverridingTrialConfig   *bool                     `json:"isOverridingTrialConfig,omitempty"`
-	IsTrial                   *bool                     `json:"isTrial,omitempty"`
+	Budget                    *BudgetConfigurationInput         `json:"budget,omitempty"`
+	Charges                   []*ChargeInput                    `json:"charges,omitempty"`
+	CrmID                     *string                           `json:"crmId,omitempty"`
+	CustomerID                string                            `json:"customerId"`
+	EndDate                   *string                           `json:"endDate,omitempty"`
+	Entitlements              []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
+	EnvironmentID             *string                           `json:"environmentId,omitempty"`
+	IsCustomPriceSubscription *bool                             `json:"isCustomPriceSubscription,omitempty"`
+	IsOverridingTrialConfig   *bool                             `json:"isOverridingTrialConfig,omitempty"`
+	IsTrial                   *bool                             `json:"isTrial,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend     *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	PayingCustomerID *string                             `json:"payingCustomerId,omitempty"`
@@ -10875,10 +10992,12 @@ type SubscriptionQuery struct {
 	CurrentBillingPeriodStart *string  `json:"currentBillingPeriodStart"`
 	Customer                  Customer `json:"customer"`
 	// Customer ID
-	CustomerID       *string     `json:"customerId"`
-	EffectiveEndDate *string     `json:"effectiveEndDate"`
-	EndDate          *string     `json:"endDate"`
-	Environment      Environment `json:"environment"`
+	CustomerID       *string `json:"customerId"`
+	EffectiveEndDate *string `json:"effectiveEndDate"`
+	EndDate          *string `json:"endDate"`
+	// The list of entitlements (feature and credit) associated with the subscription
+	Entitlements []SubscriptionEntitlementUnion `json:"entitlements"`
+	Environment  Environment                    `json:"environment"`
 	// Environment ID
 	EnvironmentID  string          `json:"environmentId"`
 	Experiment     *Experiment     `json:"experiment"`
