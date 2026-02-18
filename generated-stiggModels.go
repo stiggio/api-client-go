@@ -4579,6 +4579,20 @@ type FeatureCountAggregate struct {
 	UpdatedAt     *int64 `json:"updatedAt"`
 }
 
+// Feature dependency information
+type FeatureDependency struct {
+	// The description for the feature
+	Description *string `json:"description"`
+	// The display name for the feature
+	DisplayName string `json:"displayName"`
+	// The type of the feature
+	FeatureType FeatureType `json:"featureType"`
+	// The units for the feature
+	FeatureUnits *string `json:"featureUnits"`
+	// The unique identifier for the feature
+	RefID string `json:"refId"`
+}
+
 type FeatureEdge struct {
 	// Cursor for this node.
 	Cursor string `json:"cursor"`
@@ -6395,6 +6409,8 @@ type OverageBillingPeriodChange struct {
 type OverageEntitlementCreateInput struct {
 	// The behavior of the entitlement
 	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The feature ID this entitlement depends on (credit entitlements only). The entitlement value will be calculated as: base amount × dependency feature usage limit
+	DependencyFeatureID *string `json:"dependencyFeatureId,omitempty"`
 	// The description of the entitlement
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
@@ -6501,6 +6517,8 @@ type PackageCreditEntitlement struct {
 	CustomCurrency CustomCurrency `json:"customCurrency"`
 	// The unique identifier of the custom currency
 	CustomCurrencyID string `json:"customCurrencyId"`
+	// The feature dependency information for this entitlement (credit entitlements only). The entitlement value will be calculated based on the dependency feature usage limit
+	Dependency *FeatureDependency `json:"dependency"`
 	// The description of the entitlement
 	Description *string `json:"description"`
 	// The display name override of the entitlement
@@ -6570,6 +6588,8 @@ type PackageCreditEntitlementInput struct {
 	Cadence CreditCadence `json:"cadence"`
 	// The unique identifier of the custom currency
 	CustomCurrencyID string `json:"customCurrencyId"`
+	// The feature ID this entitlement depends on (credit entitlements only). The entitlement value will be calculated as: base amount × dependency feature usage limit
+	DependencyFeatureID *string `json:"dependencyFeatureId,omitempty"`
 	// The description of the entitlement
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
@@ -6608,6 +6628,8 @@ type PackageCreditEntitlementUpdateInput struct {
 	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
 	// The cadence of the credit entitlement
 	Cadence *CreditCadence `json:"cadence,omitempty"`
+	// The feature ID this entitlement depends on (credit entitlements only). The entitlement value will be calculated as: base amount × dependency feature usage limit
+	DependencyFeatureID *string `json:"dependencyFeatureId,omitempty"`
 	// The description of the entitlement
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
@@ -6746,6 +6768,8 @@ type PackageEntitlement struct {
 	Behavior EntitlementBehavior `json:"behavior"`
 	// Timestamp of when the record was created
 	CreatedAt *string `json:"createdAt"`
+	// The feature dependency information for this entitlement (credit entitlements only). The entitlement value will be calculated based on the dependency feature usage limit
+	Dependency *FeatureDependency `json:"dependency"`
 	// The description of the entitlement
 	Description *string `json:"description"`
 	// The display name override of the entitlement
@@ -6923,6 +6947,8 @@ type PackageEntitlementFilterPackageDTOFilter struct {
 type PackageEntitlementInput struct {
 	// The behavior of the entitlement
 	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The feature ID this entitlement depends on (credit entitlements only). The entitlement value will be calculated as: base amount × dependency feature usage limit
+	DependencyFeatureID *string `json:"dependencyFeatureId,omitempty"`
 	// The description of the entitlement
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
@@ -7023,6 +7049,8 @@ type PackageFeatureEntitlement struct {
 	Behavior EntitlementBehavior `json:"behavior"`
 	// Timestamp of when the record was created
 	CreatedAt *string `json:"createdAt"`
+	// The feature dependency information for this entitlement (credit entitlements only). The entitlement value will be calculated based on the dependency feature usage limit
+	Dependency *FeatureDependency `json:"dependency"`
 	// The description of the entitlement
 	Description *string `json:"description"`
 	// The display name override of the entitlement
@@ -7106,6 +7134,8 @@ type PackageFeatureEntitlementEdge struct {
 type PackageFeatureEntitlementInput struct {
 	// The behavior of the entitlement
 	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The feature ID this entitlement depends on (credit entitlements only). The entitlement value will be calculated as: base amount × dependency feature usage limit
+	DependencyFeatureID *string `json:"dependencyFeatureId,omitempty"`
 	// The description of the entitlement
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
@@ -7160,6 +7190,8 @@ type PackageFeatureEntitlementMinAggregate struct {
 type PackageFeatureEntitlementUpdateInput struct {
 	// The behavior of the entitlement
 	Behavior *EntitlementBehavior `json:"behavior,omitempty"`
+	// The feature ID this entitlement depends on (credit entitlements only). The entitlement value will be calculated as: base amount × dependency feature usage limit
+	DependencyFeatureID *string `json:"dependencyFeatureId,omitempty"`
 	// The description of the entitlement
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
