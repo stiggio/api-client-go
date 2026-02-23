@@ -2726,6 +2726,8 @@ type CustomerPortal struct {
 	Configuration *CustomerPortalConfiguration `json:"configuration"`
 	// All effective entitlements granted through the customers subscription.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// All effective entitlements (feature and credit) granted to the customer with usage data.
+	EntitlementsV2 []EntitlementUnion `json:"entitlementsV2"`
 	// A list of promotional entitlements granted directly to the customer. These provide bonus or trial access to features.
 	PromotionalEntitlements []*CustomerPortalPromotionalEntitlement `json:"promotionalEntitlements"`
 	// The ID of the resource that the portal session is scoped to.
