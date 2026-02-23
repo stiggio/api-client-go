@@ -560,7 +560,7 @@ type APIKeyNotFound struct {
 	IsValidationError bool   `json:"isValidationError"`
 }
 
-// Input for defining API key scope permissions
+// Input for defining API key scope permissions, valid only for scoped keys
 type APIKeyScope struct {
 	// The action allowed on the resource
 	Action APIKeyScopeAction `json:"action"`
@@ -568,7 +568,7 @@ type APIKeyScope struct {
 	Resource APIKeyScopeResource `json:"resource"`
 }
 
-// Input for defining API key scope permissions
+// Input for defining API key scope permissions, valid only for scoped keys
 type APIKeyScopeInput struct {
 	// The action allowed on the resource
 	Action APIKeyScopeAction `json:"action"`
@@ -1900,7 +1900,7 @@ type CreateScopedAPIKeyInput struct {
 	DisplayName string `json:"displayName"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
-	// Input for defining API key scope permissions
+	// Input for defining API key scope permissions, valid only for scoped keys
 	Scopes []*APIKeyScopeInput `json:"scopes"`
 }
 
@@ -15944,6 +15944,7 @@ const (
 	EventActorSalesforce EventActor = "SALESFORCE"
 	// Stigg scheduler
 	EventActorScheduler EventActor = "SCHEDULER"
+	EventActorScopedKey EventActor = "SCOPED_KEY"
 	// Stigg user service key
 	EventActorService EventActor = "SERVICE"
 	// Stripe triggered event
@@ -15967,6 +15968,7 @@ var AllEventActor = []EventActor{
 	EventActorMigration,
 	EventActorSalesforce,
 	EventActorScheduler,
+	EventActorScopedKey,
 	EventActorService,
 	EventActorStripe,
 	EventActorSupport,
@@ -15977,7 +15979,7 @@ var AllEventActor = []EventActor{
 
 func (e EventActor) IsValid() bool {
 	switch e {
-	case EventActorAppCustomer, EventActorAppPublic, EventActorAppServer, EventActorAws, EventActorImport, EventActorMigration, EventActorSalesforce, EventActorScheduler, EventActorService, EventActorStripe, EventActorSupport, EventActorSystem, EventActorUser, EventActorWorkflow:
+	case EventActorAppCustomer, EventActorAppPublic, EventActorAppServer, EventActorAws, EventActorImport, EventActorMigration, EventActorSalesforce, EventActorScheduler, EventActorScopedKey, EventActorService, EventActorStripe, EventActorSupport, EventActorSystem, EventActorUser, EventActorWorkflow:
 		return true
 	}
 	return false
