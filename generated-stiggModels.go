@@ -3736,8 +3736,18 @@ type EntitlementCheckResult struct {
 
 // The currency associated with a credit entitlement.
 type EntitlementCurrency struct {
+	// Additional metadata associated with the currency.
+	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
 	// The unique identifier of the custom currency.
 	CurrencyID string `json:"currencyId"`
+	// A description of the currency.
+	Description *string `json:"description"`
+	// The display name of the currency.
+	DisplayName string `json:"displayName"`
+	// The plural form of the currency unit.
+	UnitPlural *string `json:"unitPlural"`
+	// The singular form of the currency unit.
+	UnitSingular *string `json:"unitSingular"`
 }
 
 type EntitlementFeature struct {
