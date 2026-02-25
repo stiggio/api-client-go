@@ -12046,9 +12046,10 @@ type UpdateSubscriptionInput struct {
 	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
 	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget        *BudgetConfigurationInput `json:"budget,omitempty"`
-	Charges       []*ChargeInput            `json:"charges,omitempty"`
-	EnvironmentID *string                   `json:"environmentId,omitempty"`
+	Budget        *BudgetConfigurationInput         `json:"budget,omitempty"`
+	Charges       []*ChargeInput                    `json:"charges,omitempty"`
+	Entitlements  []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
+	EnvironmentID *string                           `json:"environmentId,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	// Override the price of the subscription
