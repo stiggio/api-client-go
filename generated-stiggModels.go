@@ -11738,6 +11738,8 @@ type UpdateAPIKeyInput struct {
 	ExpireAt *string `json:"expireAt,omitempty"`
 	// Unique identifier for the entity
 	ID string `json:"id"`
+	// Input for defining API key scope permissions, valid only for scoped keys
+	Scopes []*APIKeyScopeInput `json:"scopes,omitempty"`
 }
 
 // Update a coupon input
