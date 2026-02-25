@@ -4122,6 +4122,10 @@ type EventActorInfo struct {
 	IPAddress *string `json:"ipAddress"`
 	// Actor name
 	Name *string `json:"name"`
+	// Scoped API key ID
+	ScopedKeyID *string `json:"scopedKeyId"`
+	// Scoped API key name
+	ScopedKeyName *string `json:"scopedKeyName"`
 	// Type of the actor (e.g., service, user, system, workflow)
 	Type *EventActor `json:"type"`
 	// Workflow execution ID
