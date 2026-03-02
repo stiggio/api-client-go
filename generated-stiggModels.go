@@ -679,9 +679,11 @@ type ApplySubscriptionInput struct {
 	AwaitPaymentConfirmation *bool                    `json:"awaitPaymentConfirmation,omitempty"`
 	BillableFeatures         []*BillableFeatureInput  `json:"billableFeatures,omitempty"`
 	BillingCountryCode       *string                  `json:"billingCountryCode,omitempty"`
-	BillingID                *string                  `json:"billingId,omitempty"`
-	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
-	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
+	// Billing cycle anchor behavior for the subscription
+	BillingCycleAnchor *SubscriptionBillingCycleAnchor `json:"billingCycleAnchor,omitempty"`
+	BillingID          *string                         `json:"billingId,omitempty"`
+	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget  *BudgetConfigurationInput `json:"budget,omitempty"`
 	Charges []*ChargeInput            `json:"charges,omitempty"`
@@ -8225,11 +8227,13 @@ type PreviewSubscriptionInput struct {
 	AppliedCoupon      *SubscriptionCouponInput `json:"appliedCoupon,omitempty"`
 	BillableFeatures   []*BillableFeatureInput  `json:"billableFeatures,omitempty"`
 	BillingCountryCode *string                  `json:"billingCountryCode,omitempty"`
-	BillingInformation *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
-	BillingPeriod      *BillingPeriod           `json:"billingPeriod,omitempty"`
-	Charges            []*ChargeInput           `json:"charges,omitempty"`
-	CustomerID         string                   `json:"customerId"`
-	EnvironmentID      *string                  `json:"environmentId,omitempty"`
+	// Billing cycle anchor behavior for the subscription
+	BillingCycleAnchor *SubscriptionBillingCycleAnchor `json:"billingCycleAnchor,omitempty"`
+	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
+	Charges            []*ChargeInput                  `json:"charges,omitempty"`
+	CustomerID         string                          `json:"customerId"`
+	EnvironmentID      *string                         `json:"environmentId,omitempty"`
 	// The customer that will pay for the subscription
 	PayingCustomerID *string           `json:"payingCustomerId,omitempty"`
 	PlanID           string            `json:"planId"`
@@ -9172,9 +9176,11 @@ type ProvisionCustomerSubscriptionInput struct {
 	AwaitPaymentConfirmation *bool                    `json:"awaitPaymentConfirmation,omitempty"`
 	BillableFeatures         []*BillableFeatureInput  `json:"billableFeatures,omitempty"`
 	BillingCountryCode       *string                  `json:"billingCountryCode,omitempty"`
-	BillingID                *string                  `json:"billingId,omitempty"`
-	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
-	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
+	// Billing cycle anchor behavior for the subscription
+	BillingCycleAnchor *SubscriptionBillingCycleAnchor `json:"billingCycleAnchor,omitempty"`
+	BillingID          *string                         `json:"billingId,omitempty"`
+	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget       *BudgetConfigurationInput         `json:"budget,omitempty"`
 	Charges      []*ChargeInput                    `json:"charges,omitempty"`
@@ -9214,9 +9220,11 @@ type ProvisionSubscription struct {
 	AwaitPaymentConfirmation *bool                    `json:"awaitPaymentConfirmation,omitempty"`
 	BillableFeatures         []*BillableFeatureInput  `json:"billableFeatures,omitempty"`
 	BillingCountryCode       *string                  `json:"billingCountryCode,omitempty"`
-	BillingID                *string                  `json:"billingId,omitempty"`
-	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
-	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
+	// Billing cycle anchor behavior for the subscription
+	BillingCycleAnchor *SubscriptionBillingCycleAnchor `json:"billingCycleAnchor,omitempty"`
+	BillingID          *string                         `json:"billingId,omitempty"`
+	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget          *BudgetConfigurationInput         `json:"budget,omitempty"`
 	Charges         []*ChargeInput                    `json:"charges,omitempty"`
@@ -9253,9 +9261,11 @@ type ProvisionSubscriptionInput struct {
 	AwaitPaymentConfirmation *bool                    `json:"awaitPaymentConfirmation,omitempty"`
 	BillableFeatures         []*BillableFeatureInput  `json:"billableFeatures,omitempty"`
 	BillingCountryCode       *string                  `json:"billingCountryCode,omitempty"`
-	BillingID                *string                  `json:"billingId,omitempty"`
-	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
-	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
+	// Billing cycle anchor behavior for the subscription
+	BillingCycleAnchor *SubscriptionBillingCycleAnchor `json:"billingCycleAnchor,omitempty"`
+	BillingID          *string                         `json:"billingId,omitempty"`
+	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget          *BudgetConfigurationInput         `json:"budget,omitempty"`
 	Charges         []*ChargeInput                    `json:"charges,omitempty"`
@@ -10487,9 +10497,11 @@ type SubscriptionInput struct {
 	AwaitPaymentConfirmation *bool                    `json:"awaitPaymentConfirmation,omitempty"`
 	BillableFeatures         []*BillableFeatureInput  `json:"billableFeatures,omitempty"`
 	BillingCountryCode       *string                  `json:"billingCountryCode,omitempty"`
-	BillingID                *string                  `json:"billingId,omitempty"`
-	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
-	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
+	// Billing cycle anchor behavior for the subscription
+	BillingCycleAnchor *SubscriptionBillingCycleAnchor `json:"billingCycleAnchor,omitempty"`
+	BillingID          *string                         `json:"billingId,omitempty"`
+	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget                    *BudgetConfigurationInput         `json:"budget,omitempty"`
 	Charges                   []*ChargeInput                    `json:"charges,omitempty"`
@@ -12043,8 +12055,10 @@ type UpdateSubscriptionInput struct {
 	AppliedCoupon            *SubscriptionCouponInput `json:"appliedCoupon,omitempty"`
 	AwaitPaymentConfirmation *bool                    `json:"awaitPaymentConfirmation,omitempty"`
 	BillableFeatures         []*BillableFeatureInput  `json:"billableFeatures,omitempty"`
-	BillingInformation       *SubscriptionBillingInfo `json:"billingInformation,omitempty"`
-	BillingPeriod            *BillingPeriod           `json:"billingPeriod,omitempty"`
+	// Billing cycle anchor behavior for the subscription
+	BillingCycleAnchor *SubscriptionBillingCycleAnchor `json:"billingCycleAnchor,omitempty"`
+	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
+	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	// Budget configuration
 	Budget        *BudgetConfigurationInput         `json:"budget,omitempty"`
 	Charges       []*ChargeInput                    `json:"charges,omitempty"`
@@ -18692,6 +18706,50 @@ func (e *SubscriptionAddonSortFields) UnmarshalGQL(v interface{}) error {
 }
 
 func (e SubscriptionAddonSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Billing cycle anchor behavior when creating or updating a subscription
+type SubscriptionBillingCycleAnchor string
+
+const (
+	// Reset the billing cycle anchor to the current time
+	SubscriptionBillingCycleAnchorNow SubscriptionBillingCycleAnchor = "NOW"
+	// Keep the existing billing cycle anchor unchanged (default)
+	SubscriptionBillingCycleAnchorUnchanged SubscriptionBillingCycleAnchor = "UNCHANGED"
+)
+
+var AllSubscriptionBillingCycleAnchor = []SubscriptionBillingCycleAnchor{
+	SubscriptionBillingCycleAnchorNow,
+	SubscriptionBillingCycleAnchorUnchanged,
+}
+
+func (e SubscriptionBillingCycleAnchor) IsValid() bool {
+	switch e {
+	case SubscriptionBillingCycleAnchorNow, SubscriptionBillingCycleAnchorUnchanged:
+		return true
+	}
+	return false
+}
+
+func (e SubscriptionBillingCycleAnchor) String() string {
+	return string(e)
+}
+
+func (e *SubscriptionBillingCycleAnchor) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = SubscriptionBillingCycleAnchor(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid SubscriptionBillingCycleAnchor", str)
+	}
+	return nil
+}
+
+func (e SubscriptionBillingCycleAnchor) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
