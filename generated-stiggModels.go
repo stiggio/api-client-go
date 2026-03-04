@@ -3066,7 +3066,9 @@ type CustomerSubscription struct {
 	BillingCycleAnchor *string `json:"billingCycleAnchor"`
 	BillingID          *string `json:"billingId"`
 	BillingLinkURL     *string `json:"billingLinkUrl"`
-	BillingSyncError   *string `json:"billingSyncError"`
+	// The billing period of the subscription
+	BillingPeriod    *BillingPeriod `json:"billingPeriod"`
+	BillingSyncError *string        `json:"billingSyncError"`
 	// Budget configuration
 	Budget *BudgetConfiguration `json:"budget"`
 	// Indicates if the budget has been exceeded
@@ -8618,7 +8620,8 @@ type Product struct {
 	// Description of the product
 	Description *string `json:"description"`
 	// Display name of the product
-	DisplayName   *string      `json:"displayName"`
+	DisplayName *string `json:"displayName"`
+	// Plan to downgrade to when a subscription ends or is cancelled
 	DowngradePlan *Plan        `json:"downgradePlan"`
 	Environment   *Environment `json:"environment"`
 	// The unique identifier for the environment
@@ -11032,9 +11035,11 @@ type SubscriptionQuery struct {
 	// Billing cycle anchor date
 	BillingCycleAnchor *string `json:"billingCycleAnchor"`
 	// Billing ID
-	BillingID        *string `json:"billingId"`
-	BillingLinkURL   *string `json:"billingLinkUrl"`
-	BillingSyncError *string `json:"billingSyncError"`
+	BillingID      *string `json:"billingId"`
+	BillingLinkURL *string `json:"billingLinkUrl"`
+	// The billing period of the subscription
+	BillingPeriod    *BillingPeriod `json:"billingPeriod"`
+	BillingSyncError *string        `json:"billingSyncError"`
 	// Budget configuration
 	Budget *BudgetConfiguration `json:"budget"`
 	// Indicates if the budget has been exceeded
