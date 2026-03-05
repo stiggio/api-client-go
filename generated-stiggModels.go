@@ -14269,6 +14269,8 @@ const (
 	CreditLedgerEventTypeCreditsExpired CreditLedgerEventType = "CREDITS_EXPIRED"
 	// Credits granted
 	CreditLedgerEventTypeCreditsGranted CreditLedgerEventType = "CREDITS_GRANTED"
+	// Credits updated
+	CreditLedgerEventTypeCreditsUpdated CreditLedgerEventType = "CREDITS_UPDATED"
 	// Credits voided
 	CreditLedgerEventTypeCreditsVoided CreditLedgerEventType = "CREDITS_VOIDED"
 )
@@ -14277,12 +14279,13 @@ var AllCreditLedgerEventType = []CreditLedgerEventType{
 	CreditLedgerEventTypeCreditsConsumed,
 	CreditLedgerEventTypeCreditsExpired,
 	CreditLedgerEventTypeCreditsGranted,
+	CreditLedgerEventTypeCreditsUpdated,
 	CreditLedgerEventTypeCreditsVoided,
 }
 
 func (e CreditLedgerEventType) IsValid() bool {
 	switch e {
-	case CreditLedgerEventTypeCreditsConsumed, CreditLedgerEventTypeCreditsExpired, CreditLedgerEventTypeCreditsGranted, CreditLedgerEventTypeCreditsVoided:
+	case CreditLedgerEventTypeCreditsConsumed, CreditLedgerEventTypeCreditsExpired, CreditLedgerEventTypeCreditsGranted, CreditLedgerEventTypeCreditsUpdated, CreditLedgerEventTypeCreditsVoided:
 		return true
 	}
 	return false
