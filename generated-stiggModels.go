@@ -708,9 +708,11 @@ type ApplySubscriptionInput struct {
 	SalesforceID     *string               `json:"salesforceId,omitempty"`
 	ScheduleStrategy *ScheduleStrategy     `json:"scheduleStrategy,omitempty"`
 	// Should skip trial
-	SkipTrial                  *bool                            `json:"skipTrial,omitempty"`
-	StartDate                  *string                          `json:"startDate,omitempty"`
-	SubscriptionEntitlements   []*SubscriptionEntitlementInput  `json:"subscriptionEntitlements,omitempty"`
+	SkipTrial                *bool                           `json:"skipTrial,omitempty"`
+	StartDate                *string                         `json:"startDate,omitempty"`
+	SubscriptionEntitlements []*SubscriptionEntitlementInput `json:"subscriptionEntitlements,omitempty"`
+	// Trial end date
+	TrialEndDate               *string                          `json:"trialEndDate,omitempty"`
 	TrialOverrideConfiguration *TrialOverrideConfigurationInput `json:"trialOverrideConfiguration,omitempty"`
 	UnitQuantity               *float64                         `json:"unitQuantity,omitempty"`
 }
