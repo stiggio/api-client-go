@@ -12247,7 +12247,7 @@ type UsageHistoryV2Input struct {
 	// Criteria by which to group the usage history
 	GroupBy []string `json:"groupBy,omitempty"`
 	// When true, includes usage data from the most recent cancelled or expired subscription
-	IncludeHistoricalUsage *bool `json:"includeHistoricalUsage,omitempty"`
+	IncludeInactiveSubscriptions *bool `json:"includeInactiveSubscriptions,omitempty"`
 	// Resource id
 	ResourceID *string `json:"resourceId,omitempty"`
 	// The start date of the range
