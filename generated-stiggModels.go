@@ -7724,6 +7724,8 @@ type PaywallPlanCompatiblePackageGroupOptions struct {
 
 // DTO for a price
 type PaywallPrice struct {
+	// The billing cadence of the price
+	BillingCadence *BillingCadence `json:"billingCadence"`
 	// The country code for billing, e.g. "US"
 	BillingCountryCode *string `json:"billingCountryCode"`
 	// The unique identifier for the entity in the billing provider
@@ -7736,6 +7738,8 @@ type PaywallPrice struct {
 	BlockSize *float64 `json:"blockSize"`
 	// The credit rate for the price, if applicable
 	CreditRate *CreditRate `json:"creditRate"`
+	// The custom currency of the price this price applies to
+	CustomCurrency *CustomCurrency `json:"customCurrency"`
 	// The feature associated with this price, if applicable
 	Feature *EntitlementFeature `json:"feature"`
 	// The ID of the feature associated with this price, if applicable
@@ -7750,6 +7754,8 @@ type PaywallPrice struct {
 	Tiers []*PriceTier `json:"tiers"`
 	// The tiers mode for the price, e.g. "graduated" or "volume"
 	TiersMode *TiersMode `json:"tiersMode"`
+	// The ID of the custom currency this price applies to
+	TopUpCustomCurrencyID *string `json:"topUpCustomCurrencyId"`
 }
 
 // DTO for a price point
