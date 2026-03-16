@@ -2018,14 +2018,20 @@ type CreditEntitlementSummary struct {
 	Addon *Addon `json:"addon"`
 	// The amount of the credit grant
 	Amount float64 `json:"amount"`
+	// Base amount before dependency multiplication
+	BaseAmount *float64 `json:"baseAmount"`
 	// The cadence for recurring grants (MONTH or YEAR).
 	Cadence *CreditCadence `json:"cadence"`
+	// Feature dependency information
+	Dependency *FeatureDependency `json:"dependency"`
 	// The effective date of the credit grant
 	EffectiveAt string `json:"effectiveAt"`
 	// The expiration date of the credit grant
 	ExpireAt *string `json:"expireAt"`
 	// The type of the credit grant
 	GrantType CreditGrantType `json:"grantType"`
+	// Indicates whether this entitlement is currently active and in effect.
+	IsEffectiveEntitlement bool `json:"isEffectiveEntitlement"`
 	// The plan associated with this grant, if applicable.
 	Plan *Plan `json:"plan"`
 	// The source type of the credit grant (plan entitlement, addon entitlement, or price)
@@ -4613,6 +4619,8 @@ type FeatureDependency struct {
 	FeatureUnits *string `json:"featureUnits"`
 	// The unique identifier for the feature
 	RefID string `json:"refId"`
+	// Usage limit of the dependency feature entitlement
+	UsageLimit *float64 `json:"usageLimit"`
 }
 
 type FeatureEdge struct {
@@ -13161,13 +13169,15 @@ type APIKeyScopeResource string
 const (
 	// API key management, read and write are allowed
 	APIKeyScopeResourceAPIKey APIKeyScopeResource = "API_KEY"
-	// Coupon resources, only write is allowed
+	// Coupon resources, read and write are allowed
 	APIKeyScopeResourceCoupon APIKeyScopeResource = "COUPON"
-	// Customer resources, only write is allowed
+	// Customer resources, read and write are allowed
 	APIKeyScopeResourceCustomer APIKeyScopeResource = "CUSTOMER"
 	// Environment-level resources, read and write are allowed
 	APIKeyScopeResourceEnvironment APIKeyScopeResource = "ENVIRONMENT"
-	// Subscription resources, only write is allowed
+	// Event queue credentials, only read is allowed
+	APIKeyScopeResourceEventQueue APIKeyScopeResource = "EVENT_QUEUE"
+	// Subscription resources, read and write are allowed
 	APIKeyScopeResourceSubscription APIKeyScopeResource = "SUBSCRIPTION"
 )
 
@@ -13176,12 +13186,13 @@ var AllAPIKeyScopeResource = []APIKeyScopeResource{
 	APIKeyScopeResourceCoupon,
 	APIKeyScopeResourceCustomer,
 	APIKeyScopeResourceEnvironment,
+	APIKeyScopeResourceEventQueue,
 	APIKeyScopeResourceSubscription,
 }
 
 func (e APIKeyScopeResource) IsValid() bool {
 	switch e {
-	case APIKeyScopeResourceAPIKey, APIKeyScopeResourceCoupon, APIKeyScopeResourceCustomer, APIKeyScopeResourceEnvironment, APIKeyScopeResourceSubscription:
+	case APIKeyScopeResourceAPIKey, APIKeyScopeResourceCoupon, APIKeyScopeResourceCustomer, APIKeyScopeResourceEnvironment, APIKeyScopeResourceEventQueue, APIKeyScopeResourceSubscription:
 		return true
 	}
 	return false
