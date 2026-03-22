@@ -14246,6 +14246,8 @@ func (e CreditGrantStatus) MarshalGQL(w io.Writer) {
 type CreditGrantType string
 
 const (
+	// Overdraft credit grant
+	CreditGrantTypeOverdraft CreditGrantType = "OVERDRAFT"
 	// Paid credit grant
 	CreditGrantTypePaid CreditGrantType = "PAID"
 	// Promotional credit grant
@@ -14255,6 +14257,7 @@ const (
 )
 
 var AllCreditGrantType = []CreditGrantType{
+	CreditGrantTypeOverdraft,
 	CreditGrantTypePaid,
 	CreditGrantTypePromotional,
 	CreditGrantTypeRecurring,
@@ -14262,7 +14265,7 @@ var AllCreditGrantType = []CreditGrantType{
 
 func (e CreditGrantType) IsValid() bool {
 	switch e {
-	case CreditGrantTypePaid, CreditGrantTypePromotional, CreditGrantTypeRecurring:
+	case CreditGrantTypeOverdraft, CreditGrantTypePaid, CreditGrantTypePromotional, CreditGrantTypeRecurring:
 		return true
 	}
 	return false
