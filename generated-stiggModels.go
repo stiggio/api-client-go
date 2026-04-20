@@ -2343,6 +2343,10 @@ type CreditUsageInput struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 	// The time range for the credit usage
 	TimeRange *CreditUsageTimeRange `json:"timeRange,omitempty"`
+	// Start date for custom time range filter. Takes precedence over timeRange when provided.
+	StartDate *string `json:"startDate,omitempty"`
+	// End date for custom time range filter. Defaults to now when not provided.
+	EndDate *string `json:"endDate,omitempty"`
 }
 
 // Point in the credit usage series
