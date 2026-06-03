@@ -2327,6 +2327,8 @@ type CreditRateInput struct {
 type CreditUsage struct {
 	// Stigg custom currency object with minimal fields
 	Currency *SlimCustomCurrency `json:"currency"`
+	// Cursor-based pagination state for the returned series. `startCursor`/`endCursor` anchor the current page; `hasNextPage`/`hasPreviousPage` indicate whether further pages exist. The series axis is `groupBy` when provided, otherwise `featureId`
+	PageInfo PageInfo `json:"pageInfo"`
 	// Series of credit usage data points
 	Series []*CreditUsageSeries `json:"series"`
 }
@@ -2339,6 +2341,10 @@ type CreditUsageInput struct {
 	CustomerID string `json:"customerId"`
 	// The environment ID of the credit usage
 	EnvironmentID *string `json:"environmentId,omitempty"`
+	// List of feature dimension keys to group usage series by (up to 3)
+	GroupBy []string `json:"groupBy,omitempty"`
+	// Cursor-based pagination input
+	Paging *CursorPaging `json:"paging,omitempty"`
 	// The resource ID of the credit usage
 	ResourceID *string `json:"resourceId,omitempty"`
 	// The time range for the credit usage
