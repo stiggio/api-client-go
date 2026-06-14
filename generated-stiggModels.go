@@ -9266,11 +9266,13 @@ type ProvisionSubscription struct {
 	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
 	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget          *BudgetConfigurationInput         `json:"budget,omitempty"`
-	Charges         []*ChargeInput                    `json:"charges,omitempty"`
-	CheckoutOptions *CheckoutOptions                  `json:"checkoutOptions,omitempty"`
-	CustomerID      string                            `json:"customerId"`
-	Entitlements    []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
+	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
+	// Subscription cancellation date
+	CancellationDate *string                           `json:"cancellationDate,omitempty"`
+	Charges          []*ChargeInput                    `json:"charges,omitempty"`
+	CheckoutOptions  *CheckoutOptions                  `json:"checkoutOptions,omitempty"`
+	CustomerID       string                            `json:"customerId"`
+	Entitlements     []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend     *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	PayingCustomerID *string                             `json:"payingCustomerId,omitempty"`
@@ -9307,11 +9309,13 @@ type ProvisionSubscriptionInput struct {
 	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
 	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget          *BudgetConfigurationInput         `json:"budget,omitempty"`
-	Charges         []*ChargeInput                    `json:"charges,omitempty"`
-	CheckoutOptions *CheckoutOptions                  `json:"checkoutOptions,omitempty"`
-	CustomerID      string                            `json:"customerId"`
-	Entitlements    []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
+	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
+	// Subscription cancellation date
+	CancellationDate *string                           `json:"cancellationDate,omitempty"`
+	Charges          []*ChargeInput                    `json:"charges,omitempty"`
+	CheckoutOptions  *CheckoutOptions                  `json:"checkoutOptions,omitempty"`
+	CustomerID       string                            `json:"customerId"`
+	Entitlements     []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend     *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	PayingCustomerID *string                             `json:"payingCustomerId,omitempty"`
@@ -12102,10 +12106,12 @@ type UpdateSubscriptionInput struct {
 	BillingInformation *SubscriptionBillingInfo        `json:"billingInformation,omitempty"`
 	BillingPeriod      *BillingPeriod                  `json:"billingPeriod,omitempty"`
 	// Budget configuration
-	Budget        *BudgetConfigurationInput         `json:"budget,omitempty"`
-	Charges       []*ChargeInput                    `json:"charges,omitempty"`
-	Entitlements  []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
-	EnvironmentID *string                           `json:"environmentId,omitempty"`
+	Budget *BudgetConfigurationInput `json:"budget,omitempty"`
+	// Subscription cancellation date
+	CancellationDate *string                           `json:"cancellationDate,omitempty"`
+	Charges          []*ChargeInput                    `json:"charges,omitempty"`
+	Entitlements     []*SubscriptionEntitlementInputV2 `json:"entitlements,omitempty"`
+	EnvironmentID    *string                           `json:"environmentId,omitempty"`
 	// The minimum spend configuration
 	MinimumSpend *SubscriptionMinimumSpendValueInput `json:"minimumSpend,omitempty"`
 	// Override the price of the subscription
