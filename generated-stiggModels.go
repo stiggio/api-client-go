@@ -115,6 +115,18 @@ type AddCompatibleAddonsToPlanInput struct {
 	RelationIds []string `json:"relationIds"`
 }
 
+// Input for adding a data export destination to an existing integration row
+type AddDataExportDestinationInput struct {
+	// The provider's opaque destination identifier returned by the connect flow
+	DestinationID string `json:"destinationId"`
+	// The vendor destination type (e.g. snowflake, bigquery)
+	DestinationType string `json:"destinationType"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The ID of the data export integration to attach the destination to
+	IntegrationID string `json:"integrationId"`
+}
+
 // Additional meta data change
 type AdditionalMetaDataChange struct {
 	// The value after the change
@@ -723,6 +735,14 @@ type ArchiveCouponInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// The unique identifier for the entity
 	RefID string `json:"refId"`
+}
+
+// Input for archiving a custom currency
+type ArchiveCustomCurrencyInput struct {
+	// The unique identifier for the custom currency
+	CurrencyID string `json:"currencyId"`
+	// The environment ID
+	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
 type ArchiveCustomerInput struct {
@@ -1760,6 +1780,8 @@ type CreateIntegrationInput struct {
 	IsDefault *bool `json:"isDefault,omitempty"`
 	// OpenFGA integration configuration
 	OpenFGACredentials *OpenFGACredentialsInput `json:"openFGACredentials,omitempty"`
+	// Received reconnect input. Supply previously-issued secrets to reconnect without rotation; omit to perform a fresh connect with rotation.
+	ReceivedCredentials *ReceivedReconnectInput `json:"receivedCredentials,omitempty"`
 	// Salesforce integration configuration
 	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
 	// Snowflake integration configuration
@@ -1998,6 +2020,8 @@ type CreditEntitlement struct {
 	CurrentUsage *float64 `json:"currentUsage"`
 	// Timestamp of the last update to the entitlement grant or configuration.
 	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
+	HasSoftLimit *bool `json:"hasSoftLimit"`
 	// Indicates whether the entitlement is currently granted to the customer.
 	IsGranted bool `json:"isGranted"`
 	// The total amount of credits granted to the customer.
@@ -2052,6 +2076,8 @@ type CreditEntitlementWithSummary struct {
 	CurrentUsage *float64 `json:"currentUsage"`
 	// Timestamp of the last update to the entitlement grant or configuration.
 	EntitlementUpdatedAt *string `json:"entitlementUpdatedAt"`
+	// Indicates whether the usage limit is soft — usage can exceed the limit, but will be tracked.
+	HasSoftLimit *bool `json:"hasSoftLimit"`
 	// Indicates whether the entitlement is currently granted to the customer.
 	IsGranted bool `json:"isGranted"`
 	// List of credit grant summaries showing individual sources and their contributions.
@@ -2067,6 +2093,26 @@ type CreditEntitlementWithSummary struct {
 }
 
 func (CreditEntitlementWithSummary) IsEntitlementWithSummaryUnion() {}
+
+// Credit events fields
+type CreditEventsFields struct {
+	// Distinct dimension keys seen in credit consumption events for the customer
+	Fields []string `json:"fields"`
+}
+
+// Input for retrieving credit events fields
+type CreditEventsFieldsInput struct {
+	// Optional credit currency ID filter (matches creditCurrencyId)
+	CurrencyID *string `json:"currencyId,omitempty"`
+	// The customer ID whose credit consumption events to sample
+	CustomerID string `json:"customerId"`
+	// The environment ID
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Optional resource ID filter
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Optional case-insensitive prefix to filter returned dimension keys
+	Search *string `json:"search,omitempty"`
+}
 
 // Stigg credit grant object
 type CreditGrant struct {
@@ -2194,7 +2240,7 @@ type CreditGrantInput struct {
 	// The expiration date of the credit grant
 	ExpireAt *string `json:"expireAt,omitempty"`
 	// The type of the credit grant
-	GrantType CreditGrantType `json:"grantType"`
+	GrantType CreditGrantTypeInput `json:"grantType"`
 	// The method used to collect payments for the credit grant
 	PaymentCollectionMethod *PaymentCollectionMethod `json:"paymentCollectionMethod,omitempty"`
 	// The priority of the credit grant
@@ -2339,6 +2385,8 @@ type CreditUsageInput struct {
 	CurrencyID *string `json:"currencyId,omitempty"`
 	// The customer ID of the credit usage
 	CustomerID string `json:"customerId"`
+	// The end date for the credit usage time range (defaults to now when startDate is provided)
+	EndDate *string `json:"endDate,omitempty"`
 	// The environment ID of the credit usage
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// List of feature dimension keys to group usage series by (up to 3)
@@ -2347,12 +2395,10 @@ type CreditUsageInput struct {
 	Paging *CursorPaging `json:"paging,omitempty"`
 	// The resource ID of the credit usage
 	ResourceID *string `json:"resourceId,omitempty"`
+	// The start date for the credit usage time range (takes precedence over timeRange when provided)
+	StartDate *string `json:"startDate,omitempty"`
 	// The time range for the credit usage
 	TimeRange *CreditUsageTimeRange `json:"timeRange,omitempty"`
-	// Start date for custom time range filter. Takes precedence over timeRange when provided.
-	StartDate *string `json:"startDate,omitempty"`
-	// End date for custom time range filter. Defaults to now when not provided.
-	EndDate *string `json:"endDate,omitempty"`
 }
 
 // Point in the credit usage series
@@ -2365,14 +2411,24 @@ type CreditUsagePoint struct {
 
 // Series of credit usage data points
 type CreditUsageSeries struct {
-	// Feature ID for the credit usage series
-	FeatureID string `json:"featureId"`
-	// Display name of the feature for the credit usage series
-	FeatureName string `json:"featureName"`
+	// Feature ID for the credit usage series; null when grouping by dimensions only
+	FeatureID *string `json:"featureId"`
+	// Display name of the feature for the credit usage series; null when grouping by dimensions only
+	FeatureName *string `json:"featureName"`
 	// Points in the credit usage series
 	Points []*CreditUsagePoint `json:"points"`
+	// Dimension key/value pairs identifying this series when groupBy is applied
+	Tags []*CreditUsageSeriesTag `json:"tags"`
 	// Total credits consumed by this feature across all time points
 	TotalCredits float64 `json:"totalCredits"`
+}
+
+// Dimension key/value pair identifying a credit usage series
+type CreditUsageSeriesTag struct {
+	// The dimension key
+	Key string `json:"key"`
+	// The dimension value for this series
+	Value string `json:"value"`
 }
 
 type CursorPaging struct {
@@ -2390,6 +2446,7 @@ type CursorPaging struct {
 type CustomCurrency struct {
 	// Metadata associated with the entity
 	AdditionalMetaData map[string]interface{} `json:"additionalMetaData"`
+	ArchivedAt         *string                `json:"archivedAt"`
 	// Timestamp of when the record was created
 	CreatedAt string `json:"createdAt"`
 	// The unique identifier for the custom currency
@@ -2406,6 +2463,26 @@ type CustomCurrency struct {
 	Units *Units `json:"units"`
 	// Timestamp of when the record was last updated
 	UpdatedAt string `json:"updatedAt"`
+}
+
+// Input for fetching custom currency associated entities
+type CustomCurrencyAssociatedEntitiesInput struct {
+	// The unique identifier for the custom currency
+	CurrencyID string `json:"currencyId"`
+	// The environment ID
+	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
+// An entity associated with a custom currency
+type CustomCurrencyAssociatedEntity struct {
+	// The entity display name or identifier
+	DisplayName string `json:"displayName"`
+	// The entity ID
+	ID string `json:"id"`
+	// The entity reference ID
+	RefID string `json:"refId"`
+	// The entity type (e.g., Plan, Feature)
+	Type string `json:"type"`
 }
 
 // Input for creating a custom currency
@@ -3404,6 +3481,92 @@ type CustomerSubscriptionTotalPrice struct {
 	Total       Money `json:"total"`
 }
 
+// Result of initiating a data export destination connection check
+type DataExportConnectionCheck struct {
+	// The ID of the check command to poll for results
+	CheckID string `json:"checkId"`
+}
+
+// Input for initiating a data export destination connection check
+type DataExportConnectionCheckInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The ID of the data export integration
+	IntegrationID string `json:"integrationId"`
+}
+
+// Result of a data export destination connection check
+type DataExportConnectionCheckResult struct {
+	// Detailed error message if the connection check failed
+	FailureMessage *string `json:"failureMessage"`
+	// General message from the connection check
+	Message *string `json:"message"`
+	// Status of the connection check (succeeded or failed)
+	Status string `json:"status"`
+}
+
+// Input for fetching the result of a data export destination connection check
+type DataExportConnectionCheckResultInput struct {
+	// The ID of the check command returned by the initiate mutation
+	CheckID string `json:"checkId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The ID of the data export integration
+	IntegrationID string `json:"integrationId"`
+}
+
+type DataExportIntegrationError struct {
+	Code string `json:"code"`
+	// HTTP status returned by the data export provider (e.g. 409, 503). Absent for non-HTTP failures.
+	HTTPStatus *int64 `json:"httpStatus"`
+	// Provider-supplied error code (e.g. `duplicate_recipient`). Stable across provider releases; preferred over `message` for client-side branching.
+	ProviderErrorCode *string `json:"providerErrorCode"`
+}
+
+// A scoped auth token for the data export embedded SDK
+type DataExportScopedToken struct {
+	// All model names the recipient is subscribed to
+	EnabledModels []string `json:"enabledModels"`
+	// Token expiration time in ISO 8601 format
+	ExpiresAt string `json:"expiresAt"`
+	// Whether this recipient already has a destination configured
+	HasDestination bool `json:"hasDestination"`
+	// Prequel recipient ID associated with this integration
+	RecipientID string `json:"recipientId"`
+	// The scoped auth token
+	Token string `json:"token"`
+}
+
+// Sync status of a data export integration pipeline
+type DataExportSyncStatus struct {
+	// Number of bytes synced
+	BytesSynced *float64 `json:"bytesSynced"`
+	// Duration of the sync job in ISO 8601 format
+	Duration *string `json:"duration"`
+	// Error message from the sync job, if failed
+	FailureMessage *string `json:"failureMessage"`
+	// ID of the sync job
+	JobID string `json:"jobId"`
+	// Last update time of the sync job
+	LastUpdatedAt string `json:"lastUpdatedAt"`
+	// Number of rows synced
+	RowsSynced *float64 `json:"rowsSynced"`
+	// The data source type of the pipeline
+	SourceType DataExportSourceType `json:"sourceType"`
+	// Start time of the sync job
+	StartTime string `json:"startTime"`
+	// Status of the last sync job
+	Status DataExportJobStatus `json:"status"`
+}
+
+// Input for fetching data export sync status
+type DataExportSyncStatusInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The ID of the data export integration
+	IntegrationID string `json:"integrationId"`
+}
+
 type DateFieldComparison struct {
 	Between    *DateFieldComparisonBetween `json:"between,omitempty"`
 	Eq         *string                     `json:"eq,omitempty"`
@@ -4021,6 +4184,26 @@ type EnvironmentEdge struct {
 	Node Environment `json:"node"`
 }
 
+// Status of the cached environment export artifact, surfaced for the FE and merge-consume paths.
+type EnvironmentExportStatus struct {
+	// Content hash the latest artifact was generated from. Use to detect drift.
+	ContentHash *string `json:"contentHash"`
+	// When the last successful export completed.
+	LastExportedAt *string `json:"lastExportedAt"`
+	// S3 object key of the latest successful export artifact, if one exists.
+	S3Ref *string `json:"s3Ref"`
+	// True when there is no completed export, or the cached export's lastExportedAt is older than the freshness TTL (time-based staleness).
+	Stale bool `json:"stale"`
+	// Current lifecycle state of the export job.
+	State EnvironmentExportState `json:"state"`
+}
+
+// Identifies the environment whose export status is being queried.
+type EnvironmentExportStatusInput struct {
+	// The slug of the environment.
+	EnvironmentSlug string `json:"environmentSlug"`
+}
+
 type EnvironmentFilter struct {
 	And                   []*EnvironmentFilter   `json:"and,omitempty"`
 	CreatedAt             *DateFieldComparison   `json:"createdAt,omitempty"`
@@ -4310,6 +4493,30 @@ type EventLogTraceIDFilterComparison struct {
 	Eq *string `json:"eq,omitempty"`
 }
 
+// SQS event queue provisioned for an environment
+type EventQueue struct {
+	// The event types this queue is subscribed to
+	EventTypes []string `json:"eventTypes"`
+	// The unique name of the event queue
+	QueueName string `json:"queueName"`
+	// The SQS queue URL once provisioning has completed
+	QueueURL *string `json:"queueUrl"`
+	// The AWS region of the event queue
+	Region string `json:"region"`
+	// The IAM role ARN granted access to the queue
+	RoleArn *string `json:"roleArn"`
+	// The provisioning status of the event queue
+	Status EventQueueProvisioningStatus `json:"status"`
+	// Optional suffix used to differentiate multiple queues in the same region
+	Suffix *string `json:"suffix"`
+}
+
+// Input for listing event queues
+type EventQueueListInput struct {
+	// The environment to list queues for
+	EnvironmentID string `json:"environmentId"`
+}
+
 // Event request properties
 type EventRequest struct {
 	// The request body
@@ -4344,12 +4551,14 @@ type EventsFieldsInput struct {
 	FeatureID *string `json:"featureId,omitempty"`
 	// Filters to apply to the events fields
 	Filters []*MeterFilterDefinitionInput `json:"filters,omitempty"`
+	// Maximum number of dimension keys to return (1-100, default 10)
+	Limit *float64 `json:"limit,omitempty"`
 	// Meter id
 	MeterID *string `json:"meterId,omitempty"`
 	// Resource id
 	ResourceID *string `json:"resourceId,omitempty"`
-	// Exclude fields with more than this number of unique values
-	UniqueValuesLimit *float64 `json:"uniqueValuesLimit,omitempty"`
+	// Prefix-match search on dimension key (case-insensitive)
+	Search *string `json:"search,omitempty"`
 }
 
 // An experiment for A/B testing
@@ -4589,12 +4798,49 @@ type FeatureAggregateGroupBy struct {
 	UpdatedAt     *string        `json:"updatedAt"`
 }
 
+// Feature group that causes a package to be associated with a feature
+type FeatureAssociatedFeatureGroupDto struct {
+	// The display name of the feature group
+	DisplayName string `json:"displayName"`
+	// The unique ref-id of the feature group
+	RefID string `json:"refId"`
+}
+
 // Input for getting the associated latest packages for a feature
 type FeatureAssociatedLatestPackages struct {
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The ID of the feature
 	FeatureID string `json:"featureId"`
+}
+
+// Packages and feature groups that prevent a feature from being archived
+type FeatureAssociatedLatestPackagesResultDto struct {
+	FeatureGroups []*FeatureAssociatedFeatureGroupDto `json:"featureGroups"`
+	Packages      []*FeatureAssociatedPackageDto      `json:"packages"`
+}
+
+// Package associated with a feature, including entitlement data
+type FeatureAssociatedPackageDto struct {
+	DisplayName string                                  `json:"displayName"`
+	Entitlement *FeatureAssociatedPackageEntitlementDto `json:"entitlement"`
+	// Feature groups that link this package to the feature, when applicable
+	FeatureGroups       []*FeatureAssociatedFeatureGroupDto `json:"featureGroups"`
+	HasCharge           bool                                `json:"hasCharge"`
+	IsCreditConsumption bool                                `json:"isCreditConsumption"`
+	ProductID           *string                             `json:"productId"`
+	RefID               string                              `json:"refId"`
+	Type                string                              `json:"type"`
+}
+
+// Entitlement data for a specific feature within a package
+type FeatureAssociatedPackageEntitlementDto struct {
+	EnumValues        []string                `json:"enumValues"`
+	HasSoftLimit      *bool                   `json:"hasSoftLimit"`
+	HasUnlimitedUsage *bool                   `json:"hasUnlimitedUsage"`
+	IsCustom          *bool                   `json:"isCustom"`
+	ResetPeriod       *EntitlementResetPeriod `json:"resetPeriod"`
+	UsageLimit        *float64                `json:"usageLimit"`
 }
 
 type FeatureConnection struct {
@@ -4986,6 +5232,14 @@ type FeatureTypeFilterComparison struct {
 	NotLike  *FeatureType  `json:"notLike,omitempty"`
 }
 
+// Input for fetching custom currencies
+type FetchCustomCurrenciesInput struct {
+	// The environment ID
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Filter by statuses. Defaults to [ACTIVE] if not provided.
+	Status []CustomCurrencyStatus `json:"status,omitempty"`
+}
+
 // Query for fetching a single entitlement for a specific feature and customer.
 type FetchEntitlementQuery struct {
 	// Identifier of the customer.
@@ -5039,6 +5293,28 @@ type FutureUpdateNotFound struct {
 	ExternalID        string `json:"externalId"`
 	IsValidationError bool   `json:"isValidationError"`
 	Status            string `json:"status"`
+}
+
+// Input for generating a scoped auth token for the data export embedded SDK
+type GenerateDataExportScopedTokenInput struct {
+	// The FE origin the resulting token should be bound to
+	ApplicationOrigin string `json:"applicationOrigin"`
+	// Prepared destination payload to bind the token to
+	Destination *string `json:"destination,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The ID of the data export integration
+	IntegrationID string `json:"integrationId"`
+}
+
+// Input for generating a one-shot magic-link login URL into the Received UI for a connected Received integration.
+type GenerateReceivedLoginURLInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// ID of the Received integration to generate a login URL for
+	IntegrationID string `json:"integrationId"`
+	// Optional same-origin relative path to land on after sign-in (e.g. "/customers/cust_abc123"). Signed into the encrypted login token; Received validates after decryption and falls back to its home page on malformed values.
+	RedirectTo *string `json:"redirectTo,omitempty"`
 }
 
 type GetActiveSubscriptionsInput struct {
@@ -5714,6 +5990,10 @@ type Integration struct {
 	IntegrationID *string `json:"integrationId"`
 	// Whether the integration is the default integration
 	IsDefault *bool `json:"isDefault"`
+	// Vendor-agnostic metadata for the integration (e.g. data-export destinations)
+	Metadata map[string]interface{} `json:"metadata"`
+	// Whether the integration supports collecting payment methods
+	SupportsPaymentMethod bool `json:"supportsPaymentMethod"`
 	// The vendor identifier of integration
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 	// The type of integration
@@ -5758,6 +6038,10 @@ type IntegrationDeleteResponse struct {
 	IntegrationID *string `json:"integrationId"`
 	// Whether the integration is the default integration
 	IsDefault *bool `json:"isDefault"`
+	// Vendor-agnostic metadata for the integration (e.g. data-export destinations)
+	Metadata map[string]interface{} `json:"metadata"`
+	// Whether the integration supports collecting payment methods
+	SupportsPaymentMethod *bool `json:"supportsPaymentMethod"`
 	// The vendor identifier of integration
 	VendorIdentifier *VendorIdentifier `json:"vendorIdentifier"`
 	// The type of integration
@@ -6040,6 +6324,25 @@ type MembersInviteResponse struct {
 	SkippedInvites []string `json:"skippedInvites"`
 	// List of successfully invited members
 	SuccessInvites []string `json:"successInvites"`
+}
+
+// Status of an async environment merge-apply job (STIGG-7830).
+type MergeApplyStatus struct {
+	// Destination environment slug the apply targets. Populated for "copy to new environment" so the client can navigate to / poll the newly created environment.
+	DestinationEnvironmentSlug *string `json:"destinationEnvironmentSlug"`
+	// Failure message when the apply job failed.
+	Error *string `json:"error"`
+	// Publish task ids produced by the per-plan / per-addon publish side-effects.
+	PublishedTaskIds []string `json:"publishedTaskIds"`
+	// Current lifecycle state of the apply job.
+	State MergeApplyState `json:"state"`
+	// The merge-apply job/task id; poll this for status.
+	TaskID string `json:"taskId"`
+}
+
+type MergeApplyStatusInput struct {
+	// The merge-apply job/task id returned by mergeEnvironmentAsync.
+	TaskID string `json:"taskId"`
 }
 
 // DTO representing the result of an environment merge operation
@@ -6572,6 +6875,8 @@ type PackageCreditEntitlement struct {
 	DisplayNameOverride *string `json:"displayNameOverride"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit"`
 	// Whether the entitlement is hidden from widgets
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets"`
 	ID                string       `json:"id"`
@@ -6641,6 +6946,8 @@ type PackageCreditEntitlementInput struct {
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
 	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
 	// Whether the entitlement is hidden from widgets
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
 	// Whether the entitlement is a custom entitlement
@@ -6681,6 +6988,8 @@ type PackageCreditEntitlementUpdateInput struct {
 	Description *string `json:"description,omitempty"`
 	// The display name override of the entitlement
 	DisplayNameOverride *string `json:"displayNameOverride,omitempty"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
 	// Whether the entitlement is hidden from widgets
 	HiddenFromWidgets []WidgetType `json:"hiddenFromWidgets,omitempty"`
 	// Whether the entitlement is a custom entitlement
@@ -8225,6 +8534,14 @@ type PreparedPaymentMethodForm struct {
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 }
 
+// Credentials shape for Prequel-managed data-export integrations
+type PrequelCredentials struct {
+	// Prequel recipient ID associated with this integration
+	PrequelRecipientID string `json:"prequelRecipientId"`
+}
+
+func (PrequelCredentials) IsCredentials() {}
+
 // Preview credit grant billing information input
 type PreviewCreditGrantBillingInfoInput struct {
 	BillingAddress *BillingAddress `json:"billingAddress,omitempty"`
@@ -8611,6 +8928,14 @@ type PricingModelCreateInput struct {
 	WeeklyResetPeriodConfiguration *WeeklyResetPeriodConfigInput `json:"weeklyResetPeriodConfiguration,omitempty"`
 	// The yearly reset period configuration of the pricing model
 	YearlyResetPeriodConfiguration *YearlyResetPeriodConfigInput `json:"yearlyResetPeriodConfiguration,omitempty"`
+}
+
+type PricingModelNotSupportedByBillingIntegrationError struct {
+	Code              string  `json:"code"`
+	IsValidationError bool    `json:"isValidationError"`
+	PlanRefID         *string `json:"planRefId"`
+	PricingModel      string  `json:"pricingModel"`
+	VendorIdentifier  string  `json:"vendorIdentifier"`
 }
 
 // Pricing type change
@@ -9411,6 +9736,36 @@ type RecalculateEntitlementsSideEffectsOptionsInput struct {
 	SkipWriteToEventLog *bool `json:"skipWriteToEventLog,omitempty"`
 }
 
+// Received integration configuration object
+type ReceivedCredentials struct {
+	// Admin user for the Received integration
+	AdminUser *string `json:"adminUser"`
+	// API key for the Received integration
+	APIKey *string `json:"apiKey"`
+	// Tenant ID for the Received integration
+	TenantID *string `json:"tenantId"`
+}
+
+func (ReceivedCredentials) IsCredentials() {}
+
+// One-shot magic-link login URL into the Received UI.
+type ReceivedLoginURLDto struct {
+	// Full Received UI URL pre-populated with an encrypted login token. Open it to sign the Stigg-provisioned admin user into Received.
+	URL string `json:"url"`
+}
+
+// Input for reconnecting a Received integration without rotating its secrets (forceRotate=false). Supply previously-issued secrets that Received will not return again.
+type ReceivedReconnectInput struct {
+	// Previously-issued admin user secret. Required when reconnecting without rotation, since Received will not return it.
+	AdminUserSecret *string `json:"adminUserSecret,omitempty"`
+	// Previously-issued API key secret. Required when reconnecting without rotation, since Received will not return it.
+	APIKeySecret *string `json:"apiKeySecret,omitempty"`
+	// Existing Received tenant ID to reconnect to
+	TenantID *string `json:"tenantId,omitempty"`
+	// Previously-issued webhook secret. Optional safety net when reconnecting without rotation.
+	WebhookSecret *string `json:"webhookSecret,omitempty"`
+}
+
 type RecurringCredits struct {
 	CustomCurrencyID string  `json:"customCurrencyId"`
 	Quantity         float64 `json:"quantity"`
@@ -9544,6 +9899,8 @@ type ResyncIntegrationResult struct {
 
 // Input for revoking an API key
 type RevokeAPIKeyInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Unique identifier for the entity
 	ID string `json:"id"`
 }
@@ -9580,6 +9937,8 @@ type RollbackPackageInput struct {
 
 // Input for rotating an API key
 type RotateAPIKeyInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Optional grace period expiration date for the old key, expires immediately if null
 	ExpirationDate *string `json:"expirationDate,omitempty"`
 	// Unique identifier for the entity
@@ -9858,6 +10217,10 @@ type StripeCredentials struct {
 	IsTaxEnabled bool `json:"isTaxEnabled"`
 	// Whether the Stripe account is in test mode
 	IsTestMode bool `json:"isTestMode"`
+	// Stripe App install mode — live, test, or managed sandbox (Stripe App only)
+	Mode *StripeAccountMode `json:"mode"`
+	// Which Stripe platform the integration was authorized against (legacy Connect or new Stripe App)
+	Source StripeAccountSource `json:"source"`
 }
 
 func (StripeCredentials) IsCredentials() {}
@@ -9872,6 +10235,10 @@ type StripeCredentialsInput struct {
 	IsTaxEnabled *bool `json:"isTaxEnabled,omitempty"`
 	// Whether the Stripe account is in test mode
 	IsTestMode bool `json:"isTestMode"`
+	// Stripe App install mode — live, test, or managed sandbox (Stripe App only)
+	Mode *StripeAccountMode `json:"mode,omitempty"`
+	// Which Stripe platform the integration was authorized against (legacy Connect or new Stripe App)
+	Source *StripeAccountSource `json:"source,omitempty"`
 }
 
 // Stripe customer information
@@ -10271,7 +10638,9 @@ type SubscriptionCreditEntitlement struct {
 	Description *string `json:"description"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
-	ID            string `json:"id"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool  `json:"hasSoftLimit"`
+	ID           string `json:"id"`
 	// The unique identifier of the subscription
 	SubscriptionID string `json:"subscriptionId"`
 	// Timestamp of when the record was last updated
@@ -10288,6 +10657,8 @@ type SubscriptionCreditEntitlementInput struct {
 	Cadence CreditCadence `json:"cadence"`
 	// The unique identifier of the custom currency
 	CustomCurrencyID string `json:"customCurrencyId"`
+	// Whether the entitlement has a soft limit
+	HasSoftLimit *bool `json:"hasSoftLimit,omitempty"`
 }
 
 // Subscription entitlement
@@ -11543,6 +11914,24 @@ type TrialedPlan struct {
 	ProductRefID *string `json:"productRefId"`
 }
 
+// Input for triggering a data export sync
+type TriggerDataExportSyncInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// The ID of the data export integration
+	IntegrationID string `json:"integrationId"`
+	// Optional list of source types to sync. If omitted, all active pipelines are synced
+	SourceTypes []DataExportSourceType `json:"sourceTypes,omitempty"`
+}
+
+// Result of triggering a data export sync
+type TriggerDataExportSyncResult struct {
+	// The data source type of the triggered pipeline
+	SourceType DataExportSourceType `json:"sourceType"`
+	// Whether the sync job was successfully triggered
+	Triggered bool `json:"triggered"`
+}
+
 // Input for triggering the subscription billing month ends soon webhook
 type TriggerSubscriptionBillingMonthEndsSoonWebhookInput struct {
 	// The subscription reference id to trigger the webhook for
@@ -11677,6 +12066,14 @@ type UnPublishedPackageError struct {
 	PackageType            string   `json:"packageType"`
 }
 
+// Input for unarchiving a custom currency
+type UnarchiveCustomCurrencyInput struct {
+	// The unique identifier for the custom currency
+	CurrencyID string `json:"currencyId"`
+	// The environment ID
+	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
 // Unarchive a customer
 type UnarchiveCustomerInput struct {
 	// Customer slug
@@ -11796,6 +12193,8 @@ type UpdateAPIKeyInput struct {
 	Description *string `json:"description,omitempty"`
 	// Updated display name for the API key
 	DisplayName *string `json:"displayName,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Updated expiration date for the API key
 	ExpireAt *string `json:"expireAt,omitempty"`
 	// Unique identifier for the entity
@@ -11970,6 +12369,8 @@ type UpdateIntegrationInput struct {
 	IsDefault *bool `json:"isDefault,omitempty"`
 	// OpenFGA integration configuration
 	OpenFGACredentials *OpenFGACredentialsInput `json:"openFGACredentials,omitempty"`
+	// Received reconnect input. Supply previously-issued secrets to reconnect without rotation; omit to perform a fresh connect with rotation.
+	ReceivedCredentials *ReceivedReconnectInput `json:"receivedCredentials,omitempty"`
 	// Salesforce integration configuration
 	SalesforceCredentials *SalesforceCredentialsInput `json:"salesforceCredentials,omitempty"`
 	// Snowflake integration configuration
@@ -14308,6 +14709,50 @@ func (e CreditGrantType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// The type of credit grant
+type CreditGrantTypeInput string
+
+const (
+	// Paid credit grant
+	CreditGrantTypeInputPaid CreditGrantTypeInput = "PAID"
+	// Promotional credit grant
+	CreditGrantTypeInputPromotional CreditGrantTypeInput = "PROMOTIONAL"
+)
+
+var AllCreditGrantTypeInput = []CreditGrantTypeInput{
+	CreditGrantTypeInputPaid,
+	CreditGrantTypeInputPromotional,
+}
+
+func (e CreditGrantTypeInput) IsValid() bool {
+	switch e {
+	case CreditGrantTypeInputPaid, CreditGrantTypeInputPromotional:
+		return true
+	}
+	return false
+}
+
+func (e CreditGrantTypeInput) String() string {
+	return string(e)
+}
+
+func (e *CreditGrantTypeInput) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CreditGrantTypeInput(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CreditGrantTypeInput", str)
+	}
+	return nil
+}
+
+func (e CreditGrantTypeInput) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 // The type of the ledger event
 type CreditLedgerEventType string
 
@@ -14803,6 +15248,48 @@ func (e Currency) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// The status of a custom currency
+type CustomCurrencyStatus string
+
+const (
+	CustomCurrencyStatusActive   CustomCurrencyStatus = "ACTIVE"
+	CustomCurrencyStatusArchived CustomCurrencyStatus = "ARCHIVED"
+)
+
+var AllCustomCurrencyStatus = []CustomCurrencyStatus{
+	CustomCurrencyStatusActive,
+	CustomCurrencyStatusArchived,
+}
+
+func (e CustomCurrencyStatus) IsValid() bool {
+	switch e {
+	case CustomCurrencyStatusActive, CustomCurrencyStatusArchived:
+		return true
+	}
+	return false
+}
+
+func (e CustomCurrencyStatus) String() string {
+	return string(e)
+}
+
+func (e *CustomCurrencyStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CustomCurrencyStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CustomCurrencyStatus", str)
+	}
+	return nil
+}
+
+func (e CustomCurrencyStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type CustomerResourceSortFields string
 
 const (
@@ -14999,6 +15486,106 @@ func (e *CustomerSubscriptionSortFields) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CustomerSubscriptionSortFields) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Status of a data export sync job
+type DataExportJobStatus string
+
+const (
+	// The sync job was cancelled
+	DataExportJobStatusCancelled DataExportJobStatus = "CANCELLED"
+	// The sync job failed
+	DataExportJobStatusFailed DataExportJobStatus = "FAILED"
+	// The sync job did not finish successfully
+	DataExportJobStatusIncomplete DataExportJobStatus = "INCOMPLETE"
+	// The sync job is waiting to start
+	DataExportJobStatusPending DataExportJobStatus = "PENDING"
+	// The sync job is in progress
+	DataExportJobStatusRunning DataExportJobStatus = "RUNNING"
+	// The sync job completed successfully
+	DataExportJobStatusSucceeded DataExportJobStatus = "SUCCEEDED"
+)
+
+var AllDataExportJobStatus = []DataExportJobStatus{
+	DataExportJobStatusCancelled,
+	DataExportJobStatusFailed,
+	DataExportJobStatusIncomplete,
+	DataExportJobStatusPending,
+	DataExportJobStatusRunning,
+	DataExportJobStatusSucceeded,
+}
+
+func (e DataExportJobStatus) IsValid() bool {
+	switch e {
+	case DataExportJobStatusCancelled, DataExportJobStatusFailed, DataExportJobStatusIncomplete, DataExportJobStatusPending, DataExportJobStatusRunning, DataExportJobStatusSucceeded:
+		return true
+	}
+	return false
+}
+
+func (e DataExportJobStatus) String() string {
+	return string(e)
+}
+
+func (e *DataExportJobStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = DataExportJobStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid DataExportJobStatus", str)
+	}
+	return nil
+}
+
+func (e DataExportJobStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Source type of a data export pipeline
+type DataExportSourceType string
+
+const (
+	// ClickHouse data source
+	DataExportSourceTypeClickhouse DataExportSourceType = "CLICKHOUSE"
+	// PostgreSQL data source
+	DataExportSourceTypePostgres DataExportSourceType = "POSTGRES"
+)
+
+var AllDataExportSourceType = []DataExportSourceType{
+	DataExportSourceTypeClickhouse,
+	DataExportSourceTypePostgres,
+}
+
+func (e DataExportSourceType) IsValid() bool {
+	switch e {
+	case DataExportSourceTypeClickhouse, DataExportSourceTypePostgres:
+		return true
+	}
+	return false
+}
+
+func (e DataExportSourceType) String() string {
+	return string(e)
+}
+
+func (e *DataExportSourceType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = DataExportSourceType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid DataExportSourceType", str)
+	}
+	return nil
+}
+
+func (e DataExportSourceType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -15429,6 +16016,53 @@ func (e EnvironmentAccessRole) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Lifecycle state of the cached environment export job.
+type EnvironmentExportState string
+
+const (
+	// The most recent export job failed; a previous artifact may still be readable.
+	EnvironmentExportStateFailed EnvironmentExportState = "FAILED"
+	// No export is running; the cached artifact (if any) is current.
+	EnvironmentExportStateIDLe EnvironmentExportState = "IDLE"
+	// An export job is currently generating the artifact.
+	EnvironmentExportStateInProgress EnvironmentExportState = "IN_PROGRESS"
+)
+
+var AllEnvironmentExportState = []EnvironmentExportState{
+	EnvironmentExportStateFailed,
+	EnvironmentExportStateIDLe,
+	EnvironmentExportStateInProgress,
+}
+
+func (e EnvironmentExportState) IsValid() bool {
+	switch e {
+	case EnvironmentExportStateFailed, EnvironmentExportStateIDLe, EnvironmentExportStateInProgress:
+		return true
+	}
+	return false
+}
+
+func (e EnvironmentExportState) String() string {
+	return string(e)
+}
+
+func (e *EnvironmentExportState) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EnvironmentExportState(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EnvironmentExportState", str)
+	}
+	return nil
+}
+
+func (e EnvironmentExportState) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 // Represents the provisioning status of an environment
 type EnvironmentProvisionStatus string
 
@@ -15655,6 +16289,7 @@ const (
 	ErrorCodeCustomerNoBillingID               ErrorCode = "CustomerNoBillingId"
 	ErrorCodeCustomerNotFound                  ErrorCode = "CustomerNotFound"
 	ErrorCodeCustomerResourceNotFound          ErrorCode = "CustomerResourceNotFound"
+	ErrorCodeDataExportIntegrationError        ErrorCode = "DataExportIntegrationError"
 	// Deprecated estimate subscription error
 	ErrorCodeDeprecatedEstimateSubscriptionError     ErrorCode = "DeprecatedEstimateSubscriptionError"
 	ErrorCodeDowngradeBillingPeriodNotSupportedError ErrorCode = "DowngradeBillingPeriodNotSupportedError"
@@ -15723,6 +16358,7 @@ const (
 	ErrorCodeInvalidMemberDelete                   ErrorCode = "InvalidMemberDelete"
 	ErrorCodeInvalidMetadataError                  ErrorCode = "InvalidMetadataError"
 	ErrorCodeInvalidQuantity                       ErrorCode = "InvalidQuantity"
+	ErrorCodeInvalidReceivedSignatureError         ErrorCode = "InvalidReceivedSignatureError"
 	ErrorCodeInvalidSubscriptionStatus             ErrorCode = "InvalidSubscriptionStatus"
 	ErrorCodeInvalidTaxID                          ErrorCode = "InvalidTaxId"
 	ErrorCodeInvalidUpdatePriceUnitAmountError     ErrorCode = "InvalidUpdatePriceUnitAmountError"
@@ -15750,21 +16386,25 @@ const (
 	// Offer not found
 	ErrorCodeOfferNotFound                                 ErrorCode = "OfferNotFound"
 	ErrorCodeOperationNotAllowedDuringInProgressExperiment ErrorCode = "OperationNotAllowedDuringInProgressExperiment"
-	ErrorCodePackageAlreadyPublished                       ErrorCode = "PackageAlreadyPublished"
+	// The operation timed out before it could complete. The request is safe to retry.
+	ErrorCodeOperationTimeout        ErrorCode = "OperationTimeout"
+	ErrorCodePackageAlreadyPublished ErrorCode = "PackageAlreadyPublished"
 	// Package group min items error
-	ErrorCodePackageGroupMinItemsError                        ErrorCode = "PackageGroupMinItemsError"
-	ErrorCodePackageGroupNotFound                             ErrorCode = "PackageGroupNotFound"
-	ErrorCodePackagePricingTypeNotSet                         ErrorCode = "PackagePricingTypeNotSet"
-	ErrorCodePaymentMethodNotFoundError                       ErrorCode = "PaymentMethodNotFoundError"
-	ErrorCodePlanCannotBePublishWhenBasePlanIsDraft           ErrorCode = "PlanCannotBePublishWhenBasePlanIsDraft"
-	ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft    ErrorCode = "PlanCannotBePublishWhenCompatibleAddonIsDraft"
-	ErrorCodePlanIsUsedAsDefaultStartPlan                     ErrorCode = "PlanIsUsedAsDefaultStartPlan"
-	ErrorCodePlanIsUsedAsDowngradePlan                        ErrorCode = "PlanIsUsedAsDowngradePlan"
-	ErrorCodePlanNotFound                                     ErrorCode = "PlanNotFound"
-	ErrorCodePlanWithChildCantBeDeleted                       ErrorCode = "PlanWithChildCantBeDeleted"
-	ErrorCodePlansCircularDependencyError                     ErrorCode = "PlansCircularDependencyError"
-	ErrorCodePreparePaymentMethodFormError                    ErrorCode = "PreparePaymentMethodFormError"
-	ErrorCodePriceNotFound                                    ErrorCode = "PriceNotFound"
+	ErrorCodePackageGroupMinItemsError                     ErrorCode = "PackageGroupMinItemsError"
+	ErrorCodePackageGroupNotFound                          ErrorCode = "PackageGroupNotFound"
+	ErrorCodePackagePricingTypeNotSet                      ErrorCode = "PackagePricingTypeNotSet"
+	ErrorCodePaymentMethodNotFoundError                    ErrorCode = "PaymentMethodNotFoundError"
+	ErrorCodePlanCannotBePublishWhenBasePlanIsDraft        ErrorCode = "PlanCannotBePublishWhenBasePlanIsDraft"
+	ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft ErrorCode = "PlanCannotBePublishWhenCompatibleAddonIsDraft"
+	ErrorCodePlanIsUsedAsDefaultStartPlan                  ErrorCode = "PlanIsUsedAsDefaultStartPlan"
+	ErrorCodePlanIsUsedAsDowngradePlan                     ErrorCode = "PlanIsUsedAsDowngradePlan"
+	ErrorCodePlanNotFound                                  ErrorCode = "PlanNotFound"
+	ErrorCodePlanWithChildCantBeDeleted                    ErrorCode = "PlanWithChildCantBeDeleted"
+	ErrorCodePlansCircularDependencyError                  ErrorCode = "PlansCircularDependencyError"
+	ErrorCodePreparePaymentMethodFormError                 ErrorCode = "PreparePaymentMethodFormError"
+	ErrorCodePriceNotFound                                 ErrorCode = "PriceNotFound"
+	// The plan uses a pricing model that the configured billing integration does not support
+	ErrorCodePricingModelNotSupportedByBillingIntegration     ErrorCode = "PricingModelNotSupportedByBillingIntegration"
 	ErrorCodeProductNotFoundError                             ErrorCode = "ProductNotFoundError"
 	ErrorCodeProductNotPublishedError                         ErrorCode = "ProductNotPublishedError"
 	ErrorCodePromotionCodeCustomerNotFirstPurchase            ErrorCode = "PromotionCodeCustomerNotFirstPurchase"
@@ -15865,6 +16505,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeCustomerNoBillingID,
 	ErrorCodeCustomerNotFound,
 	ErrorCodeCustomerResourceNotFound,
+	ErrorCodeDataExportIntegrationError,
 	ErrorCodeDeprecatedEstimateSubscriptionError,
 	ErrorCodeDowngradeBillingPeriodNotSupportedError,
 	ErrorCodeDraftAddonCantBeArchived,
@@ -15918,6 +16559,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeInvalidMemberDelete,
 	ErrorCodeInvalidMetadataError,
 	ErrorCodeInvalidQuantity,
+	ErrorCodeInvalidReceivedSignatureError,
 	ErrorCodeInvalidSubscriptionStatus,
 	ErrorCodeInvalidTaxID,
 	ErrorCodeInvalidUpdatePriceUnitAmountError,
@@ -15938,6 +16580,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeOfferAlreadyExists,
 	ErrorCodeOfferNotFound,
 	ErrorCodeOperationNotAllowedDuringInProgressExperiment,
+	ErrorCodeOperationTimeout,
 	ErrorCodePackageAlreadyPublished,
 	ErrorCodePackageGroupMinItemsError,
 	ErrorCodePackageGroupNotFound,
@@ -15952,6 +16595,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodePlansCircularDependencyError,
 	ErrorCodePreparePaymentMethodFormError,
 	ErrorCodePriceNotFound,
+	ErrorCodePricingModelNotSupportedByBillingIntegration,
 	ErrorCodeProductNotFoundError,
 	ErrorCodeProductNotPublishedError,
 	ErrorCodePromotionCodeCustomerNotFirstPurchase,
@@ -15995,7 +16639,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeAPIKeyExpired, ErrorCodeAPIKeyHasExpiry, ErrorCodeAPIKeyNotFound, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAuthorizationServiceError, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingInvoiceStatusError, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotArchiveProductError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUnarchiveProductError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantAlreadyVoided, ErrorCodeCreditGrantCannotBeVoided, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftAlreadyExists, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeFutureUpdateNotFound, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidTaxID, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingBillingInvoiceError, ErrorCodeMissingEntityIDError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoActiveSubscriptionForCustomer, ErrorCodeNoDraftOfferFound, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeObjectAlreadyBeingUsedByAnotherRequestError, ErrorCodeOfferAlreadyExists, ErrorCodeOfferNotFound, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodeProductNotFoundError, ErrorCodeProductNotPublishedError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSchedulingAtEndOfBillingPeriod, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVendorIsNotSupported, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
+	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeAPIKeyExpired, ErrorCodeAPIKeyHasExpiry, ErrorCodeAPIKeyNotFound, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAuthorizationServiceError, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingInvoiceStatusError, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotArchiveProductError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUnarchiveProductError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantAlreadyVoided, ErrorCodeCreditGrantCannotBeVoided, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDataExportIntegrationError, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftAlreadyExists, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeFutureUpdateNotFound, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidReceivedSignatureError, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidTaxID, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingBillingInvoiceError, ErrorCodeMissingEntityIDError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoActiveSubscriptionForCustomer, ErrorCodeNoDraftOfferFound, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeObjectAlreadyBeingUsedByAnotherRequestError, ErrorCodeOfferAlreadyExists, ErrorCodeOfferNotFound, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodeOperationTimeout, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodePricingModelNotSupportedByBillingIntegration, ErrorCodeProductNotFoundError, ErrorCodeProductNotPublishedError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSchedulingAtEndOfBillingPeriod, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVendorIsNotSupported, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
 		return true
 	}
 	return false
@@ -16117,6 +16761,8 @@ const (
 	EventEntityTypeCredit EventEntityType = "CREDIT"
 	// Customer entity
 	EventEntityTypeCustomer EventEntityType = "CUSTOMER"
+	// Custom currency entity
+	EventEntityTypeCustomCurrency EventEntityType = "CUSTOM_CURRENCY"
 	// Entitlement entity
 	EventEntityTypeEntitlement EventEntityType = "ENTITLEMENT"
 	// Feature entity
@@ -16146,6 +16792,7 @@ var AllEventEntityType = []EventEntityType{
 	EventEntityTypeCoupon,
 	EventEntityTypeCredit,
 	EventEntityTypeCustomer,
+	EventEntityTypeCustomCurrency,
 	EventEntityTypeEntitlement,
 	EventEntityTypeFeature,
 	EventEntityTypeFeatureGroup,
@@ -16161,7 +16808,7 @@ var AllEventEntityType = []EventEntityType{
 
 func (e EventEntityType) IsValid() bool {
 	switch e {
-	case EventEntityTypeAddon, EventEntityTypeCoupon, EventEntityTypeCredit, EventEntityTypeCustomer, EventEntityTypeEntitlement, EventEntityTypeFeature, EventEntityTypeFeatureGroup, EventEntityTypeImport, EventEntityTypeMeasurement, EventEntityTypePackage, EventEntityTypePackageGroup, EventEntityTypePlan, EventEntityTypeProduct, EventEntityTypePromotionalEntitlement, EventEntityTypeSubscription:
+	case EventEntityTypeAddon, EventEntityTypeCoupon, EventEntityTypeCredit, EventEntityTypeCustomer, EventEntityTypeCustomCurrency, EventEntityTypeEntitlement, EventEntityTypeFeature, EventEntityTypeFeatureGroup, EventEntityTypeImport, EventEntityTypeMeasurement, EventEntityTypePackage, EventEntityTypePackageGroup, EventEntityTypePlan, EventEntityTypeProduct, EventEntityTypePromotionalEntitlement, EventEntityTypeSubscription:
 		return true
 	}
 	return false
@@ -16319,10 +16966,22 @@ const (
 	// Customer resource entitlement calculation triggered
 	EventLogTypeCustomerResourceEntitlementCalculationTriggered EventLogType = "CUSTOMER_RESOURCE_ENTITLEMENT_CALCULATION_TRIGGERED"
 	// Customer updated
-	EventLogTypeCustomerUpdated                      EventLogType = "CUSTOMER_UPDATED"
+	EventLogTypeCustomerUpdated EventLogType = "CUSTOMER_UPDATED"
+	// Custom currency archived
+	EventLogTypeCustomCurrencyArchived EventLogType = "CUSTOM_CURRENCY_ARCHIVED"
+	// Custom currency created
+	EventLogTypeCustomCurrencyCreated EventLogType = "CUSTOM_CURRENCY_CREATED"
+	// Custom currency unarchived
+	EventLogTypeCustomCurrencyUnarchived EventLogType = "CUSTOM_CURRENCY_UNARCHIVED"
+	// Custom currency updated
+	EventLogTypeCustomCurrencyUpdated EventLogType = "CUSTOM_CURRENCY_UPDATED"
+	// Data export sync failed
+	EventLogTypeDataExportSyncFailed                 EventLogType = "DATA_EXPORT_SYNC_FAILED"
 	EventLogTypeEdgeAPIClientConfigurationDataResync EventLogType = "EDGE_API_CLIENT_CONFIGURATION_DATA_RESYNC"
 	// Edge API customer data resync
 	EventLogTypeEdgeAPICustomerDataResync EventLogType = "EDGE_API_CUSTOMER_DATA_RESYNC"
+	// Edge API custom currency cache data resync
+	EventLogTypeEdgeAPICustomCurrencyCacheDataResync EventLogType = "EDGE_API_CUSTOM_CURRENCY_CACHE_DATA_RESYNC"
 	// Edge API data resync
 	EventLogTypeEdgeAPIDataResync EventLogType = "EDGE_API_DATA_RESYNC"
 	// Edge API Doggo resync
@@ -16480,8 +17139,14 @@ var AllEventLogType = []EventLogType{
 	EventLogTypeCustomerPaymentFailed,
 	EventLogTypeCustomerResourceEntitlementCalculationTriggered,
 	EventLogTypeCustomerUpdated,
+	EventLogTypeCustomCurrencyArchived,
+	EventLogTypeCustomCurrencyCreated,
+	EventLogTypeCustomCurrencyUnarchived,
+	EventLogTypeCustomCurrencyUpdated,
+	EventLogTypeDataExportSyncFailed,
 	EventLogTypeEdgeAPIClientConfigurationDataResync,
 	EventLogTypeEdgeAPICustomerDataResync,
+	EventLogTypeEdgeAPICustomCurrencyCacheDataResync,
 	EventLogTypeEdgeAPIDataResync,
 	EventLogTypeEdgeAPIDoggoResync,
 	EventLogTypeEdgeAPIPackageEntitlementsDataResync,
@@ -16544,7 +17209,7 @@ var AllEventLogType = []EventLogType{
 
 func (e EventLogType) IsValid() bool {
 	switch e {
-	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeAPIKeyCreated, EventLogTypeAPIKeyRevoked, EventLogTypeAPIKeyRotated, EventLogTypeAPIKeyUpdated, EventLogTypeAutomaticRechargeConfigurationChanged, EventLogTypeAutomaticRechargeOperationAttempted, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCreditsAutomaticRechargeLimitExceeded, EventLogTypeCreditsBalanceDepletedOld, EventLogTypeCreditsBalanceLowOld, EventLogTypeCreditsGrantBalanceLowOld, EventLogTypeCreditsGrantDepletedOld, EventLogTypeCreditsGrantExpiredOld, EventLogTypeCreditsGrantGrantedOld, EventLogTypeCreditsGrantUpdatedOld, EventLogTypeCreditBalanceDepleted, EventLogTypeCreditBalanceLow, EventLogTypeCreditBalanceUpdated, EventLogTypeCreditGrantBalanceDepleted, EventLogTypeCreditGrantBalanceLow, EventLogTypeCreditGrantCreated, EventLogTypeCreditGrantDepleted, EventLogTypeCreditGrantExpired, EventLogTypeCreditGrantProcessCompleted, EventLogTypeCreditGrantUpdated, EventLogTypeCreditGrantVoided, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeEdgeAPIClientConfigurationDataResync, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIDoggoResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPIPlanCacheDataResync, EventLogTypeEdgeAPIProductCacheDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEntitlementUsageExceeded, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureGroupArchived, EventLogTypeFeatureGroupCreated, EventLogTypeFeatureGroupUnArchived, EventLogTypeFeatureGroupUpdated, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackageGroupCreated, EventLogTypePackageGroupUpdated, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUnarchived, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementEndsSoon, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeStripeAppDrawerViewed, EventLogTypeSubscriptionsMigrated, EventLogTypeSubscriptionsMigrationTriggered, EventLogTypeSubscriptionBillingMonthEndsSoon, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionSpentLimitExceeded, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageChargeTriggered, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
+	case EventLogTypeAddonCreated, EventLogTypeAddonDeleted, EventLogTypeAddonUpdated, EventLogTypeAPIKeyCreated, EventLogTypeAPIKeyRevoked, EventLogTypeAPIKeyRotated, EventLogTypeAPIKeyUpdated, EventLogTypeAutomaticRechargeConfigurationChanged, EventLogTypeAutomaticRechargeOperationAttempted, EventLogTypeCouponArchived, EventLogTypeCouponCreated, EventLogTypeCouponUpdated, EventLogTypeCreateSubscriptionFailed, EventLogTypeCreditsAutomaticRechargeLimitExceeded, EventLogTypeCreditsBalanceDepletedOld, EventLogTypeCreditsBalanceLowOld, EventLogTypeCreditsGrantBalanceLowOld, EventLogTypeCreditsGrantDepletedOld, EventLogTypeCreditsGrantExpiredOld, EventLogTypeCreditsGrantGrantedOld, EventLogTypeCreditsGrantUpdatedOld, EventLogTypeCreditBalanceDepleted, EventLogTypeCreditBalanceLow, EventLogTypeCreditBalanceUpdated, EventLogTypeCreditGrantBalanceDepleted, EventLogTypeCreditGrantBalanceLow, EventLogTypeCreditGrantCreated, EventLogTypeCreditGrantDepleted, EventLogTypeCreditGrantExpired, EventLogTypeCreditGrantProcessCompleted, EventLogTypeCreditGrantUpdated, EventLogTypeCreditGrantVoided, EventLogTypeCustomerCreated, EventLogTypeCustomerDeleted, EventLogTypeCustomerEntitlementCalculationTriggered, EventLogTypeCustomerPaymentFailed, EventLogTypeCustomerResourceEntitlementCalculationTriggered, EventLogTypeCustomerUpdated, EventLogTypeCustomCurrencyArchived, EventLogTypeCustomCurrencyCreated, EventLogTypeCustomCurrencyUnarchived, EventLogTypeCustomCurrencyUpdated, EventLogTypeDataExportSyncFailed, EventLogTypeEdgeAPIClientConfigurationDataResync, EventLogTypeEdgeAPICustomerDataResync, EventLogTypeEdgeAPICustomCurrencyCacheDataResync, EventLogTypeEdgeAPIDataResync, EventLogTypeEdgeAPIDoggoResync, EventLogTypeEdgeAPIPackageEntitlementsDataResync, EventLogTypeEdgeAPIPlanCacheDataResync, EventLogTypeEdgeAPIProductCacheDataResync, EventLogTypeEdgeAPISubscriptionsDataResync, EventLogTypeEntitlementsUpdated, EventLogTypeEntitlementDenied, EventLogTypeEntitlementGranted, EventLogTypeEntitlementRequested, EventLogTypeEntitlementUsageExceeded, EventLogTypeEnvironmentDeleted, EventLogTypeFeatureArchived, EventLogTypeFeatureCreated, EventLogTypeFeatureDeleted, EventLogTypeFeatureGroupArchived, EventLogTypeFeatureGroupCreated, EventLogTypeFeatureGroupUnArchived, EventLogTypeFeatureGroupUpdated, EventLogTypeFeatureUpdated, EventLogTypeImportIntegrationCatalogTriggered, EventLogTypeImportIntegrationCustomersTriggered, EventLogTypeImportSubscriptionsBulkTriggered, EventLogTypeMeasurementReported, EventLogTypePackageGroupCreated, EventLogTypePackageGroupUpdated, EventLogTypePackagePublished, EventLogTypePlanCreated, EventLogTypePlanDeleted, EventLogTypePlanUpdated, EventLogTypeProductCreated, EventLogTypeProductDeleted, EventLogTypeProductUnarchived, EventLogTypeProductUpdated, EventLogTypePromotionalEntitlementEndsSoon, EventLogTypePromotionalEntitlementExpired, EventLogTypePromotionalEntitlementGranted, EventLogTypePromotionalEntitlementRevoked, EventLogTypePromotionalEntitlementUpdated, EventLogTypeRecalculateEntitlementsTriggered, EventLogTypeResyncIntegrationTriggered, EventLogTypeStripeAppDrawerViewed, EventLogTypeSubscriptionsMigrated, EventLogTypeSubscriptionsMigrationTriggered, EventLogTypeSubscriptionBillingMonthEndsSoon, EventLogTypeSubscriptionCanceled, EventLogTypeSubscriptionCreated, EventLogTypeSubscriptionExpired, EventLogTypeSubscriptionSpentLimitExceeded, EventLogTypeSubscriptionTrialConverted, EventLogTypeSubscriptionTrialEndsSoon, EventLogTypeSubscriptionTrialExpired, EventLogTypeSubscriptionTrialStarted, EventLogTypeSubscriptionUpdated, EventLogTypeSubscriptionUsageChargeTriggered, EventLogTypeSubscriptionUsageUpdated, EventLogTypeSyncFailed, EventLogTypeWidgetConfigurationUpdated:
 		return true
 	}
 	return false
@@ -16568,6 +17233,56 @@ func (e *EventLogType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e EventLogType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Provisioning status of an SQS event queue
+type EventQueueProvisioningStatus string
+
+const (
+	// Queue is fully provisioned and receiving events
+	EventQueueProvisioningStatusActive EventQueueProvisioningStatus = "ACTIVE"
+	// Queue infrastructure is being torn down
+	EventQueueProvisioningStatusDeprovisioning EventQueueProvisioningStatus = "DEPROVISIONING"
+	// Provisioning failed and the queue is not usable
+	EventQueueProvisioningStatusFailed EventQueueProvisioningStatus = "FAILED"
+	// Queue infrastructure is being provisioned
+	EventQueueProvisioningStatusProvisioning EventQueueProvisioningStatus = "PROVISIONING"
+)
+
+var AllEventQueueProvisioningStatus = []EventQueueProvisioningStatus{
+	EventQueueProvisioningStatusActive,
+	EventQueueProvisioningStatusDeprovisioning,
+	EventQueueProvisioningStatusFailed,
+	EventQueueProvisioningStatusProvisioning,
+}
+
+func (e EventQueueProvisioningStatus) IsValid() bool {
+	switch e {
+	case EventQueueProvisioningStatusActive, EventQueueProvisioningStatusDeprovisioning, EventQueueProvisioningStatusFailed, EventQueueProvisioningStatusProvisioning:
+		return true
+	}
+	return false
+}
+
+func (e EventQueueProvisioningStatus) String() string {
+	return string(e)
+}
+
+func (e *EventQueueProvisioningStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EventQueueProvisioningStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EventQueueProvisioningStatus", str)
+	}
+	return nil
+}
+
+func (e EventQueueProvisioningStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -17334,6 +18049,56 @@ func (e *MemberStatus) UnmarshalGQL(v interface{}) error {
 }
 
 func (e MemberStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Lifecycle state of an async environment merge-apply job.
+type MergeApplyState string
+
+const (
+	// The merge was applied successfully.
+	MergeApplyStateCompleted MergeApplyState = "COMPLETED"
+	// The merge-apply job failed; see the error field.
+	MergeApplyStateFailed MergeApplyState = "FAILED"
+	// The worker is applying the merge into the destination environment.
+	MergeApplyStateInProgress MergeApplyState = "IN_PROGRESS"
+	// The apply job is enqueued and waiting to be picked up by the worker.
+	MergeApplyStatePending MergeApplyState = "PENDING"
+)
+
+var AllMergeApplyState = []MergeApplyState{
+	MergeApplyStateCompleted,
+	MergeApplyStateFailed,
+	MergeApplyStateInProgress,
+	MergeApplyStatePending,
+}
+
+func (e MergeApplyState) IsValid() bool {
+	switch e {
+	case MergeApplyStateCompleted, MergeApplyStateFailed, MergeApplyStateInProgress, MergeApplyStatePending:
+		return true
+	}
+	return false
+}
+
+func (e MergeApplyState) String() string {
+	return string(e)
+}
+
+func (e *MergeApplyState) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = MergeApplyState(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid MergeApplyState", str)
+	}
+	return nil
+}
+
+func (e MergeApplyState) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -18729,6 +19494,97 @@ func (e SourceType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// Stripe App install mode — live, test, or managed sandbox
+type StripeAccountMode string
+
+const (
+	// Live mode install against the merchant's production Stripe account
+	StripeAccountModeLive StripeAccountMode = "LIVE"
+	// Managed sandbox install in a Stripe-provided sandbox environment
+	StripeAccountModeSandbox StripeAccountMode = "SANDBOX"
+	// Test mode install against the merchant's test Stripe account
+	StripeAccountModeTest StripeAccountMode = "TEST"
+)
+
+var AllStripeAccountMode = []StripeAccountMode{
+	StripeAccountModeLive,
+	StripeAccountModeSandbox,
+	StripeAccountModeTest,
+}
+
+func (e StripeAccountMode) IsValid() bool {
+	switch e {
+	case StripeAccountModeLive, StripeAccountModeSandbox, StripeAccountModeTest:
+		return true
+	}
+	return false
+}
+
+func (e StripeAccountMode) String() string {
+	return string(e)
+}
+
+func (e *StripeAccountMode) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = StripeAccountMode(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid StripeAccountMode", str)
+	}
+	return nil
+}
+
+func (e StripeAccountMode) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Stripe platform used to authorize the integration
+type StripeAccountSource string
+
+const (
+	// New Stripe App OAuth (Marketplace) platform
+	StripeAccountSourceApp StripeAccountSource = "APP"
+	// Legacy Stripe Connect OAuth platform
+	StripeAccountSourceConnect StripeAccountSource = "CONNECT"
+)
+
+var AllStripeAccountSource = []StripeAccountSource{
+	StripeAccountSourceApp,
+	StripeAccountSourceConnect,
+}
+
+func (e StripeAccountSource) IsValid() bool {
+	switch e {
+	case StripeAccountSourceApp, StripeAccountSourceConnect:
+		return true
+	}
+	return false
+}
+
+func (e StripeAccountSource) String() string {
+	return string(e)
+}
+
+func (e *StripeAccountSource) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = StripeAccountSource(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid StripeAccountSource", str)
+	}
+	return nil
+}
+
+func (e StripeAccountSource) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type SubscriptionAddonSortFields string
 
 const (
@@ -19875,6 +20731,8 @@ func (e TaskStatus) MarshalGQL(w io.Writer) {
 type TaskType string
 
 const (
+	TaskTypeEnvironmentExport     TaskType = "ENVIRONMENT_EXPORT"
+	TaskTypeEnvironmentMergeApply TaskType = "ENVIRONMENT_MERGE_APPLY"
 	// The task is an import of product catalog from integration
 	TaskTypeImportIntegrationCatalog TaskType = "IMPORT_INTEGRATION_CATALOG"
 	// The task is an import of customers from integration
@@ -19894,6 +20752,8 @@ const (
 )
 
 var AllTaskType = []TaskType{
+	TaskTypeEnvironmentExport,
+	TaskTypeEnvironmentMergeApply,
 	TaskTypeImportIntegrationCatalog,
 	TaskTypeImportIntegrationCustomers,
 	TaskTypeImportSubscriptionsBulk,
@@ -19906,7 +20766,7 @@ var AllTaskType = []TaskType{
 
 func (e TaskType) IsValid() bool {
 	switch e {
-	case TaskTypeImportIntegrationCatalog, TaskTypeImportIntegrationCustomers, TaskTypeImportSubscriptionsBulk, TaskTypeRecalculateBatchEntitlements, TaskTypeRecalculateEntitlements, TaskTypeResyncIntegration, TaskTypeSubscriptionMigration, TaskTypeSubscriptionMigrationV2:
+	case TaskTypeEnvironmentExport, TaskTypeEnvironmentMergeApply, TaskTypeImportIntegrationCatalog, TaskTypeImportIntegrationCustomers, TaskTypeImportSubscriptionsBulk, TaskTypeRecalculateBatchEntitlements, TaskTypeRecalculateEntitlements, TaskTypeResyncIntegration, TaskTypeSubscriptionMigration, TaskTypeSubscriptionMigrationV2:
 		return true
 	}
 	return false
@@ -20298,6 +21158,10 @@ const (
 	VendorIdentifierHubspot VendorIdentifier = "HUBSPOT"
 	// OpenFGA integration vendor identifier
 	VendorIdentifierOpenFga VendorIdentifier = "OPEN_FGA"
+	// Prequel integration vendor identifier
+	VendorIdentifierPrequel VendorIdentifier = "PREQUEL"
+	// Received integration vendor identifier
+	VendorIdentifierReceived VendorIdentifier = "RECEIVED"
 	// Salesforce integration vendor identifier
 	VendorIdentifierSalesforce VendorIdentifier = "SALESFORCE"
 	// Snowflake integration vendor identifier
@@ -20315,6 +21179,8 @@ var AllVendorIdentifier = []VendorIdentifier{
 	VendorIdentifierBigQuery,
 	VendorIdentifierHubspot,
 	VendorIdentifierOpenFga,
+	VendorIdentifierPrequel,
+	VendorIdentifierReceived,
 	VendorIdentifierSalesforce,
 	VendorIdentifierSnowflake,
 	VendorIdentifierStripe,
@@ -20323,7 +21189,7 @@ var AllVendorIdentifier = []VendorIdentifier{
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierAppStore, VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierOpenFga, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAppStore, VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierOpenFga, VendorIdentifierPrequel, VendorIdentifierReceived, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
