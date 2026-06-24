@@ -2986,6 +2986,8 @@ type CustomerPortalSubscription struct {
 	Pricing CustomerPortalSubscriptionPricing `json:"pricing"`
 	// Indicates if the subscription is FREE or PAID.
 	PricingType PricingType `json:"pricingType"`
+	// A period-scoped preview of the next upcoming invoice for this subscription, including the amount due and per-line usage quantities. Integration-aware (mirrors the previewNextInvoice mutation). Null when the preview could not be computed.
+	PreviewNextInvoice *SubscriptionInvoicePreview `json:"previewNextInvoice"`
 	// Any upcoming changes to the subscription that are scheduled to take effect.
 	ScheduledUpdates []*SubscriptionScheduledUpdate `json:"scheduledUpdates"`
 	// The current lifecycle status of the subscription.
