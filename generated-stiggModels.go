@@ -1453,6 +1453,34 @@ type ClearCustomerPersistentCacheInput struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
+// A single direct credit consumption from a wallet
+type ConsumeCreditInput struct {
+	// The amount of credits to consume
+	Amount float64 `json:"amount"`
+	// Optional timestamp the consumption is attributed to
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// The credit currency (custom currency refId) to consume from
+	CurrencyID string `json:"currencyId"`
+	// The customer to consume credits from (refId)
+	CustomerID string `json:"customerId"`
+	// Optional dimensions describing the consumption
+	Dimensions map[string]interface{} `json:"dimensions,omitempty"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// A unique key used to deduplicate the consumption (required)
+	IdempotencyKey string `json:"idempotencyKey"`
+	// Optional resource (refId) the consumption is attributed to
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// Input for consuming credits directly from wallets asynchronously
+type ConsumeCreditsAsyncInput struct {
+	// The credit consumptions to report (up to 1000)
+	Consumptions []*ConsumeCreditInput `json:"consumptions"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
 // Coupons
 type Coupon struct {
 	// Metadata associated with the entity
@@ -2012,6 +2040,22 @@ type CreditBalanceUpdated struct {
 	TotalGranted float64 `json:"totalGranted"`
 	// The next time the balance will be updated (e.g., when a grant expires or becomes effective)
 	ValidUntil *float64 `json:"validUntil"`
+}
+
+// Result of a synchronous direct credit consumption
+type CreditConsumptionResponse struct {
+	// The amount of credits consumed
+	Amount float64 `json:"amount"`
+	// The optimistic credit balance after consumption (when sync credit consumption is enabled)
+	Credit *UsageMeasurementCredit `json:"credit"`
+	// The credit currency (custom currency refId) to consume from
+	CurrencyID string `json:"currencyId"`
+	// The customer to consume credits from (refId)
+	CustomerID string `json:"customerId"`
+	// Optional resource (refId) the consumption is attributed to
+	ResourceID *string `json:"resourceId"`
+	// The timestamp the consumption was attributed to
+	Timestamp string `json:"timestamp"`
 }
 
 // Represents a credit-based entitlement granted to a customer.
