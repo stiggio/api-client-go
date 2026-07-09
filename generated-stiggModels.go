@@ -9917,6 +9917,8 @@ type ReportUsageBaseInput struct {
 	Dimensions map[string]interface{} `json:"dimensions,omitempty"`
 	// Feature id
 	FeatureID string `json:"featureId"`
+	// Idempotency key
+	IdempotencyKey *string `json:"idempotencyKey,omitempty"`
 	// Resource id
 	ResourceID *string `json:"resourceId,omitempty"`
 	// The method by which the usage value should be updated
@@ -9945,6 +9947,8 @@ type ReportUsageInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Feature id
 	FeatureID string `json:"featureId"`
+	// Idempotency key
+	IdempotencyKey *string `json:"idempotencyKey,omitempty"`
 	// Resource id
 	ResourceID *string `json:"resourceId,omitempty"`
 	// The method by which the usage value should be updated
@@ -12852,6 +12856,8 @@ type UsageMeasurementCreateInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Feature id
 	FeatureID string `json:"featureId"`
+	// Idempotency key
+	IdempotencyKey *string `json:"idempotencyKey,omitempty"`
 	// Resource id
 	ResourceID *string `json:"resourceId,omitempty"`
 	// The method by which the usage value should be updated
