@@ -505,6 +505,36 @@ type Aggregation struct {
 	Function AggregationFunction `json:"function"`
 }
 
+// Airwallex integration configuration object
+type AirwallexCredentials struct {
+	// Airwallex linked payment account ID (e.g. acct_...) used to route checkouts
+	AccountID *string `json:"accountId"`
+	// Base URL of the Airwallex API (e.g. https://api.airwallex.com)
+	APIURL *string `json:"apiUrl"`
+	// Airwallex API client ID
+	ClientID *string `json:"clientId"`
+	// Airwallex org ID as it appears on webhook events (e.g. org_...), used by Received for webhook routing
+	OrgID *string `json:"orgId"`
+}
+
+func (AirwallexCredentials) IsCredentials() {}
+
+// Input for connecting an Airwallex invoicing integration
+type AirwallexCredentialsInput struct {
+	// Airwallex linked payment account ID (e.g. acct_...) used to route checkouts
+	AccountID string `json:"accountId"`
+	// Airwallex API key
+	APIKey string `json:"apiKey"`
+	// Base URL of the Airwallex API (e.g. https://api.airwallex.com)
+	APIURL string `json:"apiUrl"`
+	// Airwallex API client ID
+	ClientID string `json:"clientId"`
+	// Airwallex org ID as it appears on webhook events (e.g. org_...), used by Received for webhook routing
+	OrgID string `json:"orgId"`
+	// Airwallex webhook signing secret
+	WebhookSecret string `json:"webhookSecret"`
+}
+
 // API key
 type APIKey struct {
 	// The creation date of the API key
@@ -1481,6 +1511,79 @@ type ConsumeCreditsAsyncInput struct {
 	EnvironmentID *string `json:"environmentId,omitempty"`
 }
 
+// A billing contract that belongs to a customer, resolved live from the connected billing provider.
+type ContractDto struct {
+	// Activation end date (ISO 8601)
+	ActivationEndDate *string `json:"activationEndDate"`
+	// Activation start date (ISO 8601)
+	ActivationStartDate *string `json:"activationStartDate"`
+	// The billing provider contract ID
+	ContractID string `json:"contractId"`
+	// Contract type
+	ContractType ContractType `json:"contractType"`
+	// Timestamp of creation (ISO 8601)
+	CreatedAt *string `json:"createdAt"`
+	// External ID of the customer the contract belongs to (the Stigg customer ref ID)
+	CustomerExternalID string `json:"customerExternalId"`
+	// External ID for the contract: the metering provider externalId when one is mapped, otherwise the contract ID.
+	ExternalID string `json:"externalId"`
+	// Contract name
+	Name *string `json:"name"`
+	// Preview of the contract's next (upcoming) invoice, when the contract has one
+	NextInvoice *ContractNextInvoiceDto `json:"nextInvoice"`
+	// Contract state
+	State ContractState `json:"state"`
+}
+
+type ContractDTOCustomerExternalIDFilterComparison struct {
+	Eq       *string  `json:"eq,omitempty"`
+	ILike    *string  `json:"iLike,omitempty"`
+	In       []string `json:"in,omitempty"`
+	Neq      *string  `json:"neq,omitempty"`
+	NotILike *string  `json:"notILike,omitempty"`
+	NotIn    []string `json:"notIn,omitempty"`
+}
+
+type ContractDTOFilter struct {
+	And                []*ContractDTOFilter                           `json:"and,omitempty"`
+	CustomerExternalID *ContractDTOCustomerExternalIDFilterComparison `json:"customerExternalId,omitempty"`
+	Name               *ContractDTONameFilterComparison               `json:"name,omitempty"`
+	Or                 []*ContractDTOFilter                           `json:"or,omitempty"`
+	State              *ContractDTOStateFilterComparison              `json:"state,omitempty"`
+}
+
+type ContractDTONameFilterComparison struct {
+	Eq       *string `json:"eq,omitempty"`
+	ILike    *string `json:"iLike,omitempty"`
+	Neq      *string `json:"neq,omitempty"`
+	NotILike *string `json:"notILike,omitempty"`
+}
+
+type ContractDTOStateFilterComparison struct {
+	In    []ContractState `json:"in,omitempty"`
+	NotIn []ContractState `json:"notIn,omitempty"`
+}
+
+// A preview of a contract's next (upcoming) invoice, resolved live from the connected billing provider.
+type ContractNextInvoiceDto struct {
+	// Total amount due on the next invoice
+	Amount Money `json:"amount"`
+	// Due date for payment of the next invoice (ISO 8601)
+	DueDate *string `json:"dueDate"`
+	// The next invoice's billing period end date (ISO 8601)
+	PeriodEnd *string `json:"periodEnd"`
+	// The next invoice's billing period start date (ISO 8601)
+	PeriodStart *string `json:"periodStart"`
+}
+
+// A page of contracts in the environment, resolved live from the connected billing provider.
+type ContractsPageDto struct {
+	// The contracts in this page
+	Contracts []*ContractDto `json:"contracts"`
+	// Total number of contracts across all pages
+	TotalCount int64 `json:"totalCount"`
+}
+
 // Coupons
 type Coupon struct {
 	// Metadata associated with the entity
@@ -1794,6 +1897,8 @@ type CreateHook struct {
 
 // Create integration input
 type CreateIntegrationInput struct {
+	// Airwallex integration configuration
+	AirwallexCredentials *AirwallexCredentialsInput `json:"airwallexCredentials,omitempty"`
 	// AppStore integration configuration
 	AppStoreCredentials *AppStoreCredentialsInput `json:"appStoreCredentials,omitempty"`
 	// Auth0 integration configuration
@@ -2047,7 +2152,7 @@ type CreditConsumptionResponse struct {
 	// The amount of credits consumed
 	Amount float64 `json:"amount"`
 	// The optimistic credit balance after consumption (when sync credit consumption is enabled)
-	Credit *UsageMeasurementCredit `json:"credit"`
+	Credit *OptimisticCreditBalance `json:"credit"`
 	// The credit currency (custom currency refId) to consume from
 	CurrencyID string `json:"currencyId"`
 	// The customer to consume credits from (refId)
@@ -3024,14 +3129,14 @@ type CustomerPortalSubscription struct {
 	PlanID string `json:"planId"`
 	// The display name of the subscribed plan as shown to the customer.
 	PlanName string `json:"planName"`
+	// A period-scoped preview of the next upcoming invoice for this subscription, including the amount due and per-line usage quantities. Integration-aware (mirrors the previewNextInvoice mutation). Null when the preview could not be computed.
+	PreviewNextInvoice *SubscriptionInvoicePreview `json:"previewNextInvoice"`
 	// A list of individual price components.
 	Prices []*CustomerPortalSubscriptionPrice `json:"prices"`
 	// The aggregated pricing structure.
 	Pricing CustomerPortalSubscriptionPricing `json:"pricing"`
 	// Indicates if the subscription is FREE or PAID.
 	PricingType PricingType `json:"pricingType"`
-	// A period-scoped preview of the next upcoming invoice for this subscription, including the amount due and per-line usage quantities. Integration-aware (mirrors the previewNextInvoice mutation). Null when the preview could not be computed.
-	PreviewNextInvoice *SubscriptionInvoicePreview `json:"previewNextInvoice"`
 	// Any upcoming changes to the subscription that are scheduled to take effect.
 	ScheduledUpdates []*SubscriptionScheduledUpdate `json:"scheduledUpdates"`
 	// The current lifecycle status of the subscription.
@@ -5442,6 +5547,18 @@ type GetAwsExternalIDResult struct {
 	ExternalID string `json:"externalId"`
 }
 
+// Input for fetching all contracts in the environment from the connected billing provider.
+type GetContractsInput struct {
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Optional filter, applied by the billing provider before pagination (so totals reflect the filtered set).
+	Filter *ContractDTOFilter `json:"filter,omitempty"`
+	// Maximum number of contracts to return per page (default 100)
+	Limit *int64 `json:"limit,omitempty"`
+	// Zero-based page index for offset pagination (default 0)
+	Page *int64 `json:"page,omitempty"`
+}
+
 // Input for retrieving credit grants
 type GetCreditGrantsInput struct {
 	// The custom currency ID of the credit grant
@@ -5459,6 +5576,14 @@ type GetCreditGrantsInput struct {
 // Get a customer by slug
 type GetCustomerByRefIDInput struct {
 	// Customer slug
+	CustomerID string `json:"customerId"`
+	// The unique identifier for the environment
+	EnvironmentID *string `json:"environmentId,omitempty"`
+}
+
+// Input for fetching a customer's contracts from the connected billing provider.
+type GetCustomerContractsInput struct {
+	// The Stigg customer ref ID to fetch contracts for
 	CustomerID string `json:"customerId"`
 	// The unique identifier for the environment
 	EnvironmentID *string `json:"environmentId,omitempty"`
@@ -6817,6 +6942,20 @@ type OpenFGACredentialsInput struct {
 	ClientSecret string `json:"clientSecret"`
 	// ID of the OpenFGA store
 	StoreID *string `json:"storeId,omitempty"`
+}
+
+// Optimistic credit balance for a credit-backed feature
+type OptimisticCreditBalance struct {
+	// The credit currency identifier
+	CurrencyID string `json:"currencyId"`
+	// The wallet's total consumed credits for this currency (optimistic — includes not-yet-reconciled usage), shared across every feature that draws on the currency. This is the running balance, not this call's deduction — see `consumed` for that.
+	CurrentUsage float64 `json:"currentUsage"`
+	// The grant-version timestamp of this balance, used by the SDK for last-write-wins reconciliation
+	Timestamp string `json:"timestamp"`
+	// The total credits granted
+	UsageLimit float64 `json:"usageLimit"`
+	// End of the current credit grant period (when recurring credits reset), if applicable
+	UsagePeriodEnd *string `json:"usagePeriodEnd"`
 }
 
 // Overage billing period change
@@ -12455,6 +12594,8 @@ type UpdateHook struct {
 
 // Update integration input
 type UpdateIntegrationInput struct {
+	// Airwallex integration configuration
+	AirwallexCredentials *AirwallexCredentialsInput `json:"airwallexCredentials,omitempty"`
 	// Auth0 integration configuration
 	Auth0Credentials *Auth0CredentialsInput `json:"auth0Credentials,omitempty"`
 	// The reference ID for the integration
@@ -12868,9 +13009,11 @@ type UsageMeasurementCreateInput struct {
 
 // Optimistic credit balance for a credit-backed feature
 type UsageMeasurementCredit struct {
+	// The credits this single reportUsage call deducted, in credit units — scoped to this one measurement (0 for idempotency duplicates). Contrast `currentUsage`, which is the wallet-wide running total shared across all features on this currency. Use it to reconcile expected per-call deductions.
+	Consumed float64 `json:"consumed"`
 	// The credit currency identifier
 	CurrencyID string `json:"currencyId"`
-	// The credits consumed (optimistic — includes not-yet-reconciled usage)
+	// The wallet's total consumed credits for this currency (optimistic — includes not-yet-reconciled usage), shared across every feature that draws on the currency. This is the running balance, not this call's deduction — see `consumed` for that.
 	CurrentUsage float64 `json:"currentUsage"`
 	// The grant-version timestamp of this balance, used by the SDK for last-write-wins reconciliation
 	Timestamp string `json:"timestamp"`
@@ -14301,6 +14444,106 @@ func (e *ConditionOperation) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ConditionOperation) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The lifecycle state of a billing contract
+type ContractState string
+
+const (
+	// The contract is active
+	ContractStateActive ContractState = "ACTIVE"
+	// The contract has been canceled
+	ContractStateCanceled ContractState = "CANCELED"
+	// The contract is a draft and has not been published yet
+	ContractStateDraft ContractState = "DRAFT"
+	// The contract has reached the end of its billing period
+	ContractStateEndBilling ContractState = "END_BILLING"
+)
+
+var AllContractState = []ContractState{
+	ContractStateActive,
+	ContractStateCanceled,
+	ContractStateDraft,
+	ContractStateEndBilling,
+}
+
+func (e ContractState) IsValid() bool {
+	switch e {
+	case ContractStateActive, ContractStateCanceled, ContractStateDraft, ContractStateEndBilling:
+		return true
+	}
+	return false
+}
+
+func (e ContractState) String() string {
+	return string(e)
+}
+
+func (e *ContractState) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ContractState(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ContractState", str)
+	}
+	return nil
+}
+
+func (e ContractState) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// The type of a billing contract
+type ContractType string
+
+const (
+	// An enterprise contract
+	ContractTypeEnterprise ContractType = "ENTERPRISE"
+	// A referral contract
+	ContractTypeReferral ContractType = "REFERRAL"
+	// A reseller contract
+	ContractTypeReseller ContractType = "RESELLER"
+	// A subscription contract
+	ContractTypeSubscription ContractType = "SUBSCRIPTION"
+)
+
+var AllContractType = []ContractType{
+	ContractTypeEnterprise,
+	ContractTypeReferral,
+	ContractTypeReseller,
+	ContractTypeSubscription,
+}
+
+func (e ContractType) IsValid() bool {
+	switch e {
+	case ContractTypeEnterprise, ContractTypeReferral, ContractTypeReseller, ContractTypeSubscription:
+		return true
+	}
+	return false
+}
+
+func (e ContractType) String() string {
+	return string(e)
+}
+
+func (e *ContractType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ContractType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ContractType", str)
+	}
+	return nil
+}
+
+func (e ContractType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
@@ -16453,6 +16696,8 @@ const (
 	// Free plan can't have compatible package groups error
 	ErrorCodeFreePlanCantHaveCompatiblePackageGroupError ErrorCode = "FreePlanCantHaveCompatiblePackageGroupError"
 	ErrorCodeFutureUpdateNotFound                        ErrorCode = "FutureUpdateNotFound"
+	// Governance is not enabled for this account
+	ErrorCodeGovernanceNotEnabled ErrorCode = "GovernanceNotEnabled"
 	// Too many graphql aliases were used in a single request
 	ErrorCodeGraphQLAliasesLimitExceeded ErrorCode = "GraphQLAliasesLimitExceeded"
 	// Too many batched operations were used in a single request
@@ -16659,6 +16904,7 @@ var AllErrorCode = []ErrorCode{
 	ErrorCodeFetchAllCountriesPricesNotAllowed,
 	ErrorCodeFreePlanCantHaveCompatiblePackageGroupError,
 	ErrorCodeFutureUpdateNotFound,
+	ErrorCodeGovernanceNotEnabled,
 	ErrorCodeGraphQLAliasesLimitExceeded,
 	ErrorCodeGraphQLBatchedOperationsLimitExceeded,
 	ErrorCodeGraphQLUnsupportedDirective,
@@ -16760,7 +17006,7 @@ var AllErrorCode = []ErrorCode{
 
 func (e ErrorCode) IsValid() bool {
 	switch e {
-	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeAPIKeyExpired, ErrorCodeAPIKeyHasExpiry, ErrorCodeAPIKeyNotFound, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAuthorizationServiceError, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingInvoiceStatusError, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotArchiveProductError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUnarchiveProductError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantAlreadyVoided, ErrorCodeCreditGrantCannotBeVoided, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDataExportIntegrationError, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftAlreadyExists, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeFutureUpdateNotFound, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidReceivedSignatureError, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidTaxID, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeInvoicePreviewNotAvailableForDraftContract, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingBillingInvoiceError, ErrorCodeMissingEntityIDError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoActiveSubscriptionForCustomer, ErrorCodeNoDraftOfferFound, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeObjectAlreadyBeingUsedByAnotherRequestError, ErrorCodeOfferAlreadyExists, ErrorCodeOfferNotFound, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodeOperationTimeout, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodePricingModelNotSupportedByBillingIntegration, ErrorCodeProductNotFoundError, ErrorCodeProductNotPublishedError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSchedulingAtEndOfBillingPeriod, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVendorIsNotSupported, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
+	case ErrorCodeAccessDeniedError, ErrorCodeAccountNotFoundError, ErrorCodeAddonDependencyMissingError, ErrorCodeAddonHasToHavePriceError, ErrorCodeAddonIsCompatibleWithGroup, ErrorCodeAddonIsCompatibleWithPlan, ErrorCodeAddonNotFound, ErrorCodeAddonQuantityExceedsLimitError, ErrorCodeAddonWithDraftCannotBeDeletedError, ErrorCodeAddonsNotFound, ErrorCodeAmountTooLarge, ErrorCodeAPIKeyExpired, ErrorCodeAPIKeyHasExpiry, ErrorCodeAPIKeyNotFound, ErrorCodeArchivedCouponCantBeApplied, ErrorCodeAuthCustomerMismatch, ErrorCodeAuthCustomerReadonly, ErrorCodeAuthorizationServiceError, ErrorCodeAwsMarketplaceIntegrationError, ErrorCodeAwsMarketplaceIntegrationValidationError, ErrorCodeBadUserInput, ErrorCodeBillingIntegrationAlreadyExistsError, ErrorCodeBillingIntegrationMissing, ErrorCodeBillingInvoiceStatusError, ErrorCodeBillingPeriodMissingError, ErrorCodeCanNotUpdateEntitlementsFeatureGroup, ErrorCodeCannotAddOverrideEntitlementToPlan, ErrorCodeCannotArchiveFeatureError, ErrorCodeCannotArchiveFeatureGroupError, ErrorCodeCannotArchiveProductError, ErrorCodeCannotChangeBillingIntegration, ErrorCodeCannotDeleteCustomerError, ErrorCodeCannotDeleteDefaultIntegration, ErrorCodeCannotDeleteFeatureError, ErrorCodeCannotEditPackageInNonDraftMode, ErrorCodeCannotRemovePaymentMethodFromCustomerError, ErrorCodeCannotReportUsageForEntitlementWithMeterError, ErrorCodeCannotUnarchiveProductError, ErrorCodeCannotUpdateExpireAtForExpiredCreditGrantError, ErrorCodeCannotUpdateUnitTransformationError, ErrorCodeCannotUpsertToPackageThatHasDraft, ErrorCodeChangingPayingCustomerIsNotSupportedError, ErrorCodeCheckoutIsNotSupported, ErrorCodeCouponNotFound, ErrorCodeCreditGrantAlreadyVoided, ErrorCodeCreditGrantCannotBeVoided, ErrorCodeCreditGrantNotFound, ErrorCodeCustomCurrencyNotFound, ErrorCodeCustomerAlreadyHaveCustomerCoupon, ErrorCodeCustomerAlreadyUsesCoupon, ErrorCodeCustomerHasNoEmailAddress, ErrorCodeCustomerNoBillingID, ErrorCodeCustomerNotFound, ErrorCodeCustomerResourceNotFound, ErrorCodeDataExportIntegrationError, ErrorCodeDeprecatedEstimateSubscriptionError, ErrorCodeDowngradeBillingPeriodNotSupportedError, ErrorCodeDraftAddonCantBeArchived, ErrorCodeDraftAlreadyExists, ErrorCodeDraftPlanCantBeArchived, ErrorCodeDuplicateAddonProvisionedError, ErrorCodeDuplicateIntegrationNotAllowed, ErrorCodeDuplicateProductValidationError, ErrorCodeDuplicatedEntityNotAllowed, ErrorCodeEditAllowedOnDraftPackageOnlyError, ErrorCodeEntitlementBelongsToFeatureGroupError, ErrorCodeEntitlementLimitExceededError, ErrorCodeEntitlementUsageOutOfRangeError, ErrorCodeEntitlementsMustBelongToSamePackage, ErrorCodeEntityIDDifferentFromRefIDError, ErrorCodeEntityIsArchivedError, ErrorCodeEnvironmentMissing, ErrorCodeExperimentAlreadyRunning, ErrorCodeExperimentNotFoundError, ErrorCodeExperimentStatusError, ErrorCodeExpireAtMustBeLaterThanEffectiveAtError, ErrorCodeFailedToCreateCheckoutSessionError, ErrorCodeFailedToImportCustomer, ErrorCodeFailedToImportSubscriptions, ErrorCodeFailedToResolveBillingIntegration, ErrorCodeFeatureConfigurationExceededLimitError, ErrorCodeFeatureGroupMissingFeaturesError, ErrorCodeFeatureGroupNotFoundError, ErrorCodeFeatureNotBelongToFeatureGroupError, ErrorCodeFeatureNotFound, ErrorCodeFetchAllCountriesPricesNotAllowed, ErrorCodeFreePlanCantHaveCompatiblePackageGroupError, ErrorCodeFutureUpdateNotFound, ErrorCodeGovernanceNotEnabled, ErrorCodeGraphQLAliasesLimitExceeded, ErrorCodeGraphQLBatchedOperationsLimitExceeded, ErrorCodeGraphQLUnsupportedDirective, ErrorCodeHubspotIntegrationError, ErrorCodeIdentityForbidden, ErrorCodeImportAlreadyInProgress, ErrorCodeImportSubscriptionsBulkError, ErrorCodeIncompatibleSubscriptionAddon, ErrorCodeInitStripePaymentMethodError, ErrorCodeIntegrationNotFound, ErrorCodeIntegrationValidationError, ErrorCodeIntegrityViolation, ErrorCodeInvalidAddressError, ErrorCodeInvalidArgumentError, ErrorCodeInvalidCancellationDate, ErrorCodeInvalidDoggoSignatureError, ErrorCodeInvalidEntitlementResetPeriod, ErrorCodeInvalidMemberDelete, ErrorCodeInvalidMetadataError, ErrorCodeInvalidQuantity, ErrorCodeInvalidReceivedSignatureError, ErrorCodeInvalidSubscriptionStatus, ErrorCodeInvalidTaxID, ErrorCodeInvalidUpdatePriceUnitAmountError, ErrorCodeInvoicePreviewNotAvailableForDraftContract, ErrorCodeMemberInvitationError, ErrorCodeMemberNotFound, ErrorCodeMergeEnvironmentValidationError, ErrorCodeMeterMustBeAssociatedToMeteredFeature, ErrorCodeMeteringNotAvailableForFeatureType, ErrorCodeMissingBillingInvoiceError, ErrorCodeMissingEntityIDError, ErrorCodeMultiSubscriptionCantBeAutoCancellationSourceError, ErrorCodeNoActiveSubscriptionForCustomer, ErrorCodeNoDraftOfferFound, ErrorCodeNoFeatureEntitlementError, ErrorCodeNoFeatureEntitlementInSubscription, ErrorCodeNoProductsAvailable, ErrorCodeObjectAlreadyBeingUsedByAnotherRequestError, ErrorCodeOfferAlreadyExists, ErrorCodeOfferNotFound, ErrorCodeOperationNotAllowedDuringInProgressExperiment, ErrorCodeOperationTimeout, ErrorCodePackageAlreadyPublished, ErrorCodePackageGroupMinItemsError, ErrorCodePackageGroupNotFound, ErrorCodePackagePricingTypeNotSet, ErrorCodePaymentMethodNotFoundError, ErrorCodePlanCannotBePublishWhenBasePlanIsDraft, ErrorCodePlanCannotBePublishWhenCompatibleAddonIsDraft, ErrorCodePlanIsUsedAsDefaultStartPlan, ErrorCodePlanIsUsedAsDowngradePlan, ErrorCodePlanNotFound, ErrorCodePlanWithChildCantBeDeleted, ErrorCodePlansCircularDependencyError, ErrorCodePreparePaymentMethodFormError, ErrorCodePriceNotFound, ErrorCodePricingModelNotSupportedByBillingIntegration, ErrorCodeProductNotFoundError, ErrorCodeProductNotPublishedError, ErrorCodePromotionCodeCustomerNotFirstPurchase, ErrorCodePromotionCodeMaxRedemptionsReached, ErrorCodePromotionCodeMinimumAmountNotReached, ErrorCodePromotionCodeNotActive, ErrorCodePromotionCodeNotForCustomer, ErrorCodePromotionCodeNotFound, ErrorCodePromotionalEntitlementNotFoundError, ErrorCodeRateLimitExceeded, ErrorCodeRecalculateEntitlementsError, ErrorCodeRequiredSsoAuthenticationError, ErrorCodeResyncAlreadyInProgress, ErrorCodeScheduledMigrationAlreadyExistsError, ErrorCodeSchedulingAtEndOfBillingPeriod, ErrorCodeSelectedBillingModelDoesntMatchImportedItemError, ErrorCodeSingleSubscriptionCantBeAutoCancellationTargetError, ErrorCodeStripeCustomerIsDeleted, ErrorCodeStripeError, ErrorCodeSubscriptionAlreadyCanceledOrExpired, ErrorCodeSubscriptionAlreadyOnLatestPlanError, ErrorCodeSubscriptionDoesNotHaveBillingPeriod, ErrorCodeSubscriptionMustHaveSinglePlanError, ErrorCodeSubscriptionNoBillingID, ErrorCodeSubscriptionNotFound, ErrorCodeTooManyCustomCurrencies, ErrorCodeTooManySubscriptionsPerCustomer, ErrorCodeTrialMustBeCancelledImmediately, ErrorCodeUnPublishedPackage, ErrorCodeUnauthenticated, ErrorCodeUnexpectedError, ErrorCodeUnsupportedFeatureType, ErrorCodeUnsupportedParameter, ErrorCodeUnsupportedSubscriptionScheduleType, ErrorCodeUnsupportedVendorIdentifier, ErrorCodeUsageMeasurementDiffOutOfRangeError, ErrorCodeVendorIsNotSupported, ErrorCodeVersionExceedsMaxValueError, ErrorCodeWorkflowTriggerNotFound:
 		return true
 	}
 	return false
@@ -21267,6 +21513,8 @@ func (e UsageUpdateBehavior) MarshalGQL(w io.Writer) {
 type VendorIdentifier string
 
 const (
+	// Airwallex integration vendor identifier
+	VendorIdentifierAirwallex VendorIdentifier = "AIRWALLEX"
 	// AppStore integration vendor identifier
 	VendorIdentifierAppStore VendorIdentifier = "APP_STORE"
 	// Auth0 integration vendor identifier
@@ -21294,6 +21542,7 @@ const (
 )
 
 var AllVendorIdentifier = []VendorIdentifier{
+	VendorIdentifierAirwallex,
 	VendorIdentifierAppStore,
 	VendorIdentifierAuth0,
 	VendorIdentifierAwsMarketplace,
@@ -21310,7 +21559,7 @@ var AllVendorIdentifier = []VendorIdentifier{
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierAppStore, VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierOpenFga, VendorIdentifierPrequel, VendorIdentifierReceived, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAirwallex, VendorIdentifierAppStore, VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierOpenFga, VendorIdentifierPrequel, VendorIdentifierReceived, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
 		return true
 	}
 	return false
@@ -21349,6 +21598,8 @@ const (
 	VendorTypeCrm VendorType = "CRM"
 	// Data export integration type
 	VendorTypeDataExport VendorType = "DATA_EXPORT"
+	// Invoicing integration type
+	VendorTypeInvoicing VendorType = "INVOICING"
 	// Marketplace integration type
 	VendorTypeMarketplace VendorType = "MARKETPLACE"
 )
@@ -21358,12 +21609,13 @@ var AllVendorType = []VendorType{
 	VendorTypeBilling,
 	VendorTypeCrm,
 	VendorTypeDataExport,
+	VendorTypeInvoicing,
 	VendorTypeMarketplace,
 }
 
 func (e VendorType) IsValid() bool {
 	switch e {
-	case VendorTypeAuth, VendorTypeBilling, VendorTypeCrm, VendorTypeDataExport, VendorTypeMarketplace:
+	case VendorTypeAuth, VendorTypeBilling, VendorTypeCrm, VendorTypeDataExport, VendorTypeInvoicing, VendorTypeMarketplace:
 		return true
 	}
 	return false
