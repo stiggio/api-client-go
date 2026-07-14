@@ -2163,6 +2163,13 @@ type CreditConsumptionResponse struct {
 	Timestamp string `json:"timestamp"`
 }
 
+type CreditCostEstimation struct {
+	// Per-currency cost estimates
+	Estimates []*CurrencyEstimate `json:"estimates"`
+	// Request-level warnings about the estimation context
+	Warnings []EstimationRequestWarning `json:"warnings"`
+}
+
 // Represents a credit-based entitlement granted to a customer.
 type CreditEntitlement struct {
 	// Optional message explaining why access to the feature is denied.
@@ -2582,6 +2589,21 @@ type CreditUsageSeriesTag struct {
 	Key string `json:"key"`
 	// The dimension value for this series
 	Value string `json:"value"`
+}
+
+type CurrencyEstimate struct {
+	// The credit balance after subtracting the estimated cost
+	BalanceAfterEstimate float64 `json:"balanceAfterEstimate"`
+	// Estimated cost contribution per feature
+	Breakdown []*EstimationBreakdownItem `json:"breakdown"`
+	// The credit currency identifier
+	CurrencyID string `json:"currencyId"`
+	// The current credit balance, including not-yet-reconciled consumption
+	CurrentBalance float64 `json:"currentBalance"`
+	// The estimated credit cost of the reported event or usage
+	EstimatedCost float64 `json:"estimatedCost"`
+	// Whether the estimated consumption would bring the balance below zero
+	WouldOverdraft bool `json:"wouldOverdraft"`
 }
 
 type CursorPaging struct {
@@ -4464,6 +4486,17 @@ type EnvironmentSort struct {
 	Nulls     *SortNulls            `json:"nulls,omitempty"`
 }
 
+type EstimateEventCostInput struct {
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// Dimensions to include in the events fields
+	Dimensions map[string]interface{} `json:"dimensions,omitempty"`
+	// Name of the event
+	EventName string `json:"eventName"`
+	// Resource id
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
 type EstimateSubscriptionInput struct {
 	Addons []*SubscriptionAddonInput `json:"addons,omitempty"`
 	// Coupon input
@@ -4498,6 +4531,32 @@ type EstimateSubscriptionUpdateInput struct {
 	PromotionCode    *string                  `json:"promotionCode,omitempty"`
 	SubscriptionID   string                   `json:"subscriptionId"`
 	UnitQuantity     *float64                 `json:"unitQuantity,omitempty"`
+}
+
+// Input for estimating the credit cost of a usage report without submitting it
+type EstimateUsageCostInput struct {
+	// Customer id
+	CustomerID string `json:"customerId"`
+	// Additional dimensions for the usage report
+	Dimensions map[string]interface{} `json:"dimensions,omitempty"`
+	// Feature id
+	FeatureID string `json:"featureId"`
+	// Resource id
+	ResourceID *string `json:"resourceId,omitempty"`
+	// The method by which the usage value should be updated
+	UpdateBehavior *UsageUpdateBehavior `json:"updateBehavior,omitempty"`
+	// The value to report for usage
+	Value float64 `json:"value"`
+}
+
+// Estimated cost contribution of a single feature
+type EstimationBreakdownItem struct {
+	// The estimated credit cost contributed by this feature
+	Cost float64 `json:"cost"`
+	// The feature whose meter contributed this cost
+	FeatureID string `json:"featureId"`
+	// Warning explaining why this cost may be inaccurate, if any
+	WarningCode *EstimationWarningCode `json:"warningCode"`
 }
 
 // Event actor information
@@ -17030,6 +17089,90 @@ func (e *ErrorCode) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ErrorCode) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Request-level warning about the estimation context
+type EstimationRequestWarning string
+
+const (
+	EstimationRequestWarningFeatureNotCreditBased            EstimationRequestWarning = "FEATURE_NOT_CREDIT_BASED"
+	EstimationRequestWarningFeatureNotFound                  EstimationRequestWarning = "FEATURE_NOT_FOUND"
+	EstimationRequestWarningResourceScopedSubscriptionExists EstimationRequestWarning = "RESOURCE_SCOPED_SUBSCRIPTION_EXISTS"
+)
+
+var AllEstimationRequestWarning = []EstimationRequestWarning{
+	EstimationRequestWarningFeatureNotCreditBased,
+	EstimationRequestWarningFeatureNotFound,
+	EstimationRequestWarningResourceScopedSubscriptionExists,
+}
+
+func (e EstimationRequestWarning) IsValid() bool {
+	switch e {
+	case EstimationRequestWarningFeatureNotCreditBased, EstimationRequestWarningFeatureNotFound, EstimationRequestWarningResourceScopedSubscriptionExists:
+		return true
+	}
+	return false
+}
+
+func (e EstimationRequestWarning) String() string {
+	return string(e)
+}
+
+func (e *EstimationRequestWarning) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EstimationRequestWarning(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EstimationRequestWarning", str)
+	}
+	return nil
+}
+
+func (e EstimationRequestWarning) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Warning explaining why an estimated cost may be inaccurate
+type EstimationWarningCode string
+
+const (
+	EstimationWarningCodeUnsupportedAggregation EstimationWarningCode = "UNSUPPORTED_AGGREGATION"
+)
+
+var AllEstimationWarningCode = []EstimationWarningCode{
+	EstimationWarningCodeUnsupportedAggregation,
+}
+
+func (e EstimationWarningCode) IsValid() bool {
+	switch e {
+	case EstimationWarningCodeUnsupportedAggregation:
+		return true
+	}
+	return false
+}
+
+func (e EstimationWarningCode) String() string {
+	return string(e)
+}
+
+func (e *EstimationWarningCode) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = EstimationWarningCode(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid EstimationWarningCode", str)
+	}
+	return nil
+}
+
+func (e EstimationWarningCode) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
