@@ -505,6 +505,28 @@ type Aggregation struct {
 	Function AggregationFunction `json:"function"`
 }
 
+// Airwallex embedded checkout credentials
+type AirwallexCheckoutCredentials struct {
+	// The Airwallex PaymentIntent client secret the in-page card element confirms against
+	ClientSecret string `json:"clientSecret"`
+	// Values the Airwallex card element needs to initialize and confirm
+	Metadata AirwallexCheckoutMetadata `json:"metadata"`
+}
+
+func (AirwallexCheckoutCredentials) IsBillingCredentials() {}
+
+// Airwallex embedded checkout metadata
+type AirwallexCheckoutMetadata struct {
+	// The ISO 4217 currency of the vaulting intent
+	Currency string `json:"currency"`
+	// The Airwallex Payments customer id the payment method vaults under
+	CustomerID *string `json:"customerId"`
+	// The Airwallex environment to initialize the SDK against ('demo' or 'prod')
+	Env string `json:"env"`
+	// The Airwallex PaymentIntent id
+	IntentID string `json:"intentId"`
+}
+
 // Airwallex integration configuration object
 type AirwallexCredentials struct {
 	// Airwallex linked payment account ID (e.g. acct_...) used to route checkouts
@@ -1925,6 +1947,8 @@ type CreateIntegrationInput struct {
 	SnowflakeCredentials *SnowflakeCredentialsInput `json:"snowflakeCredentials,omitempty"`
 	// Stripe integration configuration
 	StripeCredentials *StripeCredentialsInput `json:"stripeCredentials,omitempty"`
+	// Stripe invoicing integration configuration
+	StripeInvoicingCredentials *StripeInvoicingCredentialsInput `json:"stripeInvoicingCredentials,omitempty"`
 	// The vendor identifier of integration
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 	// Zuora integration configuration
@@ -10565,6 +10589,28 @@ type StripeCustomerSearchResult struct {
 	TotalCount int64 `json:"totalCount"`
 }
 
+// Stripe invoicing integration configuration object
+type StripeInvoicingCredentials struct {
+	// Connected Stripe account ID (e.g. acct_...) resolved during connect
+	AccountID *string `json:"accountId"`
+}
+
+func (StripeInvoicingCredentials) IsCredentials() {}
+
+// Input for connecting a Stripe invoicing integration
+type StripeInvoicingCredentialsInput struct {
+	// Connected Stripe account ID (e.g. acct_...) resolved during connect
+	AccountID *string `json:"accountId,omitempty"`
+	// Stripe OAuth authorization code, exchanged during connect for the account ID
+	AuthorizationCode *string `json:"authorizationCode,omitempty"`
+	// Whether the Stripe account is connected in test mode
+	IsTestMode bool `json:"isTestMode"`
+	// Stripe account mode (live, test, or sandbox)
+	Mode *StripeAccountMode `json:"mode,omitempty"`
+	// Stripe account source (Stripe App or Stripe Connect)
+	Source *StripeAccountSource `json:"source,omitempty"`
+}
+
 // Response for preparing a Stripe payment method form
 type StripePaymentMethodForm struct {
 	// The client secret for the payment method form
@@ -12671,6 +12717,8 @@ type UpdateIntegrationInput struct {
 	SnowflakeCredentials *SnowflakeCredentialsInput `json:"snowflakeCredentials,omitempty"`
 	// Stripe integration configuration
 	StripeCredentials *UpdateStripeCredentialsInput `json:"stripeCredentials,omitempty"`
+	// Stripe invoicing integration configuration
+	StripeInvoicingCredentials *StripeInvoicingCredentialsInput `json:"stripeInvoicingCredentials,omitempty"`
 	// The vendor identifier of integration
 	VendorIdentifier VendorIdentifier `json:"vendorIdentifier"`
 	// Zuora integration configuration
@@ -14298,6 +14346,8 @@ func (e BillingPeriod) MarshalGQL(w io.Writer) {
 type BillingVendorIdentifier string
 
 const (
+	// Embedded checkout billing
+	BillingVendorIdentifierReceived BillingVendorIdentifier = "RECEIVED"
 	// Stripe
 	BillingVendorIdentifierStripe BillingVendorIdentifier = "STRIPE"
 	// Zuora
@@ -14305,13 +14355,14 @@ const (
 )
 
 var AllBillingVendorIdentifier = []BillingVendorIdentifier{
+	BillingVendorIdentifierReceived,
 	BillingVendorIdentifierStripe,
 	BillingVendorIdentifierZuora,
 }
 
 func (e BillingVendorIdentifier) IsValid() bool {
 	switch e {
-	case BillingVendorIdentifierStripe, BillingVendorIdentifierZuora:
+	case BillingVendorIdentifierReceived, BillingVendorIdentifierStripe, BillingVendorIdentifierZuora:
 		return true
 	}
 	return false
@@ -21680,6 +21731,8 @@ const (
 	VendorIdentifierSnowflake VendorIdentifier = "SNOWFLAKE"
 	// Stripe integration vendor identifier
 	VendorIdentifierStripe VendorIdentifier = "STRIPE"
+	// Stripe invoicing integration vendor identifier
+	VendorIdentifierStripeInvoicing VendorIdentifier = "STRIPE_INVOICING"
 	// Zuora integration vendor identifier
 	VendorIdentifierZuora VendorIdentifier = "ZUORA"
 )
@@ -21697,12 +21750,13 @@ var AllVendorIdentifier = []VendorIdentifier{
 	VendorIdentifierSalesforce,
 	VendorIdentifierSnowflake,
 	VendorIdentifierStripe,
+	VendorIdentifierStripeInvoicing,
 	VendorIdentifierZuora,
 }
 
 func (e VendorIdentifier) IsValid() bool {
 	switch e {
-	case VendorIdentifierAirwallex, VendorIdentifierAppStore, VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierOpenFga, VendorIdentifierPrequel, VendorIdentifierReceived, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierZuora:
+	case VendorIdentifierAirwallex, VendorIdentifierAppStore, VendorIdentifierAuth0, VendorIdentifierAwsMarketplace, VendorIdentifierBigQuery, VendorIdentifierHubspot, VendorIdentifierOpenFga, VendorIdentifierPrequel, VendorIdentifierReceived, VendorIdentifierSalesforce, VendorIdentifierSnowflake, VendorIdentifierStripe, VendorIdentifierStripeInvoicing, VendorIdentifierZuora:
 		return true
 	}
 	return false
