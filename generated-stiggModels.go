@@ -2523,6 +2523,8 @@ type CreditLedgerInput struct {
 	CustomerID string `json:"customerId"`
 	// The environment ID of the credit ledger
 	EnvironmentID *string `json:"environmentId,omitempty"`
+	// Filter the ledger to only the given event types
+	EventType []CreditLedgerEventType `json:"eventType,omitempty"`
 	// Cursor-based pagination input
 	Paging *CursorPaging `json:"paging,omitempty"`
 	// The resource ID of the credit ledger
