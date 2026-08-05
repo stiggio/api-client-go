@@ -2589,6 +2589,8 @@ type CreditUsageInput struct {
 
 // Point in the credit usage series
 type CreditUsagePoint struct {
+	// Number of distinct usage events that consumed credits in this time bucket
+	EventCount int64 `json:"eventCount"`
 	// Timestamp of the credit usage point
 	Timestamp string `json:"timestamp"`
 	// Value of the credit usage point
@@ -2597,6 +2599,8 @@ type CreditUsagePoint struct {
 
 // Series of credit usage data points
 type CreditUsageSeries struct {
+	// Number of distinct usage events that consumed credits in this series. This count is not additive across series, because an event matched by several meters appears in more than one series.
+	EventCount int64 `json:"eventCount"`
 	// Feature ID for the credit usage series; null when grouping by dimensions only
 	FeatureID *string `json:"featureId"`
 	// Display name of the feature for the credit usage series; null when grouping by dimensions only
