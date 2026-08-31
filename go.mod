@@ -1,4 +1,4 @@
-module github.com/stiggio/api-client-go/v6
+module github.com/stiggio/api-client-go/v7
 
 go 1.17
 
