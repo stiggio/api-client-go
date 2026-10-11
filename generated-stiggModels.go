@@ -2735,12 +2735,16 @@ type Customer struct {
 	DefaultPaymentExpirationMonth *int64 `json:"defaultPaymentExpirationMonth"`
 	// The expiration year of the default payment method
 	DefaultPaymentExpirationYear *int64 `json:"defaultPaymentExpirationYear"`
+	// The card brand of the default payment method, as reported by the billing provider (e.g. visa, mastercard, amex)
+	DefaultPaymentMethodCardBrand *string `json:"defaultPaymentMethodCardBrand"`
 	// The default payment method id
 	DefaultPaymentMethodID *string `json:"defaultPaymentMethodId"`
 	// The last 4 digits of the default payment method
 	DefaultPaymentMethodLast4Digits *string `json:"defaultPaymentMethodLast4Digits"`
 	// The default payment method type
 	DefaultPaymentMethodType *PaymentMethodType `json:"defaultPaymentMethodType"`
+	// The digital wallet used to add the default card payment method, as reported by the billing provider (e.g. apple_pay, google_pay)
+	DefaultPaymentMethodWalletType *string `json:"defaultPaymentMethodWalletType"`
 	// Timestamp of when the record was deleted
 	DeletedAt *string `json:"deletedAt"`
 	// Whether the customer is eligible for a trial
