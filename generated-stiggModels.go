@@ -2521,6 +2521,8 @@ type CreditLedgerInput struct {
 	CurrencyID *string `json:"currencyId,omitempty"`
 	// The customer ID of the credit ledger
 	CustomerID string `json:"customerId"`
+	// Filter the ledger to events with a timestamp on or before this date, inclusive
+	EndDate *string `json:"endDate,omitempty"`
 	// The environment ID of the credit ledger
 	EnvironmentID *string `json:"environmentId,omitempty"`
 	// Filter the ledger to only the given event types
@@ -2529,6 +2531,8 @@ type CreditLedgerInput struct {
 	Paging *CursorPaging `json:"paging,omitempty"`
 	// The resource ID of the credit ledger
 	ResourceID *string `json:"resourceId,omitempty"`
+	// Filter the ledger to events with a timestamp on or after this date, inclusive
+	StartDate *string `json:"startDate,omitempty"`
 }
 
 // Credit Rate
