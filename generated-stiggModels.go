@@ -11294,27 +11294,29 @@ type SubscriptionInvoice struct {
 	AmountDue      *float64 `json:"amountDue"`
 	AppliedBalance *float64 `json:"appliedBalance"`
 	// Number of payment attempts made for this invoice, from the perspective of the payment retry schedule.
-	AttemptCount         *float64                          `json:"attemptCount"`
-	BillingID            string                            `json:"billingId"`
-	BillingReason        *SubscriptionInvoiceBillingReason `json:"billingReason"`
-	CreatedAt            string                            `json:"createdAt"`
-	Currency             *string                           `json:"currency"`
-	DueDate              *string                           `json:"dueDate"`
-	EndingBalance        *float64                          `json:"endingBalance"`
-	ErrorMessage         *string                           `json:"errorMessage"`
-	Lines                []*InvoiceLine                    `json:"lines"`
-	PaymentSecret        *string                           `json:"paymentSecret"`
-	PaymentURL           *string                           `json:"paymentUrl"`
-	PDFURL               *string                           `json:"pdfUrl"`
-	RequiresAction       bool                              `json:"requiresAction"`
-	StartingBalance      *float64                          `json:"startingBalance"`
-	Status               SubscriptionInvoiceStatus         `json:"status"`
-	SubTotal             *float64                          `json:"subTotal"`
-	SubTotalExcludingTax *float64                          `json:"subTotalExcludingTax"`
-	Tax                  *float64                          `json:"tax"`
-	Total                *float64                          `json:"total"`
-	TotalExcludingTax    *float64                          `json:"totalExcludingTax"`
-	UpdatedAt            string                            `json:"updatedAt"`
+	AttemptCount  *float64                          `json:"attemptCount"`
+	BillingID     string                            `json:"billingId"`
+	BillingReason *SubscriptionInvoiceBillingReason `json:"billingReason"`
+	CreatedAt     string                            `json:"createdAt"`
+	Currency      *string                           `json:"currency"`
+	DueDate       *string                           `json:"dueDate"`
+	EndingBalance *float64                          `json:"endingBalance"`
+	// Payment failure code from the billing provider, e.g. card_declined
+	ErrorCode            *string                   `json:"errorCode"`
+	ErrorMessage         *string                   `json:"errorMessage"`
+	Lines                []*InvoiceLine            `json:"lines"`
+	PaymentSecret        *string                   `json:"paymentSecret"`
+	PaymentURL           *string                   `json:"paymentUrl"`
+	PDFURL               *string                   `json:"pdfUrl"`
+	RequiresAction       bool                      `json:"requiresAction"`
+	StartingBalance      *float64                  `json:"startingBalance"`
+	Status               SubscriptionInvoiceStatus `json:"status"`
+	SubTotal             *float64                  `json:"subTotal"`
+	SubTotalExcludingTax *float64                  `json:"subTotalExcludingTax"`
+	Tax                  *float64                  `json:"tax"`
+	Total                *float64                  `json:"total"`
+	TotalExcludingTax    *float64                  `json:"totalExcludingTax"`
+	UpdatedAt            string                    `json:"updatedAt"`
 }
 
 // The preview of the next upcoming invoice for the given subscription
