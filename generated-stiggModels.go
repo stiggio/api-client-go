@@ -730,6 +730,8 @@ type AppStoreSubscriptionsToPlansMappingInput struct {
 type ApplySubscription struct {
 	// The list of feature entitlements granted to the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// When these entitlements last changed. The latest of the entitlement, customer and subscription update times; always set, also when the list is empty.
+	EntitlementsUpdatedAt *string `json:"entitlementsUpdatedAt"`
 	// The list of polymorphic entitlements (feature and credit) granted to the customer.
 	EntitlementsV2 []EntitlementUnion `json:"entitlementsV2"`
 	// The updated subscription
@@ -4303,6 +4305,8 @@ type EntitlementsState struct {
 	AccessDeniedReason *EntitlementsStateAccessDeniedReason `json:"accessDeniedReason"`
 	// The list of feature entitlements granted to the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// When these entitlements last changed. The latest of the entitlement, customer and subscription update times; always set, also when the list is empty.
+	EntitlementsUpdatedAt string `json:"entitlementsUpdatedAt"`
 	// The list of polymorphic entitlements (feature and credit) granted to the customer.
 	EntitlementsV2 []EntitlementUnion `json:"entitlementsV2"`
 }
@@ -4317,6 +4321,8 @@ type EntitlementsUpdated struct {
 	CustomerID string `json:"customerId"`
 	// The updated list of entitlements for the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// When these entitlements last changed. The latest of the entitlement, customer and subscription update times; always set, also when the list is empty.
+	EntitlementsUpdatedAt string `json:"entitlementsUpdatedAt"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The resource the entitlement update is scoped to.
@@ -4333,6 +4339,8 @@ type EntitlementsUpdatedV2 struct {
 	CustomerID string `json:"customerId"`
 	// The updated list of polymorphic entitlements (feature and credit) for the customer.
 	Entitlements []EntitlementUnion `json:"entitlements"`
+	// When these entitlements last changed. The latest of the entitlement, customer and subscription update times; always set, also when the list is empty.
+	EntitlementsUpdatedAt string `json:"entitlementsUpdatedAt"`
 	// The unique identifier for the environment
 	EnvironmentID string `json:"environmentId"`
 	// The resource the entitlement update is scoped to.
@@ -9980,6 +9988,8 @@ type ProvisionSubscriptionResult struct {
 	CheckoutURL       *string `json:"checkoutUrl"`
 	// The list of feature entitlements granted to the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// When these entitlements last changed. The latest of the entitlement, customer and subscription update times; always set, also when the list is empty.
+	EntitlementsUpdatedAt *string `json:"entitlementsUpdatedAt"`
 	// The list of polymorphic entitlements (feature and credit) granted to the customer.
 	EntitlementsV2 []EntitlementUnion          `json:"entitlementsV2"`
 	ID             string                      `json:"id"`
@@ -9994,6 +10004,8 @@ type ProvisionedCustomer struct {
 	Customer Customer `json:"customer"`
 	// The list of feature entitlements granted to the customer.
 	Entitlements []*Entitlement `json:"entitlements"`
+	// When these entitlements last changed. The latest of the entitlement, customer and subscription update times; always set, also when the list is empty.
+	EntitlementsUpdatedAt *string `json:"entitlementsUpdatedAt"`
 	// The list of polymorphic entitlements (feature and credit) granted to the customer.
 	EntitlementsV2 []EntitlementUnion `json:"entitlementsV2"`
 	// Provisioned subscription
